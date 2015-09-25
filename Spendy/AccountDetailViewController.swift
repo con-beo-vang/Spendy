@@ -183,16 +183,17 @@ extension AccountDetailViewController: UIGestureRecognizerDelegate {
             switch sender.direction {
             case UISwipeGestureRecognizerDirection.Left:
                 // Delete transaction
-                
-                accountTransactions[indexPath.section].removeAtIndex(indexPath.row)
-                tableView.reloadSections(NSIndexSet(index: indexPath.section), withRowAnimation: UITableViewRowAnimation.Automatic)
-                
-                if accountTransactions[indexPath.section].count == 0 {
-                    accountTransactions.removeAtIndex(indexPath.section)
-                    tableView.reloadData()
-                }
+
+                let transactionToRemove = accountTransactions[indexPath.section][indexPath.row]
+
+                currentAccount.removeTransaction(transactionToRemove)
+                reloadTransactions()
+
+                // OPTIMIZE: check if section still exists, if yes, load it
+                // However it's not worth it. Just reload the whole thing
+                tableView.reloadData()
                 break
-                
+
             case UISwipeGestureRecognizerDirection.Right:
                 // Duplicate transaction to today
                 //                var newTransaction = selectedCell.noteLabel.text

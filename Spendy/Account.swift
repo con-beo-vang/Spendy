@@ -59,6 +59,13 @@ class Account: HTObject {
         _transactions!.append(transaction)
     }
 
+    func removeTransaction(transaction: Transaction) {
+        transaction._object?.deleteEventually()
+        print("transaction count befpre: \(_transactions?.count)")
+        _transactions = _transactions?.filter({ $0.objectId != transaction.objectId })
+        print("transaction count after: \(_transactions?.count)")
+    }
+
     static func loadAll() {
         let user = PFUser.currentUser()!
         print("=====================\nUser: \(user)\n=====================", terminator: "\n")
