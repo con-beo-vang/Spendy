@@ -29,19 +29,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Remove this line if you don't want to use Local Datastore features or want to use cachePolicy.
         Parse.enableLocalDatastore()
 
-        let config = NSDictionary(contentsOfFile: NSBundle.mainBundle().pathForResource("Config", ofType: "plist")!)
-        print("loaded config: \(config)", terminator: "\n")
+
         // ****************************************************************************
         // Uncomment this line if you want to enable Crash Reporting
         // ParseCrashReporting.enable()
 
-        if let config = config {
-            let applicationId = config["parse_application_id"] as? String
-            let clientKey = config["parse_client_key"] as? String
-            Parse.setApplicationId(applicationId!, clientKey: clientKey!)
-        } else {
+        guard let config = NSDictionary(contentsOfFile: NSBundle.mainBundle().pathForResource("Config", ofType: "plist")!) else {
             print("Please set up Parse keys in Config.plist file", terminator: "\n")
+            return false
         }
+
+        print("loaded config: \(config)")
+        let applicationId = config["parse_application_id"] as? String
+        let clientKey = config["parse_client_key"] as? String
+        Parse.setApplicationId(applicationId!, clientKey: clientKey!)
 
         //
         // If you are using Facebook, uncomment and add your FacebookAppID to your bundle's plist as
@@ -75,6 +76,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 PFAnalytics.trackAppOpenedWithLaunchOptions(launchOptions)
             }
         }
+
         if application.respondsToSelector("registerUserNotificationSettings:") {
 //            let userNotificationTypes = [UIUserNotificationType.Alert, UIUserNotificationType.Badge, UIUserNotificationType.Sound]
             let settings = UIUserNotificationSettings(forTypes: [.Alert, .Badge, .Sound], categories: nil)

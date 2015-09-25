@@ -19,24 +19,13 @@ class AccountDetailViewController: UIViewController {
     
     var currentAccount: Account!
 
-//    var selectedCategory: Category!
-
     var transaction: Transaction!
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-//        selectedCategory = Category.all()!.first
-
-
-//        transaction = Transaction(kind: Transaction.expenseKind, note: "New transaction", amount: 0, category: selectedCategory, account: currentAccount, date: NSDate())
-
-
         let dateFormatter = Transaction.dateFormatter
         dateFormatter.dateFormat = "YYYY-MM-dd"
-
-        // TODO: this is temporary. need to wait for Category and Account to load first
-//        Transaction.loadAll()
 
         // create a few sample transactions
         reloadTransactions()
@@ -58,7 +47,7 @@ class AccountDetailViewController: UIViewController {
     }
 
     func reloadTransactions() {
-        accountTransactions = Transaction.listGroupedByMonth(currentAccount.transactions())
+        accountTransactions = Transaction.listGroupedByMonth(currentAccount.transactions)
     }
 
     // reload data after we navigate back from pushed cell
@@ -136,7 +125,7 @@ extension AccountDetailViewController: UITableViewDataSource, UITableViewDelegat
         monthLabel.font = UIFont.systemFontOfSize(14)
         
         
-        monthLabel.text = accountTransactions[section][0].monthHeader()
+        monthLabel.text = accountTransactions[section].first?.monthHeader()
         
         // TODO: get date from transaction
         //        let date = NSDate()
@@ -160,10 +149,10 @@ extension AccountDetailViewController: UITableViewDataSource, UITableViewDelegat
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCellWithIdentifier("TransactionCell", forIndexPath: indexPath) as! TransactionCell
-        
-        //        cell.noteLabel.text = accountTransactions[indexPath.section][indexPath.row].note
+
         cell.transaction = accountTransactions[indexPath.section][indexPath.row]
-        
+//        print("cell transaction: \(cell.transaction)")
+
         let rightSwipe = UISwipeGestureRecognizer(target: self, action: Selector("handleSwipe:"))
         rightSwipe.direction = .Right
         cell.addGestureRecognizer(rightSwipe)

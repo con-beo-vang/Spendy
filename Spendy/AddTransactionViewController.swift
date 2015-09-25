@@ -36,10 +36,6 @@ class AddTransactionViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        if Transaction.all() == nil {
-            Transaction.loadAll()
-        }
-        
         tableView.dataSource = self
         tableView.delegate = self
         tableView.tableFooterView = UIView()
@@ -89,11 +85,10 @@ class AddTransactionViewController: UIViewController {
 
     func updateFieldsToTransaction() {
         if let transaction = selectedTransaction {
-            transaction["note"] = noteCell?.noteText.text
-            transaction["kind"] = Transaction.kinds[amountCell!.typeSegment.selectedSegmentIndex]
-
-            // TODO: parse amount and date
-            // transaction["amount"] = NSDecimalNumber(string: amountCell?.amountText.text)
+            transaction.note = noteCell?.noteText.text
+            transaction.kind = Transaction.kinds[amountCell!.typeSegment.selectedSegmentIndex]
+            transaction.amount = NSDecimalNumber(string: amountCell?.amountText.text)
+            // TODO: parse date
             // transaction["date"] = dateCell?.datePicker.date ?? NSDate()
         }
     }
@@ -101,7 +96,6 @@ class AddTransactionViewController: UIViewController {
     func onAddButton(sender: UIButton!) {
         // update fields
         updateFieldsToTransaction()
-
 
         print("[onAddButton] transaction: \(selectedTransaction!)", terminator: "\n")
 

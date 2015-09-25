@@ -35,24 +35,52 @@ class Transaction: HTObject {
     static let incomeKind: String = "income"
     static let transferKind: String = "transfer"
 
-    var note: String?
-    var amount: NSDecimalNumber?
-    var categoryId: String?
-    var fromAccountId: String?
-    var toAccountId: String?
-    var date: NSDate?
-    var kind: String?
-    
-    // TODO: change kind to enum .Expense, .Income, .Transfer
-    init(kind: String?, note: String?, amount: NSDecimalNumber?, category: Category?, account: Account?, date: NSDate?) {
-        super.init(parseClassName: "Transaction")
+    var note: String? {
+        get { return self["note"] as! String? }
+        set { self["note"] = newValue }
+    }
 
-        self["kind"] = kind
-        self["note"] = note
-        self["amount"] = amount
-        self["categoryId"] = category?.objectId
-        self["fromAccountId"] = account?.objectId
-        self["date"] = date
+    var amount: NSDecimalNumber? {
+        get {
+            return NSDecimalNumber(decimal: (self["amount"] as! NSNumber).decimalValue)
+        }
+        set { self["amount"] = newValue }
+    }
+
+    var fromAccountId: String? {
+        get { return self["fromAccountId"] as! String? }
+        set { self["fromAccountId"] = newValue }
+    }
+
+    var toAccountId: String? {
+        get { return self["toAccountId"] as! String? }
+        set { self["toAccountId"] = newValue }
+    }
+
+    var date: NSDate? {
+        get { return self["date"] as! NSDate? }
+        set { self["date"] = newValue }
+    }
+
+    var kind: String? {
+        get { return self["kind"] as! String? }
+        set { self["kind"] = newValue }
+    }
+
+    var categoryId: String? {
+        get { return self["categoryId"] as! String? }
+        set { self["categoryId"] = newValue }
+    }
+    
+    convenience init(kind: String?, note: String?, amount: NSDecimalNumber?, category: Category?, account: Account?, date: NSDate?) {
+        self.init()
+
+        self.kind = kind
+        self.note = note
+        self.amount = amount
+        self.categoryId = category?.objectId
+        self.fromAccountId = account?.objectId
+        self.date = date
     }
 
     func setAccount(account: Account) {
@@ -62,6 +90,7 @@ class Transaction: HTObject {
     func setCategory(category: Category) {
         self["categoryId"] = category.objectId
     }
+
 
     // MARK: - relations
 
@@ -87,10 +116,11 @@ class Transaction: HTObject {
         } else {
             // attempt to use default account
             if let category = Category.defaultCategory() {
-                print("category missing in transaction: setting defaultCategory for it", terminator: "\n")
+                print("category missing in transaction: setting defaultCategory for it. \(description)")
                 setCategory(category)
                 return category
             } else {
+                print("no category exists for \(description)")
                 return nil
             }
         }
@@ -170,10 +200,14 @@ class Transaction: HTObject {
     class func listGroupedByMonth(trans: [Transaction]) -> [[Transaction]] {
         let grouped = dictGroupedByMonth(trans)
         var list: [[Transaction]] = []
+
         for (key, _) in grouped {
             var g:[Transaction] = grouped[key]!
             // sort values in each bucket, newest first
-            g.sortInPlace({ $1.date! < $0.date! })
+            g.sortInPlace({
+                guard $1.date != nil && $0.date != nil else { return true }
+                return $1.date! < $0.date!
+            })
             list.append(g)
         }
 
@@ -183,37 +217,46 @@ class Transaction: HTObject {
         return list
     }
 
-    class func loadAll() {
-        print("\n\nloading fake data for Transactions", terminator: "\n")
-        let defaultCategory = Category.all()?.first
-        let defaultAccount = Account.all()?.first
+//    class func loadAll() {
+//        print("\n\nloading fake data for Transactions", terminator: "\n")
+//        let defaultCategory = Category.all()?.first
+//        let defaultAccount = Account.all()?.first
+//
+//        // Initialize with fake transactions
+//        let dateFormatter = Transaction.dateFormatter
+//        dateFormatter.dateFormat = "yyyy-MM-dd"
+//
+//        // TODO: load from and save to servers
+//        _allTransactions =
+//            [
+//                Transaction(kind: Transaction.expenseKind, note: "Note 1", amount: 3.23, category: defaultCategory, account: defaultAccount, date: dateFormatter.dateFromString("2015-08-01")),
+//                Transaction(kind: Transaction.expenseKind, note: "Note 2", amount: 4.23, category: defaultCategory, account: defaultAccount, date: dateFormatter.dateFromString("2015-08-02")),
+//                Transaction(kind: Transaction.expenseKind, note: "Note 3", amount: 1.23, category: defaultCategory, account: defaultAccount, date: dateFormatter.dateFromString("2015-09-01")),
+//                Transaction(kind: Transaction.expenseKind, note: "Note 4", amount: 2.23, category: defaultCategory, account: defaultAccount, date: dateFormatter.dateFromString("2015-09-02")),
+//                Transaction(kind: Transaction.expenseKind, note: "Note 5", amount: 2.23, category: defaultCategory, account: defaultAccount, date: dateFormatter.dateFromString("2015-09-03"))
+//            ]
+////        println("post sort: \(_allTransactions!))")
+//    }
 
-        // Initialize with fake transactions
-        let dateFormatter = Transaction.dateFormatter
-        dateFormatter.dateFormat = "yyyy-MM-dd"
-
-        // TODO: load from and save to servers
-        _allTransactions =
-            [
-                Transaction(kind: Transaction.expenseKind, note: "Note 1", amount: 3.23, category: defaultCategory, account: defaultAccount, date: dateFormatter.dateFromString("2015-08-01")),
-                Transaction(kind: Transaction.expenseKind, note: "Note 2", amount: 4.23, category: defaultCategory, account: defaultAccount, date: dateFormatter.dateFromString("2015-08-02")),
-                Transaction(kind: Transaction.expenseKind, note: "Note 3", amount: 1.23, category: defaultCategory, account: defaultAccount, date: dateFormatter.dateFromString("2015-09-01")),
-                Transaction(kind: Transaction.expenseKind, note: "Note 4", amount: 2.23, category: defaultCategory, account: defaultAccount, date: dateFormatter.dateFromString("2015-09-02")),
-                Transaction(kind: Transaction.expenseKind, note: "Note 5", amount: 2.23, category: defaultCategory, account: defaultAccount, date: dateFormatter.dateFromString("2015-09-03"))
-            ]
-//        println("post sort: \(_allTransactions!))")
+    class func findByAccountId(accountId: String) -> [Transaction] {
+        let query = PFQuery(className: "Transaction")
+        query.fromLocalDatastore()
+        query.whereKey("fromAccountId", equalTo: accountId)
+        do {
+            return try query.findObjects().map{Transaction(object: $0)}
+        } catch {
+            print("Error loading transaction for account: \(accountId)")
+            return []
+        }
     }
 
     class func add(element: Transaction) {
         element.save()
         element.account()!.addTransaction(element)
-        _allTransactions!.append(element)
+    }
+
+    override var description: String {
+        let base = super.description
+        return "categoryId: \(categoryId), fromAccountId: \(fromAccountId), toAccountId: \(toAccountId), base: \(base)"
     }
 }
-
-//extension Transaction: CustomStringConvertible {
-//    override var description: String {
-//        let base = super.description
-//        return "categoryId: \(categoryId), fromAccountId: \(fromAccountId), toAccountId: \(toAccountId), base: \(base)"
-//    }
-//}

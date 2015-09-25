@@ -12,25 +12,26 @@ import Parse
 var _allAccounts: [Account]?
 
 class Account: HTObject {
-    dynamic var name: String!
-    dynamic var userId: String!
-
-    dynamic var icon: String! // temporary, to make Account and Category work well together
-
-    var _transactions = [Transaction]()
-
-    init(name: String) {
-        super.init(parseClassName: "Account")
-
-        self["name"] = name
-        self["userId"] = PFUser.currentUser()!.objectId!
+    var name: String {
+        get { return self["name"] as! String }
+        set { self["name"] = newValue }
     }
 
-    override init(object: PFObject) {
-        super.init(object: object)
+    var userId: String {
+        get { return self["userId"] as! String }
+        set { self["userId"] = newValue }
+    }
 
-        self["name"] = object.objectForKey("name")
-        self["userId"] = object.objectForKey("userId")
+    var icon: String {
+        get { return self["icon"] as! String }
+        set { self["icon"] = newValue }
+    }
+
+    var _transactions: [Transaction]?
+
+    convenience init(name: String) {
+        self.init()
+        self.userId = PFUser.currentUser()!.objectId!
     }
 
     func balance() -> NSDecimalNumber {
@@ -41,12 +42,21 @@ class Account: HTObject {
         return "$\(balance())"
     }
 
-    func transactions() -> [Transaction] {
-        return _transactions
+    // computed property
+    // default is get
+    var transactions: [Transaction] {
+        guard _transactions != nil else {
+            // load from DB
+            print("loading transactions from local for account \(objectId)")
+            _transactions = Transaction.findByAccountId(objectId!)
+            return _transactions!
+        }
+
+        return _transactions!
     }
 
     func addTransaction(transaction: Transaction) {
-        _transactions.append(transaction)
+        _transactions!.append(transaction)
     }
 
     static func loadAll() {
