@@ -54,6 +54,9 @@ class HomeViewController: UIViewController {
     
     var viewMode = ViewMode.Monthly
     var weekOfYear = 0
+    
+    let customPresentAnimationController = CustomPresentAnimationController()
+    let customDismissAnimationController = CustomDismissAnimationController()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -468,14 +471,17 @@ extension HomeViewController: UIGestureRecognizerDelegate {
             tableView.reloadSections(NSIndexSet(indexesInRange: NSMakeRange(0, 3)), withRowAnimation: UITableViewRowAnimation.Right)
             break
         case UISwipeGestureRecognizerDirection.Down:
-            let dvc = self.storyboard?.instantiateViewControllerWithIdentifier("QuickVC") as! QuickViewController
-            let nc = UINavigationController(rootViewController: dvc)
-            self.presentViewController(nc, animated: true, completion: nil)
+//            let dvc = self.storyboard?.instantiateViewControllerWithIdentifier("QuickVC") as! QuickViewController
+//            let nc = UINavigationController(rootViewController: dvc)
+//            self.presentViewController(nc, animated: true, completion: nil)
+            performSegueWithIdentifier("QuickMode", sender: self)
             break
         default:
             break
         }
     }
+    
+
     
     func tapIncome(sender: UITapGestureRecognizer) {
         if isCollapedIncome {
@@ -522,5 +528,27 @@ extension HomeViewController: UIGestureRecognizerDelegate {
             viewModeTableView.reloadData()
             closePopup(viewModePopup)
         }
+    }
+}
+
+// MARK: Custom transition
+
+extension HomeViewController: UIViewControllerTransitioningDelegate {
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "QuickMode" {
+            let toViewController = segue.destinationViewController as! UINavigationController
+            toViewController.transitioningDelegate = self
+            customPresentAnimationController.animationType = CustomSegueAnimation.SwipeDown
+            customDismissAnimationController.animationType = CustomSegueAnimation.SwipeDown
+        }
+    }
+    
+    func animationControllerForPresentedController(presented: UIViewController, presentingController presenting: UIViewController, sourceController source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        return customPresentAnimationController
+    }
+    
+    func animationControllerForDismissedController(dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        return customDismissAnimationController
     }
 }

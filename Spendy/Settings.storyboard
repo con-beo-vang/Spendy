@@ -403,7 +403,7 @@
     </scenes>
     <resources>
         <image name="Category-Meal" width="50" height="50"/>
-        <image name="PlusCircle" width="64" height="64"/>
+        <image name="PlusCircle" width="50" height="50"/>
         <image name="SettingInactive" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>

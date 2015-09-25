@@ -30,6 +30,8 @@ class AddTransactionViewController: UIViewController {
     var isNewTemp: Bool = false // temporary
     
     var imagePicker: UIImagePickerController!
+    
+    let customNavigationAnimationController = CustomNavigationAnimationController()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,6 +39,8 @@ class AddTransactionViewController: UIViewController {
         if Transaction.all() == nil {
             Transaction.loadAll()
         }
+        
+        navigationController?.delegate = self
         
         tableView.dataSource = self
         tableView.delegate = self
@@ -208,7 +212,6 @@ extension AddTransactionViewController: SelectAccountOrCategoryDelegate, PhotoVi
         }
     }
 }
-
 
 // MARK: Table View
 
@@ -457,6 +460,16 @@ extension AddTransactionViewController: UIImagePickerControllerDelegate, UINavig
     
     func imagePickerControllerDidCancel(picker: UIImagePickerController) {
         dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    // Custom transition
+    func navigationController(navigationController: UINavigationController, animationControllerForOperation operation: UINavigationControllerOperation, fromViewController fromVC: UIViewController, toViewController toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        //        if operation == .Push {
+        //
+        //            customInteractionController.attachToViewController(toVC)
+        //        }
+        customNavigationAnimationController.reverse = operation == .Pop
+        return customNavigationAnimationController
     }
 }
 

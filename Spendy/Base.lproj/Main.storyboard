@@ -616,7 +616,7 @@
                                             <outlet property="iconView" destination="QAD-ed-FLr" id="YMt-yL-S1t"/>
                                             <outlet property="nameLabel" destination="dHj-fF-tYz" id="n3y-wm-9Jk"/>
                                             <outlet property="typeLabel" destination="m1B-Dt-VGx" id="NXw-7C-Dqt"/>
-                                            <segue destination="U9P-O2-ygB" kind="push" id="hBh-pj-hAy"/>
+                                            <segue destination="U9P-O2-ygB" kind="push" identifier="" id="hBh-pj-hAy"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -713,7 +713,7 @@
                                             <outlet property="dateLabel" destination="bRd-ea-w5M" id="yxl-qc-uop"/>
                                             <outlet property="iconView" destination="F6t-n0-Z7u" id="txa-Cv-2Sd"/>
                                             <outlet property="noteLabel" destination="8Cy-vx-BQv" id="XRw-74-9s0"/>
-                                            <segue destination="hyr-9S-FBl" kind="push" id="GZy-oB-vHb"/>
+                                            <segue destination="hyr-9S-FBl" kind="push" identifier="EditTransaction" id="GZy-oB-vHb"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -785,14 +785,14 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$1234.00" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jS6-OO-Lw8">
-                                                    <rect key="frame" x="230" y="11" width="81.5" height="21.5"/>
-                                                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="18"/>
+                                                    <rect key="frame" x="234" y="11" width="77.5" height="21.5"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                                     <color key="textColor" red="0.23921568627450979" green="0.54509803921568623" blue="0.21568627450980393" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Income" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="E2D-co-vDk">
-                                                    <rect key="frame" x="26" y="11" width="62.5" height="21.5"/>
-                                                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="18"/>
+                                                    <rect key="frame" x="26" y="11" width="59.5" height="21.5"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                                     <color key="textColor" red="0.23921568627450979" green="0.54509803921568623" blue="0.21568627450980393" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
@@ -859,14 +859,14 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Balance" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ctM-ZZ-5om">
-                                                    <rect key="frame" x="26" y="11" width="67" height="21.5"/>
-                                                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="18"/>
+                                                    <rect key="frame" x="26" y="11" width="64.5" height="21.5"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                                     <color key="textColor" red="0.27450980392156865" green="0.50980392156862742" blue="0.70588235294117641" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="$1000.00" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="q4E-y8-hVP">
-                                                    <rect key="frame" x="229" y="12" width="82" height="21.5"/>
-                                                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="18"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$1000.00" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="q4E-y8-hVP">
+                                                    <rect key="frame" x="234.5" y="12" width="77.5" height="21.5"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                                     <color key="textColor" red="0.27450980392156865" green="0.50980392156862742" blue="0.70588235294117641" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
@@ -1091,6 +1091,7 @@
                         <outlet property="viewModePopup" destination="22t-1x-SQY" id="zOb-8W-M25"/>
                         <outlet property="viewModeTableView" destination="INT-es-Ua6" id="Hmg-7J-G1x"/>
                         <outlet property="viewModeTitleLabel" destination="k0r-3S-ai4" id="cts-9u-iaU"/>
+                        <segue destination="oty-fa-165" kind="modal" identifier="QuickMode" id="KL6-qb-RvK"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9oU-8B-0FE" userLabel="First Responder" sceneMemberID="firstResponder"/>

@@ -21,6 +21,9 @@ class AccountDetailViewController: UIViewController {
     var selectedCategory: Category!
 
     var transaction: Transaction!
+    
+    let customPresentAnimationController = CustomPresentAnimationController()
+    let customDismissAnimationController = CustomDismissAnimationController()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -97,31 +100,20 @@ class AccountDetailViewController: UIViewController {
     
     // MARK: Transfer between 2 views
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-//        let navigationController = segue.destinationViewController as! UINavigationController
+//    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
 //        
-//        if navigationController.topViewController is AddTransactionViewController {
-//            let addViewController = navigationController.topViewController as! AddTransactionViewController
+//        let vc = segue.destinationViewController 
+//        
+//        if vc is AddTransactionViewController {
+//            let addTransactionViewController = vc as! AddTransactionViewController
 //            
 //            var indexPath: AnyObject!
 //            indexPath = tableView.indexPathForCell(sender as! UITableViewCell)
-//            
-////            addViewController.selectedTransaction = sampleTransactions[indexPath.section][indexPath.row]
+//
+//            addTransactionViewController.selectedTransaction = sampleTransactions[indexPath.section][indexPath.row]
+//            print("pass selectedTransaction to AddTransactionView: \(addTransactionViewController.selectedTransaction))", terminator: "\n")
 //        }
-        
-        
-        let vc = segue.destinationViewController 
-        
-        if vc is AddTransactionViewController {
-            let addTransactionViewController = vc as! AddTransactionViewController
-            
-            var indexPath: AnyObject!
-            indexPath = tableView.indexPathForCell(sender as! UITableViewCell)
-
-            addTransactionViewController.selectedTransaction = sampleTransactions[indexPath.section][indexPath.row]
-            print("pass selectedTransaction to AddTransactionView: \(addTransactionViewController.selectedTransaction))", terminator: "\n")
-        }
-    }
+//    }
 }
 
 // MARK: Table view
@@ -234,5 +226,38 @@ extension AccountDetailViewController: UIGestureRecognizerDelegate {
             let nc = UINavigationController(rootViewController: dvc)
             self.presentViewController(nc, animated: true, completion: nil)
         }
+    }
+}
+
+extension AccountDetailViewController: UIViewControllerTransitioningDelegate {
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "QuickMode" {
+            let toViewController = segue.destinationViewController as! UINavigationController
+            toViewController.transitioningDelegate = self
+            customPresentAnimationController.animationType = CustomSegueAnimation.SwipeDown
+            customDismissAnimationController.animationType = CustomSegueAnimation.SwipeDown
+        } else {
+            // Edit transaction
+            let vc = segue.destinationViewController
+            
+            if vc is AddTransactionViewController {
+                let addTransactionViewController = vc as! AddTransactionViewController
+                
+                var indexPath: AnyObject!
+                indexPath = tableView.indexPathForCell(sender as! UITableViewCell)
+                
+                addTransactionViewController.selectedTransaction = sampleTransactions[indexPath.section][indexPath.row]
+                print("pass selectedTransaction to AddTransactionView: \(addTransactionViewController.selectedTransaction))", terminator: "\n")
+            }
+        }
+    }
+    
+    func animationControllerForPresentedController(presented: UIViewController, presentingController presenting: UIViewController, sourceController source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        return customPresentAnimationController
+    }
+    
+    func animationControllerForDismissedController(dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        return customDismissAnimationController
     }
 }

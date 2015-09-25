@@ -31,7 +31,7 @@ class TimeCell: UITableViewCell {
         onSwitch.thumbTintColor = UIColor.whiteColor()
         onSwitch.activeColor =  UIColor.clearColor()
         onSwitch.inactiveColor =  UIColor.clearColor()
-        onSwitch.onTintColor =  UIColor(netHex: 0x55AEED)
+        onSwitch.onTintColor =  UIColor(netHex: 0x28AD60)
         onSwitch.borderColor = UIColor(red: 220/255, green: 220/255, blue: 220/255, alpha: 1.0)
         onSwitch.shadowColor = UIColor(red: 100/255, green: 100/255, blue: 100/255, alpha: 1.0)
         
