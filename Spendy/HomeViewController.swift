@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import QuartzCore
 
 class HomeViewController: UIViewController {
     
@@ -121,7 +122,7 @@ class HomeViewController: UIViewController {
         
         todayLabel.text = getTodayString("MMMM dd, yyyy")
         
-        let day = NSCalendar.currentCalendar().component(NSCalendarUnit.NSDayCalendarUnit, fromDate: NSDate())
+        let day = NSCalendar.currentCalendar().component(NSCalendarUnit.Day, fromDate: NSDate())
         var ratio = CGFloat(day) / CGFloat(dayCountInMonth)
         ratio = ratio > 1 ? 1 : ratio
         currentBarWidthConstraint.constant = ratio * statusBarView.frame.width
@@ -134,7 +135,7 @@ class HomeViewController: UIViewController {
     
     func getWeekText(weekOfYear: Int) -> String {
         var result = "Weekly"
-        var (beginWeek, endWeek) = Helper.sharedInstance.getWeek(weekOfYear)
+        let (beginWeek, endWeek) = Helper.sharedInstance.getWeek(weekOfYear)
         if beginWeek != nil && endWeek != nil {
             let formatter = NSDateFormatter()
             formatter.dateFormat = "dd MMM"
@@ -157,25 +158,15 @@ class HomeViewController: UIViewController {
         popupSuperView.hidden = true
         popupSuperView.backgroundColor = UIColor.grayColor().colorWithAlphaComponent(0.5)
         
-        viewModePopup.layer.cornerRadius = 5
-        viewModePopup.layer.masksToBounds = true
-        
-        viewModeTitleLabel.backgroundColor = UIColor(netHex: 0x28AD62)
-        viewModeTitleLabel.textColor = UIColor.whiteColor()
-        
-        
-        
-        datePopup.layer.cornerRadius = 5
-        datePopup.layer.masksToBounds = true
-        
-        dateTitleLabel.backgroundColor = UIColor(netHex: 0x28AD62)
-        dateTitleLabel.textColor = UIColor.whiteColor()
+        Helper.sharedInstance.setPopupShadowAndColor(viewModePopup, label: viewModeTitleLabel)
+        Helper.sharedInstance.setPopupShadowAndColor(datePopup, label: dateTitleLabel)
         
         let today = NSDate()
         fromButton.setTitle(formatter.stringFromDate(today), forState: UIControlState.Normal)
         toButton.setTitle(formatter.stringFromDate(today), forState: UIControlState.Normal)
-        
     }
+    
+    
     
     // MARK: Button
     
@@ -321,9 +312,9 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
             }
             
             if indexPath.row == viewMode.rawValue {
-                cell.iconView.hidden = false
+                cell.iconView.image = UIImage(named: "CheckCircle")
             } else {
-                cell.iconView.hidden = true
+                cell.iconView.image = UIImage(named: "Circle")
             }
             
             Helper.sharedInstance.setSeparatorFullWidth(cell)

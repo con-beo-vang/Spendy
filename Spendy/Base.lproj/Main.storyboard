@@ -44,7 +44,7 @@
                                                         <segment title="150"/>
                                                         <segment title="Other"/>
                                                     </segments>
-                                                    <color key="tintColor" red="0.33333333333333331" green="0.68235294117647061" blue="0.92941176470588238" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <color key="tintColor" red="0.15686274509803921" green="0.67843137254901964" blue="0.37647058823529411" alpha="1" colorSpace="calibratedRGB"/>
                                                 </segmentedControl>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Meals" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EgV-j5-4xM">
                                                     <rect key="frame" x="48" y="13" width="45.5" height="20.5"/>
@@ -82,6 +82,7 @@
                                                 <rect key="frame" x="117" y="100" width="41" height="33"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <state key="normal" title="Done">
+                                                    <color key="titleColor" red="0.0" green="0.52156862745098043" blue="0.22745098039215686" alpha="1" colorSpace="calibratedRGB"/>
                                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
                                                 <connections>
@@ -113,6 +114,7 @@
                                                 </constraints>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <state key="normal" title="Cancel">
+                                                    <color key="titleColor" red="0.0" green="0.52156862745098043" blue="0.22745098039215686" alpha="1" colorSpace="calibratedRGB"/>
                                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
                                                 <connections>
@@ -120,7 +122,7 @@
                                                 </connections>
                                             </button>
                                         </subviews>
-                                        <color key="backgroundColor" red="0.69019607839999997" green="0.8862745098" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="backgroundColor" red="0.69019607843137254" green="0.95294117647058818" blue="0.69019607843137254" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="137" id="5zQ-7j-4YO"/>
                                             <constraint firstItem="ogG-o0-RXn" firstAttribute="leading" secondItem="9vj-Y7-Jkb" secondAttribute="leading" id="9LH-Tq-iFb"/>
@@ -862,8 +864,8 @@
                                                     <color key="textColor" red="0.27450980392156865" green="0.50980392156862742" blue="0.70588235294117641" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$1000.00" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="q4E-y8-hVP">
-                                                    <rect key="frame" x="229.5" y="12" width="82" height="21.5"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="$1000.00" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="q4E-y8-hVP">
+                                                    <rect key="frame" x="229" y="12" width="82" height="21.5"/>
                                                     <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="18"/>
                                                     <color key="textColor" red="0.27450980392156865" green="0.50980392156862742" blue="0.70588235294117641" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -1004,17 +1006,17 @@
                                                             <rect key="frame" x="0.0" y="0.0" width="200" height="43.5"/>
                                                             <autoresizingMask key="autoresizingMask"/>
                                                             <subviews>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Custom" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Peo-Eu-XJy">
-                                                                    <rect key="frame" x="16" y="11.5" width="56.5" height="19.5"/>
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Custom" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Peo-Eu-XJy">
+                                                                    <rect key="frame" x="16" y="11" width="56.5" height="19.5"/>
                                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                                     <color key="highlightedColor" red="0.23921568627450979" green="0.54509803921568623" blue="0.21568627450980393" alpha="1" colorSpace="calibratedRGB"/>
                                                                 </label>
-                                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Tick" translatesAutoresizingMaskIntoConstraints="NO" id="aqL-ed-Mr9">
-                                                                    <rect key="frame" x="177" y="14" width="15" height="15"/>
+                                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="CheckCircle" translatesAutoresizingMaskIntoConstraints="NO" id="aqL-ed-Mr9">
+                                                                    <rect key="frame" x="167" y="9" width="25" height="25"/>
                                                                     <constraints>
-                                                                        <constraint firstAttribute="height" constant="15" id="OcP-Ph-FqI"/>
-                                                                        <constraint firstAttribute="width" constant="15" id="pAz-V8-bfn"/>
+                                                                        <constraint firstAttribute="height" constant="25" id="OcP-Ph-FqI"/>
+                                                                        <constraint firstAttribute="width" constant="25" id="pAz-V8-bfn"/>
                                                                     </constraints>
                                                                 </imageView>
                                                             </subviews>
@@ -1180,11 +1182,11 @@
         <image name="AddInactive" width="25" height="25"/>
         <image name="Bar-Add" width="25" height="25"/>
         <image name="Category-Meal" width="50" height="50"/>
+        <image name="CheckCircle" width="50" height="50"/>
         <image name="Expand" width="100" height="100"/>
         <image name="HomeInactive" width="25" height="25"/>
         <image name="Minus" width="32" height="32"/>
         <image name="SettingInactive" width="25" height="25"/>
-        <image name="Tick" width="100" height="100"/>
         <image name="Transfer" width="32" height="32"/>
     </resources>
     <inferredMetricsTieBreakers>

@@ -88,14 +88,9 @@ class QuickViewController: UIViewController {
         popupSuperView.hidden = true
         popupSuperView.backgroundColor = UIColor.grayColor().colorWithAlphaComponent(0.5)
         
-        popupView.layer.cornerRadius = 5
-        popupView.layer.masksToBounds = true
-        
         amountText.keyboardType = UIKeyboardType.DecimalPad
         
-        popupTitleLabel.backgroundColor = UIColor(netHex: 0x4682B4)
-        popupTitleLabel.textColor = UIColor.whiteColor()
-        
+        Helper.sharedInstance.setPopupShadowAndColor(popupView, label: popupTitleLabel)
     }
     
     @IBAction func onCancelPopup(sender: UIButton) {
