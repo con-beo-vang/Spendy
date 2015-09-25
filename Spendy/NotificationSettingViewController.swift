@@ -69,7 +69,7 @@ class NotificationSettingViewController: UIViewController, ReminderCellDelegate 
     
     func onBackButton(sender: UIButton!) {
         print("on Back", terminator: "\n")
-        dismissViewControllerAnimated(true, completion: nil)
+        navigationController?.popViewControllerAnimated(true)
     }
     
     // MARK: Implement delegate

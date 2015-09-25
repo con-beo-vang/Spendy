@@ -21,10 +21,12 @@ class SelectAccountOrCategoryViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     var items: [HTObject]?
 
+    var backButton: UIButton?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        
+        addBarButton()
 
         tableView.dataSource = self
         tableView.delegate = self
@@ -37,25 +39,29 @@ class SelectAccountOrCategoryViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
 
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-    // Get the new view controller using segue.destinationViewController.
-    // Pass the selected object to the new view controller.
-    }
-    */
-
     func loadItems() {
         if itemClass == "Category" {
+            navigationItem.title = "Select Category"
             items = Category.all() as [Category]?
             tableView.reloadData()
         } else if itemClass == "Account" {
+            navigationItem.title = "Select Account"
             items = Account.all() as [Account]?
             tableView.reloadData()
         }
+    }
+    
+    // MARK: Button
+    
+    func addBarButton() {
+        
+        backButton = UIButton()
+        Helper.sharedInstance.customizeBarButton(self, button: backButton!, imageName: "Bar-Back", isLeft: true)
+        backButton!.addTarget(self, action: "onBackButton:", forControlEvents: UIControlEvents.TouchUpInside)
+    }
+    
+    func onBackButton(sender: UIButton!) {
+        navigationController?.popViewControllerAnimated(true)
     }
 }
 

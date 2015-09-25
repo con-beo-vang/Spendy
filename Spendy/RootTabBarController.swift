@@ -17,9 +17,22 @@ class RootTabBarController: UITabBarController {
 
         // Load Settings storyboard's initial controller
         // Replace the Settings placeholder controller
+//        let storyboard = UIStoryboard(name: "Settings", bundle: nil)
+//        let settingsController = storyboard.instantiateInitialViewController() as UIViewController!
+//
+//        if var tabControllers = self.viewControllers {
+//            assert(tabControllers[2] is SettingsViewController, "Expecting the 3rd tab is SettingsController")
+//            tabControllers[2] = settingsController
+//            self.setViewControllers(tabControllers, animated: true)
+//        } else {
+//            print("Error hooking up Settings tab", terminator: "")
+//        }
+        
+        
+        // Edit
         let storyboard = UIStoryboard(name: "Settings", bundle: nil)
-        let settingsController = storyboard.instantiateInitialViewController() as UIViewController!
-
+        let settingsController = storyboard.instantiateInitialViewController() as! UINavigationController
+        
         if var tabControllers = self.viewControllers {
             assert(tabControllers[2] is SettingsViewController, "Expecting the 3rd tab is SettingsController")
             tabControllers[2] = settingsController
@@ -27,6 +40,8 @@ class RootTabBarController: UITabBarController {
         } else {
             print("Error hooking up Settings tab", terminator: "")
         }
+        
+        
     }
 
     override func didReceiveMemoryWarning() {
