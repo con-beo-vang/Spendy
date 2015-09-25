@@ -17,7 +17,15 @@ class AccountCell: UITableViewCell {
     @IBOutlet weak var typeLabel: UILabel!
     
     @IBOutlet weak var balanceLabel: UILabel!
-    
+
+
+    var account: Account! {
+        didSet {
+            balanceLabel.text = account.formattedBalance()
+            nameLabel.text = account.name
+        }
+    }
+
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

@@ -15,25 +15,28 @@ class AccountDetailViewController: UIViewController {
     var addButton: UIButton?
     var cancelButton: UIButton?
     
-    var sampleTransactions: [[Transaction]]!
+    var accountTransactions: [[Transaction]]!
     
-    var selectedAccount: Account!
-    var selectedCategory: Category!
+    var currentAccount: Account!
+
+//    var selectedCategory: Category!
 
     var transaction: Transaction!
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        selectedCategory = Category.all()!.first
-        transaction = Transaction(kind: Transaction.expenseKind, note: "", amount: 0, category: selectedCategory, account: selectedAccount, date: NSDate())
+//        selectedCategory = Category.all()!.first
+
+
+//        transaction = Transaction(kind: Transaction.expenseKind, note: "New transaction", amount: 0, category: selectedCategory, account: currentAccount, date: NSDate())
 
 
         let dateFormatter = Transaction.dateFormatter
         dateFormatter.dateFormat = "YYYY-MM-dd"
 
         // TODO: this is temporary. need to wait for Category and Account to load first
-        Transaction.loadAll()
+//        Transaction.loadAll()
 
         // create a few sample transactions
         reloadTransactions()
@@ -49,13 +52,13 @@ class AccountDetailViewController: UIViewController {
         downSwipe.delegate = self
         tableView.addGestureRecognizer(downSwipe)
         
-        if let selectedAccount = selectedAccount {
-            navigationItem.title = selectedAccount.name
+        if let currentAccount = currentAccount {
+            navigationItem.title = currentAccount.name
         }
     }
 
     func reloadTransactions() {
-        sampleTransactions = Transaction.listGroupedByMonth(Transaction.all()!)
+        accountTransactions = Transaction.listGroupedByMonth(currentAccount.transactions())
     }
 
     // reload data after we navigate back from pushed cell
@@ -84,8 +87,9 @@ class AccountDetailViewController: UIViewController {
     }
     
     func onAddButton(sender: UIButton!) {
-        print("on Add", terminator: "\n")
+        print("on Add")
         let dvc = self.storyboard?.instantiateViewControllerWithIdentifier("AddVC") as! AddTransactionViewController
+        dvc.currentAccount = currentAccount
         let nc = UINavigationController(rootViewController: dvc)
         self.presentViewController(nc, animated: true, completion: nil)
     }
@@ -98,19 +102,7 @@ class AccountDetailViewController: UIViewController {
     // MARK: Transfer between 2 views
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-//        let navigationController = segue.destinationViewController as! UINavigationController
-//        
-//        if navigationController.topViewController is AddTransactionViewController {
-//            let addViewController = navigationController.topViewController as! AddTransactionViewController
-//            
-//            var indexPath: AnyObject!
-//            indexPath = tableView.indexPathForCell(sender as! UITableViewCell)
-//            
-////            addViewController.selectedTransaction = sampleTransactions[indexPath.section][indexPath.row]
-//        }
-        
-        
-        let vc = segue.destinationViewController 
+        let vc = segue.destinationViewController
         
         if vc is AddTransactionViewController {
             let addTransactionViewController = vc as! AddTransactionViewController
@@ -118,7 +110,7 @@ class AccountDetailViewController: UIViewController {
             var indexPath: AnyObject!
             indexPath = tableView.indexPathForCell(sender as! UITableViewCell)
 
-            addTransactionViewController.selectedTransaction = sampleTransactions[indexPath.section][indexPath.row]
+            addTransactionViewController.selectedTransaction = accountTransactions[indexPath.section][indexPath.row]
             print("pass selectedTransaction to AddTransactionView: \(addTransactionViewController.selectedTransaction))", terminator: "\n")
         }
     }
@@ -129,11 +121,11 @@ class AccountDetailViewController: UIViewController {
 extension AccountDetailViewController: UITableViewDataSource, UITableViewDelegate {
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return sampleTransactions.count
+        return accountTransactions.count
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return sampleTransactions[section].count
+        return accountTransactions[section].count
     }
     
     func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -144,7 +136,7 @@ extension AccountDetailViewController: UITableViewDataSource, UITableViewDelegat
         monthLabel.font = UIFont.systemFontOfSize(14)
         
         
-        monthLabel.text = sampleTransactions[section][0].monthHeader()
+        monthLabel.text = accountTransactions[section][0].monthHeader()
         
         // TODO: get date from transaction
         //        let date = NSDate()
@@ -169,8 +161,8 @@ extension AccountDetailViewController: UITableViewDataSource, UITableViewDelegat
         
         let cell = tableView.dequeueReusableCellWithIdentifier("TransactionCell", forIndexPath: indexPath) as! TransactionCell
         
-        //        cell.noteLabel.text = sampleTransactions[indexPath.section][indexPath.row].note
-        cell.transaction = sampleTransactions[indexPath.section][indexPath.row]
+        //        cell.noteLabel.text = accountTransactions[indexPath.section][indexPath.row].note
+        cell.transaction = accountTransactions[indexPath.section][indexPath.row]
         
         let rightSwipe = UISwipeGestureRecognizer(target: self, action: Selector("handleSwipe:"))
         rightSwipe.direction = .Right
@@ -203,11 +195,11 @@ extension AccountDetailViewController: UIGestureRecognizerDelegate {
             case UISwipeGestureRecognizerDirection.Left:
                 // Delete transaction
                 
-                sampleTransactions[indexPath.section].removeAtIndex(indexPath.row)
+                accountTransactions[indexPath.section].removeAtIndex(indexPath.row)
                 tableView.reloadSections(NSIndexSet(index: indexPath.section), withRowAnimation: UITableViewRowAnimation.Automatic)
                 
-                if sampleTransactions[indexPath.section].count == 0 {
-                    sampleTransactions.removeAtIndex(indexPath.section)
+                if accountTransactions[indexPath.section].count == 0 {
+                    accountTransactions.removeAtIndex(indexPath.section)
                     tableView.reloadData()
                 }
                 break
@@ -216,7 +208,7 @@ extension AccountDetailViewController: UIGestureRecognizerDelegate {
                 // Duplicate transaction to today
                 //                var newTransaction = selectedCell.noteLabel.text
                 // TODO: duplicate transaction here
-                //                sampleTransactions[0].insert(newTransaction!, atIndex: 0)
+                //                accountTransactions[0].insert(newTransaction!, atIndex: 0)
                 tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: UITableViewRowAnimation.Automatic)
                 
                 break

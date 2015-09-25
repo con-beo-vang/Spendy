@@ -206,6 +206,7 @@ class Transaction: HTObject {
 
     class func add(element: Transaction) {
         element.save()
+        element.account()!.addTransaction(element)
         _allTransactions!.append(element)
     }
 }

@@ -14,7 +14,10 @@ var _allAccounts: [Account]?
 class Account: HTObject {
     dynamic var name: String!
     dynamic var userId: String!
+
     dynamic var icon: String! // temporary, to make Account and Category work well together
+
+    var _transactions = [Transaction]()
 
     init(name: String) {
         super.init(parseClassName: "Account")
@@ -28,6 +31,22 @@ class Account: HTObject {
 
         self["name"] = object.objectForKey("name")
         self["userId"] = object.objectForKey("userId")
+    }
+
+    func balance() -> NSDecimalNumber {
+        return 123.45
+    }
+
+    func formattedBalance() -> String {
+        return "$\(balance())"
+    }
+
+    func transactions() -> [Transaction] {
+        return _transactions
+    }
+
+    func addTransaction(transaction: Transaction) {
+        _transactions.append(transaction)
     }
 
     static func loadAll() {

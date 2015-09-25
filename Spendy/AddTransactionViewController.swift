@@ -31,6 +31,8 @@ class AddTransactionViewController: UIViewController {
     
     var imagePicker: UIImagePickerController!
 
+    var currentAccount: Account!
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -46,6 +48,10 @@ class AddTransactionViewController: UIViewController {
         
         addBarButton()
 
+        if currentAccount == nil {
+            currentAccount = Account.defaultAccount()
+        }
+
         if selectedTransaction != nil {
             navigationItem.title = "Edit Transaction"
             isNewTemp = false
@@ -53,7 +59,7 @@ class AddTransactionViewController: UIViewController {
             isNewTemp = true
             selectedTransaction = Transaction(kind: Transaction.expenseKind,
                 note: "I paid for something", amount: 0,
-                category: Category.defaultCategory(), account: Account.defaultAccount(),
+                category: Category.defaultCategory(), account: currentAccount,
                 date: NSDate())
         }
 
