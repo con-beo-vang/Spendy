@@ -19,7 +19,14 @@ class TransactionCell: UITableViewCell {
     var transaction: Transaction! {
         didSet {
             // TODO: change back to just note
-            noteLabel.text = transaction.note
+            if let noteText = transaction.note {
+                if noteText.isEmpty {
+                    noteLabel.text = transaction.category?.name
+                } else {
+                    noteLabel.text = transaction.note
+                }
+            }
+
             // display Meal here to debug
             // noteLabel.text = "\(transaction.note!) (\(transaction.category!.name!))"
             // TODO: use system currency

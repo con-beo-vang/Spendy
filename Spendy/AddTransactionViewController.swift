@@ -27,8 +27,7 @@ class AddTransactionViewController: UIViewController {
     var photoCell: PhotoCell?
     
     var selectedTransaction: Transaction?
-    var isNewTemp: Bool = false // temporary
-    
+
     var imagePicker: UIImagePickerController!
 
     var currentAccount: Account!
@@ -50,11 +49,9 @@ class AddTransactionViewController: UIViewController {
 
         if selectedTransaction != nil {
             navigationItem.title = "Edit Transaction"
-            isNewTemp = false
         } else {
-            isNewTemp = true
             selectedTransaction = Transaction(kind: Transaction.expenseKind,
-                note: "", amount: nil,
+                note: nil, amount: nil,
                 category: Category.defaultCategory(), account: currentAccount,
                 date: NSDate())
         }
@@ -63,12 +60,26 @@ class AddTransactionViewController: UIViewController {
         
         imagePicker = UIImagePickerController()
         imagePicker.delegate = self
-        
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+
+    func updateFieldsToTransaction() -> Bool {
+        if let transaction = selectedTransaction {
+            transaction.note = noteCell?.noteText.text
+            transaction.kind = Transaction.kinds[amountCell!.typeSegment.selectedSegmentIndex]
+
+            let amountDecimal = NSDecimalNumber(string: amountCell?.amountText.text)
+            guard amountDecimal != NSDecimalNumber.notANumber() else { return false }
+            transaction.amount = amountDecimal
+            // TODO: parse date
+            // transaction["date"] = dateCell?.datePicker.date ?? NSDate()
+        }
+
+        return true
     }
 
     // MARK: Button
@@ -82,21 +93,6 @@ class AddTransactionViewController: UIViewController {
         cancelButton = UIButton()
         Helper.sharedInstance.customizeBarButton(self, button: cancelButton!, imageName: "Bar-Cancel", isLeft: true)
         cancelButton!.addTarget(self, action: "onCancelButton:", forControlEvents: UIControlEvents.TouchUpInside)
-    }
-
-    func updateFieldsToTransaction() -> Bool {
-        if let transaction = selectedTransaction {
-            transaction.note = noteCell?.noteText.text ?? transaction.category?.name
-            transaction.kind = Transaction.kinds[amountCell!.typeSegment.selectedSegmentIndex]
-
-            let amountDecimal = NSDecimalNumber(string: amountCell?.amountText.text)
-            guard amountDecimal != NSDecimalNumber.notANumber() else { return false }
-            transaction.amount = amountDecimal
-            // TODO: parse date
-            // transaction["date"] = dateCell?.datePicker.date ?? NSDate()
-        }
-
-        return true
     }
 
     func onAddButton(sender: UIButton!) {
@@ -113,35 +109,22 @@ class AddTransactionViewController: UIViewController {
             return
         }
 
-        print("[onAddButton] transaction: \(selectedTransaction!)", terminator: "\n")
+        guard let transaction = selectedTransaction else {
+            print("Error: selectedTransaction is nil")
+            return
+        }
 
-//        if selectedTransaction!.isNew() { // currently not saving transaction yet
-        if isNewTemp {
-            print("added transaction", terminator: "\n")
-            Transaction.add(selectedTransaction!)
+        print("[onAddButton] transaction: \(transaction)")
+
+        if transaction.isNew() { // currently not saving transaction yet
+            print("added transaction")
+            Transaction.add(transaction)
         }
 
         print("posting notification TransactionAddedOrUpdated")
-        NSNotificationCenter.defaultCenter().postNotificationName("TransactionAddedOrUpdated", object: nil, userInfo: ["account": selectedTransaction!.account!])
+        NSNotificationCenter.defaultCenter().postNotificationName("TransactionAddedOrUpdated", object: nil, userInfo: ["account": transaction.account!])
 
-        if presentingViewController != nil {
-            // for adding
-            dismissViewControllerAnimated(true, completion: nil)
-            return
-        }
-
-        guard let nc = navigationController else {
-            print("Error closing view on onAddButton: \(self)")
-            return
-        }
-
-
-        if nc.viewControllers[0] is AddTransactionViewController {
-            closeTabAndSwitchToHome()
-        } else {
-            nc.popViewControllerAnimated(true)
-        }
-
+        closeView()
     }
 
     func closeTabAndSwitchToHome() {
@@ -155,6 +138,10 @@ class AddTransactionViewController: UIViewController {
     func onCancelButton(sender: UIButton!) {
         print("onCancelButton", terminator: "\n")
 
+        closeView()
+    }
+
+    func closeView() {
         switch presentingViewController {
         case is AccountDetailViewController, is RootTabBarController:
             print("exiting modal from \(presentingViewController)")
@@ -162,7 +149,7 @@ class AddTransactionViewController: UIViewController {
 
         default:
             guard navigationController != nil else {
-                print("Error closing view on onAddButton: \(self)")
+                print("Error closing view: \(self)")
                 return
             }
 
