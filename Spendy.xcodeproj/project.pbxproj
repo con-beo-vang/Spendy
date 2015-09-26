@@ -18,6 +18,13 @@
 		1884A4DC1BAD62EB00D24257 /* AddReminderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1884A4DB1BAD62EB00D24257 /* AddReminderViewController.swift */; };
 		1884A4DF1BAD6E9A00D24257 /* CategoryReminderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1884A4DE1BAD6E9A00D24257 /* CategoryReminderCell.swift */; };
 		1884A4E11BAD6EAA00D24257 /* TimeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1884A4E01BAD6EAA00D24257 /* TimeCell.swift */; };
+		1892689C1BB52728006FA9C4 /* CustomDismissAnimationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 189268981BB52728006FA9C4 /* CustomDismissAnimationController.swift */; settings = {ASSET_TAGS = (); }; };
+		1892689D1BB52728006FA9C4 /* CustomInteractionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 189268991BB52728006FA9C4 /* CustomInteractionController.swift */; settings = {ASSET_TAGS = (); }; };
+		1892689E1BB52728006FA9C4 /* CustomNavigationAnimationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1892689A1BB52728006FA9C4 /* CustomNavigationAnimationController.swift */; settings = {ASSET_TAGS = (); }; };
+		1892689F1BB52728006FA9C4 /* CustomPresentAnimationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1892689B1BB52728006FA9C4 /* CustomPresentAnimationController.swift */; settings = {ASSET_TAGS = (); }; };
+		18988FDE1BB63A1D00D95BAC /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18988FDD1BB63A1D00D95BAC /* LoginViewController.swift */; settings = {ASSET_TAGS = (); }; };
+		18988FE11BB641DA00D95BAC /* LoginCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18988FE01BB641DA00D95BAC /* LoginCell.swift */; settings = {ASSET_TAGS = (); }; };
+		18A9897F1BB5C05A00CD6E28 /* DefaultAccountCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18A9897E1BB5C05A00CD6E28 /* DefaultAccountCell.swift */; settings = {ASSET_TAGS = (); }; };
 		18AA6A4D1BAA7575003210FD /* PhotoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18AA6A4C1BAA7575003210FD /* PhotoCell.swift */; };
 		18AB69A91BACF6DB0061029F /* TransactionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18AB69A81BACF6DB0061029F /* TransactionCell.swift */; };
 		18AB69AB1BAD48C70061029F /* NotificationSettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18AB69AA1BAD48C70061029F /* NotificationSettingViewController.swift */; };
@@ -75,6 +82,13 @@
 		1884A4DB1BAD62EB00D24257 /* AddReminderViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddReminderViewController.swift; sourceTree = "<group>"; };
 		1884A4DE1BAD6E9A00D24257 /* CategoryReminderCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CategoryReminderCell.swift; sourceTree = "<group>"; };
 		1884A4E01BAD6EAA00D24257 /* TimeCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimeCell.swift; sourceTree = "<group>"; };
+		189268981BB52728006FA9C4 /* CustomDismissAnimationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomDismissAnimationController.swift; sourceTree = "<group>"; };
+		189268991BB52728006FA9C4 /* CustomInteractionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomInteractionController.swift; sourceTree = "<group>"; };
+		1892689A1BB52728006FA9C4 /* CustomNavigationAnimationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomNavigationAnimationController.swift; sourceTree = "<group>"; };
+		1892689B1BB52728006FA9C4 /* CustomPresentAnimationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomPresentAnimationController.swift; sourceTree = "<group>"; };
+		18988FDD1BB63A1D00D95BAC /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		18988FE01BB641DA00D95BAC /* LoginCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginCell.swift; sourceTree = "<group>"; };
+		18A9897E1BB5C05A00CD6E28 /* DefaultAccountCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DefaultAccountCell.swift; sourceTree = "<group>"; };
 		18AA6A4C1BAA7575003210FD /* PhotoCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoCell.swift; sourceTree = "<group>"; };
 		18AB69A81BACF6DB0061029F /* TransactionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransactionCell.swift; sourceTree = "<group>"; };
 		18AB69AA1BAD48C70061029F /* NotificationSettingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationSettingViewController.swift; sourceTree = "<group>"; };
@@ -165,6 +179,33 @@
 			name = "Add Reminder View";
 			sourceTree = "<group>";
 		};
+		1892688F1BB52696006FA9C4 /* CustomAnimationTransition */ = {
+			isa = PBXGroup;
+			children = (
+				189268981BB52728006FA9C4 /* CustomDismissAnimationController.swift */,
+				189268991BB52728006FA9C4 /* CustomInteractionController.swift */,
+				1892689A1BB52728006FA9C4 /* CustomNavigationAnimationController.swift */,
+				1892689B1BB52728006FA9C4 /* CustomPresentAnimationController.swift */,
+			);
+			name = CustomAnimationTransition;
+			sourceTree = "<group>";
+		};
+		18988FDF1BB6418600D95BAC /* Login View */ = {
+			isa = PBXGroup;
+			children = (
+				18988FE01BB641DA00D95BAC /* LoginCell.swift */,
+			);
+			name = "Login View";
+			sourceTree = "<group>";
+		};
+		18A9897D1BB5C03E00CD6E28 /* Settings View */ = {
+			isa = PBXGroup;
+			children = (
+				18A9897E1BB5C05A00CD6E28 /* DefaultAccountCell.swift */,
+			);
+			name = "Settings View";
+			sourceTree = "<group>";
+		};
 		18AB69A71BACF6B10061029F /* Account Detail View */ = {
 			isa = PBXGroup;
 			children = (
@@ -184,6 +225,9 @@
 		18F39CBF1BA9629B0099B714 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				18988FDF1BB6418600D95BAC /* Login View */,
+				18A9897D1BB5C03E00CD6E28 /* Settings View */,
+				1892688F1BB52696006FA9C4 /* CustomAnimationTransition */,
 				184851F11BB0117800C1EA63 /* Home View */,
 				1884A4DD1BAD6E7C00D24257 /* Add Reminder View */,
 				18AB69AC1BAD4B7B0061029F /* Notification Setting View */,
@@ -210,6 +254,7 @@
 				1866C4D41BAC221C000200D2 /* AccountDetailViewController.swift */,
 				18AB69AA1BAD48C70061029F /* NotificationSettingViewController.swift */,
 				1884A4DB1BAD62EB00D24257 /* AddReminderViewController.swift */,
+				18988FDD1BB63A1D00D95BAC /* LoginViewController.swift */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
@@ -503,7 +548,9 @@
 				184851F71BB011CE00C1EA63 /* SubMenuCell.swift in Sources */,
 				18AA6A4D1BAA7575003210FD /* PhotoCell.swift in Sources */,
 				184851F31BB011AA00C1EA63 /* MenuCell.swift in Sources */,
+				1892689D1BB52728006FA9C4 /* CustomInteractionController.swift in Sources */,
 				9D3EA5FC1BABFB1300EF4B47 /* Account.swift in Sources */,
+				18A9897F1BB5C05A00CD6E28 /* DefaultAccountCell.swift in Sources */,
 				186640311BB39F52007B73C3 /* PhotoViewController.swift in Sources */,
 				1866C4D51BAC221C000200D2 /* AccountDetailViewController.swift in Sources */,
 				1806E9061BADE11C008047A6 /* DatePickerDialog.swift in Sources */,
@@ -512,6 +559,7 @@
 				1884A4DF1BAD6E9A00D24257 /* CategoryReminderCell.swift in Sources */,
 				184851F51BB011B700C1EA63 /* BalanceCell.swift in Sources */,
 				9D78C51D1BA5A47F00B00BC2 /* AppDelegate.swift in Sources */,
+				1892689E1BB52728006FA9C4 /* CustomNavigationAnimationController.swift in Sources */,
 				18F39CD51BA9D2C00099B714 /* AmountCell.swift in Sources */,
 				1884A4DC1BAD62EB00D24257 /* AddReminderViewController.swift in Sources */,
 				1884A4E11BAD6EAA00D24257 /* TimeCell.swift in Sources */,
@@ -520,9 +568,13 @@
 				9D3EA5FA1BAB3BBD00EF4B47 /* Transaction.swift in Sources */,
 				18499E1D1BAB237D0066E6E5 /* AccountCell.swift in Sources */,
 				9DFE8D9D1BAFA9E0001E6F9E /* DateUtilities.swift in Sources */,
+				1892689F1BB52728006FA9C4 /* CustomPresentAnimationController.swift in Sources */,
 				9DB8A86A1BA9FF64000F03A1 /* SettingsViewController.swift in Sources */,
 				18F39CCB1BA9A8280099B714 /* CustomSegmentedControl.swift in Sources */,
+				1892689C1BB52728006FA9C4 /* CustomDismissAnimationController.swift in Sources */,
 				18F39CD31BA9D2AE0099B714 /* NoteCell.swift in Sources */,
+				18988FE11BB641DA00D95BAC /* LoginCell.swift in Sources */,
+				18988FDE1BB63A1D00D95BAC /* LoginViewController.swift in Sources */,
 				18F39CC71BA966190099B714 /* QuickCell.swift in Sources */,
 				E29F203B1BAEAF150076AEFB /* HTObject.swift in Sources */,
 				18AB69AE1BAD4C6F0061029F /* ReminderCell.swift in Sources */,

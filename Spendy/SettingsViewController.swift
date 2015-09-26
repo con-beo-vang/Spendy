@@ -10,11 +10,18 @@ import UIKit
 import Parse
 
 class SettingsViewController: UIViewController {
+    
+    @IBOutlet weak var avatarView: UIImageView!
+    
+    @IBOutlet weak var usernameLabel: UILabel!
 
+    @IBOutlet weak var emailLabel: UILabel!
+    
+    @IBOutlet weak var tableView: UITableView!
+    
     @IBOutlet weak var emailTextField: UITextField!
 
     @IBOutlet weak var saveEmailButton: UIButton!
-    @IBOutlet weak var menuTableView: UITableView!
     @IBOutlet weak var logoutButton: UIButton!
     let defaultPassword = "defaultPassword"
 
@@ -27,12 +34,19 @@ class SettingsViewController: UIViewController {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-        saveEmailButton.layer.borderColor = UIColor.darkGrayColor().CGColor
-        saveEmailButton.layer.borderWidth = 0.1
-        saveEmailButton.layer.cornerRadius = 10
-        saveEmailButton.contentEdgeInsets = UIEdgeInsetsMake(10, 10, 10, 10)
-
-        refreshViewsForUser()
+//        saveEmailButton.layer.borderColor = UIColor.darkGrayColor().CGColor
+//        saveEmailButton.layer.borderWidth = 0.1
+//        saveEmailButton.layer.cornerRadius = 10
+//        saveEmailButton.contentEdgeInsets = UIEdgeInsetsMake(10, 10, 10, 10)
+//
+//        refreshViewsForUser()
+        
+        tableView.dataSource = self
+        tableView.delegate = self
+        tableView.tableFooterView = UIView()
+        
+        
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -128,10 +142,11 @@ class SettingsViewController: UIViewController {
         disableSaveIfEmailIsEmpty()
     }
 
-    @IBAction func onLogout(sender: AnyObject) {
+    @IBAction func onLogout(sender: UIButton) {
         PFUser.logOut()
         print("Logged out. User: \(PFUser.currentUser())", terminator: "\n")
-        refreshViewsForUser()
+        // refreshViewsForUser()
+        // TODO: transfer to Login view
     }
 }
 
@@ -144,10 +159,35 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
     // Cell gets various attributes set automatically based on table (separators) and data source (accessory views, editing controls)
 
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        
+        let dummyCell = UITableViewCell()
 
-        let cell = menuTableView.dequeueReusableCellWithIdentifier("SettingMenuItemCell") as UITableViewCell!
+        switch indexPath.row {
+            case 0:
+            let cell = tableView.dequeueReusableCellWithIdentifier("DefaultAccountCell", forIndexPath: indexPath) as! DefaultAccountCell
+            return cell
+        case 1:
+            let cell = tableView.dequeueReusableCellWithIdentifier("NotificationSettingsCell", forIndexPath: indexPath)
+            return cell
+        case 2:
+            let cell = tableView.dequeueReusableCellWithIdentifier("LogOutCell", forIndexPath: indexPath)
+            return cell
+        default:
+            break
+        }
 
-        return cell
+        return dummyCell
+    }
+    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        if indexPath.row == 0 {
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let selectCategoryVC = storyboard.instantiateViewControllerWithIdentifier("SelectAccountOrCategoryVC") as! SelectAccountOrCategoryViewController
+            
+            selectCategoryVC.itemClass = "Account"
+            
+            navigationController?.pushViewController(selectCategoryVC, animated: true)
+        }
     }
 
 }

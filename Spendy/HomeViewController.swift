@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import QuartzCore
 
 class HomeViewController: UIViewController {
     
@@ -53,9 +54,14 @@ class HomeViewController: UIViewController {
     
     var viewMode = ViewMode.Monthly
     var weekOfYear = 0
+    
+    let customPresentAnimationController = CustomPresentAnimationController()
+    let customDismissAnimationController = CustomDismissAnimationController()
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        print("Home")
         
         settingStatusBar()
         
@@ -92,8 +98,15 @@ class HomeViewController: UIViewController {
         
         
         configPopup()
+
         
         
+        
+//        for item in (tabBarController?.tabBar.items)! {
+//            if let image = item.image {
+//                item.image = image.imageWithRenderingMode(.AlwaysOriginal)
+//            }
+//        }
         
         
     }
@@ -114,7 +127,7 @@ class HomeViewController: UIViewController {
         
         todayLabel.text = getTodayString("MMMM dd, yyyy")
         
-        let day = NSCalendar.currentCalendar().component(NSCalendarUnit.NSDayCalendarUnit, fromDate: NSDate())
+        let day = NSCalendar.currentCalendar().component(NSCalendarUnit.Day, fromDate: NSDate())
         var ratio = CGFloat(day) / CGFloat(dayCountInMonth)
         ratio = ratio > 1 ? 1 : ratio
         currentBarWidthConstraint.constant = ratio * statusBarView.frame.width
@@ -127,7 +140,7 @@ class HomeViewController: UIViewController {
     
     func getWeekText(weekOfYear: Int) -> String {
         var result = "Weekly"
-        var (beginWeek, endWeek) = Helper.sharedInstance.getWeek(weekOfYear)
+        let (beginWeek, endWeek) = Helper.sharedInstance.getWeek(weekOfYear)
         if beginWeek != nil && endWeek != nil {
             let formatter = NSDateFormatter()
             formatter.dateFormat = "dd MMM"
@@ -150,25 +163,15 @@ class HomeViewController: UIViewController {
         popupSuperView.hidden = true
         popupSuperView.backgroundColor = UIColor.grayColor().colorWithAlphaComponent(0.5)
         
-        viewModePopup.layer.cornerRadius = 5
-        viewModePopup.layer.masksToBounds = true
-        
-        viewModeTitleLabel.backgroundColor = UIColor(netHex: 0x4682B4)
-        viewModeTitleLabel.textColor = UIColor.whiteColor()
-        
-        
-        
-        datePopup.layer.cornerRadius = 5
-        datePopup.layer.masksToBounds = true
-        
-        dateTitleLabel.backgroundColor = UIColor(netHex: 0x4682B4)
-        dateTitleLabel.textColor = UIColor.whiteColor()
+        Helper.sharedInstance.setPopupShadowAndColor(viewModePopup, label: viewModeTitleLabel)
+        Helper.sharedInstance.setPopupShadowAndColor(datePopup, label: dateTitleLabel)
         
         let today = NSDate()
         fromButton.setTitle(formatter.stringFromDate(today), forState: UIControlState.Normal)
         toButton.setTitle(formatter.stringFromDate(today), forState: UIControlState.Normal)
-        
     }
+    
+    
     
     // MARK: Button
     
@@ -314,9 +317,9 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
             }
             
             if indexPath.row == viewMode.rawValue {
-                cell.iconView.hidden = false
+                cell.iconView.image = UIImage(named: "CheckCircle")
             } else {
-                cell.iconView.hidden = true
+                cell.iconView.image = UIImage(named: "Circle")
             }
             
             Helper.sharedInstance.setSeparatorFullWidth(cell)
@@ -470,14 +473,17 @@ extension HomeViewController: UIGestureRecognizerDelegate {
             tableView.reloadSections(NSIndexSet(indexesInRange: NSMakeRange(0, 3)), withRowAnimation: UITableViewRowAnimation.Right)
             break
         case UISwipeGestureRecognizerDirection.Down:
-            let dvc = self.storyboard?.instantiateViewControllerWithIdentifier("QuickVC") as! QuickViewController
-            let nc = UINavigationController(rootViewController: dvc)
-            self.presentViewController(nc, animated: true, completion: nil)
+//            let dvc = self.storyboard?.instantiateViewControllerWithIdentifier("QuickVC") as! QuickViewController
+//            let nc = UINavigationController(rootViewController: dvc)
+//            self.presentViewController(nc, animated: true, completion: nil)
+            performSegueWithIdentifier("QuickMode", sender: self)
             break
         default:
             break
         }
     }
+    
+
     
     func tapIncome(sender: UITapGestureRecognizer) {
         if isCollapedIncome {
@@ -524,5 +530,27 @@ extension HomeViewController: UIGestureRecognizerDelegate {
             viewModeTableView.reloadData()
             closePopup(viewModePopup)
         }
+    }
+}
+
+// MARK: Custom transition
+
+extension HomeViewController: UIViewControllerTransitioningDelegate {
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "QuickMode" {
+            let toViewController = segue.destinationViewController as! UINavigationController
+            toViewController.transitioningDelegate = self
+            customPresentAnimationController.animationType = CustomSegueAnimation.SwipeDown
+            customDismissAnimationController.animationType = CustomSegueAnimation.SwipeDown
+        }
+    }
+    
+    func animationControllerForPresentedController(presented: UIViewController, presentingController presenting: UIViewController, sourceController source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        return customPresentAnimationController
+    }
+    
+    func animationControllerForDismissedController(dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        return customDismissAnimationController
     }
 }

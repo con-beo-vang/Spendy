@@ -23,8 +23,12 @@ class AccountsViewController: UIViewController {
     var selectedDragCell: AccountCell?
     var previousCell: AccountCell?
     
+//    let customNavigationAnimationController = CustomNavigationAnimationController()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+//        navigationController?.delegate = self
         
         tableView.dataSource = self
         tableView.delegate = self
@@ -57,7 +61,7 @@ class AccountsViewController: UIViewController {
     func addBarButton() {
         
         addAccountButton = UIButton()
-        Helper.sharedInstance.customizeBarButton(self, button: addAccountButton!, imageName: "AddAccount", isLeft: false)
+        Helper.sharedInstance.customizeBarButton(self, button: addAccountButton!, imageName: "Bar-AddAccount", isLeft: false)
         addAccountButton!.addTarget(self, action: "onAddAccountButton:", forControlEvents: UIControlEvents.TouchUpInside)
     }
     
@@ -269,3 +273,17 @@ extension AccountsViewController: UIGestureRecognizerDelegate {
         return nil
     }
 }
+
+// MARK: Custom transition
+
+//extension AccountsViewController: UINavigationControllerDelegate {
+//    
+//    func navigationController(navigationController: UINavigationController, animationControllerForOperation operation: UINavigationControllerOperation, fromViewController fromVC: UIViewController, toViewController toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+////        if operation == .Push {
+////            
+////            customInteractionController.attachToViewController(toVC)
+////        }
+//        customNavigationAnimationController.reverse = operation == .Pop
+//        return customNavigationAnimationController
+//    }
+//}

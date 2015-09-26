@@ -61,6 +61,7 @@ class AddTransactionViewController: UIViewController {
         
         imagePicker = UIImagePickerController()
         imagePicker.delegate = self
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -73,11 +74,11 @@ class AddTransactionViewController: UIViewController {
     func addBarButton() {
         
         addButton = UIButton()
-        Helper.sharedInstance.customizeBarButton(self, button: addButton!, imageName: "Tick", isLeft: false)
+        Helper.sharedInstance.customizeBarButton(self, button: addButton!, imageName: "Bar-Tick", isLeft: false)
         addButton!.addTarget(self, action: "onAddButton:", forControlEvents: UIControlEvents.TouchUpInside)
         
         cancelButton = UIButton()
-        Helper.sharedInstance.customizeBarButton(self, button: cancelButton!, imageName: "Cancel", isLeft: true)
+        Helper.sharedInstance.customizeBarButton(self, button: cancelButton!, imageName: "Bar-Cancel", isLeft: true)
         cancelButton!.addTarget(self, action: "onCancelButton:", forControlEvents: UIControlEvents.TouchUpInside)
     }
 
@@ -135,7 +136,7 @@ class AddTransactionViewController: UIViewController {
     func onCancelButton(sender: UIButton!) {
         print("onCancelButton", terminator: "\n")
         
-        if presentingViewController != nil {
+        if presentingViewController is AccountDetailViewController  {
             // exit modal
             dismissViewControllerAnimated(true, completion: nil)
         } else if navigationController != nil {
@@ -208,7 +209,6 @@ extension AddTransactionViewController: SelectAccountOrCategoryDelegate, PhotoVi
         }
     }
 }
-
 
 // MARK: Table View
 
