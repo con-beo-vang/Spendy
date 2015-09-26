@@ -28,10 +28,11 @@ class TransactionCell: UITableViewCell {
             }
 
             // display Meal here to debug
-            // noteLabel.text = "\(transaction.note!) (\(transaction.category!.name!))"
+             noteLabel.text = "\(transaction.note!) (\(transaction.kind!))"
             // TODO: use system currency
             if transaction.amount != nil {
                 amountLabel.text = transaction.formattedAmount()
+                amountLabel.textColor = transaction.kindColor()
             }
             dateLabel.text = transaction.dateOnly()
             // TODO: retrieve balance amount

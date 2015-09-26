@@ -94,6 +94,17 @@ class Transaction: HTObject {
         return t
     }
 
+    func kindColor() -> UIColor {
+        switch kind! {
+        case Transaction.expenseKind:
+            return UIColor(netHex: 0x3D8B37)
+        case Transaction.incomeKind:
+            return UIColor.redColor()
+        default:
+            return UIColor.cyanColor()
+        }
+    }
+
     // MARK: - relations
     var account: Account? {
         set {
