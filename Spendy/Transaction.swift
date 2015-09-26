@@ -23,10 +23,11 @@ import Parse
 
 var _allTransactions: [Transaction]?
 
-// Note: I'm testing a different approach here compared to Account & Category
-// which is not to inherit from PFObject and keep all Parse related communications private
-// This makes it less buggy when working with Transaction from outside in
-// (as long as we test Transaction carefully)
+// newTransaction = Transaction(name: , amount: )
+// newTransaction.save()
+// newTransaction.delete()
+// account.addTransaction(newTransaction)
+// account.removeTransaction(newTransaction)
 class Transaction: HTObject {
     class var kinds: [String] {
         return [expenseKind, incomeKind, transferKind]
@@ -35,11 +36,15 @@ class Transaction: HTObject {
     static let incomeKind: String = "income"
     static let transferKind: String = "transfer"
 
+    // transaction.note =>
+    // transaction.note = "blah"
     var note: String? {
         get { return self["note"] as! String? }
         set { self["note"] = newValue }
     }
 
+    // transaction.amount = 12.23
+    // transaction.amount => json --> string --> cast decimal
     var amount: NSDecimalNumber? {
         get {
             return NSDecimalNumber(decimal: (self["amount"] as! NSNumber).decimalValue)

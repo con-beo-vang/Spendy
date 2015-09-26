@@ -45,6 +45,8 @@ class HTObject: NSObject {
         return components.last ?? "UnknownClass"
     }
 
+    // a["key"] = newValue
+    // --> background: save to Parse, load from Parse
     subscript(key: String) -> AnyObject? {
         get {
             return _object!.valueForKey(key)
