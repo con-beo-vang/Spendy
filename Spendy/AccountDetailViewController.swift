@@ -147,7 +147,6 @@ extension AccountDetailViewController: UITableViewDataSource, UITableViewDelegat
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        
         let cell = tableView.dequeueReusableCellWithIdentifier("TransactionCell", forIndexPath: indexPath) as! TransactionCell
 
         cell.transaction = accountTransactions[indexPath.section][indexPath.row]
@@ -177,35 +176,41 @@ extension AccountDetailViewController: UIGestureRecognizerDelegate {
     func handleSwipe(sender: UISwipeGestureRecognizer) {
         
         let selectedCell = sender.view as! TransactionCell
-        let indexPath = tableView.indexPathForCell(selectedCell)
-        
-        if let indexPath = indexPath {
-            switch sender.direction {
-            case UISwipeGestureRecognizerDirection.Left:
-                // Delete transaction
 
-                let transactionToRemove = accountTransactions[indexPath.section][indexPath.row]
+        guard let indexPath = tableView.indexPathForCell(selectedCell) else {
+            print("can't find indexPath for cell \(selectedCell)")
+            return
+        }
 
-                currentAccount.removeTransaction(transactionToRemove)
-                reloadTransactions()
+        let swipedTransaction = accountTransactions[indexPath.section][indexPath.row]
 
-                // OPTIMIZE: check if section still exists, if yes, load it
-                // However it's not worth it. Just reload the whole thing
-                tableView.reloadData()
-                break
+        switch sender.direction {
+        case UISwipeGestureRecognizerDirection.Left:
+            // Delete transaction
 
-            case UISwipeGestureRecognizerDirection.Right:
-                // Duplicate transaction to today
-                //                var newTransaction = selectedCell.noteLabel.text
-                // TODO: duplicate transaction here
-                //                accountTransactions[0].insert(newTransaction!, atIndex: 0)
-                tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: UITableViewRowAnimation.Automatic)
-                
-                break
-                
-            default:
-                break
-            }
+            currentAccount.removeTransaction(swipedTransaction)
+            reloadTransactions()
+
+            // OPTIMIZE: check if section still exists, if yes, load it
+            // However it's not worth it. Just reload the whole thing
+            tableView.reloadData()
+            break
+
+        case UISwipeGestureRecognizerDirection.Right:
+            // duplicate to a new transaction today
+            let newTransaction = swipedTransaction.clone()
+            newTransaction.date = NSDate()
+            currentAccount.addTransaction(newTransaction)
+            reloadTransactions()
+            tableView.reloadData()
+            // Duplicate transaction to today
+            // Not reloading section only because the section may not even exist yet
+            // tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: UITableViewRowAnimation.Automatic)
+            
+            break
+            
+        default:
+            break
         }
     }
     

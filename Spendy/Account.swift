@@ -56,13 +56,14 @@ class Account: HTObject {
     }
 
     func addTransaction(transaction: Transaction) {
+        transaction._object?.saveEventually()
         _transactions!.append(transaction)
     }
 
     func removeTransaction(transaction: Transaction) {
         transaction._object?.deleteEventually()
-        print("transaction count befpre: \(_transactions?.count)")
-        _transactions = _transactions?.filter({ $0.objectId != transaction.objectId })
+        print("transaction count before: \(_transactions?.count)")
+        _transactions = _transactions?.filter({ $0.uuid != transaction.uuid })
         print("transaction count after: \(_transactions?.count)")
     }
 
@@ -142,6 +143,12 @@ class Account: HTObject {
             el.objectId == objectId
         }).first
         return record
+    }
+
+    // MARK: Printable
+    override var description: String {
+        let base = super.description
+        return "uuid: \(uuid), userId: \(userId), name: \(name), icon: \(icon), base: \(base)"
     }
 }
 

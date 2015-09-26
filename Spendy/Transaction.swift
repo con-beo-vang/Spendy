@@ -88,6 +88,11 @@ class Transaction: HTObject {
         self.date = date
     }
 
+    func clone() -> Transaction {
+        let t = Transaction(kind: kind, note: note, amount: amount, category: category(), account: account(), date: date)
+        return t
+    }
+
     func setAccount(account: Account) {
         self["fromAccountId"] = account.objectId
     }

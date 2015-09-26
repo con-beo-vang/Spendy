@@ -17,6 +17,7 @@ import Parse
 class HTObject: NSObject {
     var _object: PFObject?
     var _parseClassName: String?
+    var uuid: String!
 
     override convenience init() {
         let childClassName = NSStringFromClass(self.dynamicType)
@@ -27,16 +28,18 @@ class HTObject: NSObject {
 
     init(parseClassName: String) {
         super.init()
+        uuid = NSUUID().UUIDString
         _parseClassName = parseClassName
         _object = PFObject(className: _parseClassName!)
-        print("init for \(_parseClassName)")
+        print("init \(parseClassName)")
     }
 
     init(object: PFObject) {
         super.init()
+        uuid = NSUUID().UUIDString
         _parseClassName = object.parseClassName
         _object = object
-        print("init from object: \(object)")
+        print("init \(object.parseClassName) from object: \(object)")
     }
 
     func getChildClassName(instance: AnyClass) -> String {
