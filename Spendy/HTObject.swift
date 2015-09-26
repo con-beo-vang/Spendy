@@ -64,8 +64,15 @@ class HTObject: NSObject {
     // Should be called after we make any changes
     func save() {
         print("pining + saving in background (no error checking):\n\(self)", terminator: "\n")
-        _object!.pinInBackground()
+        _object!.pinInBackgroundWithBlock { (success, error) -> Void in
+            print("success: \(success), error: \(error)")
+        }
         _object!.saveInBackground()
+    }
+
+    func saveSynchronously() {
+        try! _object!.save()
+        try! _object!.pin()
     }
 
     func isNew() -> Bool {
@@ -74,6 +81,10 @@ class HTObject: NSObject {
 
     var objectId: String? {
         return _object?.objectId
+    }
+
+    var localId: String? {
+        return _object?.objectForKey("localId") as! String?
     }
 
     func pinAndSaveEventuallyWithName(name: String) {
