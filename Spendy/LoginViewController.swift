@@ -10,7 +10,13 @@ import UIKit
 
 class LoginViewController: UIViewController {
     
+    @IBOutlet weak var logoView: UIImageView!
+    
+    @IBOutlet weak var appNameLabel: UILabel!
+    
     @IBOutlet weak var loginButton: UIButton!
+    
+    @IBOutlet weak var registerButton: UIButton!
     
     @IBOutlet weak var tableView: UITableView!
     
@@ -20,7 +26,13 @@ class LoginViewController: UIViewController {
     
     @IBOutlet weak var logoTopConstraint: NSLayoutConstraint!
     
+    @IBOutlet weak var logoBottomConstraint: NSLayoutConstraint!
+    
     var isRegisterMode = false
+    
+    var name = ""
+    var email = ""
+    var password = ""
     
     let customPresentAnimationController = CustomPresentAnimationController()
     let customDismissAnimationController = CustomDismissAnimationController()
@@ -55,15 +67,40 @@ class LoginViewController: UIViewController {
     
     @IBAction func onLogin(sender: UIButton) {
         print("on Login")
-        // TODO: Handle Login
-
+        
+        email = (getTextField(1)?.text)!
+        password = (getTextField(2)?.text)!
+        
+        if isRegisterMode {
+            name = (getTextField(0)?.text)!
+            // TODO: Handle Register
+        } else {
+            // TODO: Handle Login
+        }
+        
         performSegueWithIdentifier("GoToHome", sender: self)
     }
     
     @IBAction func onRegister(sender: UIButton) {
-        isRegisterMode = true
-        tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: UITableViewRowAnimation.Top)
-        tableViewHeightConstraint.constant = 132
+        if isRegisterMode {
+            isRegisterMode = false
+            loginButton.setTitle("Login", forState: UIControlState.Normal)
+            registerButton.setTitle("Register", forState: UIControlState.Normal)
+            name = (getTextField(0)?.text)!
+            email = (getTextField(1)?.text)!
+            password = (getTextField(2)?.text)!
+            tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: UITableViewRowAnimation.Top)
+            tableViewHeightConstraint.constant = 88
+        } else {
+            isRegisterMode = true
+            loginButton.setTitle("Register", forState: UIControlState.Normal)
+            registerButton.setTitle("Back to Login", forState: UIControlState.Normal)
+            email = (getTextField(1)?.text)!
+            password = (getTextField(2)?.text)!
+            tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: UITableViewRowAnimation.Top)
+            tableViewHeightConstraint.constant = 132
+        }
+        
 
     }
     
@@ -79,16 +116,22 @@ class LoginViewController: UIViewController {
         var info = notification.userInfo!
         let keyboardFrame: CGRect = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).CGRectValue()
         
-        UIView.animateWithDuration(0.3, animations: { () -> Void in
-            self.logoTopConstraint.constant = 15
+        UIView.animateWithDuration(01, animations: { () -> Void in
+            self.logoView.transform = CGAffineTransformMakeScale(0.8, 0.8)
+            self.appNameLabel.transform = CGAffineTransformMakeScale(0.8, 0.8)
+            self.logoTopConstraint.constant = 0
+            self.logoBottomConstraint.constant = -4
             self.bottomConstraint.constant = keyboardFrame.size.height
         })
     }
     
     func keyboardWasHiden(notification: NSNotification) {
         
-        UIView.animateWithDuration(0.3, animations: { () -> Void in
-            self.logoTopConstraint.constant = 145
+        UIView.animateWithDuration(1, animations: { () -> Void in
+            self.logoView.transform = CGAffineTransformMakeScale(1.25, 1.25)
+            self.appNameLabel.transform = CGAffineTransformMakeScale(1.25, 1.25)
+            self.logoTopConstraint.constant = 100
+            self.logoBottomConstraint.constant = 16
             self.bottomConstraint.constant = 0
         })
     }
@@ -125,14 +168,18 @@ extension LoginViewController: UITableViewDataSource, UITableViewDelegate {
         switch indexPath.row {
         case 0:
             cell.textField.placeholder = "Name"
+            cell.textField.text = name
             break
             
         case 1:
             cell.textField.placeholder = "Email Address"
+            cell.textField.text = email
             break
             
         case 2:
             cell.textField.placeholder = "Password"
+            cell.textField.text = password
+            cell.textField.secureTextEntry = true
             break
         default:
             break
@@ -158,8 +205,8 @@ extension LoginViewController: UIViewControllerTransitioningDelegate {
         if segue.identifier == "GoToHome" {
             let toViewController = segue.destinationViewController as! UITabBarController
             toViewController.transitioningDelegate = self
-            customPresentAnimationController.animationType = CustomSegueAnimation.CornerRotate
-            customDismissAnimationController.animationType = CustomSegueAnimation.CornerRotate
+            customPresentAnimationController.animationType = CustomSegueAnimation.GrowScale
+            customDismissAnimationController.animationType = CustomSegueAnimation.GrowScale
         }
     }
     
