@@ -23,12 +23,12 @@ class AccountsViewController: UIViewController {
     var selectedDragCell: AccountCell?
     var previousCell: AccountCell?
     
-    let customNavigationAnimationController = CustomNavigationAnimationController()
+//    let customNavigationAnimationController = CustomNavigationAnimationController()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        navigationController?.delegate = self
+//        navigationController?.delegate = self
         
         tableView.dataSource = self
         tableView.delegate = self
@@ -276,14 +276,14 @@ extension AccountsViewController: UIGestureRecognizerDelegate {
 
 // MARK: Custom transition
 
-extension AccountsViewController: UINavigationControllerDelegate {
-    
-    func navigationController(navigationController: UINavigationController, animationControllerForOperation operation: UINavigationControllerOperation, fromViewController fromVC: UIViewController, toViewController toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-//        if operation == .Push {
-//            
-//            customInteractionController.attachToViewController(toVC)
-//        }
-        customNavigationAnimationController.reverse = operation == .Pop
-        return customNavigationAnimationController
-    }
-}
+//extension AccountsViewController: UINavigationControllerDelegate {
+//    
+//    func navigationController(navigationController: UINavigationController, animationControllerForOperation operation: UINavigationControllerOperation, fromViewController fromVC: UIViewController, toViewController toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+////        if operation == .Push {
+////            
+////            customInteractionController.attachToViewController(toVC)
+////        }
+//        customNavigationAnimationController.reverse = operation == .Pop
+//        return customNavigationAnimationController
+//    }
+//}

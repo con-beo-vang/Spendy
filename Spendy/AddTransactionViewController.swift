@@ -30,8 +30,6 @@ class AddTransactionViewController: UIViewController {
     var isNewTemp: Bool = false // temporary
     
     var imagePicker: UIImagePickerController!
-    
-    let customNavigationAnimationController = CustomNavigationAnimationController()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,8 +37,6 @@ class AddTransactionViewController: UIViewController {
         if Transaction.all() == nil {
             Transaction.loadAll()
         }
-        
-        navigationController?.delegate = self
         
         tableView.dataSource = self
         tableView.delegate = self
@@ -65,6 +61,7 @@ class AddTransactionViewController: UIViewController {
         
         imagePicker = UIImagePickerController()
         imagePicker.delegate = self
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -139,7 +136,7 @@ class AddTransactionViewController: UIViewController {
     func onCancelButton(sender: UIButton!) {
         print("onCancelButton", terminator: "\n")
         
-        if presentingViewController != nil {
+        if presentingViewController is AccountDetailViewController  {
             // exit modal
             dismissViewControllerAnimated(true, completion: nil)
         } else if navigationController != nil {
@@ -460,16 +457,6 @@ extension AddTransactionViewController: UIImagePickerControllerDelegate, UINavig
     
     func imagePickerControllerDidCancel(picker: UIImagePickerController) {
         dismissViewControllerAnimated(true, completion: nil)
-    }
-    
-    // Custom transition
-    func navigationController(navigationController: UINavigationController, animationControllerForOperation operation: UINavigationControllerOperation, fromViewController fromVC: UIViewController, toViewController toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        //        if operation == .Push {
-        //
-        //            customInteractionController.attachToViewController(toVC)
-        //        }
-        customNavigationAnimationController.reverse = operation == .Pop
-        return customNavigationAnimationController
     }
 }
 

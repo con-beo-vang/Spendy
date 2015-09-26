@@ -22,9 +22,6 @@ class AccountDetailViewController: UIViewController {
 
     var transaction: Transaction!
     
-    let customPresentAnimationController = CustomPresentAnimationController()
-    let customDismissAnimationController = CustomDismissAnimationController()
-    
     var refreshControl: UIRefreshControl?
 
     override func viewDidLoad() {

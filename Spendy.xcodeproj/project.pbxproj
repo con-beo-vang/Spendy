@@ -22,6 +22,8 @@
 		1892689D1BB52728006FA9C4 /* CustomInteractionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 189268991BB52728006FA9C4 /* CustomInteractionController.swift */; settings = {ASSET_TAGS = (); }; };
 		1892689E1BB52728006FA9C4 /* CustomNavigationAnimationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1892689A1BB52728006FA9C4 /* CustomNavigationAnimationController.swift */; settings = {ASSET_TAGS = (); }; };
 		1892689F1BB52728006FA9C4 /* CustomPresentAnimationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1892689B1BB52728006FA9C4 /* CustomPresentAnimationController.swift */; settings = {ASSET_TAGS = (); }; };
+		18988FDE1BB63A1D00D95BAC /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18988FDD1BB63A1D00D95BAC /* LoginViewController.swift */; settings = {ASSET_TAGS = (); }; };
+		18988FE11BB641DA00D95BAC /* LoginCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18988FE01BB641DA00D95BAC /* LoginCell.swift */; settings = {ASSET_TAGS = (); }; };
 		18A9897F1BB5C05A00CD6E28 /* DefaultAccountCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18A9897E1BB5C05A00CD6E28 /* DefaultAccountCell.swift */; settings = {ASSET_TAGS = (); }; };
 		18AA6A4D1BAA7575003210FD /* PhotoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18AA6A4C1BAA7575003210FD /* PhotoCell.swift */; };
 		18AB69A91BACF6DB0061029F /* TransactionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18AB69A81BACF6DB0061029F /* TransactionCell.swift */; };
@@ -84,6 +86,8 @@
 		189268991BB52728006FA9C4 /* CustomInteractionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomInteractionController.swift; sourceTree = "<group>"; };
 		1892689A1BB52728006FA9C4 /* CustomNavigationAnimationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomNavigationAnimationController.swift; sourceTree = "<group>"; };
 		1892689B1BB52728006FA9C4 /* CustomPresentAnimationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomPresentAnimationController.swift; sourceTree = "<group>"; };
+		18988FDD1BB63A1D00D95BAC /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		18988FE01BB641DA00D95BAC /* LoginCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginCell.swift; sourceTree = "<group>"; };
 		18A9897E1BB5C05A00CD6E28 /* DefaultAccountCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DefaultAccountCell.swift; sourceTree = "<group>"; };
 		18AA6A4C1BAA7575003210FD /* PhotoCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoCell.swift; sourceTree = "<group>"; };
 		18AB69A81BACF6DB0061029F /* TransactionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransactionCell.swift; sourceTree = "<group>"; };
@@ -186,12 +190,20 @@
 			name = CustomAnimationTransition;
 			sourceTree = "<group>";
 		};
-		18A9897D1BB5C03E00CD6E28 /* Settings */ = {
+		18988FDF1BB6418600D95BAC /* Login View */ = {
+			isa = PBXGroup;
+			children = (
+				18988FE01BB641DA00D95BAC /* LoginCell.swift */,
+			);
+			name = "Login View";
+			sourceTree = "<group>";
+		};
+		18A9897D1BB5C03E00CD6E28 /* Settings View */ = {
 			isa = PBXGroup;
 			children = (
 				18A9897E1BB5C05A00CD6E28 /* DefaultAccountCell.swift */,
 			);
-			name = Settings;
+			name = "Settings View";
 			sourceTree = "<group>";
 		};
 		18AB69A71BACF6B10061029F /* Account Detail View */ = {
@@ -213,7 +225,8 @@
 		18F39CBF1BA9629B0099B714 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				18A9897D1BB5C03E00CD6E28 /* Settings */,
+				18988FDF1BB6418600D95BAC /* Login View */,
+				18A9897D1BB5C03E00CD6E28 /* Settings View */,
 				1892688F1BB52696006FA9C4 /* CustomAnimationTransition */,
 				184851F11BB0117800C1EA63 /* Home View */,
 				1884A4DD1BAD6E7C00D24257 /* Add Reminder View */,
@@ -241,6 +254,7 @@
 				1866C4D41BAC221C000200D2 /* AccountDetailViewController.swift */,
 				18AB69AA1BAD48C70061029F /* NotificationSettingViewController.swift */,
 				1884A4DB1BAD62EB00D24257 /* AddReminderViewController.swift */,
+				18988FDD1BB63A1D00D95BAC /* LoginViewController.swift */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
@@ -559,6 +573,8 @@
 				18F39CCB1BA9A8280099B714 /* CustomSegmentedControl.swift in Sources */,
 				1892689C1BB52728006FA9C4 /* CustomDismissAnimationController.swift in Sources */,
 				18F39CD31BA9D2AE0099B714 /* NoteCell.swift in Sources */,
+				18988FE11BB641DA00D95BAC /* LoginCell.swift in Sources */,
+				18988FDE1BB63A1D00D95BAC /* LoginViewController.swift in Sources */,
 				18F39CC71BA966190099B714 /* QuickCell.swift in Sources */,
 				E29F203B1BAEAF150076AEFB /* HTObject.swift in Sources */,
 				18AB69AE1BAD4C6F0061029F /* ReminderCell.swift in Sources */,
