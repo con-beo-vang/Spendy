@@ -86,7 +86,7 @@ class AddTransactionViewController: UIViewController {
 
     func updateFieldsToTransaction() -> Bool {
         if let transaction = selectedTransaction {
-            transaction.note = noteCell?.noteText.text
+            transaction.note = noteCell?.noteText.text ?? transaction.category?.name
             transaction.kind = Transaction.kinds[amountCell!.typeSegment.selectedSegmentIndex]
 
             let amountDecimal = NSDecimalNumber(string: amountCell?.amountText.text)
@@ -310,7 +310,7 @@ extension AddTransactionViewController: UITableViewDataSource, UITableViewDelega
             case 1:
                 let cell = tableView.dequeueReusableCellWithIdentifier("AmountCell", forIndexPath: indexPath) as! AmountCell
                 
-                cell.amountText.text = selectedTransaction?.formattedAmount()
+                cell.amountText.text = selectedTransaction?.amount?.stringValue
                 
                 let tapCell = UITapGestureRecognizer(target: self, action: "tapAmoutCell:")
                 cell.addGestureRecognizer(tapCell)
