@@ -64,11 +64,11 @@ class QuickViewController: UIViewController {
     func addBarButton() {
         
         addButton = UIButton()
-        Helper.sharedInstance.customizeBarButton(self, button: addButton!, imageName: "Tick", isLeft: false)
+        Helper.sharedInstance.customizeBarButton(self, button: addButton!, imageName: "Bar-Tick", isLeft: false)
         addButton!.addTarget(self, action: "onAddButton:", forControlEvents: UIControlEvents.TouchUpInside)
         
         cancelButton = UIButton()
-        Helper.sharedInstance.customizeBarButton(self, button: cancelButton!, imageName: "Cancel", isLeft: true)
+        Helper.sharedInstance.customizeBarButton(self, button: cancelButton!, imageName: "Bar-Cancel", isLeft: true)
         cancelButton!.addTarget(self, action: "onCancelButton:", forControlEvents: UIControlEvents.TouchUpInside)
     }
     
@@ -88,14 +88,9 @@ class QuickViewController: UIViewController {
         popupSuperView.hidden = true
         popupSuperView.backgroundColor = UIColor.grayColor().colorWithAlphaComponent(0.5)
         
-        popupView.layer.cornerRadius = 5
-        popupView.layer.masksToBounds = true
-        
         amountText.keyboardType = UIKeyboardType.DecimalPad
         
-        popupTitleLabel.backgroundColor = UIColor(netHex: 0x4682B4)
-        popupTitleLabel.textColor = UIColor.whiteColor()
-        
+        Helper.sharedInstance.setPopupShadowAndColor(popupView, label: popupTitleLabel)
     }
     
     @IBAction func onCancelPopup(sender: UIButton) {

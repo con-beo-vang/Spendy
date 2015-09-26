@@ -60,11 +60,11 @@ class Helper: NSObject {
         
         if let date = cal.dateByAddingComponents(components, toDate: NSDate(), options: NSCalendarOptions(rawValue: 0)) {
             var weekDuration = NSTimeInterval()
-            if cal.rangeOfUnit(NSCalendarUnit.NSWeekOfYearCalendarUnit, startDate: &beginningOfWeek, interval: &weekDuration, forDate: date) {
+            if cal.rangeOfUnit(NSCalendarUnit.WeekOfYear, startDate: &beginningOfWeek, interval: &weekDuration, forDate: date) {
                 endOfWeek = beginningOfWeek?.dateByAddingTimeInterval(weekDuration)
             }
             
-            beginningOfWeek = cal.dateByAddingUnit(NSCalendarUnit.NSDayCalendarUnit, value: 1, toDate: beginningOfWeek!, options: NSCalendarOptions(rawValue: 0))
+            beginningOfWeek = cal.dateByAddingUnit(NSCalendarUnit.Day, value: 1, toDate: beginningOfWeek!, options: NSCalendarOptions(rawValue: 0))
             
         }
         
@@ -106,6 +106,24 @@ class Helper: NSObject {
         
         viewController.presentViewController(optionMenu, animated: true, completion: nil)
     }
+    
+    func setPopupShadowAndColor(popupView: UIView, label: UILabel) {
+        
+        // Set shadow
+        //        viewModePopup.clipsToBounds = false
+        //        viewModePopup.layer.masksToBounds = false
+        //        popupView.layer.cornerRadius = 5
+        popupView.layer.shadowPath = UIBezierPath(roundedRect: popupView.layer.bounds, cornerRadius: 5).CGPath
+        popupView.layer.shadowColor = UIColor(netHex: 0x34DF34).CGColor
+        popupView.layer.shadowOffset = CGSizeMake(5, 5)
+        popupView.layer.shadowRadius = 5
+        popupView.layer.shadowOpacity = 0.5
+        
+        // Set header color
+        label.backgroundColor = UIColor(netHex: 0x28AD62)
+        label.textColor = UIColor.whiteColor()
+    }
+    
 }
 
 extension String {

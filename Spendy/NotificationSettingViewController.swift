@@ -54,11 +54,11 @@ class NotificationSettingViewController: UIViewController, ReminderCellDelegate 
     func addBarButton() {
         
         addButton = UIButton()
-        Helper.sharedInstance.customizeBarButton(self, button: addButton!, imageName: "Tick", isLeft: false)
+        Helper.sharedInstance.customizeBarButton(self, button: addButton!, imageName: "Bar-Tick", isLeft: false)
         addButton!.addTarget(self, action: "onAddButton:", forControlEvents: UIControlEvents.TouchUpInside)
         
         backButton = UIButton()
-        Helper.sharedInstance.customizeBarButton(self, button: backButton!, imageName: "Back", isLeft: true)
+        Helper.sharedInstance.customizeBarButton(self, button: backButton!, imageName: "Bar-Back", isLeft: true)
         backButton!.addTarget(self, action: "onBackButton:", forControlEvents: UIControlEvents.TouchUpInside)
     }
     
@@ -69,7 +69,7 @@ class NotificationSettingViewController: UIViewController, ReminderCellDelegate 
     
     func onBackButton(sender: UIButton!) {
         print("on Back", terminator: "\n")
-        dismissViewControllerAnimated(true, completion: nil)
+        navigationController?.popViewControllerAnimated(true)
     }
     
     // MARK: Implement delegate
