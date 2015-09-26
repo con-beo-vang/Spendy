@@ -35,11 +35,28 @@ class Account: HTObject {
     }
 
     func balance() -> NSDecimalNumber {
-        return 123.45
+        var bal:NSDecimalNumber = 0
+
+        // TODO: sort transactions
+        for (_, t) in transactions.enumerate() {
+            if let kind = t.kind {
+                switch kind {
+                    case Transaction.expenseKind, Transaction.transferKind:
+                        bal = bal.decimalNumberBySubtracting(t.amount!)
+                    case Transaction.incomeKind:
+                        bal = bal.decimalNumberByAdding(t.amount!)
+                    default:
+                        print("unexpected kind")
+                }
+            }
+        }
+
+        return bal
     }
 
     func formattedBalance() -> String {
-        return "$\(balance())"
+        let amount = balance()
+        return String(format: "$%.02f", abs(amount.doubleValue))
     }
 
     // computed property
