@@ -38,10 +38,6 @@ class AccountDetailViewController: UIViewController {
 
         addBarButton()
 
-        if let selectedAccount = selectedAccount {
-            navigationItem.title = selectedAccount.name
-        }
-
 //        let downSwipe = UISwipeGestureRecognizer(target: self, action: Selector("handleDownSwipe:"))
 //        downSwipe.direction = .Down
 //        downSwipe.delegate = self
