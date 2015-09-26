@@ -36,6 +36,8 @@ class Transaction: HTObject {
     static let incomeKind: String = "income"
     static let transferKind: String = "transfer"
 
+    var balanceSnapshot: NSDecimalNumber = 0.0
+
     // transaction.note =>
     // transaction.note = "blah"
     var note: String? {
@@ -92,6 +94,17 @@ class Transaction: HTObject {
     func clone() -> Transaction {
         let t = Transaction(kind: kind, note: note, amount: amount, category: category, account: account, date: date)
         return t
+    }
+
+    func kindColor() -> UIColor {
+        switch kind! {
+        case Transaction.expenseKind:
+            return UIColor.redColor()
+        case Transaction.incomeKind:
+            return UIColor(netHex: 0x3D8B37)
+        default:
+            return UIColor.blueColor()
+        }
     }
 
     // MARK: - relations
@@ -152,6 +165,8 @@ class Transaction: HTObject {
         }
     }
 
+    static var currencyFormatter = NSNumberFormatter()
+
     // Ex: September 21, 2015
     func dateOnly() -> String? {
         return dateToString(NSDateFormatterStyle.LongStyle)
@@ -189,6 +204,13 @@ class Transaction: HTObject {
         } else {
             return nil
         }
+    }
+
+    func formattedBalanceSnapshot() -> String? {
+        let formatter = Transaction.currencyFormatter
+        formatter.numberStyle = .CurrencyStyle
+
+        return formatter.stringFromNumber(balanceSnapshot)
     }
 
     // MARK: - Utilities
@@ -250,6 +272,8 @@ class Transaction: HTObject {
         let query = PFQuery(className: "Transaction")
         query.fromLocalDatastore()
         query.whereKey("fromAccountId", equalTo: accountId)
+        query.orderByAscending("date")
+
         do {
             return try query.findObjects().map{Transaction(object: $0)}
         } catch {
