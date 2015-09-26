@@ -12,21 +12,19 @@ import Parse
 var _allCategories: [Category]?
 
 class Category: HTObject {
-    dynamic var name: String?
-    dynamic var icon: String?
-
-    init(name: String?, icon: String?) {
-        super.init(parseClassName: "Category")
-
-        self["name"] = name
-        self["icon"] = icon
+    var name: String {
+        get { return self["name"] as! String }
+        set { self["name"] = newValue }
     }
 
-    override init(object: PFObject) {
-        super.init(object: object)
+    var userId: String {
+        get { return self["userId"] as! String }
+        set { self["userId"] = newValue }
+    }
 
-        self["name"] = object.objectForKey("name")
-        self["icon"] = object.objectForKey("icon")
+    var icon: String {
+        get { return self["icon"] as! String }
+        set { self["icon"] = newValue }
     }
 
     class func loadAll() {

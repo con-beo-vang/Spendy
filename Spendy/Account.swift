@@ -12,22 +12,62 @@ import Parse
 var _allAccounts: [Account]?
 
 class Account: HTObject {
-    dynamic var name: String!
-    dynamic var userId: String!
-    dynamic var icon: String! // temporary, to make Account and Category work well together
-
-    init(name: String) {
-        super.init(parseClassName: "Account")
-
-        self["name"] = name
-        self["userId"] = PFUser.currentUser()!.objectId!
+    var name: String {
+        get { return self["name"] as! String }
+        set { self["name"] = newValue }
     }
 
-    override init(object: PFObject) {
-        super.init(object: object)
+    var userId: String {
+        get { return self["userId"] as! String }
+        set { self["userId"] = newValue }
+    }
 
-        self["name"] = object.objectForKey("name")
-        self["userId"] = object.objectForKey("userId")
+    var icon: String? {
+        get { return self["icon"] as! String? }
+        set { self["icon"] = newValue }
+    }
+
+    var _transactions: [Transaction]?
+
+    convenience init(name: String) {
+        self.init()
+        self.userId = PFUser.currentUser()!.objectId!
+    }
+
+    func balance() -> NSDecimalNumber {
+        return 123.45
+    }
+
+    func formattedBalance() -> String {
+        return "$\(balance())"
+    }
+
+    // computed property
+    // default is get
+    var transactions: [Transaction] {
+        get {
+            guard _transactions != nil else {
+                // load from DB
+                print("loading transactions from local for account \(objectId)")
+                _transactions = Transaction.findByAccountId(objectId!)
+                return _transactions!
+            }
+
+            return _transactions!
+        }
+        set {
+            _transactions = newValue
+        }
+    }
+
+    func addTransaction(transaction: Transaction) {
+        transaction._object?.saveEventually()
+        transactions.append(transaction)
+    }
+
+    func removeTransaction(transaction: Transaction) {
+        transaction._object?.deleteEventually()
+        transactions = transactions.filter({ $0.uuid != transaction.uuid })
     }
 
     static func loadAll() {
@@ -106,6 +146,12 @@ class Account: HTObject {
             el.objectId == objectId
         }).first
         return record
+    }
+
+    // MARK: Printable
+    override var description: String {
+        let base = super.description
+        return "uuid: \(uuid), userId: \(userId), name: \(name), icon: \(icon), base: \(base)"
     }
 }
 

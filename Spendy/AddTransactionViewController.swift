@@ -31,13 +31,11 @@ class AddTransactionViewController: UIViewController {
     
     var imagePicker: UIImagePickerController!
 
+    var currentAccount: Account!
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        if Transaction.all() == nil {
-            Transaction.loadAll()
-        }
-        
         tableView.dataSource = self
         tableView.delegate = self
         tableView.tableFooterView = UIView()
@@ -46,14 +44,18 @@ class AddTransactionViewController: UIViewController {
         
         addBarButton()
 
+        if currentAccount == nil {
+            currentAccount = Account.defaultAccount()
+        }
+
         if selectedTransaction != nil {
             navigationItem.title = "Edit Transaction"
             isNewTemp = false
         } else {
             isNewTemp = true
             selectedTransaction = Transaction(kind: Transaction.expenseKind,
-                note: "I paid for something", amount: 0,
-                category: Category.defaultCategory(), account: Account.defaultAccount(),
+                note: "", amount: nil,
+                category: Category.defaultCategory(), account: currentAccount,
                 date: NSDate())
         }
 
@@ -82,21 +84,34 @@ class AddTransactionViewController: UIViewController {
         cancelButton!.addTarget(self, action: "onCancelButton:", forControlEvents: UIControlEvents.TouchUpInside)
     }
 
-    func updateFieldsToTransaction() {
+    func updateFieldsToTransaction() -> Bool {
         if let transaction = selectedTransaction {
-            transaction["note"] = noteCell?.noteText.text
-            transaction["kind"] = Transaction.kinds[amountCell!.typeSegment.selectedSegmentIndex]
+            transaction.note = noteCell?.noteText.text
+            transaction.kind = Transaction.kinds[amountCell!.typeSegment.selectedSegmentIndex]
 
-            // TODO: parse amount and date
-            // transaction["amount"] = NSDecimalNumber(string: amountCell?.amountText.text)
+            let amountDecimal = NSDecimalNumber(string: amountCell?.amountText.text)
+            guard amountDecimal != NSDecimalNumber.notANumber() else { return false }
+            transaction.amount = amountDecimal
+            // TODO: parse date
             // transaction["date"] = dateCell?.datePicker.date ?? NSDate()
         }
+
+        return true
     }
 
     func onAddButton(sender: UIButton!) {
         // update fields
-        updateFieldsToTransaction()
+        guard updateFieldsToTransaction() else {
+            let alertController = UIAlertController(title: "Please enter an amount", message: nil, preferredStyle: .Alert)
+            let OKAction = UIAlertAction(title: "OK", style: .Default) { (action) in
+                // ...
+            }
+            alertController.addAction(OKAction)
 
+            presentViewController(alertController, animated: true) {}
+
+            return
+        }
 
         print("[onAddButton] transaction: \(selectedTransaction!)", terminator: "\n")
 
@@ -105,6 +120,9 @@ class AddTransactionViewController: UIViewController {
             print("added transaction", terminator: "\n")
             Transaction.add(selectedTransaction!)
         }
+
+        print("posting notification TransactionAddedOrUpdated")
+        NSNotificationCenter.defaultCenter().postNotificationName("TransactionAddedOrUpdated", object: nil, userInfo: ["account": selectedTransaction!.account!])
 
         if presentingViewController != nil {
             // for adding
@@ -123,6 +141,7 @@ class AddTransactionViewController: UIViewController {
         } else {
             nc.popViewControllerAnimated(true)
         }
+
     }
 
     func closeTabAndSwitchToHome() {
@@ -135,15 +154,20 @@ class AddTransactionViewController: UIViewController {
 
     func onCancelButton(sender: UIButton!) {
         print("onCancelButton", terminator: "\n")
-        
-        if presentingViewController is AccountDetailViewController  {
-            // exit modal
+
+        switch presentingViewController {
+        case is AccountDetailViewController, is RootTabBarController:
+            print("exiting modal from \(presentingViewController)")
             dismissViewControllerAnimated(true, completion: nil)
-        } else if navigationController != nil {
+
+        default:
+            guard navigationController != nil else {
+                print("Error closing view on onAddButton: \(self)")
+                return
+            }
+
             // exit push
             navigationController!.popViewControllerAnimated(true)
-        } else {
-            print("Error closing view on onAddButton: \(self)", terminator: "\n")
         }
 
         closeTabAndSwitchToHome()
@@ -192,10 +216,10 @@ extension AddTransactionViewController: SelectAccountOrCategoryDelegate, PhotoVi
     
     func selectAccountOrCategoryViewController(selectAccountOrCategoryController: SelectAccountOrCategoryViewController, selectedItem item: AnyObject) {
         if item is Account {
-            selectedTransaction?.setAccount(item as! Account)
+            selectedTransaction!.account = (item as! Account)
             tableView.reloadData()
         } else if item is Category {
-            selectedTransaction?.setCategory(item as! Category)
+            selectedTransaction!.category = (item as! Category)
             tableView.reloadData()
         } else {
             print("Error: item is \(item)", terminator: "\n")
@@ -317,7 +341,7 @@ extension AddTransactionViewController: UITableViewDataSource, UITableViewDelega
                 
                 // this got rendered too soon!
                 
-                let category = selectedTransaction?.category()
+                let category = selectedTransaction?.category
                 cell.typeLabel.text = category!.name // TODO: replace with default category
                 
                 Helper.sharedInstance.setSeparatorFullWidth(cell)
@@ -333,7 +357,7 @@ extension AddTransactionViewController: UITableViewDataSource, UITableViewDelega
                 cell.itemClass = "Account"
                 cell.titleLabel.text = "Account"
                 
-                let account = selectedTransaction?.account()
+                let account = selectedTransaction?.account
                 cell.typeLabel.text = account?.name
                 
                 Helper.sharedInstance.setSeparatorFullWidth(cell)

@@ -21,7 +21,7 @@ class TransactionCell: UITableViewCell {
             // TODO: change back to just note
             noteLabel.text = transaction.note
             // display Meal here to debug
-            // noteLabel.text = "\(transaction.note!) (\(transaction.category()!.name!))"
+            // noteLabel.text = "\(transaction.note!) (\(transaction.category!.name!))"
             // TODO: use system currency
             if transaction.amount != nil {
                 amountLabel.text = transaction.formattedAmount()
@@ -30,7 +30,7 @@ class TransactionCell: UITableViewCell {
             // TODO: retrieve balance amount
             balanceLabel.text = "$Balance"
 
-            if let icon = transaction.category()?.icon {
+            if let icon = transaction.category?.icon {
                 iconView.image = UIImage(named: icon)
             }
 
