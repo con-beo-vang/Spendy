@@ -12,8 +12,8 @@ import Parse
 var _allAccounts: [Account]?
 
 class Account: HTObject {
-    var name: String {
-        get { return self["name"] as! String }
+    var name: String? {
+        get { return self["name"] as! String? }
         set { self["name"] = newValue }
     }
 
@@ -41,6 +41,7 @@ class Account: HTObject {
 
     convenience init(name: String) {
         self.init()
+        self.name = name
         self.userId = PFUser.currentUser()!.objectId!
     }
 
