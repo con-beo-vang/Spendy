@@ -139,15 +139,20 @@ class AddTransactionViewController: UIViewController {
 
     func onCancelButton(sender: UIButton!) {
         print("onCancelButton", terminator: "\n")
-        
-        if presentingViewController is AccountDetailViewController  {
-            // exit modal
+
+        switch presentingViewController {
+        case is AccountDetailViewController, is RootTabBarController:
+            print("exiting modal from \(presentingViewController)")
             dismissViewControllerAnimated(true, completion: nil)
-        } else if navigationController != nil {
+
+        default:
+            guard navigationController != nil else {
+                print("Error closing view on onAddButton: \(self)")
+                return
+            }
+
             // exit push
             navigationController!.popViewControllerAnimated(true)
-        } else {
-            print("Error closing view on onAddButton: \(self)", terminator: "\n")
         }
 
         closeTabAndSwitchToHome()
