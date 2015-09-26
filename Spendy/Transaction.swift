@@ -47,7 +47,8 @@ class Transaction: HTObject {
     // transaction.amount => json --> string --> cast decimal
     var amount: NSDecimalNumber? {
         get {
-            return NSDecimalNumber(decimal: (self["amount"] as! NSNumber).decimalValue)
+            guard let am = self["amount"] as! NSNumber? else { return nil }
+            return NSDecimalNumber(decimal: am.decimalValue)
         }
         set { self["amount"] = newValue }
     }

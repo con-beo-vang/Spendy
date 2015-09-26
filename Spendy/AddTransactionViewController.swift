@@ -54,7 +54,7 @@ class AddTransactionViewController: UIViewController {
         } else {
             isNewTemp = true
             selectedTransaction = Transaction(kind: Transaction.expenseKind,
-                note: "I paid for something", amount: 0,
+                note: "", amount: nil,
                 category: Category.defaultCategory(), account: currentAccount,
                 date: NSDate())
         }
@@ -84,19 +84,34 @@ class AddTransactionViewController: UIViewController {
         cancelButton!.addTarget(self, action: "onCancelButton:", forControlEvents: UIControlEvents.TouchUpInside)
     }
 
-    func updateFieldsToTransaction() {
+    func updateFieldsToTransaction() -> Bool {
         if let transaction = selectedTransaction {
             transaction.note = noteCell?.noteText.text
             transaction.kind = Transaction.kinds[amountCell!.typeSegment.selectedSegmentIndex]
-            transaction.amount = NSDecimalNumber(string: amountCell?.amountText.text)
+
+            let amountDecimal = NSDecimalNumber(string: amountCell?.amountText.text)
+            guard amountDecimal != NSDecimalNumber.notANumber() else { return false }
+            transaction.amount = amountDecimal
             // TODO: parse date
             // transaction["date"] = dateCell?.datePicker.date ?? NSDate()
         }
+
+        return true
     }
 
     func onAddButton(sender: UIButton!) {
         // update fields
-        updateFieldsToTransaction()
+        guard updateFieldsToTransaction() else {
+            let alertController = UIAlertController(title: "Please enter an amount", message: nil, preferredStyle: .Alert)
+            let OKAction = UIAlertAction(title: "OK", style: .Default) { (action) in
+                // ...
+            }
+            alertController.addAction(OKAction)
+
+            presentViewController(alertController, animated: true) {}
+
+            return
+        }
 
         print("[onAddButton] transaction: \(selectedTransaction!)", terminator: "\n")
 
