@@ -89,53 +89,50 @@ class Transaction: HTObject {
     }
 
     func clone() -> Transaction {
-        let t = Transaction(kind: kind, note: note, amount: amount, category: category(), account: account(), date: date)
+        let t = Transaction(kind: kind, note: note, amount: amount, category: category, account: account, date: date)
         return t
     }
 
-    func setAccount(account: Account) {
-        self["fromAccountId"] = account.objectId
-    }
-
-    func setCategory(category: Category) {
-        self["categoryId"] = category.objectId
-    }
-
-
     // MARK: - relations
+    var account: Account? {
+        set {
+            fromAccountId = newValue?.objectId
+        }
 
-    // TODO: refactor logic to Account and Category
-    func account() -> Account? {
-        if (fromAccountId != nil) {
-            return Account.findById(fromAccountId!)
-        } else {
-            // attempt to use default account
-            if let account = Account.defaultAccount() {
-                print("account missing in transaction: setting defaultAccount for it", terminator: "\n")
-                setAccount(account)
-                return account
-            } else {
-                return nil
+        get {
+            guard let fromAccountId = fromAccountId else {
+                if let account = Account.defaultAccount() {
+                    print("account missing in transaction: setting defaultAccount for it")
+                    self.account = account
+                    return account
+                } else {
+                    return nil
+                }
             }
+            return Account.findById(fromAccountId)
         }
     }
 
-    func category() -> Category? {
-        if categoryId != nil {
-            return Category.findById(categoryId!)
-        } else {
-            // attempt to use default account
-            if let category = Category.defaultCategory() {
-                print("category missing in transaction: setting defaultCategory for it. \(description)")
-                setCategory(category)
-                return category
-            } else {
-                print("no category exists for \(description)")
-                return nil
+    var category: Category? {
+        set {
+            categoryId = newValue?.objectId
+        }
+
+        get {
+            guard let categoryId = categoryId else {
+                if let category = Category.defaultCategory() {
+                    print("category missing in transaction: setting defaultCategory for it")
+                    self.category = category
+                    return category
+                } else {
+                    return nil
+                }
             }
+
+            return Category.findById(categoryId)
         }
     }
-
+    
     // MARK: - date formatter
     static var dateFormatter = NSDateFormatter()
     func dateToString(dateStyle: NSDateFormatterStyle? = nil, dateFormat: String? = nil) -> String? {
@@ -262,7 +259,7 @@ class Transaction: HTObject {
 
     class func add(element: Transaction) {
         element.save()
-        element.account()!.addTransaction(element)
+        element.account!.addTransaction(element)
     }
 
     override var description: String {

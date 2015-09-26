@@ -106,7 +106,7 @@ class AddTransactionViewController: UIViewController {
         }
 
         print("posting notification TransactionAddedOrUpdated")
-        NSNotificationCenter.defaultCenter().postNotificationName("TransactionAddedOrUpdated", object: nil, userInfo: ["account": selectedTransaction!.account()!])
+        NSNotificationCenter.defaultCenter().postNotificationName("TransactionAddedOrUpdated", object: nil, userInfo: ["account": selectedTransaction!.account!])
 
         if presentingViewController != nil {
             // for adding
@@ -195,10 +195,10 @@ extension AddTransactionViewController: SelectAccountOrCategoryDelegate, PhotoVi
     
     func selectAccountOrCategoryViewController(selectAccountOrCategoryController: SelectAccountOrCategoryViewController, selectedItem item: AnyObject) {
         if item is Account {
-            selectedTransaction?.setAccount(item as! Account)
+            selectedTransaction!.account = (item as! Account)
             tableView.reloadData()
         } else if item is Category {
-            selectedTransaction?.setCategory(item as! Category)
+            selectedTransaction!.category = (item as! Category)
             tableView.reloadData()
         } else {
             print("Error: item is \(item)", terminator: "\n")
@@ -321,7 +321,7 @@ extension AddTransactionViewController: UITableViewDataSource, UITableViewDelega
                 
                 // this got rendered too soon!
                 
-                let category = selectedTransaction?.category()
+                let category = selectedTransaction?.category
                 cell.typeLabel.text = category!.name // TODO: replace with default category
                 
                 Helper.sharedInstance.setSeparatorFullWidth(cell)
@@ -337,7 +337,7 @@ extension AddTransactionViewController: UITableViewDataSource, UITableViewDelega
                 cell.itemClass = "Account"
                 cell.titleLabel.text = "Account"
                 
-                let account = selectedTransaction?.account()
+                let account = selectedTransaction?.account
                 cell.typeLabel.text = account?.name
                 
                 Helper.sharedInstance.setSeparatorFullWidth(cell)
