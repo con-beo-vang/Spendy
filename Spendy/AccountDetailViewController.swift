@@ -40,11 +40,23 @@ class AccountDetailViewController: UIViewController {
         downSwipe.direction = .Down
         downSwipe.delegate = self
         tableView.addGestureRecognizer(downSwipe)
-        
-        if let currentAccount = currentAccount {
-            navigationItem.title = currentAccount.name
-        }
+
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "updateCurrentAccount:", name:"TransactionAddedOrUpdated", object: nil)
     }
+
+    func updateCurrentAccount(notification: NSNotification) {
+        // First try to cast user info to expected type
+        guard let info = notification.userInfo as? Dictionary<String,AnyObject> else {
+            print("[updateCurrentAccount] Cannot cast userInfo \(notification.userInfo)")
+            return
+        }
+
+        guard let updatedAccount = info["account"] as! Account? else { return }
+
+        // switch to the updated account
+        currentAccount = updatedAccount
+    }
+
 
     func reloadTransactions() {
         accountTransactions = Transaction.listGroupedByMonth(currentAccount.transactions)
@@ -52,6 +64,10 @@ class AccountDetailViewController: UIViewController {
 
     // reload data after we navigate back from pushed cell
     override func viewWillAppear(animated: Bool) {
+        if let currentAccount = currentAccount {
+            navigationItem.title = currentAccount.name
+        }
+
         print("viewWillAppear", terminator: "\n")
         reloadTransactions()
         tableView.reloadData()

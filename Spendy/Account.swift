@@ -22,8 +22,8 @@ class Account: HTObject {
         set { self["userId"] = newValue }
     }
 
-    var icon: String {
-        get { return self["icon"] as! String }
+    var icon: String? {
+        get { return self["icon"] as! String? }
         set { self["icon"] = newValue }
     }
 
@@ -45,26 +45,29 @@ class Account: HTObject {
     // computed property
     // default is get
     var transactions: [Transaction] {
-        guard _transactions != nil else {
-            // load from DB
-            print("loading transactions from local for account \(objectId)")
-            _transactions = Transaction.findByAccountId(objectId!)
+        get {
+            guard _transactions != nil else {
+                // load from DB
+                print("loading transactions from local for account \(objectId)")
+                _transactions = Transaction.findByAccountId(objectId!)
+                return _transactions!
+            }
+
             return _transactions!
         }
-
-        return _transactions!
+        set {
+            _transactions = newValue
+        }
     }
 
     func addTransaction(transaction: Transaction) {
         transaction._object?.saveEventually()
-        _transactions!.append(transaction)
+        transactions.append(transaction)
     }
 
     func removeTransaction(transaction: Transaction) {
         transaction._object?.deleteEventually()
-        print("transaction count before: \(_transactions?.count)")
-        _transactions = _transactions?.filter({ $0.uuid != transaction.uuid })
-        print("transaction count after: \(_transactions?.count)")
+        transactions = transactions.filter({ $0.uuid != transaction.uuid })
     }
 
     static func loadAll() {

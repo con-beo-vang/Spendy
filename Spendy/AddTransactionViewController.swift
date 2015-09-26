@@ -105,6 +105,9 @@ class AddTransactionViewController: UIViewController {
             Transaction.add(selectedTransaction!)
         }
 
+        print("posting notification TransactionAddedOrUpdated")
+        NSNotificationCenter.defaultCenter().postNotificationName("TransactionAddedOrUpdated", object: nil, userInfo: ["account": selectedTransaction!.account()!])
+
         if presentingViewController != nil {
             // for adding
             dismissViewControllerAnimated(true, completion: nil)
@@ -122,6 +125,7 @@ class AddTransactionViewController: UIViewController {
         } else {
             nc.popViewControllerAnimated(true)
         }
+
     }
 
     func closeTabAndSwitchToHome() {
