@@ -377,6 +377,7 @@ extension AddTransactionViewController: UITableViewDataSource, UITableViewDelega
                     return cell
                 } else {
                     let cell = tableView.dequeueReusableCellWithIdentifier("DateCell", forIndexPath: indexPath) as! DateCell
+                    cell.titleLabel.text = "Date"
                     
                     let tapCell = UITapGestureRecognizer(target: self, action: "tapDateCell:")
                     cell.addGestureRecognizer(tapCell)

@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		1806E9061BADE11C008047A6 /* DatePickerDialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1806E9051BADE11C008047A6 /* DatePickerDialog.swift */; };
+		1842E95B1BB6969900A9DFD8 /* AddAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1842E95A1BB6969900A9DFD8 /* AddAccountViewController.swift */; settings = {ASSET_TAGS = (); }; };
+		1842E95E1BB6A00700A9DFD8 /* TextCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1842E95D1BB6A00700A9DFD8 /* TextCell.swift */; settings = {ASSET_TAGS = (); }; };
 		184851F31BB011AA00C1EA63 /* MenuCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 184851F21BB011AA00C1EA63 /* MenuCell.swift */; };
 		184851F51BB011B700C1EA63 /* BalanceCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 184851F41BB011B700C1EA63 /* BalanceCell.swift */; };
 		184851F71BB011CE00C1EA63 /* SubMenuCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 184851F61BB011CE00C1EA63 /* SubMenuCell.swift */; };
@@ -72,6 +74,8 @@
 
 /* Begin PBXFileReference section */
 		1806E9051BADE11C008047A6 /* DatePickerDialog.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatePickerDialog.swift; sourceTree = "<group>"; };
+		1842E95A1BB6969900A9DFD8 /* AddAccountViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddAccountViewController.swift; sourceTree = "<group>"; };
+		1842E95D1BB6A00700A9DFD8 /* TextCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextCell.swift; sourceTree = "<group>"; };
 		184851F21BB011AA00C1EA63 /* MenuCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuCell.swift; sourceTree = "<group>"; };
 		184851F41BB011B700C1EA63 /* BalanceCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BalanceCell.swift; sourceTree = "<group>"; };
 		184851F61BB011CE00C1EA63 /* SubMenuCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubMenuCell.swift; sourceTree = "<group>"; };
@@ -150,6 +154,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1842E95C1BB69FDD00A9DFD8 /* New Acocunt View */ = {
+			isa = PBXGroup;
+			children = (
+				1842E95D1BB6A00700A9DFD8 /* TextCell.swift */,
+			);
+			name = "New Acocunt View";
+			sourceTree = "<group>";
+		};
 		184851F11BB0117800C1EA63 /* Home View */ = {
 			isa = PBXGroup;
 			children = (
@@ -225,6 +237,7 @@
 		18F39CBF1BA9629B0099B714 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				1842E95C1BB69FDD00A9DFD8 /* New Acocunt View */,
 				18988FDF1BB6418600D95BAC /* Login View */,
 				18A9897D1BB5C03E00CD6E28 /* Settings View */,
 				1892688F1BB52696006FA9C4 /* CustomAnimationTransition */,
@@ -255,6 +268,7 @@
 				18AB69AA1BAD48C70061029F /* NotificationSettingViewController.swift */,
 				1884A4DB1BAD62EB00D24257 /* AddReminderViewController.swift */,
 				18988FDD1BB63A1D00D95BAC /* LoginViewController.swift */,
+				1842E95A1BB6969900A9DFD8 /* AddAccountViewController.swift */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
@@ -543,6 +557,7 @@
 				18C74C1D1BB0C0D80056D9D5 /* ViewModeCell.swift in Sources */,
 				9DB8A8631BA9EAC0000F03A1 /* CategoryCell.swift in Sources */,
 				9DB8A86E1BAA43B4000F03A1 /* SelectAccountOrCategoryViewController.swift in Sources */,
+				1842E95E1BB6A00700A9DFD8 /* TextCell.swift in Sources */,
 				9DB8A86C1BAA064E000F03A1 /* RootTabBarController.swift in Sources */,
 				18F39CC51BA964450099B714 /* QuickViewController.swift in Sources */,
 				184851F71BB011CE00C1EA63 /* SubMenuCell.swift in Sources */,
@@ -576,6 +591,7 @@
 				18988FE11BB641DA00D95BAC /* LoginCell.swift in Sources */,
 				18988FDE1BB63A1D00D95BAC /* LoginViewController.swift in Sources */,
 				18F39CC71BA966190099B714 /* QuickCell.swift in Sources */,
+				1842E95B1BB6969900A9DFD8 /* AddAccountViewController.swift in Sources */,
 				E29F203B1BAEAF150076AEFB /* HTObject.swift in Sources */,
 				18AB69AE1BAD4C6F0061029F /* ReminderCell.swift in Sources */,
 				18499E1F1BAB23FB0066E6E5 /* AccountsViewController.swift in Sources */,

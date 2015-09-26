@@ -67,6 +67,7 @@ class AccountsViewController: UIViewController {
     
     func onAddAccountButton(sender: UIButton!) {
         print("on Add account", terminator: "\n")
+        performSegueWithIdentifier("AddAccount", sender: self)
     }
     
     // MARK: Transfer between 2 views
@@ -76,9 +77,11 @@ class AccountsViewController: UIViewController {
 
         // It is more natural to just push from tableview cell directly to the detail view
         // It is still possible to add navigation control to the view
-        let accountDetailVC = segue.destinationViewController as! AccountDetailViewController
-        let indexPath = tableView.indexPathForCell(sender as! UITableViewCell)!
-        accountDetailVC.currentAccount = accounts![indexPath.row]
+        if segue.identifier == "GoToAccountDetail" {
+            let accountDetailVC = segue.destinationViewController as! AccountDetailViewController
+            let indexPath = tableView.indexPathForCell(sender as! UITableViewCell)!
+            accountDetailVC.currentAccount = accounts![indexPath.row]
+        }
     }
     
 }
