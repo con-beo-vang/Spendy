@@ -16,20 +16,30 @@ import Parse
 // Inherit from NSObject so that we can use #setValue and #valueForKey
 class HTObject: NSObject {
     var _object: PFObject?
-    var _parseClassName: String!
+    var _parseClassName: String?
+    var uuid: String!
+
+    override convenience init() {
+        let childClassName = NSStringFromClass(self.dynamicType)
+        let name = childClassName.componentsSeparatedByString(".").last!
+
+        self.init(parseClassName: name)
+    }
 
     init(parseClassName: String) {
         super.init()
-
+        uuid = NSUUID().UUIDString
         _parseClassName = parseClassName
-        _object = PFObject(className: _parseClassName)
+        _object = PFObject(className: _parseClassName!)
+        print("init \(parseClassName)")
     }
 
     init(object: PFObject) {
         super.init()
-        
+        uuid = NSUUID().UUIDString
         _parseClassName = object.parseClassName
         _object = object
+        print("init \(object.parseClassName) from object: \(object)")
     }
 
     func getChildClassName(instance: AnyClass) -> String {
@@ -38,23 +48,19 @@ class HTObject: NSObject {
         return components.last ?? "UnknownClass"
     }
 
+    // a["key"] = newValue
+    // --> background: save to Parse, load from Parse
     subscript(key: String) -> AnyObject? {
         get {
-            return valueForKey(key)
+            return _object!.valueForKey(key)
         }
         set {
-            setProperty(key, value: newValue)
+            if newValue != nil {
+                _object!.setObject(newValue!, forKey: key)
+            }
         }
     }
-    
-    // Setter so we can also update the internal Parse object
-    func setProperty(key: String, value: AnyObject?) {
-        setValue(value, forKey: key)
-        if value != nil {
-            _object!.setObject(value!, forKey: key)
-        }
-    }
-    
+
     // Should be called after we make any changes
     func save() {
         print("pining + saving in background (no error checking):\n\(self)", terminator: "\n")
@@ -87,10 +93,9 @@ class HTObject: NSObject {
             }
         }
     }
-}
 
-//extension HTObject: CustomStringConvertible {
-//    override var description: String {
-//        return _object != nil ? "object: \(_object!)" : "object is nil"
-//    }
-//}
+    override var description: String {
+        return _object != nil ? "object: \(_object!)" : "object is nil"
+    }
+
+}

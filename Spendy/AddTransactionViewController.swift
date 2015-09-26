@@ -31,13 +31,11 @@ class AddTransactionViewController: UIViewController {
     
     var imagePicker: UIImagePickerController!
 
+    var currentAccount: Account!
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        if Transaction.all() == nil {
-            Transaction.loadAll()
-        }
-        
         tableView.dataSource = self
         tableView.delegate = self
         tableView.tableFooterView = UIView()
@@ -46,6 +44,10 @@ class AddTransactionViewController: UIViewController {
         
         addBarButton()
 
+        if currentAccount == nil {
+            currentAccount = Account.defaultAccount()
+        }
+
         if selectedTransaction != nil {
             navigationItem.title = "Edit Transaction"
             isNewTemp = false
@@ -53,7 +55,7 @@ class AddTransactionViewController: UIViewController {
             isNewTemp = true
             selectedTransaction = Transaction(kind: Transaction.expenseKind,
                 note: "I paid for something", amount: 0,
-                category: Category.defaultCategory(), account: Account.defaultAccount(),
+                category: Category.defaultCategory(), account: currentAccount,
                 date: NSDate())
         }
 
@@ -84,11 +86,10 @@ class AddTransactionViewController: UIViewController {
 
     func updateFieldsToTransaction() {
         if let transaction = selectedTransaction {
-            transaction["note"] = noteCell?.noteText.text
-            transaction["kind"] = Transaction.kinds[amountCell!.typeSegment.selectedSegmentIndex]
-
-            // TODO: parse amount and date
-            // transaction["amount"] = NSDecimalNumber(string: amountCell?.amountText.text)
+            transaction.note = noteCell?.noteText.text
+            transaction.kind = Transaction.kinds[amountCell!.typeSegment.selectedSegmentIndex]
+            transaction.amount = NSDecimalNumber(string: amountCell?.amountText.text)
+            // TODO: parse date
             // transaction["date"] = dateCell?.datePicker.date ?? NSDate()
         }
     }
@@ -97,7 +98,6 @@ class AddTransactionViewController: UIViewController {
         // update fields
         updateFieldsToTransaction()
 
-
         print("[onAddButton] transaction: \(selectedTransaction!)", terminator: "\n")
 
 //        if selectedTransaction!.isNew() { // currently not saving transaction yet
@@ -105,6 +105,9 @@ class AddTransactionViewController: UIViewController {
             print("added transaction", terminator: "\n")
             Transaction.add(selectedTransaction!)
         }
+
+        print("posting notification TransactionAddedOrUpdated")
+        NSNotificationCenter.defaultCenter().postNotificationName("TransactionAddedOrUpdated", object: nil, userInfo: ["account": selectedTransaction!.account!])
 
         if presentingViewController != nil {
             // for adding
@@ -123,6 +126,7 @@ class AddTransactionViewController: UIViewController {
         } else {
             nc.popViewControllerAnimated(true)
         }
+
     }
 
     func closeTabAndSwitchToHome() {
@@ -192,10 +196,10 @@ extension AddTransactionViewController: SelectAccountOrCategoryDelegate, PhotoVi
     
     func selectAccountOrCategoryViewController(selectAccountOrCategoryController: SelectAccountOrCategoryViewController, selectedItem item: AnyObject) {
         if item is Account {
-            selectedTransaction?.setAccount(item as! Account)
+            selectedTransaction!.account = (item as! Account)
             tableView.reloadData()
         } else if item is Category {
-            selectedTransaction?.setCategory(item as! Category)
+            selectedTransaction!.category = (item as! Category)
             tableView.reloadData()
         } else {
             print("Error: item is \(item)", terminator: "\n")
@@ -317,7 +321,7 @@ extension AddTransactionViewController: UITableViewDataSource, UITableViewDelega
                 
                 // this got rendered too soon!
                 
-                let category = selectedTransaction?.category()
+                let category = selectedTransaction?.category
                 cell.typeLabel.text = category!.name // TODO: replace with default category
                 
                 Helper.sharedInstance.setSeparatorFullWidth(cell)
@@ -333,7 +337,7 @@ extension AddTransactionViewController: UITableViewDataSource, UITableViewDelega
                 cell.itemClass = "Account"
                 cell.titleLabel.text = "Account"
                 
-                let account = selectedTransaction?.account()
+                let account = selectedTransaction?.account
                 cell.typeLabel.text = account?.name
                 
                 Helper.sharedInstance.setSeparatorFullWidth(cell)

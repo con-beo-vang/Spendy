@@ -91,7 +91,7 @@ class AccountsViewController: UIViewController {
         // It is still possible to add navigation control to the view
         let accountDetailVC = segue.destinationViewController as! AccountDetailViewController
         let indexPath = tableView.indexPathForCell(sender as! UITableViewCell)!
-        accountDetailVC.selectedAccount = accounts![indexPath.row]
+        accountDetailVC.currentAccount = accounts![indexPath.row]
     }
     
 }
@@ -109,12 +109,12 @@ extension AccountsViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        print("cellForRow \(indexPath.row)", terminator: "\n")
         let cell = tableView.dequeueReusableCellWithIdentifier("AccountCell", forIndexPath: indexPath) as! AccountCell
-        
-        cell.nameLabel.text = accounts![indexPath.row].name
-        
+
+        cell.account = accounts![indexPath.row]
+
         if !hasPanGesture(cell) {
+            print("adding pan for cell \(indexPath.row)")
             let panGesture = UIPanGestureRecognizer(target: self, action: Selector("handlePanGesture:"))
             panGesture.delegate = self
             cell.addGestureRecognizer(panGesture)
@@ -178,8 +178,8 @@ extension AccountsViewController: UIGestureRecognizerDelegate {
         selectedDragCell = sender.view as? AccountCell
         
         if let selectedDragCell = selectedDragCell {
-            var indexPath = tableView.indexPathForCell(selectedDragCell)
-            
+//            var indexPath = tableView.indexPathForCell(selectedDragCell)
+
             selectedDragCell.backgroundColor = UIColor(netHex: 0xCAE1FF)
             
             
