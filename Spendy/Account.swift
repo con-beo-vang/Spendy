@@ -12,8 +12,8 @@ import Parse
 var _allAccounts: [Account]?
 
 class Account: HTObject {
-    var name: String {
-        get { return self["name"] as! String }
+    var name: String? {
+        get { return self["name"] as! String? }
         set { self["name"] = newValue }
     }
 
@@ -27,19 +27,48 @@ class Account: HTObject {
         set { self["icon"] = newValue }
     }
 
+    var balance: NSDecimalNumber {
+        get {
+            guard let am = self["balance"] as! NSNumber? else {
+                return 0
+            }
+            return NSDecimalNumber(decimal: am.decimalValue)
+        }
+        set { self["balance"] = newValue }
+    }
+
     var _transactions: [Transaction]?
 
     convenience init(name: String) {
         self.init()
+        self.name = name
         self.userId = PFUser.currentUser()!.objectId!
     }
 
-    func balance() -> NSDecimalNumber {
-        return 123.45
+
+    func recomputeBalance() {
+        var bal = NSDecimalNumber(double: 0)
+
+        // TODO: sort transactions
+        for (_, t) in transactions.enumerate() {
+            if let kind = t.kind {
+                switch kind {
+                case Transaction.expenseKind, Transaction.transferKind:
+                    bal = bal.decimalNumberBySubtracting(t.amount!)
+                case Transaction.incomeKind:
+                    bal = bal.decimalNumberByAdding(t.amount!)
+                default:
+                    print("unexpected kind")
+                }
+                t.balanceSnapshot = bal
+            }
+        }
+
+        self.balance = bal
     }
 
     func formattedBalance() -> String {
-        return "$\(balance())"
+        return String(format: "$%.02f", abs(balance.doubleValue))
     }
 
     // computed property
@@ -50,6 +79,9 @@ class Account: HTObject {
                 // load from DB
                 print("loading transactions from local for account \(objectId)")
                 _transactions = Transaction.findByAccountId(objectId!)
+
+                recomputeBalance()
+                print("computed balance for \(_transactions?.count) items: \(balance)")
                 return _transactions!
             }
 
@@ -63,11 +95,13 @@ class Account: HTObject {
     func addTransaction(transaction: Transaction) {
         transaction._object?.saveEventually()
         transactions.append(transaction)
+        recomputeBalance()
     }
 
     func removeTransaction(transaction: Transaction) {
         transaction._object?.deleteEventually()
         transactions = transactions.filter({ $0.uuid != transaction.uuid })
+        recomputeBalance()
     }
 
     static func loadAll() {

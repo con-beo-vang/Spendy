@@ -22,6 +22,11 @@ class AccountCell: UITableViewCell {
     var account: Account! {
         didSet {
             balanceLabel.text = account.formattedBalance()
+            if account.balance.doubleValue < 0 {
+                balanceLabel.textColor = UIColor.redColor()
+            } else {
+                balanceLabel.textColor = UIColor(netHex: 0x3D8B37)
+            }
             nameLabel.text = account.name
         }
     }
@@ -36,5 +41,4 @@ class AccountCell: UITableViewCell {
 
         // Configure the view for the selected state
     }
-
 }

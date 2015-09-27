@@ -123,7 +123,6 @@ class Helper: NSObject {
         label.backgroundColor = UIColor(netHex: 0x28AD62)
         label.textColor = UIColor.whiteColor()
     }
-    
 }
 
 extension String {
