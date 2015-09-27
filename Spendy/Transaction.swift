@@ -30,7 +30,7 @@ var _allTransactions: [Transaction]?
 // account.removeTransaction(newTransaction)
 class Transaction: HTObject {
     class var kinds: [String] {
-        return [expenseKind, incomeKind, transferKind]
+        return [incomeKind, expenseKind, transferKind]
     }
     static let expenseKind: String = "expense"
     static let incomeKind: String = "income"
