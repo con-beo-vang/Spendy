@@ -8,6 +8,9 @@
 
 import UIKit
 
+var logoColor = UIColor.redColor()
+
+
 class Helper: NSObject {
     
     static let sharedInstance = Helper()
@@ -114,13 +117,14 @@ class Helper: NSObject {
         //        viewModePopup.layer.masksToBounds = false
         //        popupView.layer.cornerRadius = 5
         popupView.layer.shadowPath = UIBezierPath(roundedRect: popupView.layer.bounds, cornerRadius: 5).CGPath
-        popupView.layer.shadowColor = UIColor(netHex: 0x34DF34).CGColor
+//        popupView.layer.shadowColor = UIColor(netHex: 0xd99652).CGColor
+        popupView.layer.shadowColor = Color.strongColor.CGColor
         popupView.layer.shadowOffset = CGSizeMake(5, 5)
         popupView.layer.shadowRadius = 5
         popupView.layer.shadowOpacity = 0.5
         
         // Set header color
-        label.backgroundColor = UIColor(netHex: 0x28AD62)
+        label.backgroundColor = Color.popupHeaderColor
         label.textColor = UIColor.whiteColor()
     }
 }
@@ -152,6 +156,14 @@ extension UIColor {
     
     convenience init(netHex:Int) {
         self.init(red:(netHex >> 16) & 0xff, green:(netHex >> 8) & 0xff, blue:netHex & 0xff)
+    }
+}
+
+extension UIImageView {
+    
+    func setNewTintColor(color: UIColor) {
+        self.image = self.image!.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
+        self.tintColor = color
     }
 }
 

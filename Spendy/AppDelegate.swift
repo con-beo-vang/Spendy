@@ -78,36 +78,29 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
         }
 
-        if application.respondsToSelector("registerUserNotificationSettings:") {
-//            let userNotificationTypes = [UIUserNotificationType.Alert, UIUserNotificationType.Badge, UIUserNotificationType.Sound]
-            let settings = UIUserNotificationSettings(forTypes: [.Alert, .Badge, .Sound], categories: nil)
-            
-            application.registerUserNotificationSettings(settings)
-            application.registerForRemoteNotifications()
-        } else {
-//            let types = UIUserNotificationType.Badge | UIUserNotificationType.Alert | UIUserNotificationType.Sound
-            application.registerUserNotificationSettings(UIUserNotificationSettings(forTypes: [.Alert, .Badge, .Sound], categories: nil))
-        }
+//        if application.respondsToSelector("registerUserNotificationSettings:") {
+////            let userNotificationTypes = [UIUserNotificationType.Alert, UIUserNotificationType.Badge, UIUserNotificationType.Sound]
+//            let settings = UIUserNotificationSettings(forTypes: [.Alert, .Badge, .Sound], categories: nil)
+//            
+//            application.registerUserNotificationSettings(settings)
+//            application.registerForRemoteNotifications()
+//        } else {
+////            let types = UIUserNotificationType.Badge | UIUserNotificationType.Alert | UIUserNotificationType.Sound
+//            application.registerUserNotificationSettings(UIUserNotificationSettings(forTypes: [.Alert, .Badge, .Sound], categories: nil))
+//        }
 
         DataManager.setupDefaultData(false)
         
         
         // Config apprearance
-        UINavigationBar.appearance().barTintColor = UIColor(netHex: 0x28AD60)
+        Color.isGreen = true
+        UINavigationBar.appearance().barTintColor = Color.strongColor
         UINavigationBar.appearance().tintColor = UIColor.whiteColor()
         UINavigationBar.appearance().titleTextAttributes = [NSForegroundColorAttributeName : UIColor.whiteColor()]
         
         UIApplication.sharedApplication().statusBarStyle = .LightContent
         
-//        UITabBar.appearance().barTintColor = UIColor(netHex: 0x00853A)
-//        UITabBar.appearance().tintColor = UIColor(netHex: 0x00853A)
-        UITabBar.appearance().tintColor = UIColor(netHex: 0x28AD60)
-        
-//        UITabBarItem.appearance().image. = UIImageRenderingMode.AlwaysOriginal
-        
-//        UITabBarItem.appearance().setTitleTextAttributes([NSForegroundColorAttributeName: UIColor.whiteColor()], forState:.Selected)
-//        UITabBarItem.appearance().setTitleTextAttributes([NSForegroundColorAttributeName: UIColor(netHex: 0xDCBEF1)], forState:.Normal)
-        
+        UITabBar.appearance().tintColor = Color.strongColor
         
         
         // Go to the logged in screen
@@ -116,8 +109,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         //window?.rootViewController = vc
 //        var nc = UINavigationController(rootViewController: vc)
         window?.rootViewController = vc
-        
-        
 
         return true
     }

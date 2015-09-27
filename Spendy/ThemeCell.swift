@@ -1,32 +1,30 @@
 //
-//  TimeCell.swift
+//  ThemeCell.swift
 //  Spendy
 //
-//  Created by Dave Vo on 9/19/15.
-//  Copyright (c) 2015 Cheetah. All rights reserved.
+//  Created by Dave Vo on 9/27/15.
+//  Copyright © 2015 Cheetah. All rights reserved.
 //
 
 import UIKit
 import SevenSwitch
 
-@objc protocol TimeCellDelegate {
-    optional func timeCell(timeCell: TimeCell, didChangeValue value: Bool)
+@objc protocol ThemeCellDelegate {
+    optional func themeCell(timeCell: ThemeCell, didChangeValue value: Bool)
 }
 
-class TimeCell: UITableViewCell {
-    
-    @IBOutlet weak var timeLabel: UILabel!
+class ThemeCell: UITableViewCell {
     
     @IBOutlet weak var switchView: UIView!
     
     var onSwitch: SevenSwitch!
     
-    var delegate: TimeCellDelegate!
+    var delegate: ThemeCellDelegate!
 
     override func awakeFromNib() {
         super.awakeFromNib()
         
-        onSwitch = SevenSwitch(frame: CGRect(x: 0, y: 0, width: 42, height: 25))
+        onSwitch = SevenSwitch(frame: CGRect(x: 0, y: 0, width: 70, height: 30))
         
         onSwitch.thumbTintColor = UIColor.whiteColor()
         onSwitch.activeColor =  UIColor.clearColor()
@@ -34,6 +32,10 @@ class TimeCell: UITableViewCell {
         onSwitch.onTintColor =  Color.strongColor
         onSwitch.borderColor = UIColor(red: 220/255, green: 220/255, blue: 220/255, alpha: 1.0)
         onSwitch.shadowColor = UIColor(red: 100/255, green: 100/255, blue: 100/255, alpha: 1.0)
+        
+        onSwitch.offLabel.text = "Green"
+        onSwitch.onLabel.text = "Gold"
+        onSwitch.onLabel.textColor = UIColor.whiteColor()
         
         switchView.addSubview(onSwitch)
         
@@ -48,7 +50,7 @@ class TimeCell: UITableViewCell {
     
     func switchValueChanged() {
         if delegate != nil {
-            delegate?.timeCell?(self, didChangeValue: onSwitch.on)
+            delegate?.themeCell?(self, didChangeValue: onSwitch.on)
         }
     }
 

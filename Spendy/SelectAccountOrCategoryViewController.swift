@@ -85,6 +85,7 @@ extension SelectAccountOrCategoryViewController: UITableViewDataSource, UITableV
             cell.nameLabel.text = item["name"] as! String?
             if let icon = item["icon"] as? String {
                 cell.iconImageView.image = UIImage(named: icon)
+                cell.iconImageView.setNewTintColor(Color.strongColor)
             }
         }
         return cell

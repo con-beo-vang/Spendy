@@ -30,13 +30,21 @@ var _allTransactions: [Transaction]?
 // account.removeTransaction(newTransaction)
 class Transaction: HTObject {
     class var kinds: [String] {
-        return [expenseKind, incomeKind, transferKind]
+        return [incomeKind, expenseKind, transferKind]
     }
     static let expenseKind: String = "expense"
     static let incomeKind: String = "income"
     static let transferKind: String = "transfer"
 
-    var balanceSnapshot: NSDecimalNumber = 0.0
+    var balanceSnapshot: NSDecimalNumber {
+        get {
+            guard let am = self["balanceSnapshot"] as! NSNumber? else {
+                return 0
+            }
+            return NSDecimalNumber(decimal: am.decimalValue)
+        }
+        set { self["balanceSnapshot"] = newValue }
+    }
 
     // transaction.note =>
     // transaction.note = "blah"
@@ -91,6 +99,15 @@ class Transaction: HTObject {
         self.date = date
     }
 
+    // TODO: support validation errors
+    override func isValid() -> Bool {
+        guard super.isValid() else { return false }
+        guard fromAccountId != nil else { return false }
+        guard !fromAccountId!.isEmpty else { return false }
+
+        return true
+    }
+
     func clone() -> Transaction {
         let t = Transaction(kind: kind, note: note, amount: amount, category: category, account: account, date: date)
         return t
@@ -99,11 +116,11 @@ class Transaction: HTObject {
     func kindColor() -> UIColor {
         switch kind! {
         case Transaction.expenseKind:
-            return UIColor.redColor()
+            return Color.expenseColor
         case Transaction.incomeKind:
-            return UIColor(netHex: 0x3D8B37)
+            return Color.incomeColor
         default:
-            return UIColor.blueColor()
+            return Color.balanceColor
         }
     }
 
@@ -246,27 +263,6 @@ class Transaction: HTObject {
 
         return list
     }
-
-//    class func loadAll() {
-//        print("\n\nloading fake data for Transactions", terminator: "\n")
-//        let defaultCategory = Category.all()?.first
-//        let defaultAccount = Account.all()?.first
-//
-//        // Initialize with fake transactions
-//        let dateFormatter = Transaction.dateFormatter
-//        dateFormatter.dateFormat = "yyyy-MM-dd"
-//
-//        // TODO: load from and save to servers
-//        _allTransactions =
-//            [
-//                Transaction(kind: Transaction.expenseKind, note: "Note 1", amount: 3.23, category: defaultCategory, account: defaultAccount, date: dateFormatter.dateFromString("2015-08-01")),
-//                Transaction(kind: Transaction.expenseKind, note: "Note 2", amount: 4.23, category: defaultCategory, account: defaultAccount, date: dateFormatter.dateFromString("2015-08-02")),
-//                Transaction(kind: Transaction.expenseKind, note: "Note 3", amount: 1.23, category: defaultCategory, account: defaultAccount, date: dateFormatter.dateFromString("2015-09-01")),
-//                Transaction(kind: Transaction.expenseKind, note: "Note 4", amount: 2.23, category: defaultCategory, account: defaultAccount, date: dateFormatter.dateFromString("2015-09-02")),
-//                Transaction(kind: Transaction.expenseKind, note: "Note 5", amount: 2.23, category: defaultCategory, account: defaultAccount, date: dateFormatter.dateFromString("2015-09-03"))
-//            ]
-////        println("post sort: \(_allTransactions!))")
-//    }
 
     class func findByAccountId(accountId: String) -> [Transaction] {
         let query = PFQuery(className: "Transaction")

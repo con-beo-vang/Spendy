@@ -21,6 +21,10 @@ class QuickViewController: UIViewController {
     
     @IBOutlet weak var amountText: UITextField!
     
+    @IBOutlet weak var cancelPopupButton: UIButton!
+    
+    @IBOutlet weak var donePopupButton: UIButton!
+    
     var addButton: UIButton?
     var cancelButton: UIButton?
     
@@ -52,12 +56,21 @@ class QuickViewController: UIViewController {
         configPopup()
         
     }
+    
+    override func viewWillAppear(animated: Bool) {
+        setColor()
+    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
     
+    func setColor() {
+        popupView.backgroundColor = Color.popupBackgroundColor
+        cancelPopupButton.setTitleColor(Color.popupButtonColor, forState: UIControlState.Normal)
+        donePopupButton.setTitleColor(Color.popupButtonColor, forState: UIControlState.Normal)
+    }
     
     // MARK: Button
     
