@@ -23,9 +23,9 @@ class AccountCell: UITableViewCell {
         didSet {
             balanceLabel.text = account.formattedBalance()
             if account.balance.doubleValue < 0 {
-                balanceLabel.textColor = UIColor.redColor()
+                balanceLabel.textColor = Color.expenseColor
             } else {
-                balanceLabel.textColor = UIColor(netHex: 0x3D8B37)
+                balanceLabel.textColor = Color.incomeColor
             }
             nameLabel.text = account.name
             typeLabel.text = "\(account.startingBalance)"
@@ -35,6 +35,7 @@ class AccountCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
+        iconView.setNewTintColor(Color.strongColor)
     }
 
     override func setSelected(selected: Bool, animated: Bool) {

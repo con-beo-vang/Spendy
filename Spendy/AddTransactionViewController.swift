@@ -304,6 +304,10 @@ extension AddTransactionViewController: UITableViewDataSource, UITableViewDelega
                 
                 cell.typeSegment.addTarget(self, action: "typeSegmentChanged:", forControlEvents: UIControlEvents.ValueChanged)
                 
+                if selectedTransaction != nil {
+                    // TODO: set default value for typeSegment
+                }
+                
                 cell.amountText.keyboardType = UIKeyboardType.DecimalPad
                 Helper.sharedInstance.setSeparatorFullWidth(cell)
                 if amountCell == nil {
@@ -436,19 +440,28 @@ extension AddTransactionViewController: UITableViewDataSource, UITableViewDelega
     
     func typeSegmentChanged(sender: UISegmentedControl) {
         
-        if sender.selectedSegmentIndex == 2 {
-            
-            categoryCell!.titleLabel.text = "From Account"
-            categoryCell!.typeLabel.text = "None"
-            accountCell!.titleLabel.text = "To Account"
-            accountCell!.typeLabel.text = "None"
-            
-        } else {
+        if sender.selectedSegmentIndex != 2 {
             
             categoryCell!.titleLabel.text = "Category"
             categoryCell!.typeLabel.text = "Other"
             accountCell!.titleLabel.text = "Account"
             accountCell!.typeLabel.text = "Cash"
+        }
+        
+        switch sender.selectedSegmentIndex {
+        case 0:
+            sender.tintColor = Color.incomeColor
+        case 1:
+            sender.tintColor = Color.expenseColor
+        case 2:
+            sender.tintColor = Color.balanceColor
+            
+            categoryCell!.titleLabel.text = "From Account"
+            categoryCell!.typeLabel.text = "None"
+            accountCell!.titleLabel.text = "To Account"
+            accountCell!.typeLabel.text = "None"
+        default:
+            break
         }
     }
 }

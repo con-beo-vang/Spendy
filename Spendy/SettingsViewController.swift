@@ -9,7 +9,7 @@
 import UIKit
 import Parse
 
-class SettingsViewController: UIViewController {
+class SettingsViewController: UIViewController, ThemeCellDelegate, UITabBarControllerDelegate {
     
     @IBOutlet weak var avatarView: UIImageView!
     
@@ -44,7 +44,9 @@ class SettingsViewController: UIViewController {
         tableView.dataSource = self
         tableView.delegate = self
         tableView.tableFooterView = UIView()
+        tableView.reloadData()
         
+        avatarView.setNewTintColor(Color.strongColor)
         
         
     }
@@ -148,11 +150,30 @@ class SettingsViewController: UIViewController {
         // refreshViewsForUser()
         // TODO: transfer to Login view
     }
+    
+    // MARK: Implement delegate
+    
+    func themeCell(themeCell: ThemeCell, didChangeValue value: Bool) {
+        
+        //        let indexPath = tableView.indexPathForCell(themeCell)!
+        print("switch theme", terminator: "\n")
+        // TODO: handle time switch
+        Color.isGreen = value
+        print(Color.isGreen)
+//        navigationController?.toolbar.backgroundColor = Color.strongColor
+        
+        UINavigationBar.appearance().barTintColor = Color.strongColor
+        UITabBar.appearance().tintColor = Color.strongColor
+        
+        self.viewDidLoad()
+        
+
+    }
 }
 
 extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 3
+        return 4
     }
 
     // Row display. Implementers should *always* try to reuse cells by setting each cell's reuseIdentifier and querying for available reusable cells with dequeueReusableCellWithIdentifier:
@@ -170,7 +191,14 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
             let cell = tableView.dequeueReusableCellWithIdentifier("NotificationSettingsCell", forIndexPath: indexPath)
             return cell
         case 2:
-            let cell = tableView.dequeueReusableCellWithIdentifier("LogOutCell", forIndexPath: indexPath)
+            let cell = tableView.dequeueReusableCellWithIdentifier("ThemeCell", forIndexPath: indexPath) as! ThemeCell
+            cell.delegate = self
+            cell.onSwitch.on = Color.isGreen
+            cell.onSwitch.onTintColor =  Color.strongColor
+            return cell
+        case 3:
+            let cell = tableView.dequeueReusableCellWithIdentifier("LogOutCell", forIndexPath: indexPath) as! LogOutCell
+            cell.logoutButton.setTitleColor(Color.moreDetailColor, forState: UIControlState.Normal)
             return cell
         default:
             break

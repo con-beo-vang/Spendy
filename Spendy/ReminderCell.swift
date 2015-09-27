@@ -30,12 +30,14 @@ class ReminderCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         
+        iconView.setNewTintColor(Color.strongColor)
+        
         onSwitch = SevenSwitch(frame: CGRect(x: 0, y: 0, width: 51, height: 31))
         
         onSwitch.thumbTintColor = UIColor.whiteColor()
         onSwitch.activeColor =  UIColor.clearColor()
         onSwitch.inactiveColor =  UIColor.clearColor()
-        onSwitch.onTintColor =  UIColor(netHex: 0x28AD60)
+        onSwitch.onTintColor =  Color.strongColor
         onSwitch.borderColor = UIColor(red: 220/255, green: 220/255, blue: 220/255, alpha: 1.0)
         onSwitch.shadowColor = UIColor(red: 100/255, green: 100/255, blue: 100/255, alpha: 1.0)
         

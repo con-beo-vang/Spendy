@@ -22,6 +22,10 @@ class QuickCell: UITableViewCell {
         let font = UIFont.systemFontOfSize(17)
         let attributes = NSDictionary(object: font, forKey: NSFontAttributeName)
         amoutSegment.setTitleTextAttributes(attributes as [NSObject : AnyObject], forState: UIControlState.Normal)
+        
+        iconView.setNewTintColor(Color.strongColor)
+        categoryLabel.textColor = Color.quickCategoryColor
+        amoutSegment.tintColor = Color.quickSegmentColor
     }
 
     override func setSelected(selected: Bool, animated: Bool) {
