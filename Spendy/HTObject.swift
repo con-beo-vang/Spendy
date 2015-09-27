@@ -46,7 +46,7 @@ class HTObject: NSObject {
         uuid = NSUUID().UUIDString
         _parseClassName = parseClassName
         _object = PFObject(className: _parseClassName!)
-        print("init \(parseClassName)")
+        // print("init \(parseClassName)")
     }
 
     // This provides a way to instantiate from an existing object received from Parse
@@ -56,7 +56,7 @@ class HTObject: NSObject {
         uuid = NSUUID().UUIDString
         _parseClassName = object.parseClassName
         _object = object
-        print("init \(object.parseClassName) from object: \(object)")
+        // print("init \(object.parseClassName) from object: \(object)")
     }
 
     // internal: this abstracts out our delegation of loading and saving

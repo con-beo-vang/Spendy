@@ -29,9 +29,7 @@ class Account: HTObject {
 
     var startingBalance: NSDecimalNumber {
         get {
-            guard let am = self["startingBalance"] as! NSNumber? else {
-                return 0
-            }
+            guard let am = self["startingBalance"] as! NSNumber? else { return 0 }
             return NSDecimalNumber(decimal: am.decimalValue)
         }
         set { self["startingBalance"] = newValue }
@@ -39,9 +37,7 @@ class Account: HTObject {
 
     var balance: NSDecimalNumber {
         get {
-            guard let am = self["balance"] as! NSNumber? else {
-                return 0
-            }
+            guard let am = self["balance"] as! NSNumber? else { return 0 }
             return NSDecimalNumber(decimal: am.decimalValue)
         }
         set { self["balance"] = newValue }
@@ -56,24 +52,31 @@ class Account: HTObject {
     }
 
     func recomputeBalance() {
-        var bal = startingBalance
+        var bal = NSDecimalNumber(double: startingBalance.doubleValue)
 
         // TODO: sort transactions
         for (_, t) in transactions.enumerate() {
-            if let kind = t.kind {
-                switch kind {
-                case Transaction.expenseKind, Transaction.transferKind:
-                    bal = bal.decimalNumberBySubtracting(t.amount!)
-                case Transaction.incomeKind:
-                    bal = bal.decimalNumberByAdding(t.amount!)
-                default:
-                    print("unexpected kind")
-                }
+            guard let kind = t.kind else { print("Unexpected nil kind in \(t)"); continue }
+
+            switch kind {
+            case Transaction.expenseKind, Transaction.transferKind:
+                bal = bal.decimalNumberBySubtracting(t.amount!)
+                
+            case Transaction.incomeKind:
+                bal = bal.decimalNumberByAdding(t.amount!)
+                
+            default:
+                print("unexpected kind")
+            }
+            
+            if bal != t.balanceSnapshot {
                 t.balanceSnapshot = bal
             }
         }
 
-        self.balance = bal
+        if bal != balance {
+            self.balance = bal
+        }
     }
 
     func formattedBalance() -> String {
@@ -130,8 +133,8 @@ class Account: HTObject {
 
         localQuery.whereKey("userId", equalTo: user.objectId!)
         localQuery.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
-            if error != nil {
-                print("Error loading accounts from Local: \(error)", terminator: "\n")
+            guard error == nil else {
+                print("Error loading accounts from Local: \(error)")
                 return
             }
 
@@ -164,8 +167,15 @@ class Account: HTObject {
 
                         print("accounts: \(_allAccounts!)")
                     } else {
+                        for account in _allAccounts! {
+                            account.recomputeBalance()
+                        }
                         Account.pinAllWithName(_allAccounts!, name: "MyAccounts")
                     }
+                }
+            } else {
+                for account in _allAccounts! {
+                    account.recomputeBalance()
                 }
             }
         }

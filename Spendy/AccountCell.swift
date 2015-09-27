@@ -28,6 +28,7 @@ class AccountCell: UITableViewCell {
                 balanceLabel.textColor = UIColor(netHex: 0x3D8B37)
             }
             nameLabel.text = account.name
+            typeLabel.text = "\(account.startingBalance)"
         }
     }
 
