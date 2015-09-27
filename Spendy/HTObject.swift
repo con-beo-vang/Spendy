@@ -76,22 +76,34 @@ class HTObject: NSObject {
         }
     }
 
+    // Child class can override this to add simple validations
+    func isValid() -> Bool {
+        return _object != nil
+    }
+
     // Should be called after we make any changes
     func save() {
-        print("")
-        _object!.pinInBackgroundWithBlock { (success, error) -> Void in
-            print("pinInBackground: \(self). success: \(success), error: \(error)")
-        }
-        _object!.saveInBackgroundWithBlock { (success, error) -> Void in
-            print("saveInBackground: \(self). success: \(success), error: \(error)")
+        if isValid() {
+            _object!.pinInBackgroundWithBlock { (success, error) -> Void in
+                print("pinInBackground: \(self). success: \(success), error: \(error)")
+            }
+            _object!.saveInBackgroundWithBlock { (success, error) -> Void in
+                print("saveInBackground: \(self). success: \(success), error: \(error)")
+            }
+        } else {
+            print("Cannot save: isValid is false. \(self)")
         }
     }
 
     // When we want to save fully before proceding to the next step
     // This is mainly for debugging
     func saveSynchronously() {
-        try! _object!.save()
-        try! _object!.pin()
+        if isValid() {
+            try! _object!.save()
+            try! _object!.pin()
+        } else {
+            print("Cannot save: isValid is false. \(self)")
+        }
     }
 
     // An object is new if it has not been saved to the server

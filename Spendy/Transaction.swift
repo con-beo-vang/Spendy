@@ -91,6 +91,15 @@ class Transaction: HTObject {
         self.date = date
     }
 
+    // TODO: support validation errors
+    override func isValid() -> Bool {
+        guard super.isValid() else { return false }
+        guard fromAccountId != nil else { return false }
+        guard !fromAccountId!.isEmpty else { return false }
+
+        return true
+    }
+
     func clone() -> Transaction {
         let t = Transaction(kind: kind, note: note, amount: amount, category: category, account: account, date: date)
         return t
