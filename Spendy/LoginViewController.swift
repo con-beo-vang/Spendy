@@ -18,6 +18,8 @@ class LoginViewController: UIViewController {
     
     @IBOutlet weak var registerButton: UIButton!
     
+    @IBOutlet weak var retrievePassword: UIButton!
+    
     @IBOutlet weak var tableView: UITableView!
     
     @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
@@ -52,9 +54,8 @@ class LoginViewController: UIViewController {
         tableView.layer.borderWidth = 1
         
 //        loginButton.layer.backgroundColor = UIColor(netHex: 0xfcc96f).CGColor
-        loginButton.layer.backgroundColor = Color.strongColor.CGColor
-        loginButton.tintColor = UIColor.whiteColor()
         
+        setColor()
         tableViewHeightConstraint.constant = isRegisterMode ? 132 : 88
 
     }
@@ -62,6 +63,17 @@ class LoginViewController: UIViewController {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    func setColor() {
+        
+        view.backgroundColor = Color.loginBackgroundColor
+        logoView.setNewTintColor(Color.strongColor)
+        appNameLabel.textColor = Color.appNameColor
+        loginButton.layer.backgroundColor = Color.strongColor.CGColor
+        loginButton.tintColor = UIColor.whiteColor()
+        registerButton.tintColor = Color.registerColor
+        retrievePassword.tintColor = Color.forgotPasswordColor
     }
     
     // MARK: Button

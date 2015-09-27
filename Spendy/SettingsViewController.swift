@@ -45,6 +45,7 @@ class SettingsViewController: UIViewController {
         tableView.delegate = self
         tableView.tableFooterView = UIView()
         
+        avatarView.setNewTintColor(Color.strongColor)
         
         
     }
@@ -170,7 +171,8 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
             let cell = tableView.dequeueReusableCellWithIdentifier("NotificationSettingsCell", forIndexPath: indexPath)
             return cell
         case 2:
-            let cell = tableView.dequeueReusableCellWithIdentifier("LogOutCell", forIndexPath: indexPath)
+            let cell = tableView.dequeueReusableCellWithIdentifier("LogOutCell", forIndexPath: indexPath) as! LogOutCell
+            cell.logoutButton.tintColor = Color.strongColor
             return cell
         default:
             break

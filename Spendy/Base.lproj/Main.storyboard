@@ -664,6 +664,7 @@
                         <outlet property="logoTopConstraint" destination="McB-zw-Lhb" id="SgH-EA-tBI"/>
                         <outlet property="logoView" destination="hqM-F6-DGE" id="enz-WJ-da2"/>
                         <outlet property="registerButton" destination="82o-fK-VRB" id="62U-kr-DW7"/>
+                        <outlet property="retrievePassword" destination="3a7-bz-tau" id="8pB-y8-WdI"/>
                         <outlet property="tableView" destination="1vd-mT-JQ5" id="If0-kr-61H"/>
                         <outlet property="tableViewHeightConstraint" destination="gH4-xj-H3G" id="UdV-3r-oAS"/>
                         <segue destination="BsO-hW-yMh" kind="modal" identifier="GoToHome" id="zpz-0j-kK4"/>
@@ -1158,6 +1159,7 @@
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="amountLabel" destination="q4E-y8-hVP" id="STk-kf-Dhl"/>
+                                            <outlet property="titleLabel" destination="ctM-ZZ-5om" id="Q4h-TD-qI9"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -1356,15 +1358,19 @@
                     </view>
                     <navigationItem key="navigationItem" title="September" id="vmY-vx-Tdw"/>
                     <connections>
+                        <outlet property="cancelButton" destination="J3G-8v-R5C" id="3oj-so-XzF"/>
                         <outlet property="currentBarView" destination="brC-rk-x32" id="aTH-iD-bhf"/>
                         <outlet property="currentBarWidthConstraint" destination="Ql9-cn-RIQ" id="ERW-Ob-uA0"/>
                         <outlet property="datePopup" destination="4Kd-A2-gRR" id="vVn-gE-2Ge"/>
                         <outlet property="dateTitleLabel" destination="62D-4K-Nhi" id="g4l-gl-Ctm"/>
+                        <outlet property="doneButton" destination="R4b-cK-t9L" id="m3z-nf-Vfo"/>
                         <outlet property="fromButton" destination="EDE-bf-FpT" id="JxT-l7-E4Q"/>
+                        <outlet property="fromLabel" destination="MdP-7Z-d3u" id="iiu-RO-K5q"/>
                         <outlet property="popupSuperView" destination="uAo-Kx-wkV" id="dFU-UX-dQj"/>
                         <outlet property="statusBarView" destination="dTs-FI-fpV" id="2IO-op-hAG"/>
                         <outlet property="tableView" destination="8QH-0L-xBf" id="uWU-vM-AQZ"/>
                         <outlet property="toButton" destination="5vW-iA-qyH" id="m2r-eV-cyG"/>
+                        <outlet property="toLabel" destination="p8a-KS-8QH" id="oBU-Na-2mf"/>
                         <outlet property="todayLabel" destination="yVI-NT-Ydm" id="YIf-go-beA"/>
                         <outlet property="viewModePopup" destination="22t-1x-SQY" id="zOb-8W-M25"/>
                         <outlet property="viewModeTableView" destination="INT-es-Ua6" id="Hmg-7J-G1x"/>

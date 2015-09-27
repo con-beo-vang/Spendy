@@ -100,7 +100,7 @@
                                             <segue destination="P1m-50-n6C" kind="push" id="sHg-Z8-5Xk"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="LogOutCell" id="RiW-Ul-StY">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="LogOutCell" id="RiW-Ul-StY" customClass="LogOutCell" customModule="Spendy" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="110" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="RiW-Ul-StY" id="68G-Qb-6Ey">
@@ -123,6 +123,9 @@
                                                 <constraint firstItem="Atv-kJ-5hh" firstAttribute="leading" secondItem="68G-Qb-6Ey" secondAttribute="leading" constant="16" id="QAS-xe-3TF"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="logoutButton" destination="Atv-kJ-5hh" id="wvH-vE-rr0"/>
+                                        </connections>
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
@@ -224,7 +227,7 @@
                                             <segue destination="33C-Qy-ilu" kind="push" id="lsd-GS-ZSO"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="AddReminderCell" rowHeight="55" id="FEg-Gb-E5o">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="AddReminderCell" rowHeight="55" id="FEg-Gb-E5o" customClass="AddReminderCell" customModule="Spendy" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="148" width="320" height="55"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="FEg-Gb-E5o" id="W0c-ac-Jhp">
@@ -253,6 +256,8 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
+                                            <outlet property="iconView" destination="gSx-xA-02U" id="cey-0e-e55"/>
+                                            <outlet property="titleLabel" destination="qnU-eZ-Mog" id="SM3-3m-rYm"/>
                                             <segue destination="33C-Qy-ilu" kind="push" id="EhA-5R-ydh"/>
                                         </connections>
                                     </tableViewCell>
@@ -356,7 +361,7 @@
                                             <outlet property="timeLabel" destination="Yxc-KZ-LNH" id="O5u-iD-CB5"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="AddTimeCell" id="jJg-TJ-HfN">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="AddTimeCell" id="jJg-TJ-HfN" customClass="AddReminderCell" customModule="Spendy" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="174" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="jJg-TJ-HfN" id="vjR-y4-jUh">
@@ -384,6 +389,10 @@
                                                 <constraint firstItem="kgd-rN-m6M" firstAttribute="leading" secondItem="vjR-y4-jUh" secondAttribute="leading" constant="8" id="yv6-C6-tDa"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="iconView" destination="kgd-rN-m6M" id="SOP-yN-CtB"/>
+                                            <outlet property="titleLabel" destination="wI9-66-40d" id="Yin-vf-ppr"/>
+                                        </connections>
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>

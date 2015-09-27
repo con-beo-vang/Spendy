@@ -18,6 +18,8 @@
 		186640311BB39F52007B73C3 /* PhotoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 186640301BB39F52007B73C3 /* PhotoViewController.swift */; settings = {ASSET_TAGS = (); }; };
 		1866C4D51BAC221C000200D2 /* AccountDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1866C4D41BAC221C000200D2 /* AccountDetailViewController.swift */; };
 		1881FB4C1BB7EC9F00314FD1 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1881FB4B1BB7EC9F00314FD1 /* Color.swift */; settings = {ASSET_TAGS = (); }; };
+		1881FB4E1BB8097100314FD1 /* AddReminderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1881FB4D1BB8097100314FD1 /* AddReminderCell.swift */; settings = {ASSET_TAGS = (); }; };
+		1881FB501BB80CC800314FD1 /* LogOutCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1881FB4F1BB80CC800314FD1 /* LogOutCell.swift */; settings = {ASSET_TAGS = (); }; };
 		1884A4DC1BAD62EB00D24257 /* AddReminderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1884A4DB1BAD62EB00D24257 /* AddReminderViewController.swift */; };
 		1884A4DF1BAD6E9A00D24257 /* CategoryReminderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1884A4DE1BAD6E9A00D24257 /* CategoryReminderCell.swift */; };
 		1884A4E11BAD6EAA00D24257 /* TimeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1884A4E01BAD6EAA00D24257 /* TimeCell.swift */; };
@@ -85,6 +87,8 @@
 		186640301BB39F52007B73C3 /* PhotoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoViewController.swift; sourceTree = "<group>"; };
 		1866C4D41BAC221C000200D2 /* AccountDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountDetailViewController.swift; sourceTree = "<group>"; };
 		1881FB4B1BB7EC9F00314FD1 /* Color.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
+		1881FB4D1BB8097100314FD1 /* AddReminderCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddReminderCell.swift; sourceTree = "<group>"; };
+		1881FB4F1BB80CC800314FD1 /* LogOutCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogOutCell.swift; sourceTree = "<group>"; };
 		1884A4DB1BAD62EB00D24257 /* AddReminderViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddReminderViewController.swift; sourceTree = "<group>"; };
 		1884A4DE1BAD6E9A00D24257 /* CategoryReminderCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CategoryReminderCell.swift; sourceTree = "<group>"; };
 		1884A4E01BAD6EAA00D24257 /* TimeCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimeCell.swift; sourceTree = "<group>"; };
@@ -216,6 +220,7 @@
 			isa = PBXGroup;
 			children = (
 				18A9897E1BB5C05A00CD6E28 /* DefaultAccountCell.swift */,
+				1881FB4F1BB80CC800314FD1 /* LogOutCell.swift */,
 			);
 			name = "Settings View";
 			sourceTree = "<group>";
@@ -232,6 +237,7 @@
 			isa = PBXGroup;
 			children = (
 				18AB69AD1BAD4C6F0061029F /* ReminderCell.swift */,
+				1881FB4D1BB8097100314FD1 /* AddReminderCell.swift */,
 			);
 			name = "Notification Setting View";
 			sourceTree = "<group>";
@@ -587,6 +593,7 @@
 				9D3EA5FA1BAB3BBD00EF4B47 /* Transaction.swift in Sources */,
 				18499E1D1BAB237D0066E6E5 /* AccountCell.swift in Sources */,
 				9DFE8D9D1BAFA9E0001E6F9E /* DateUtilities.swift in Sources */,
+				1881FB4E1BB8097100314FD1 /* AddReminderCell.swift in Sources */,
 				1892689F1BB52728006FA9C4 /* CustomPresentAnimationController.swift in Sources */,
 				9DB8A86A1BA9FF64000F03A1 /* SettingsViewController.swift in Sources */,
 				18F39CCB1BA9A8280099B714 /* CustomSegmentedControl.swift in Sources */,
@@ -602,6 +609,7 @@
 				9D3153FC1BB0C75500F1F32B /* DataManager.swift in Sources */,
 				18AB69A91BACF6DB0061029F /* TransactionCell.swift in Sources */,
 				18F39CD71BA9D2E70099B714 /* SelectAccountOrCategoryCell.swift in Sources */,
+				1881FB501BB80CC800314FD1 /* LogOutCell.swift in Sources */,
 				9D3EA6001BABFF0B00EF4B47 /* Category.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

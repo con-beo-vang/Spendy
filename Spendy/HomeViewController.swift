@@ -42,6 +42,14 @@ class HomeViewController: UIViewController {
     
     @IBOutlet weak var toButton: UIButton!
     
+    @IBOutlet weak var fromLabel: UILabel!
+    
+    @IBOutlet weak var toLabel: UILabel!
+    
+    @IBOutlet weak var cancelButton: UIButton!
+    
+    @IBOutlet weak var doneButton: UIButton!
+    
     var formatter: NSDateFormatter!
     
     let dayCountInMonth = 30
@@ -99,6 +107,7 @@ class HomeViewController: UIViewController {
         
         configPopup()
 
+        setColor()
         
         
         
@@ -114,6 +123,21 @@ class HomeViewController: UIViewController {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    func setColor() {
+        statusBarView.backgroundColor = Color.lightStatusColor
+        currentBarView.backgroundColor = Color.darkStatusColor
+        todayLabel.textColor = Color.dateHomeColor
+        
+        // Date popup
+        fromLabel.textColor = Color.popupFromColor
+        toLabel.textColor = Color.popupFromColor
+        fromButton.tintColor = Color.popupDateColor
+        toButton.tintColor = Color.popupDateColor
+        cancelButton.tintColor = Color.popupButtonColor
+        doneButton.tintColor = Color.popupButtonColor
+        
     }
     
     // MARK: View mode
@@ -298,7 +322,7 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
         
         if tableView == viewModeTableView {
             let cell = tableView.dequeueReusableCellWithIdentifier("ViewModeCell", forIndexPath: indexPath) as! ViewModeCell
-            
+            cell.contentView.backgroundColor = Color.popupBackgroundColor
             switch indexPath.row {
             case 0:
                 cell.modeLabel.text = "Weekly"
@@ -321,6 +345,7 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
             } else {
                 cell.iconView.image = UIImage(named: "Circle")
             }
+            cell.iconView.setNewTintColor(Color.strongColor)
             
             Helper.sharedInstance.setSeparatorFullWidth(cell)
             return cell
@@ -334,8 +359,8 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
                 if indexPath.row == 0 {
                     let cell = tableView.dequeueReusableCellWithIdentifier("MenuCell", forIndexPath: indexPath) as! MenuCell
                     
-                    cell.menuLabel.textColor = UIColor(netHex: 0x3D8B37)
-                    cell.amountLabel.textColor = UIColor(netHex: 0x3D8B37)
+                    cell.menuLabel.textColor = Color.incomeColor
+                    cell.amountLabel.textColor = Color.incomeColor
                     cell.menuLabel.text = "Income"
                     
                     if isCollapedIncome {
@@ -360,8 +385,8 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
                 if indexPath.row == 0 {
                     let cell = tableView.dequeueReusableCellWithIdentifier("MenuCell", forIndexPath: indexPath) as! MenuCell
                     
-                    cell.menuLabel.textColor = UIColor(netHex: 0xCA2437)
-                    cell.amountLabel.textColor = UIColor(netHex: 0xCA2437)
+                    cell.menuLabel.textColor = Color.expenseColor
+                    cell.amountLabel.textColor = Color.expenseColor
                     cell.menuLabel.text = "Expense"
                     
                     if isCollapedExpense {
@@ -384,7 +409,8 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
                 
             case 2:
                 let cell = tableView.dequeueReusableCellWithIdentifier("BalanceCell", forIndexPath: indexPath) as! BalanceCell
-                
+                cell.titleLabel.textColor = Color.balanceColor
+                cell.amountLabel.textColor = Color.balanceColor
                 return cell
                 
             default:

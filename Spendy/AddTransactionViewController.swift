@@ -356,6 +356,7 @@ extension AddTransactionViewController: UITableViewDataSource, UITableViewDelega
             case 2:
                 if isCollaped {
                     let cell = tableView.dequeueReusableCellWithIdentifier("ViewMoreCell", forIndexPath: indexPath)
+                    cell.textLabel?.textColor = Color.moreDetailColor
                     
                     let tapCell = UITapGestureRecognizer(target: self, action: "tapMoreCell:")
                     cell.addGestureRecognizer(tapCell)

@@ -40,6 +40,7 @@ class TransactionCell: UITableViewCell {
 
             if let icon = transaction.category?.icon {
                 iconView.image = UIImage(named: icon)
+                iconView.setNewTintColor(Color.strongColor)
             }
 
         }
@@ -48,6 +49,7 @@ class TransactionCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
+        iconView.setNewTintColor(Color.strongColor)
     }
 
     override func setSelected(selected: Bool, animated: Bool) {

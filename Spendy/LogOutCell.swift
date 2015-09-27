@@ -1,18 +1,16 @@
 //
-//  BalanceCell.swift
+//  LogoutCell.swift
 //  Spendy
 //
-//  Created by Dave Vo on 9/21/15.
-//  Copyright (c) 2015 Cheetah. All rights reserved.
+//  Created by Dave Vo on 9/27/15.
+//  Copyright © 2015 Cheetah. All rights reserved.
 //
 
 import UIKit
 
-class BalanceCell: UITableViewCell {
+class LogOutCell: UITableViewCell {
     
-    @IBOutlet weak var titleLabel: UILabel!
-    
-    @IBOutlet weak var amountLabel: UILabel!
+    @IBOutlet weak var logoutButton: UIButton!
 
     override func awakeFromNib() {
         super.awakeFromNib()

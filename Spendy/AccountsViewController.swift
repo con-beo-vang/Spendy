@@ -170,7 +170,7 @@ extension AccountsViewController: UIGestureRecognizerDelegate {
         if let selectedDragCell = selectedDragCell {
 //            var indexPath = tableView.indexPathForCell(selectedDragCell)
 
-            selectedDragCell.backgroundColor = UIColor(netHex: 0xFAEED0)
+            selectedDragCell.backgroundColor = Color.originalAccountColor
             
             
             let translation = sender.translationInView(tableView)
@@ -181,6 +181,7 @@ extension AccountsViewController: UIGestureRecognizerDelegate {
                 print("began", terminator: "\n")
                 
                 moneyIcon = UIImageView(image: UIImage(named: "MoneyBag"))
+                moneyIcon?.setNewTintColor(Color.strongColor)
                 moneyIcon!.frame = CGRect(x: 0, y: 0, width: 32, height: 32)
                 moneyIcon!.userInteractionEnabled = true
                 
@@ -203,7 +204,7 @@ extension AccountsViewController: UIGestureRecognizerDelegate {
                         if cell != previousCell {
                             previousCell?.backgroundColor = UIColor.clearColor()
                             if let cell = cell {
-                                cell.backgroundColor = UIColor(netHex: 0xbfa680)
+                                cell.backgroundColor = Color.destinationAccountColor
                                 cell.typeLabel.textColor = UIColor.whiteColor()
                             }
                             

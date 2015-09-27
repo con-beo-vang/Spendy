@@ -124,7 +124,7 @@ class Helper: NSObject {
         popupView.layer.shadowOpacity = 0.5
         
         // Set header color
-        label.backgroundColor = UIColor(netHex: 0xfac561)
+        label.backgroundColor = Color.popupHeaderColor
         label.textColor = UIColor.whiteColor()
     }
 }
