@@ -45,7 +45,6 @@ class Account: HTObject {
         self.userId = PFUser.currentUser()!.objectId!
     }
 
-
     func recomputeBalance() {
         var bal = NSDecimalNumber(double: 0)
 
@@ -71,8 +70,6 @@ class Account: HTObject {
         return String(format: "$%.02f", abs(balance.doubleValue))
     }
 
-    // computed property
-    // default is get
     var transactions: [Transaction] {
         get {
             guard _transactions != nil else {
@@ -93,12 +90,13 @@ class Account: HTObject {
     }
 
     func addTransaction(transaction: Transaction) {
-        transaction._object?.saveEventually()
+        transaction.save()
         transactions.append(transaction)
         recomputeBalance()
     }
 
     func removeTransaction(transaction: Transaction) {
+        // TODO: implement UNDO
         transaction._object?.deleteEventually()
         transactions = transactions.filter({ $0.uuid != transaction.uuid })
         recomputeBalance()
@@ -106,13 +104,12 @@ class Account: HTObject {
 
     static func loadAll() {
         let user = PFUser.currentUser()!
-        print("=====================\nUser: \(user)\n=====================", terminator: "\n")
+        print("=====================\nUser: \(user)\n=====================")
 
         let localQuery = PFQuery(className: "Account").fromLocalDatastore()
 
         // TODO: move this out
         if user.objectId == nil {
-//            user.save()
             do {
                 try user.save()
                 print("Success")
@@ -120,19 +117,16 @@ class Account: HTObject {
                 print("An error occurred when saving user.")
             }
         }
-//localQuery.findObjectsInBackgroundWithBlock
 
         localQuery.whereKey("userId", equalTo: user.objectId!)
-        localQuery.findObjectsInBackgroundWithBlock {
-            (objects, error) -> Void in
-
+        localQuery.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
             if error != nil {
                 print("Error loading accounts from Local: \(error)", terminator: "\n")
                 return
             }
 
             _allAccounts = objects?.map({ Account(object: $0 ) })
-            print("\n[local] accounts: \(objects)", terminator: "\n")
+            print("\n[local] accounts: \(objects)")
 
             if _allAccounts == nil || _allAccounts!.isEmpty {
                 // load from server
@@ -144,7 +138,7 @@ class Account: HTObject {
                         return
                     }
 
-                    print("\n[server] accounts: \(objects)")
+                    print("\n[server] accounts: \(objects!)")
                     _allAccounts = objects?.map({ Account(object: $0 ) })
 
                     if _allAccounts!.isEmpty {
@@ -158,7 +152,7 @@ class Account: HTObject {
                         _allAccounts!.append(defaultAccount)
                         _allAccounts!.append(secondAccount)
 
-                        print("accounts: \(_allAccounts!)", terminator: "\n")
+                        print("accounts: \(_allAccounts!)")
                     } else {
                         Account.pinAllWithName(_allAccounts!, name: "MyAccounts")
                     }
@@ -167,8 +161,9 @@ class Account: HTObject {
         }
     }
 
+    // TODO: a different way to specify defaultAccount
     class func defaultAccount() -> Account? {
-        return _allAccounts?.first
+        return all()?.first
     }
 
     class func all() -> [Account]? {
@@ -176,10 +171,9 @@ class Account: HTObject {
     }
 
     class func findById(objectId: String) -> Account? {
-        let record = _allAccounts?.filter({ (el) -> Bool in
-            el.objectId == objectId
-        }).first
-        return record
+        guard let all = all() else { return nil }
+
+        return all.filter({ $0.objectId == objectId }).first
     }
 
     // MARK: Printable
@@ -188,10 +182,3 @@ class Account: HTObject {
         return "uuid: \(uuid), userId: \(userId), name: \(name), icon: \(icon), base: \(base)"
     }
 }
-
-//extension Account: CustomStringConvertible {
-//    override var description: String {
-//        let base = super.description
-//        return "userId: \(userId), name: \(name), icon: \(icon), base: \(base)"
-//    }
-//}

@@ -35,6 +35,9 @@ class AccountsViewController: UIViewController {
         tableView.tableFooterView = UIView()
         
         accounts = Account.all()
+        for account in accounts! {
+            account.recomputeBalance()
+        }
         
         tableView.reloadData()
         

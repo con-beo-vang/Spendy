@@ -247,27 +247,6 @@ class Transaction: HTObject {
         return list
     }
 
-//    class func loadAll() {
-//        print("\n\nloading fake data for Transactions", terminator: "\n")
-//        let defaultCategory = Category.all()?.first
-//        let defaultAccount = Account.all()?.first
-//
-//        // Initialize with fake transactions
-//        let dateFormatter = Transaction.dateFormatter
-//        dateFormatter.dateFormat = "yyyy-MM-dd"
-//
-//        // TODO: load from and save to servers
-//        _allTransactions =
-//            [
-//                Transaction(kind: Transaction.expenseKind, note: "Note 1", amount: 3.23, category: defaultCategory, account: defaultAccount, date: dateFormatter.dateFromString("2015-08-01")),
-//                Transaction(kind: Transaction.expenseKind, note: "Note 2", amount: 4.23, category: defaultCategory, account: defaultAccount, date: dateFormatter.dateFromString("2015-08-02")),
-//                Transaction(kind: Transaction.expenseKind, note: "Note 3", amount: 1.23, category: defaultCategory, account: defaultAccount, date: dateFormatter.dateFromString("2015-09-01")),
-//                Transaction(kind: Transaction.expenseKind, note: "Note 4", amount: 2.23, category: defaultCategory, account: defaultAccount, date: dateFormatter.dateFromString("2015-09-02")),
-//                Transaction(kind: Transaction.expenseKind, note: "Note 5", amount: 2.23, category: defaultCategory, account: defaultAccount, date: dateFormatter.dateFromString("2015-09-03"))
-//            ]
-////        println("post sort: \(_allTransactions!))")
-//    }
-
     class func findByAccountId(accountId: String) -> [Transaction] {
         let query = PFQuery(className: "Transaction")
         query.fromLocalDatastore()
