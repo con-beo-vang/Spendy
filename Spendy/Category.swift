@@ -55,7 +55,7 @@ class Category: HTObject {
 
                         // already in background
                         PFObject.pinAllInBackground(objects!, withName: "MyCategories", block: { (success, error: NSError?) -> Void in
-                            print("bool: \(success); error: \(error)")
+                            print("success: \(success); error: \(error)")
                         })
                         // no need to save because we are not adding data
                     }
@@ -73,9 +73,7 @@ class Category: HTObject {
     }
 
     class func findById(objectId: String) -> Category? {
-        let record = _allCategories?.filter({ (el) -> Bool in
-            el.objectId == objectId
-        }).first
+        let record = _allCategories?.filter({ $0.objectId == objectId }).first
         return record
     }
 }

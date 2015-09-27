@@ -6,19 +6,31 @@
 //  Copyright (c) 2015 Cheetah. All rights reserved.
 //
 
-import Foundation
-import Parse
-
 // Goal:
 // - abstract away communication with Parse
 // - provide useful syntactic sugar
-//
+
+// Implmentation notes:
 // Inherit from NSObject so that we can use #setValue and #valueForKey
+
+import Foundation
+import Parse
+
 class HTObject: NSObject {
+    // use an internal object to talk to Parse instead of inheriting from PFObject
     var _object: PFObject?
+
+    // by default, _parseClassName is the class name of the child class
     var _parseClassName: String?
+
+    // an additional id column so we can perform deleting from array easily
+    // instead of relying on PFObject's objectId and localId
     var uuid: String!
 
+    // Example:
+    // class Person: HTObject {
+    // }
+    // We will automatically have Person's _object set up as PFObject(className: "Person")
     override convenience init() {
         let childClassName = NSStringFromClass(self.dynamicType)
         let name = childClassName.componentsSeparatedByString(".").last!
@@ -26,30 +38,33 @@ class HTObject: NSObject {
         self.init(parseClassName: name)
     }
 
+    // Allow setting a custom class name, if required, such as:
+    // var person = Person(parseClassName: "People")
     init(parseClassName: String) {
         super.init()
+
         uuid = NSUUID().UUIDString
         _parseClassName = parseClassName
         _object = PFObject(className: _parseClassName!)
         print("init \(parseClassName)")
     }
 
+    // This provides a way to instantiate from an existing object received from Parse
     init(object: PFObject) {
         super.init()
+
         uuid = NSUUID().UUIDString
         _parseClassName = object.parseClassName
         _object = object
         print("init \(object.parseClassName) from object: \(object)")
     }
 
-    func getChildClassName(instance: AnyClass) -> String {
-        let name = NSStringFromClass(instance)
-        let components = name.componentsSeparatedByString(".")
-        return components.last ?? "UnknownClass"
-    }
-
-    // a["key"] = newValue
-    // --> background: save to Parse, load from Parse
+    // internal: this abstracts out our delegation of loading and saving
+    // attributes values from and to Parse
+    // Ex:
+    //   a["key"] = newValue
+    //   //=> background: call setObject on _object
+    //   // Note we would still need to save _object separately
     subscript(key: String) -> AnyObject? {
         get {
             return _object!.valueForKey(key)
@@ -63,36 +78,37 @@ class HTObject: NSObject {
 
     // Should be called after we make any changes
     func save() {
-        print("pining + saving in background (no error checking):\n\(self)", terminator: "\n")
+        print("")
         _object!.pinInBackgroundWithBlock { (success, error) -> Void in
-            print("success: \(success), error: \(error)")
+            print("pinInBackground: \(self). success: \(success), error: \(error)")
         }
-        _object!.saveInBackground()
+        _object!.saveInBackgroundWithBlock { (success, error) -> Void in
+            print("saveInBackground: \(self). success: \(success), error: \(error)")
+        }
     }
 
+    // When we want to save fully before proceding to the next step
+    // This is mainly for debugging
     func saveSynchronously() {
         try! _object!.save()
         try! _object!.pin()
     }
 
+    // An object is new if it has not been saved to the server
+    // TODO: what about localId?
     func isNew() -> Bool {
         return _object?.objectId == nil
     }
 
-    var objectId: String? {
-        return _object?.objectId
-    }
+    // Delegate objectId and localId to _object
+    var objectId: String? { return _object?.objectId }
 
-    var localId: String? {
-        return _object?.objectForKey("localId") as! String?
-    }
+    var localId: String? { return _object?.objectForKey("localId") as! String? }
 
+    // TODO: see if this has any use
     func pinAndSaveEventuallyWithName(name: String) {
-        print("pinAndSaveEventually called on\n\(self)", terminator: "\n")
-        _object!.pinInBackgroundWithName(name) { (isSuccess, error: NSError?) -> Void in
-            if error != nil {
-                print("[pinInBackgroundWithName] ERROR: \(error!). For \(self._object)", terminator: "\n")
-            }
+        _object!.pinInBackgroundWithName(name) { (isSuccess, error) -> Void in
+            print("[pinInBackgroundWithName \(name)] \(self). Success: \(isSuccess). ERROR: \(error).")
         }
         _object!.saveEventually()
     }
@@ -100,7 +116,7 @@ class HTObject: NSObject {
     class func pinAllWithName(htObjects: [HTObject], name: String) {
         PFObject.pinAllInBackground(htObjects.map({$0._object!}), withName: name) { (isSuccess, error: NSError?) -> Void in
             if error != nil {
-                print("[pinAllInBackground] ERROR: \(error!). For \(htObjects)", terminator: "\n")
+                print("[pinAllInBackgrod] withName: \(name). isSuccess: \(isSuccess), error: \(error!). \nFOR: \(htObjects)")
             }
         }
     }
@@ -108,5 +124,4 @@ class HTObject: NSObject {
     override var description: String {
         return _object != nil ? "object: \(_object!)" : "object is nil"
     }
-
 }
