@@ -51,7 +51,8 @@ class LoginViewController: UIViewController {
         tableView.layer.borderColor = UIColor(netHex: 0xE9E9E9).CGColor
         tableView.layer.borderWidth = 1
         
-        loginButton.layer.backgroundColor = UIColor(netHex: 0x28AD60).CGColor
+//        loginButton.layer.backgroundColor = UIColor(netHex: 0xfcc96f).CGColor
+        loginButton.layer.backgroundColor = Color.strongColor.CGColor
         loginButton.tintColor = UIColor.whiteColor()
         
         tableViewHeightConstraint.constant = isRegisterMode ? 132 : 88

@@ -93,7 +93,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         
         // Config apprearance
-        UINavigationBar.appearance().barTintColor = UIColor(netHex: 0x28AD60)
+        UINavigationBar.appearance().barTintColor = UIColor(netHex: 0xE6A447)
         UINavigationBar.appearance().tintColor = UIColor.whiteColor()
         UINavigationBar.appearance().titleTextAttributes = [NSForegroundColorAttributeName : UIColor.whiteColor()]
         
@@ -101,7 +101,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
 //        UITabBar.appearance().barTintColor = UIColor(netHex: 0x00853A)
 //        UITabBar.appearance().tintColor = UIColor(netHex: 0x00853A)
-        UITabBar.appearance().tintColor = UIColor(netHex: 0x28AD60)
+        UITabBar.appearance().tintColor = UIColor(netHex: 0xe6a447)
         
 //        UITabBarItem.appearance().image. = UIImageRenderingMode.AlwaysOriginal
         

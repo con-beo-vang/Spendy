@@ -360,8 +360,8 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
                 if indexPath.row == 0 {
                     let cell = tableView.dequeueReusableCellWithIdentifier("MenuCell", forIndexPath: indexPath) as! MenuCell
                     
-                    cell.menuLabel.textColor = UIColor.redColor()
-                    cell.amountLabel.textColor = UIColor.redColor()
+                    cell.menuLabel.textColor = UIColor(netHex: 0xCA2437)
+                    cell.amountLabel.textColor = UIColor(netHex: 0xCA2437)
                     cell.menuLabel.text = "Expense"
                     
                     if isCollapedExpense {

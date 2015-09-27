@@ -170,7 +170,7 @@ extension AccountsViewController: UIGestureRecognizerDelegate {
         if let selectedDragCell = selectedDragCell {
 //            var indexPath = tableView.indexPathForCell(selectedDragCell)
 
-            selectedDragCell.backgroundColor = UIColor(netHex: 0xCAE1FF)
+            selectedDragCell.backgroundColor = UIColor(netHex: 0xFAEED0)
             
             
             let translation = sender.translationInView(tableView)
@@ -203,7 +203,8 @@ extension AccountsViewController: UIGestureRecognizerDelegate {
                         if cell != previousCell {
                             previousCell?.backgroundColor = UIColor.clearColor()
                             if let cell = cell {
-                                cell.backgroundColor = UIColor(netHex: 0x739AC5)
+                                cell.backgroundColor = UIColor(netHex: 0xbfa680)
+                                cell.typeLabel.textColor = UIColor.whiteColor()
                             }
                             
                             previousCell = cell
@@ -211,6 +212,7 @@ extension AccountsViewController: UIGestureRecognizerDelegate {
                     } else {
                         if previousCell != selectedDragCell {
                             previousCell?.backgroundColor = UIColor.clearColor()
+                            previousCell?.typeLabel.textColor = UIColor.lightGrayColor()
                         }
                         previousCell = cell
                     }
@@ -223,6 +225,7 @@ extension AccountsViewController: UIGestureRecognizerDelegate {
                 moneyIcon?.removeFromSuperview()
                 selectedDragCell.backgroundColor = UIColor.clearColor()
                 previousCell?.backgroundColor = UIColor.clearColor()
+                previousCell?.typeLabel.textColor = UIColor.lightGrayColor()
                 
                 if previousCell != selectedDragCell && !isPreparedDelete {
                     
