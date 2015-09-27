@@ -16,7 +16,7 @@
 import Foundation
 import Parse
 
-class HTObject: NSObject {
+class HTObject {
     // use an internal object to talk to Parse instead of inheriting from PFObject
     var _object: PFObject?
 
@@ -31,7 +31,7 @@ class HTObject: NSObject {
     // class Person: HTObject {
     // }
     // We will automatically have Person's _object set up as PFObject(className: "Person")
-    override convenience init() {
+    convenience init() {
         let childClassName = NSStringFromClass(self.dynamicType)
         let name = childClassName.componentsSeparatedByString(".").last!
 
@@ -40,23 +40,15 @@ class HTObject: NSObject {
 
     // Allow setting a custom class name, if required, such as:
     // var person = Person(parseClassName: "People")
-    init(parseClassName: String) {
-        super.init()
-
-        uuid = NSUUID().UUIDString
-        _parseClassName = parseClassName
-        _object = PFObject(className: _parseClassName!)
-        // print("init \(parseClassName)")
+    convenience init(parseClassName: String) {
+        self.init(object: PFObject(className: parseClassName))
     }
 
     // This provides a way to instantiate from an existing object received from Parse
     init(object: PFObject) {
-        super.init()
-
         uuid = NSUUID().UUIDString
         _parseClassName = object.parseClassName
         _object = object
-        // print("init \(object.parseClassName) from object: \(object)")
     }
 
     // internal: this abstracts out our delegation of loading and saving
@@ -133,7 +125,7 @@ class HTObject: NSObject {
         }
     }
 
-    override var description: String {
+    var description: String {
         return _object != nil ? "object: \(_object!)" : "object is nil"
     }
 }
