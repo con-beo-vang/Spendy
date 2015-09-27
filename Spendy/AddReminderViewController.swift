@@ -131,8 +131,8 @@ extension AddReminderViewController: UITableViewDataSource, UITableViewDelegate 
                 Helper.sharedInstance.setSeparatorFullWidth(cell)
                 return cell
             } else {
-                let cell = tableView.dequeueReusableCellWithIdentifier("AddTimeCell", forIndexPath: indexPath)
-                
+                let cell = tableView.dequeueReusableCellWithIdentifier("AddTimeCell", forIndexPath: indexPath) as! AddReminderCell
+                cell.titleLabel.text = "Add time"
                 Helper.sharedInstance.setSeparatorFullWidth(cell)
                 return cell
             }

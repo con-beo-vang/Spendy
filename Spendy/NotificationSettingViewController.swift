@@ -124,8 +124,8 @@ extension NotificationSettingViewController: UITableViewDataSource, UITableViewD
             Helper.sharedInstance.setSeparatorFullWidth(cell)
             return cell
         } else {
-            let cell = tableView.dequeueReusableCellWithIdentifier("AddReminderCell", forIndexPath: indexPath)
-            
+            let cell = tableView.dequeueReusableCellWithIdentifier("AddReminderCell", forIndexPath: indexPath) as! AddReminderCell
+            cell.titleLabel.text = "Add category to remind"
             Helper.sharedInstance.setSeparatorFullWidth(cell)
             return cell
         }

@@ -99,11 +99,11 @@ class Transaction: HTObject {
     func kindColor() -> UIColor {
         switch kind! {
         case Transaction.expenseKind:
-            return UIColor.redColor()
+            return Color.expenseColor
         case Transaction.incomeKind:
-            return UIColor(netHex: 0x3D8B37)
+            return Color.incomeColor
         default:
-            return UIColor.blueColor()
+            return Color.balanceColor
         }
     }
 

@@ -170,7 +170,7 @@ extension AccountsViewController: UIGestureRecognizerDelegate {
         if let selectedDragCell = selectedDragCell {
 //            var indexPath = tableView.indexPathForCell(selectedDragCell)
 
-            selectedDragCell.backgroundColor = UIColor(netHex: 0xCAE1FF)
+            selectedDragCell.backgroundColor = Color.originalAccountColor
             
             
             let translation = sender.translationInView(tableView)
@@ -181,6 +181,7 @@ extension AccountsViewController: UIGestureRecognizerDelegate {
                 print("began", terminator: "\n")
                 
                 moneyIcon = UIImageView(image: UIImage(named: "MoneyBag"))
+                moneyIcon?.setNewTintColor(Color.strongColor)
                 moneyIcon!.frame = CGRect(x: 0, y: 0, width: 32, height: 32)
                 moneyIcon!.userInteractionEnabled = true
                 
@@ -203,7 +204,8 @@ extension AccountsViewController: UIGestureRecognizerDelegate {
                         if cell != previousCell {
                             previousCell?.backgroundColor = UIColor.clearColor()
                             if let cell = cell {
-                                cell.backgroundColor = UIColor(netHex: 0x739AC5)
+                                cell.backgroundColor = Color.destinationAccountColor
+                                cell.typeLabel.textColor = UIColor.whiteColor()
                             }
                             
                             previousCell = cell
@@ -211,6 +213,7 @@ extension AccountsViewController: UIGestureRecognizerDelegate {
                     } else {
                         if previousCell != selectedDragCell {
                             previousCell?.backgroundColor = UIColor.clearColor()
+                            previousCell?.typeLabel.textColor = UIColor.lightGrayColor()
                         }
                         previousCell = cell
                     }
@@ -223,6 +226,7 @@ extension AccountsViewController: UIGestureRecognizerDelegate {
                 moneyIcon?.removeFromSuperview()
                 selectedDragCell.backgroundColor = UIColor.clearColor()
                 previousCell?.backgroundColor = UIColor.clearColor()
+                previousCell?.typeLabel.textColor = UIColor.lightGrayColor()
                 
                 if previousCell != selectedDragCell && !isPreparedDelete {
                     
