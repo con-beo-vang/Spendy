@@ -78,16 +78,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
         }
 
-        if application.respondsToSelector("registerUserNotificationSettings:") {
-//            let userNotificationTypes = [UIUserNotificationType.Alert, UIUserNotificationType.Badge, UIUserNotificationType.Sound]
-            let settings = UIUserNotificationSettings(forTypes: [.Alert, .Badge, .Sound], categories: nil)
-            
-            application.registerUserNotificationSettings(settings)
-            application.registerForRemoteNotifications()
-        } else {
-//            let types = UIUserNotificationType.Badge | UIUserNotificationType.Alert | UIUserNotificationType.Sound
-            application.registerUserNotificationSettings(UIUserNotificationSettings(forTypes: [.Alert, .Badge, .Sound], categories: nil))
-        }
+//        if application.respondsToSelector("registerUserNotificationSettings:") {
+////            let userNotificationTypes = [UIUserNotificationType.Alert, UIUserNotificationType.Badge, UIUserNotificationType.Sound]
+//            let settings = UIUserNotificationSettings(forTypes: [.Alert, .Badge, .Sound], categories: nil)
+//            
+//            application.registerUserNotificationSettings(settings)
+//            application.registerForRemoteNotifications()
+//        } else {
+////            let types = UIUserNotificationType.Badge | UIUserNotificationType.Alert | UIUserNotificationType.Sound
+//            application.registerUserNotificationSettings(UIUserNotificationSettings(forTypes: [.Alert, .Badge, .Sound], categories: nil))
+//        }
 
         DataManager.setupDefaultData(false)
         
@@ -109,8 +109,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         //window?.rootViewController = vc
 //        var nc = UINavigationController(rootViewController: vc)
         window?.rootViewController = vc
-        
-        
 
         return true
     }

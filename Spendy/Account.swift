@@ -27,11 +27,17 @@ class Account: HTObject {
         set { self["icon"] = newValue }
     }
 
+    var startingBalance: NSDecimalNumber {
+        get {
+            guard let am = self["startingBalance"] as! NSNumber? else { return 0 }
+            return NSDecimalNumber(decimal: am.decimalValue)
+        }
+        set { self["startingBalance"] = newValue }
+    }
+
     var balance: NSDecimalNumber {
         get {
-            guard let am = self["balance"] as! NSNumber? else {
-                return 0
-            }
+            guard let am = self["balance"] as! NSNumber? else { return 0 }
             return NSDecimalNumber(decimal: am.decimalValue)
         }
         set { self["balance"] = newValue }
@@ -45,34 +51,38 @@ class Account: HTObject {
         self.userId = PFUser.currentUser()!.objectId!
     }
 
-
     func recomputeBalance() {
-        var bal = NSDecimalNumber(double: 0)
+        var bal = NSDecimalNumber(double: startingBalance.doubleValue)
 
         // TODO: sort transactions
         for (_, t) in transactions.enumerate() {
-            if let kind = t.kind {
-                switch kind {
-                case Transaction.expenseKind, Transaction.transferKind:
-                    bal = bal.decimalNumberBySubtracting(t.amount!)
-                case Transaction.incomeKind:
-                    bal = bal.decimalNumberByAdding(t.amount!)
-                default:
-                    print("unexpected kind")
-                }
+            guard let kind = t.kind else { print("Unexpected nil kind in \(t)"); continue }
+
+            switch kind {
+            case Transaction.expenseKind, Transaction.transferKind:
+                bal = bal.decimalNumberBySubtracting(t.amount!)
+                
+            case Transaction.incomeKind:
+                bal = bal.decimalNumberByAdding(t.amount!)
+                
+            default:
+                print("unexpected kind")
+            }
+            
+            if bal != t.balanceSnapshot {
                 t.balanceSnapshot = bal
             }
         }
 
-        self.balance = bal
+        if bal != balance {
+            self.balance = bal
+        }
     }
 
     func formattedBalance() -> String {
         return String(format: "$%.02f", abs(balance.doubleValue))
     }
 
-    // computed property
-    // default is get
     var transactions: [Transaction] {
         get {
             guard _transactions != nil else {
@@ -93,12 +103,13 @@ class Account: HTObject {
     }
 
     func addTransaction(transaction: Transaction) {
-        transaction._object?.saveEventually()
+        transaction.save()
         transactions.append(transaction)
         recomputeBalance()
     }
 
     func removeTransaction(transaction: Transaction) {
+        // TODO: implement UNDO
         transaction._object?.deleteEventually()
         transactions = transactions.filter({ $0.uuid != transaction.uuid })
         recomputeBalance()
@@ -106,13 +117,12 @@ class Account: HTObject {
 
     static func loadAll() {
         let user = PFUser.currentUser()!
-        print("=====================\nUser: \(user)\n=====================", terminator: "\n")
+        print("=====================\nUser: \(user)\n=====================")
 
         let localQuery = PFQuery(className: "Account").fromLocalDatastore()
 
         // TODO: move this out
         if user.objectId == nil {
-//            user.save()
             do {
                 try user.save()
                 print("Success")
@@ -120,19 +130,16 @@ class Account: HTObject {
                 print("An error occurred when saving user.")
             }
         }
-//localQuery.findObjectsInBackgroundWithBlock
 
         localQuery.whereKey("userId", equalTo: user.objectId!)
-        localQuery.findObjectsInBackgroundWithBlock {
-            (objects, error) -> Void in
-
-            if error != nil {
-                print("Error loading accounts from Local: \(error)", terminator: "\n")
+        localQuery.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
+            guard error == nil else {
+                print("Error loading accounts from Local: \(error)")
                 return
             }
 
             _allAccounts = objects?.map({ Account(object: $0 ) })
-            print("\n[local] accounts: \(objects)", terminator: "\n")
+            print("\n[local] accounts: \(objects)")
 
             if _allAccounts == nil || _allAccounts!.isEmpty {
                 // load from server
@@ -144,7 +151,7 @@ class Account: HTObject {
                         return
                     }
 
-                    print("\n[server] accounts: \(objects)")
+                    print("\n[server] accounts: \(objects!)")
                     _allAccounts = objects?.map({ Account(object: $0 ) })
 
                     if _allAccounts!.isEmpty {
@@ -158,17 +165,25 @@ class Account: HTObject {
                         _allAccounts!.append(defaultAccount)
                         _allAccounts!.append(secondAccount)
 
-                        print("accounts: \(_allAccounts!)", terminator: "\n")
+                        print("accounts: \(_allAccounts!)")
                     } else {
+                        for account in _allAccounts! {
+                            account.recomputeBalance()
+                        }
                         Account.pinAllWithName(_allAccounts!, name: "MyAccounts")
                     }
+                }
+            } else {
+                for account in _allAccounts! {
+                    account.recomputeBalance()
                 }
             }
         }
     }
 
+    // TODO: a different way to specify defaultAccount
     class func defaultAccount() -> Account? {
-        return _allAccounts?.first
+        return all()?.first
     }
 
     class func all() -> [Account]? {
@@ -176,10 +191,9 @@ class Account: HTObject {
     }
 
     class func findById(objectId: String) -> Account? {
-        let record = _allAccounts?.filter({ (el) -> Bool in
-            el.objectId == objectId
-        }).first
-        return record
+        guard let all = all() else { return nil }
+
+        return all.filter({ $0.objectId == objectId }).first
     }
 
     // MARK: Printable
@@ -188,10 +202,3 @@ class Account: HTObject {
         return "uuid: \(uuid), userId: \(userId), name: \(name), icon: \(icon), base: \(base)"
     }
 }
-
-//extension Account: CustomStringConvertible {
-//    override var description: String {
-//        let base = super.description
-//        return "userId: \(userId), name: \(name), icon: \(icon), base: \(base)"
-//    }
-//}
