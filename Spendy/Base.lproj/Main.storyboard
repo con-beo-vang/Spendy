@@ -1035,7 +1035,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dTs-FI-fpV">
+                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dTs-FI-fpV">
                                 <rect key="frame" x="16" y="72" width="288" height="12"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="brC-rk-x32">
@@ -1054,7 +1054,7 @@
                                     <constraint firstAttribute="bottom" secondItem="brC-rk-x32" secondAttribute="bottom" id="uOH-E6-2SQ"/>
                                 </constraints>
                             </view>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="September 14, 2015" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yVI-NT-Ydm">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="September 14, 2015" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yVI-NT-Ydm">
                                 <rect key="frame" x="91" y="92" width="138" height="18"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                 <color key="textColor" red="0.7803921568627451" green="0.54117647058823526" blue="0.26666666666666666" alpha="1" colorSpace="calibratedRGB"/>
@@ -1484,7 +1484,7 @@
         <image name="Transfer" width="32" height="32"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="hG1-qS-arn"/>
         <segue reference="GZy-oB-vHb"/>
+        <segue reference="9fp-4E-dIQ"/>
     </inferredMetricsTieBreakers>
 </document>

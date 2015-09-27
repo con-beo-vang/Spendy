@@ -89,8 +89,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //            application.registerUserNotificationSettings(UIUserNotificationSettings(forTypes: [.Alert, .Badge, .Sound], categories: nil))
 //        }
 
+        // Call with true to reset data
         DataManager.setupDefaultData(false)
-        
         
         // Config apprearance
         Color.isGreen = true

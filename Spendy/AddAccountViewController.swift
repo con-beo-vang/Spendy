@@ -66,9 +66,6 @@ class AddAccountViewController: UIViewController {
         self.tabBarController?.tabBar.hidden = false
         navigationController?.popViewControllerAnimated(true)
     }
-    
-    
-
 }
 
 // MARK: Transfer between 2 views

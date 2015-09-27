@@ -91,7 +91,7 @@ class Account: HTObject {
                 _transactions = Transaction.findByAccountId(objectId!)
 
                 recomputeBalance()
-                print("computed balance for \(_transactions?.count) items: \(balance)")
+                print("computed balance for \(_transactions!.count) items. Balance \(balance)")
                 return _transactions!
             }
 
@@ -133,21 +133,21 @@ class Account: HTObject {
 
         localQuery.whereKey("userId", equalTo: user.objectId!)
         localQuery.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
-            guard error == nil else {
-                print("Error loading accounts from Local: \(error)")
+            guard let objects = objects where error == nil else {
+                print("Error loading accounts from Local. Error: \(error)")
                 return
             }
 
-            _allAccounts = objects?.map({ Account(object: $0 ) })
+            _allAccounts = objects.map({ Account(object: $0 ) })
             print("\n[local] accounts: \(objects)")
 
-            if _allAccounts == nil || _allAccounts!.isEmpty {
+            if _allAccounts!.isEmpty {
                 // load from server
                 let remoteQuery = PFQuery(className: "Account")
                 remoteQuery.whereKey("userId", equalTo: user.objectId!)
                 remoteQuery.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
                     if let error = error {
-                        print("Error loading accounts from Server: \(error)", terminator: "\n")
+                        print("Error loading accounts from Server: \(error)")
                         return
                     }
 
@@ -155,10 +155,10 @@ class Account: HTObject {
                     _allAccounts = objects?.map({ Account(object: $0 ) })
 
                     if _allAccounts!.isEmpty {
-                        print("No account found for \(user). Creating Default Account", terminator: "\n")
+                        print("No account found for \(user). Creating default accounts:")
 
                         let defaultAccount = Account(name: "Default Account")
-                        let secondAccount  = Account(name: "Second Account")
+                        let secondAccount  = Account(name: "Bank")
 
                         defaultAccount.pinAndSaveEventuallyWithName("MyAccounts")
                         secondAccount.pinAndSaveEventuallyWithName("MyAccounts")

@@ -13,14 +13,11 @@ class DataManager {
     class func setupDefaultData(removeLocalData: Bool = false) {
         if removeLocalData {
             print("\n**Remove all local data**\n")
-            do {
-                try PFObject.unpinAllObjects()
-                print("Success")
-            } catch {
-                print("An error occurred when removing all local data.")
-            }
+            // There is a bug with Parse right now and this doesn't not run successfully in Swift 2 for now
+            try! PFObject.unpinAllObjects()
+            // unused:
 //            PFObject.unpinAllObjectsInBackgroundWithName("MyAccounts")
-//            PFObject.unpinAllObjectsInBackgroundWithName("MyCategories")
+//            PFObject.unpinAllObjectsInBckgroundWithName("MyCategories")
         }
 
         // Load all categories from local
