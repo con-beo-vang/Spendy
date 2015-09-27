@@ -56,7 +56,7 @@ class Account: HTObject {
     }
 
     func recomputeBalance() {
-        var bal = NSDecimalNumber(double: 0)
+        var bal = startingBalance
 
         // TODO: sort transactions
         for (_, t) in transactions.enumerate() {
