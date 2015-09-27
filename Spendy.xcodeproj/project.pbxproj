@@ -20,6 +20,8 @@
 		1881FB4C1BB7EC9F00314FD1 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1881FB4B1BB7EC9F00314FD1 /* Color.swift */; settings = {ASSET_TAGS = (); }; };
 		1881FB4E1BB8097100314FD1 /* AddReminderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1881FB4D1BB8097100314FD1 /* AddReminderCell.swift */; settings = {ASSET_TAGS = (); }; };
 		1881FB501BB80CC800314FD1 /* LogOutCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1881FB4F1BB80CC800314FD1 /* LogOutCell.swift */; settings = {ASSET_TAGS = (); }; };
+		1881FB521BB831DD00314FD1 /* ViewMoreCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1881FB511BB831DD00314FD1 /* ViewMoreCell.swift */; settings = {ASSET_TAGS = (); }; };
+		1881FB541BB834BD00314FD1 /* ThemeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1881FB531BB834BD00314FD1 /* ThemeCell.swift */; settings = {ASSET_TAGS = (); }; };
 		1884A4DC1BAD62EB00D24257 /* AddReminderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1884A4DB1BAD62EB00D24257 /* AddReminderViewController.swift */; };
 		1884A4DF1BAD6E9A00D24257 /* CategoryReminderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1884A4DE1BAD6E9A00D24257 /* CategoryReminderCell.swift */; };
 		1884A4E11BAD6EAA00D24257 /* TimeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1884A4E01BAD6EAA00D24257 /* TimeCell.swift */; };
@@ -89,6 +91,8 @@
 		1881FB4B1BB7EC9F00314FD1 /* Color.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
 		1881FB4D1BB8097100314FD1 /* AddReminderCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddReminderCell.swift; sourceTree = "<group>"; };
 		1881FB4F1BB80CC800314FD1 /* LogOutCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogOutCell.swift; sourceTree = "<group>"; };
+		1881FB511BB831DD00314FD1 /* ViewMoreCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewMoreCell.swift; sourceTree = "<group>"; };
+		1881FB531BB834BD00314FD1 /* ThemeCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThemeCell.swift; sourceTree = "<group>"; };
 		1884A4DB1BAD62EB00D24257 /* AddReminderViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddReminderViewController.swift; sourceTree = "<group>"; };
 		1884A4DE1BAD6E9A00D24257 /* CategoryReminderCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CategoryReminderCell.swift; sourceTree = "<group>"; };
 		1884A4E01BAD6EAA00D24257 /* TimeCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimeCell.swift; sourceTree = "<group>"; };
@@ -221,6 +225,7 @@
 			children = (
 				18A9897E1BB5C05A00CD6E28 /* DefaultAccountCell.swift */,
 				1881FB4F1BB80CC800314FD1 /* LogOutCell.swift */,
+				1881FB531BB834BD00314FD1 /* ThemeCell.swift */,
 			);
 			name = "Settings View";
 			sourceTree = "<group>";
@@ -313,6 +318,7 @@
 				18F39CD61BA9D2E70099B714 /* SelectAccountOrCategoryCell.swift */,
 				18F39CD81BA9D2F80099B714 /* DateCell.swift */,
 				18AA6A4C1BAA7575003210FD /* PhotoCell.swift */,
+				1881FB511BB831DD00314FD1 /* ViewMoreCell.swift */,
 			);
 			name = "Add/Edit Transaction";
 			sourceTree = "<group>";
@@ -573,6 +579,7 @@
 				18AA6A4D1BAA7575003210FD /* PhotoCell.swift in Sources */,
 				184851F31BB011AA00C1EA63 /* MenuCell.swift in Sources */,
 				1892689D1BB52728006FA9C4 /* CustomInteractionController.swift in Sources */,
+				1881FB541BB834BD00314FD1 /* ThemeCell.swift in Sources */,
 				9D3EA5FC1BABFB1300EF4B47 /* Account.swift in Sources */,
 				18A9897F1BB5C05A00CD6E28 /* DefaultAccountCell.swift in Sources */,
 				186640311BB39F52007B73C3 /* PhotoViewController.swift in Sources */,
@@ -585,6 +592,7 @@
 				184851F51BB011B700C1EA63 /* BalanceCell.swift in Sources */,
 				9D78C51D1BA5A47F00B00BC2 /* AppDelegate.swift in Sources */,
 				1892689E1BB52728006FA9C4 /* CustomNavigationAnimationController.swift in Sources */,
+				1881FB521BB831DD00314FD1 /* ViewMoreCell.swift in Sources */,
 				18F39CD51BA9D2C00099B714 /* AmountCell.swift in Sources */,
 				1884A4DC1BAD62EB00D24257 /* AddReminderViewController.swift in Sources */,
 				1884A4E11BAD6EAA00D24257 /* TimeCell.swift in Sources */,

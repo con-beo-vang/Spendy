@@ -55,9 +55,12 @@ class LoginViewController: UIViewController {
         
 //        loginButton.layer.backgroundColor = UIColor(netHex: 0xfcc96f).CGColor
         
-        setColor()
         tableViewHeightConstraint.constant = isRegisterMode ? 132 : 88
 
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        setColor()
     }
 
     override func didReceiveMemoryWarning() {
@@ -72,8 +75,8 @@ class LoginViewController: UIViewController {
         appNameLabel.textColor = Color.appNameColor
         loginButton.layer.backgroundColor = Color.strongColor.CGColor
         loginButton.tintColor = UIColor.whiteColor()
-        registerButton.tintColor = Color.registerColor
-        retrievePassword.tintColor = Color.forgotPasswordColor
+        registerButton.setTitleColor(Color.registerColor, forState: UIControlState.Normal)
+        retrievePassword.setTitleColor(Color.forgotPasswordColor, forState: UIControlState.Normal)
     }
     
     // MARK: Button

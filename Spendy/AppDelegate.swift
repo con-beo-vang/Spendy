@@ -93,6 +93,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         
         // Config apprearance
+        Color.isGreen = true
         UINavigationBar.appearance().barTintColor = Color.strongColor
         UINavigationBar.appearance().tintColor = UIColor.whiteColor()
         UINavigationBar.appearance().titleTextAttributes = [NSForegroundColorAttributeName : UIColor.whiteColor()]

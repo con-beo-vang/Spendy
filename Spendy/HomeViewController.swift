@@ -107,8 +107,6 @@ class HomeViewController: UIViewController {
         
         configPopup()
 
-        setColor()
-        
         
         
 //        for item in (tabBarController?.tabBar.items)! {
@@ -118,6 +116,10 @@ class HomeViewController: UIViewController {
 //        }
         
         
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        setColor()
     }
 
     override func didReceiveMemoryWarning() {
@@ -131,13 +133,16 @@ class HomeViewController: UIViewController {
         todayLabel.textColor = Color.dateHomeColor
         
         // Date popup
+        datePopup.backgroundColor = Color.popupBackgroundColor
         fromLabel.textColor = Color.popupFromColor
         toLabel.textColor = Color.popupFromColor
-        fromButton.tintColor = Color.popupDateColor
-        toButton.tintColor = Color.popupDateColor
-        cancelButton.tintColor = Color.popupButtonColor
-        doneButton.tintColor = Color.popupButtonColor
+        fromButton.setTitleColor(Color.popupDateColor, forState: UIControlState.Normal)
+        toButton.setTitleColor(Color.popupDateColor, forState: UIControlState.Normal)
+        cancelButton.setTitleColor(Color.popupDateColor, forState: UIControlState.Normal)
+        doneButton.setTitleColor(Color.popupDateColor, forState: UIControlState.Normal)
         
+        Helper.sharedInstance.setPopupShadowAndColor(viewModePopup, label: viewModeTitleLabel)
+        Helper.sharedInstance.setPopupShadowAndColor(datePopup, label: dateTitleLabel)
     }
     
     // MARK: View mode
@@ -187,8 +192,7 @@ class HomeViewController: UIViewController {
         popupSuperView.hidden = true
         popupSuperView.backgroundColor = UIColor.grayColor().colorWithAlphaComponent(0.5)
         
-        Helper.sharedInstance.setPopupShadowAndColor(viewModePopup, label: viewModeTitleLabel)
-        Helper.sharedInstance.setPopupShadowAndColor(datePopup, label: dateTitleLabel)
+        
         
         let today = NSDate()
         fromButton.setTitle(formatter.stringFromDate(today), forState: UIControlState.Normal)

@@ -160,6 +160,8 @@
                     <navigationItem key="navigationItem" title="Quick Add" id="luT-P4-6ex"/>
                     <connections>
                         <outlet property="amountText" destination="J36-hn-w4j" id="LgT-6n-sQF"/>
+                        <outlet property="cancelPopupButton" destination="5Pm-r1-1yz" id="ymX-3t-u7s"/>
+                        <outlet property="donePopupButton" destination="teB-is-JSs" id="n3b-48-ugk"/>
                         <outlet property="popupSuperView" destination="lbw-ID-crr" id="aGi-ar-0d2"/>
                         <outlet property="popupTitleLabel" destination="ogG-o0-RXn" id="GuC-4p-JE8"/>
                         <outlet property="popupView" destination="9vj-Y7-Jkb" id="A2Z-5T-vpz"/>
@@ -344,7 +346,7 @@
                                             <outlet property="titleLabel" destination="74R-sU-UQT" id="jlm-24-Nfn"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="ViewMoreCell" id="A8p-jL-ymL">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="ViewMoreCell" id="A8p-jL-ymL" customClass="ViewMoreCell" customModule="Spendy" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="404" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="A8p-jL-ymL" id="mIS-fS-lYa">
@@ -363,6 +365,9 @@
                                                 <constraint firstAttribute="centerX" secondItem="eqB-Gi-VIe" secondAttribute="centerX" id="oxl-2q-Eme"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="titleLabel" destination="eqB-Gi-VIe" id="agG-DC-oSK"/>
+                                        </connections>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="PhotoCell" id="4uc-LR-euG" customClass="PhotoCell" customModule="Spendy" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="448" width="320" height="44"/>
@@ -564,14 +569,17 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Spendy" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZiJ-MC-Jxq">
-                                <rect key="frame" x="110" y="216" width="102" height="36"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Spendy" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZiJ-MC-Jxq">
+                                <rect key="frame" x="109" y="196" width="101.5" height="36"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="30"/>
                                 <color key="textColor" red="0.70196078431372544" green="0.52156862745098043" blue="0.21568627450980393" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oON-b3-k27">
-                                <rect key="frame" x="20" y="460" width="280" height="30"/>
+                                <rect key="frame" x="20" y="450" width="280" height="40"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="ArH-zL-whh"/>
+                                </constraints>
                                 <state key="normal" title="Login"/>
                                 <connections>
                                     <action selector="onLogin:" destination="Y3E-Ge-Kiz" eventType="touchUpInside" id="VJv-6f-VkD"/>
@@ -597,7 +605,7 @@
                                 </connections>
                             </button>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="1vd-mT-JQ5">
-                                <rect key="frame" x="20" y="356" width="280" height="88"/>
+                                <rect key="frame" x="20" y="346" width="280" height="88"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="88" id="gH4-xj-H3G"/>
@@ -629,8 +637,8 @@
                                 </prototypes>
                                 <sections/>
                             </tableView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="Logo" translatesAutoresizingMaskIntoConstraints="NO" id="hqM-F6-DGE">
-                                <rect key="frame" x="120" y="120" width="80" height="80"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Logo" translatesAutoresizingMaskIntoConstraints="NO" id="hqM-F6-DGE">
+                                <rect key="frame" x="120" y="100" width="80" height="80"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="80" id="K5R-i9-8vS"/>
                                     <constraint firstAttribute="width" constant="80" id="xdC-2V-XXh"/>
