@@ -36,7 +36,15 @@ class Transaction: HTObject {
     static let incomeKind: String = "income"
     static let transferKind: String = "transfer"
 
-    var balanceSnapshot: NSDecimalNumber = 0.0
+    var balanceSnapshot: NSDecimalNumber {
+        get {
+            guard let am = self["balanceSnapshot"] as! NSNumber? else {
+                return 0
+            }
+            return NSDecimalNumber(decimal: am.decimalValue)
+        }
+        set { self["balanceSnapshot"] = newValue }
+    }
 
     // transaction.note =>
     // transaction.note = "blah"

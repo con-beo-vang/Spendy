@@ -27,6 +27,16 @@ class Account: HTObject {
         set { self["icon"] = newValue }
     }
 
+    var startingBalance: NSDecimalNumber {
+        get {
+            guard let am = self["startingBalance"] as! NSNumber? else {
+                return 0
+            }
+            return NSDecimalNumber(decimal: am.decimalValue)
+        }
+        set { self["startingBalance"] = newValue }
+    }
+
     var balance: NSDecimalNumber {
         get {
             guard let am = self["balance"] as! NSNumber? else {
