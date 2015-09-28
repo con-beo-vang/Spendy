@@ -8,6 +8,7 @@
 
 import UIKit
 import Parse
+import SwiftSpinner
 
 class LoginViewController: UIViewController {
     
@@ -85,7 +86,10 @@ class LoginViewController: UIViewController {
         
         email = (getTextField(1)?.text)!
         password = (getTextField(2)?.text)!
-        
+
+        // start spinner
+        SwiftSpinner.show("Logging in...")
+
         if isRegisterMode {
             name = (getTextField(0)?.text)!
             // TODO: Handle Register
@@ -95,8 +99,6 @@ class LoginViewController: UIViewController {
             // TODO: Handle Login
             processLoggingIn()
         }
-        
-        // performSegueWithIdentifier("GoToHome", sender: self)
     }
 
     func processLoggingIn() {
@@ -104,14 +106,18 @@ class LoginViewController: UIViewController {
         PFUser.logInWithUsernameInBackground(email, password: password) {
             (user: PFUser?, error: NSError?) -> Void in
             guard let _ = user where error == nil else {
-                // stop animating
-
                 // display error message
                 if let message = error!.userInfo["error"] {
                     // print("ERROR: \(message)")
                     dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                        self.alertWithMessage("Error", message: message.description)
+                        // self.alertWithMessage("Error", message: message.description)
+                        SwiftSpinner.show("\(message)", animated: false).addTapHandler(
+                            { SwiftSpinner.hide() },
+                            subtitle: "Tap to try again"
+                        )
                     })
+                } else {
+                    SwiftSpinner.hide()
                 }
                 return
             }
@@ -138,6 +144,7 @@ class LoginViewController: UIViewController {
         self.presentViewController(alertController, animated: true, completion: nil)
     }
 
+    // Optional: if we want user to agree to some terms
     func confirmToRegister(sender: AnyObject) {
         print("registering: \(name), \(email), \(password)")
         // Build the terms and conditions alert
@@ -164,8 +171,6 @@ class LoginViewController: UIViewController {
         password = (getTextField(2)?.text)!
         print("registering \(name), \(email), \(password)")
 
-        // start spinner
-
         // update user
         guard User.current() == nil else { return false }
 
@@ -181,14 +186,17 @@ class LoginViewController: UIViewController {
                     self.performSegueWithIdentifier("GoToHome", sender: self)
                 })
             } else {
-                // stop animating
-
                 // display error message
                 if let message = error!.userInfo["error"] {
                     // print("ERROR: \(message)")
                     dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                        self.alertWithMessage("Error", message: message.description)
+                        SwiftSpinner.show("\(message)", animated: false).addTapHandler(
+                            { SwiftSpinner.hide() },
+                            subtitle: "Tap to try again"
+                        )
                     })
+                } else {
+                    SwiftSpinner.hide()
                 }
             }
         }
@@ -215,15 +223,12 @@ class LoginViewController: UIViewController {
             tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: UITableViewRowAnimation.Top)
             tableViewHeightConstraint.constant = 132
         }
-        
-
     }
     
     @IBAction func onRetrievePassword(sender: UIButton) {
         print("on Retrieve password")
     }
     
-
     // MARK: Keyboard
     
     func keyboardWasShown(notification: NSNotification) {
