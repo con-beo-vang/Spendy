@@ -148,26 +148,28 @@ class SettingsViewController: UIViewController, ThemeCellDelegate, UITabBarContr
         PFUser.logOut()
         print("Logged out. User: \(PFUser.currentUser())", terminator: "\n")
         // refreshViewsForUser()
-        // TODO: transfer to Login view
+        
+        // Transfer to Login view
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let loginVC = storyboard.instantiateViewControllerWithIdentifier("LoginVC") as! LoginViewController
+        presentViewController(loginVC, animated: true, completion: nil)
     }
     
     // MARK: Implement delegate
     
     func themeCell(themeCell: ThemeCell, didChangeValue value: Bool) {
         
-        //        let indexPath = tableView.indexPathForCell(themeCell)!
-        print("switch theme", terminator: "\n")
-        // TODO: handle time switch
         Color.isGreen = value
-        print(Color.isGreen)
-//        navigationController?.toolbar.backgroundColor = Color.strongColor
+        
+        NSUserDefaults.standardUserDefaults().setBool(value, forKey: "DefaultTheme")
+        
+        self.navigationController?.navigationBar.barTintColor = Color.strongColor
+        self.tabBarController!.tabBar.tintColor = Color.strongColor
         
         UINavigationBar.appearance().barTintColor = Color.strongColor
         UITabBar.appearance().tintColor = Color.strongColor
         
         self.viewDidLoad()
-        
-
     }
 }
 

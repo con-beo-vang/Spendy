@@ -127,6 +127,10 @@ class Helper: NSObject {
         label.backgroundColor = Color.popupHeaderColor
         label.textColor = UIColor.whiteColor()
     }
+    
+    // MARK: Local notificaiton
+    
+    
 }
 
 extension String {
@@ -164,6 +168,14 @@ extension UIImageView {
     func setNewTintColor(color: UIColor) {
         self.image = self.image!.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
         self.tintColor = color
+    }
+}
+
+extension UITableView {
+    
+    func reloadDataWithBlock(completion: ()->()) {
+        UIView.animateWithDuration(0, animations: { self.reloadData() })
+            { _ in completion() }
     }
 }
 

@@ -9,13 +9,13 @@
 import UIKit
 
 class AccountCell: UITableViewCell {
-    
+
     @IBOutlet weak var iconView: UIImageView!
-    
+
     @IBOutlet weak var nameLabel: UILabel!
 
     @IBOutlet weak var typeLabel: UILabel!
-    
+
     @IBOutlet weak var balanceLabel: UILabel!
 
 
@@ -29,6 +29,7 @@ class AccountCell: UITableViewCell {
             }
             nameLabel.text = account.name
             typeLabel.text = "Start: \(account.startingBalance)"
+            iconView.setNewTintColor(Color.strongColor)
         }
     }
 

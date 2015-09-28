@@ -77,23 +77,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 PFAnalytics.trackAppOpenedWithLaunchOptions(launchOptions)
             }
         }
-
-//        if application.respondsToSelector("registerUserNotificationSettings:") {
-////            let userNotificationTypes = [UIUserNotificationType.Alert, UIUserNotificationType.Badge, UIUserNotificationType.Sound]
-//            let settings = UIUserNotificationSettings(forTypes: [.Alert, .Badge, .Sound], categories: nil)
-//            
-//            application.registerUserNotificationSettings(settings)
-//            application.registerForRemoteNotifications()
-//        } else {
-////            let types = UIUserNotificationType.Badge | UIUserNotificationType.Alert | UIUserNotificationType.Sound
-//            application.registerUserNotificationSettings(UIUserNotificationSettings(forTypes: [.Alert, .Badge, .Sound], categories: nil))
-//        }
+        
+        // Local notification
+        settingNotification(application)
 
         // Call with true to reset data
         DataManager.setupDefaultData(false)
         
         // Config apprearance
-        Color.isGreen = true
+        
+        Color.isGreen = NSUserDefaults.standardUserDefaults().boolForKey("DefaultTheme") ?? true
+        
         UINavigationBar.appearance().barTintColor = Color.strongColor
         UINavigationBar.appearance().tintColor = UIColor.whiteColor()
         UINavigationBar.appearance().titleTextAttributes = [NSForegroundColorAttributeName : UIColor.whiteColor()]
@@ -103,12 +97,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UITabBar.appearance().tintColor = Color.strongColor
         
         
-        // Go to the logged in screen
-        let vc = storyboard.instantiateViewControllerWithIdentifier("LoginVC") as! LoginViewController
+        // TODO: check login
+        let isLoggedIn = false
         
-        //window?.rootViewController = vc
-//        var nc = UINavigationController(rootViewController: vc)
-        window?.rootViewController = vc
+        if isLoggedIn {
+            // Go to Home screen
+            let vc = storyboard.instantiateViewControllerWithIdentifier("RootTabBarController") as! RootTabBarController
+            window?.rootViewController = vc
+        } else {
+            // Go to Login screen
+            let vc = storyboard.instantiateViewControllerWithIdentifier("LoginVC") as! LoginViewController
+            window?.rootViewController = vc
+        }
 
         return true
     }
@@ -165,4 +165,52 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // func application(application: UIApplication, openURL url: NSURL, sourceApplication: String?, annotation: AnyObject?) -> Bool {
     //     return FBAppCall.handleOpenURL(url, sourceApplication:sourceApplication, session:PFFacebookUtils.session())
     // }
+    
+    //--------------------------------------
+    // MARK: - Local Notification
+    //--------------------------------------
+    
+    func settingNotification(application: UIApplication) {
+        
+        let completeAction = UIMutableUserNotificationAction()
+        completeAction.identifier = "CHANGE" // the unique identifier for this action
+        completeAction.title = "Change" // title for the action button
+        completeAction.activationMode = .Foreground
+        completeAction.authenticationRequired = false // don't require unlocking before performing action
+        completeAction.destructive = true // display action in red
+        
+        let remindAction = UIMutableUserNotificationAction()
+        remindAction.identifier = "YES"
+        remindAction.title = "Yes"
+        remindAction.activationMode = .Background // UIUserNotificationActivationMode.Background - don't bring app to foreground
+        remindAction.destructive = false
+        
+        let todoCategory = UIMutableUserNotificationCategory() // notification categories allow us to create groups of actions that we can associate with a notification
+        todoCategory.identifier = "REMINDER_CATEGORY"
+        todoCategory.setActions([remindAction, completeAction], forContext: .Default) // UIUserNotificationActionContext.Default (4 actions max)
+        todoCategory.setActions([completeAction, remindAction], forContext: .Minimal) // UIUserNotificationActionContext.Minimal - for when space is limited (2 actions max)
+        
+        application.registerUserNotificationSettings(UIUserNotificationSettings(forTypes: [.Alert, .Badge, .Sound], categories: NSSet(array: [todoCategory]) as? Set<UIUserNotificationCategory>)) // we're now providing a set containing our category as an argument
+        
+    }
+    
+    func application(application: UIApplication, handleActionWithIdentifier identifier: String?, forLocalNotification notification: UILocalNotification, completionHandler: () -> Void) {
+        
+        let item = ReminderItem(category: notification.userInfo!["category"] as! String!, predictiveAmount: NSDecimalNumber(decimal: (notification.userInfo!["predictiveAmount"] as! NSNumber).decimalValue), reminderTime: notification.fireDate!, UUID: notification.userInfo!["UUID"] as! String!)
+        
+        switch (identifier!) {
+        case "CHANGE":
+            print("CHANGE")
+            let vc = storyboard.instantiateViewControllerWithIdentifier("QuickVC") as! QuickViewController
+            let nc = UINavigationController(rootViewController: vc)
+            window?.rootViewController?.presentViewController(nc, animated: true, completion: nil)
+        case "YES":
+            print("YES")
+            ReminderList.sharedInstance.scheduleReminderforItem(item)
+        default: // switch statements must be exhaustive - this condition should never be met
+            print("Error: unexpected notification action identifier!")
+        }
+        completionHandler() // per developer documentation, app will terminate if we fail to call this
+    }
+
 }
