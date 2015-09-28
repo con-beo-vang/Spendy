@@ -334,7 +334,7 @@ extension AddTransactionViewController: UITableViewDataSource, UITableViewDelega
                 
                 // this got rendered too soon!
                 
-                let category = selectedTransaction?.category
+                let category = selectedTransaction?.category ?? Category.defaultCategory()
                 cell.typeLabel.text = category!.name // TODO: replace with default category
                 
                 Helper.sharedInstance.setSeparatorFullWidth(cell)

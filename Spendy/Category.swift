@@ -65,15 +65,21 @@ class Category: HTObject {
     }
 
     class func defaultCategory() -> Category? {
-        return _allCategories?.first
+        return all.first
     }
 
-    class func all() -> [Category]? {
-        return _allCategories;
+    class var all:[Category] {
+        if _allCategories == nil {
+            let localQuery = PFQuery(className: "Category")
+            let objects = try! localQuery.fromLocalDatastore().findObjects()
+            _allCategories = objects.map({ Category(object: $0) })
+        }
+
+        return _allCategories!
     }
 
     class func findById(objectId: String) -> Category? {
-        let record = _allCategories?.filter({ $0.objectId == objectId }).first
+        let record = all.filter({ $0.objectId == objectId }).first
         return record
     }
 }
