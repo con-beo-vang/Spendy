@@ -35,6 +35,7 @@ class AccountsViewController: UIViewController {
         tableView.tableFooterView = UIView()
         
         accounts = Account.all()
+        
         tableView.reloadData()
         
         if (tableView.contentSize.height <= tableView.frame.size.height) {

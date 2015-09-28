@@ -18,7 +18,9 @@ class AddReminderViewController: UIViewController, TimeCellDelegate {
     var selectedRemider: String!
     
     var times = [String]()
-
+    
+    var formatter: NSDateFormatter!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -34,9 +36,19 @@ class AddReminderViewController: UIViewController, TimeCellDelegate {
         
         addGestures()
         
+        formatter = NSDateFormatter()
+        formatter.dateFormat = "hh:mm a"
+        
+        // TODO: Change to TimeSlot object. Each category has a list of time slot
+        // TimeSlot { 
+        //        reminderItem: ReminderItem
+        //        isActive: Bool
+        // }
+        
+        
         times = ["08:00 AM", "02:00 PM", "07:00 PM"]
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -46,18 +58,18 @@ class AddReminderViewController: UIViewController, TimeCellDelegate {
     
     func addBarButton() {
         
-        addButton = UIButton()
-        Helper.sharedInstance.customizeBarButton(self, button: addButton!, imageName: "Bar-Tick", isLeft: false)
-        addButton!.addTarget(self, action: "onAddButton:", forControlEvents: UIControlEvents.TouchUpInside)
+        //        addButton = UIButton()
+        //        Helper.sharedInstance.customizeBarButton(self, button: addButton!, imageName: "Bar-Tick", isLeft: false)
+        //        addButton!.addTarget(self, action: "onAddButton:", forControlEvents: UIControlEvents.TouchUpInside)
         
         backButton = UIButton()
         Helper.sharedInstance.customizeBarButton(self, button: backButton!, imageName: "Bar-Back", isLeft: true)
         backButton!.addTarget(self, action: "onBackButton:", forControlEvents: UIControlEvents.TouchUpInside)
     }
     
-    func onAddButton(sender: UIButton!) {
-        print("on Add", terminator: "\n")
-    }
+    //    func onAddButton(sender: UIButton!) {
+    //        print("on Add", terminator: "\n")
+    //    }
     
     func onBackButton(sender: UIButton!) {
         print("on Back", terminator: "\n")
@@ -68,9 +80,19 @@ class AddReminderViewController: UIViewController, TimeCellDelegate {
     
     func timeCell(timeCell: TimeCell, didChangeValue value: Bool) {
         
-//        let indexPath = tableView.indexPathForCell(timeCell)!
+        //        let indexPath = tableView.indexPathForCell(timeCell)!
         print("switch time", terminator: "\n")
+        
         // TODO: handle time switch
+        if value {
+            // pass params category and predictive amount to this method
+            //            ReminderList.sharedInstance.addReminderNotification("Meal", amount: 5.00, date: formatter.dateFromString(timeCell.timeLabel.text!)!)
+            print("add new notification")
+        } else {
+            // pass ReminderItem of this cell to this method
+            //            ReminderList.sharedInstance.removeReminderNotification(<#T##item: ReminderItem##ReminderItem#>)
+            print("remove old notification")
+        }
     }
     
 }
@@ -146,16 +168,25 @@ extension AddReminderViewController: UITableViewDataSource, UITableViewDelegate 
                 let selectedCell = tableView.cellForRowAtIndexPath(indexPath) as? TimeCell
                 let timeString = selectedCell!.timeLabel.text
                 
-                let formatter = NSDateFormatter()
-                formatter.dateFormat = "hh:mm a"
-                
                 let defaultDate = formatter.dateFromString(timeString!)
                 
                 DatePickerDialog().show(title: "Choose Time", doneButtonTitle: "Done", cancelButtonTitle: "Cancel", defaultDate: defaultDate!, minDate: nil, datePickerMode: .Time) {
                     (time) -> Void in
                     print(time, terminator: "\n")
                     
-                    let timeString = formatter.stringFromDate(time)
+                    // TODO: Handle edit time. Pass params to these method
+                    // Remove old notification
+                    //                    ReminderList.sharedInstance.removeReminderNotification(<#T##item: ReminderItem##ReminderItem#>)
+                    print("remove old notification")
+                    
+                    // Turn on switch automatically <--- needed?
+                    selectedCell?.onSwitch.on = true
+                    
+                    // Add new notification
+                    //                    ReminderList.sharedInstance.addReminderNotification("Meal", amount: 5.00, date: time)
+                    print("add new notification")
+                    
+                    let timeString = self.formatter.stringFromDate(time)
                     print("formated: \(timeString)", terminator: "\n")
                     self.times[indexPath.row] = timeString
                     
@@ -166,7 +197,7 @@ extension AddReminderViewController: UITableViewDataSource, UITableViewDelegate 
             }
         }
     }
-
+    
 }
 
 // MARK: Handle gestures
@@ -204,6 +235,11 @@ extension AddReminderViewController: UIGestureRecognizerDelegate {
                 let timeCell = selectedCell as! TimeCell
                 let indexPath = tableView.indexPathForCell(timeCell)
                 
+                // TODO: Handle remove notification. Pass params to these method
+                // Remove old notification
+                //                    ReminderList.sharedInstance.removeReminderNotification(<#T##item: ReminderItem##ReminderItem#>)
+                print("remove old notification")
+                
                 if let indexPath = indexPath {
                     times.removeAtIndex(indexPath.row)
                     tableView.reloadSections(NSIndexSet(index: 1), withRowAnimation: UITableViewRowAnimation.Automatic)
@@ -222,9 +258,12 @@ extension AddReminderViewController: UIGestureRecognizerDelegate {
             (time) -> Void in
             print(time, terminator: "\n")
             
-            let formatter = NSDateFormatter()
-            formatter.dateFormat = "hh:mm a"
-            let timeString = formatter.stringFromDate(time)
+            // Add notification
+            // TODO: pass params category and predictive amount to this method
+            //            ReminderList.sharedInstance.addReminderNotification("Meal", amount: 5.00, date: time)
+            print("add new notification")
+            
+            let timeString = self.formatter.stringFromDate(time)
             print("formated: \(timeString)", terminator: "\n")
             self.times.append(timeString)
             

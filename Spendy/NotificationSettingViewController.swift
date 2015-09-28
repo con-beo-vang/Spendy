@@ -16,18 +16,22 @@ import UIKit
 class NotificationSettingViewController: UIViewController, ReminderCellDelegate {
     
     @IBOutlet weak var tableView: UITableView!
-
+    
     var addButton: UIButton!
     var backButton: UIButton!
     
     var remiders = [String]()
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         tableView.dataSource = self
         tableView.delegate = self
         tableView.tableFooterView = UIView()
+        
+        
+        // TODO: change object. Each cell is a Category which has timeSlots.count > 0
+        // TimeSlot object: refer line 42 in AddReminderViewController
         
         remiders = ["Meal", "Drink", "Transport"]
         
@@ -43,7 +47,7 @@ class NotificationSettingViewController: UIViewController, ReminderCellDelegate 
         leftSwipe.delegate = self
         tableView.addGestureRecognizer(leftSwipe)
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -53,19 +57,18 @@ class NotificationSettingViewController: UIViewController, ReminderCellDelegate 
     
     func addBarButton() {
         
-        addButton = UIButton()
-        Helper.sharedInstance.customizeBarButton(self, button: addButton!, imageName: "Bar-Tick", isLeft: false)
-        addButton!.addTarget(self, action: "onAddButton:", forControlEvents: UIControlEvents.TouchUpInside)
+        //        addButton = UIButton()
+        //        Helper.sharedInstance.customizeBarButton(self, button: addButton!, imageName: "Bar-Tick", isLeft: false)
+        //        addButton!.addTarget(self, action: "onAddButton:", forControlEvents: UIControlEvents.TouchUpInside)
         
         backButton = UIButton()
         Helper.sharedInstance.customizeBarButton(self, button: backButton!, imageName: "Bar-Back", isLeft: true)
         backButton!.addTarget(self, action: "onBackButton:", forControlEvents: UIControlEvents.TouchUpInside)
     }
     
-    func onAddButton(sender: UIButton!) {
-        print("on Add", terminator: "\n")
-        // TODO: Save changes
-    }
+    //    func onAddButton(sender: UIButton!) {
+    //        print("on Add", terminator: "\n")
+    //    }
     
     func onBackButton(sender: UIButton!) {
         print("on Back", terminator: "\n")
@@ -76,9 +79,14 @@ class NotificationSettingViewController: UIViewController, ReminderCellDelegate 
     
     func reminderCell(reminderCell: ReminderCell, didChangeValue value: Bool) {
         
-//        let indexPath = tableView.indexPathForCell(reminderCell)!
+        //        let indexPath = tableView.indexPathForCell(reminderCell)!
         print("switch cell", terminator: "\n")
         //TODO: handle switch change
+        if value {
+            // Add all active time slots of this category
+        } else {
+            // Remove all active time slots of this category
+        }
     }
     
     // MARK: Transfer between 2 views
@@ -98,7 +106,7 @@ class NotificationSettingViewController: UIViewController, ReminderCellDelegate 
             }
         }
     }
-
+    
 }
 
 // MARK: Table view
@@ -153,6 +161,9 @@ extension NotificationSettingViewController: UIGestureRecognizerDelegate {
             if selectedCell is ReminderCell {
                 let reminderCell = selectedCell as! ReminderCell
                 let indexPath = tableView.indexPathForCell(reminderCell)
+                
+                // TODO: Remove all active time slots of this category
+                //                ReminderList.sharedInstance.removeReminderNotification(<#T##item: ReminderItem##ReminderItem#>)
                 
                 if let indexPath = indexPath {
                     remiders.removeAtIndex(indexPath.row)
