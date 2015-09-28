@@ -48,7 +48,12 @@ class SettingsViewController: UIViewController, ThemeCellDelegate, UITabBarContr
         
         avatarView.setNewTintColor(Color.strongColor)
         
-        
+
+        if let user = User.current() {
+            print("user = \(user)")
+            usernameLabel.text = user.name ?? "(No name)"
+            emailLabel.text = user.email
+        }
     }
 
     override func didReceiveMemoryWarning() {

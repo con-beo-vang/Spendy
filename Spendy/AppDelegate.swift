@@ -30,7 +30,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Remove this line if you don't want to use Local Datastore features or want to use cachePolicy.
         Parse.enableLocalDatastore()
 
-
         // ****************************************************************************
         // Uncomment this line if you want to enable Crash Reporting
         // ParseCrashReporting.enable()
@@ -53,7 +52,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // ****************************************************************************
 
         // allows anonymousm users
-        PFUser.enableAutomaticUser()
+        // PFUser.enableAutomaticUser()
 
         let defaultACL = PFACL();
 
@@ -81,9 +80,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Local notification
         settingNotification(application)
 
-        // Call with true to reset data
-        DataManager.setupDefaultData(false)
-        
         // Config apprearance
         
         Color.isGreen = NSUserDefaults.standardUserDefaults().boolForKey("DefaultTheme") ?? true
@@ -96,11 +92,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         UITabBar.appearance().tintColor = Color.strongColor
         
-        
+
+        let user = User.current()
+
         // TODO: check login
-        let isLoggedIn = false
+        let isLoggedIn = user != nil
         
         if isLoggedIn {
+            // Call with true to reset data
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
+                DataManager.setupDefaultData(false)
+            }
+
             // Go to Home screen
             let vc = storyboard.instantiateViewControllerWithIdentifier("RootTabBarController") as! RootTabBarController
             window?.rootViewController = vc
