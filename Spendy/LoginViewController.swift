@@ -22,11 +22,11 @@ class LoginViewController: UIViewController {
     @IBOutlet weak var logoView: UIImageView!
     
     @IBOutlet weak var appNameLabel: UILabel!
+
+    @IBOutlet weak var primaryButton: UIButton!
     
-    @IBOutlet weak var loginButton: UIButton!
-    
-    @IBOutlet weak var registerButton: UIButton!
-    
+    @IBOutlet weak var secondaryButton: UIButton!
+
     @IBOutlet weak var retrievePassword: UIButton!
     
     @IBOutlet weak var tableView: UITableView!
@@ -39,6 +39,7 @@ class LoginViewController: UIViewController {
     
     @IBOutlet weak var logoBottomConstraint: NSLayoutConstraint!
 
+    // Default mode is Login mode
     var loginMode = LoginMode.Login
 
     var name = ""
@@ -62,7 +63,7 @@ class LoginViewController: UIViewController {
         tableView.layer.borderColor = UIColor(netHex: 0xE9E9E9).CGColor
         tableView.layer.borderWidth = 1
         
-//        loginButton.layer.backgroundColor = UIColor(netHex: 0xfcc96f).CGColor
+//        primaryButton.layer.backgroundColor = UIColor(netHex: 0xfcc96f).CGColor
         
         tableViewHeightConstraint.constant = loginMode == .Register ? 132 : 88
     }
@@ -80,35 +81,31 @@ class LoginViewController: UIViewController {
         view.backgroundColor = Color.loginBackgroundColor
         logoView.setNewTintColor(Color.strongColor)
         appNameLabel.textColor = Color.appNameColor
-        loginButton.layer.backgroundColor = Color.strongColor.CGColor
-        loginButton.tintColor = UIColor.whiteColor()
-        registerButton.setTitleColor(Color.registerColor, forState: UIControlState.Normal)
+        primaryButton.layer.backgroundColor = Color.strongColor.CGColor
+        primaryButton.tintColor = UIColor.whiteColor()
+        secondaryButton.setTitleColor(Color.registerColor, forState: UIControlState.Normal)
         retrievePassword.setTitleColor(Color.forgotPasswordColor, forState: UIControlState.Normal)
     }
     
     // MARK: Button
     
     @IBAction func onLogin(sender: UIButton) {
-        print("on Login")
-        
-        email = (getTextField(1)?.text)!
-        password = (getTextField(2)?.text)!
-
-        // start spinner
-        SwiftSpinner.show("Logging in...")
-
-        if loginMode == .Register {
+        switch loginMode {
+        case .Register:
             name = (getTextField(0)?.text)!
             // TODO: add checkbox or popup to ask the user to agree on terms?
             // confirmToRegister(sender)
             processRegistration()
-        } else {
+        case .Login:
             // TODO: Handle Login
             processLoggingIn()
+        case .ForgotPassword:
+            processPasswordRetrieval()
         }
     }
 
     func processLoggingIn() {
+        SwiftSpinner.show("Logging in...")
         // TODO
         PFUser.logInWithUsernameInBackground(email, password: password) {
             (user: PFUser?, error: NSError?) -> Void in
@@ -134,6 +131,11 @@ class LoginViewController: UIViewController {
                 self.performSegueWithIdentifier("GoToHome", sender: self)
             })
         }
+    }
+
+    func processPasswordRetrieval() {
+        SwiftSpinner.show("Sending you instructions...")
+
     }
 
     func alertWithMessage(title: String?, message: String? = nil) {
@@ -173,6 +175,8 @@ class LoginViewController: UIViewController {
     }
 
     func processRegistration() -> Bool {
+        SwiftSpinner.show("Registering...")
+
         email = (getTextField(1)?.text)!
         email = email.lowercaseString
         password = (getTextField(2)?.text)!
@@ -214,8 +218,8 @@ class LoginViewController: UIViewController {
     @IBAction func onRegister(sender: UIButton) {
         if loginMode == .Register {
             loginMode = .Login
-            loginButton.setTitle("Login", forState: UIControlState.Normal)
-            registerButton.setTitle("Register", forState: UIControlState.Normal)
+            primaryButton.setTitle("Login", forState: UIControlState.Normal)
+            secondaryButton.setTitle("Register", forState: UIControlState.Normal)
 
             name = (getTextField(0)?.text)!
             email = (getTextField(1)?.text)!
@@ -225,8 +229,8 @@ class LoginViewController: UIViewController {
             tableViewHeightConstraint.constant = 88
         } else {
             loginMode = .Register
-            loginButton.setTitle("Register", forState: UIControlState.Normal)
-            registerButton.setTitle("Back to Login", forState: UIControlState.Normal)
+            primaryButton.setTitle("Register", forState: UIControlState.Normal)
+            secondaryButton.setTitle("Back to Login", forState: UIControlState.Normal)
 
             email = (getTextField(1)?.text)!
             password = (getTextField(2)?.text)!
