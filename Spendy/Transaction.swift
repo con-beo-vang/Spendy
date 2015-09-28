@@ -45,7 +45,13 @@ class Transaction: HTObject {
             }
             return NSDecimalNumber(decimal: am.decimalValue)
         }
-        set { self["balanceSnapshot"] = newValue }
+        set {
+            let before = balanceSnapshot
+            self["balanceSnapshot"] = newValue
+            if before != balanceSnapshot {
+                save()
+            }
+        }
     }
 
     // transaction.note =>

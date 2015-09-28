@@ -40,7 +40,13 @@ class Account: HTObject {
             guard let am = self["balance"] as! NSNumber? else { return 0 }
             return NSDecimalNumber(decimal: am.decimalValue)
         }
-        set { self["balance"] = newValue }
+        set {
+            let before = balance
+            self["balance"] = newValue
+            if before != balance {
+                save()
+            }
+        }
     }
 
     var _transactions: [Transaction]?
