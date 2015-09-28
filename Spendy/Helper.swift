@@ -127,6 +127,10 @@ class Helper: NSObject {
         label.backgroundColor = Color.popupHeaderColor
         label.textColor = UIColor.whiteColor()
     }
+    
+    // MARK: Local notificaiton
+    
+    
 }
 
 extension String {
