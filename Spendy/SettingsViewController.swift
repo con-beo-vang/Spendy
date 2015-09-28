@@ -148,7 +148,11 @@ class SettingsViewController: UIViewController, ThemeCellDelegate, UITabBarContr
         PFUser.logOut()
         print("Logged out. User: \(PFUser.currentUser())", terminator: "\n")
         // refreshViewsForUser()
-        // TODO: transfer to Login view
+        
+        // Transfer to Login view
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let loginVC = storyboard.instantiateViewControllerWithIdentifier("LoginVC") as! LoginViewController
+        presentViewController(loginVC, animated: true, completion: nil)
     }
     
     // MARK: Implement delegate
