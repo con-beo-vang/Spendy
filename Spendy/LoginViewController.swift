@@ -10,6 +10,13 @@ import UIKit
 import Parse
 import SwiftSpinner
 
+enum LoginMode: Int {
+    case Login = 0
+    case Register
+    case ForgotPassword
+}
+
+
 class LoginViewController: UIViewController {
     
     @IBOutlet weak var logoView: UIImageView!
@@ -31,9 +38,9 @@ class LoginViewController: UIViewController {
     @IBOutlet weak var logoTopConstraint: NSLayoutConstraint!
     
     @IBOutlet weak var logoBottomConstraint: NSLayoutConstraint!
-    
-    var isRegisterMode = false
-    
+
+    var loginMode = LoginMode.Login
+
     var name = ""
     var email = ""
     var password = ""
@@ -57,7 +64,7 @@ class LoginViewController: UIViewController {
         
 //        loginButton.layer.backgroundColor = UIColor(netHex: 0xfcc96f).CGColor
         
-        tableViewHeightConstraint.constant = isRegisterMode ? 132 : 88
+        tableViewHeightConstraint.constant = loginMode == .Register ? 132 : 88
     }
 
     override func viewWillAppear(animated: Bool) {
@@ -90,9 +97,9 @@ class LoginViewController: UIViewController {
         // start spinner
         SwiftSpinner.show("Logging in...")
 
-        if isRegisterMode {
+        if loginMode == .Register {
             name = (getTextField(0)?.text)!
-            // TODO: Handle Register
+            // TODO: add checkbox or popup to ask the user to agree on terms?
             // confirmToRegister(sender)
             processRegistration()
         } else {
@@ -205,21 +212,25 @@ class LoginViewController: UIViewController {
     }
     
     @IBAction func onRegister(sender: UIButton) {
-        if isRegisterMode {
-            isRegisterMode = false
+        if loginMode == .Register {
+            loginMode = .Login
             loginButton.setTitle("Login", forState: UIControlState.Normal)
             registerButton.setTitle("Register", forState: UIControlState.Normal)
+
             name = (getTextField(0)?.text)!
             email = (getTextField(1)?.text)!
             password = (getTextField(2)?.text)!
+
             tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: UITableViewRowAnimation.Top)
             tableViewHeightConstraint.constant = 88
         } else {
-            isRegisterMode = true
+            loginMode = .Register
             loginButton.setTitle("Register", forState: UIControlState.Normal)
             registerButton.setTitle("Back to Login", forState: UIControlState.Normal)
+
             email = (getTextField(1)?.text)!
             password = (getTextField(2)?.text)!
+
             tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: UITableViewRowAnimation.Top)
             tableViewHeightConstraint.constant = 132
         }
@@ -275,7 +286,7 @@ extension LoginViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         if indexPath.row == 0 {
-            return isRegisterMode ? 44 : 0
+            return loginMode == .Register ? 44 : 0
         } else {
             return 44
         }
