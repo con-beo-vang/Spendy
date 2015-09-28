@@ -168,14 +168,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		1842E95C1BB69FDD00A9DFD8 /* New Acocunt View */ = {
-			isa = PBXGroup;
-			children = (
-				1842E95D1BB6A00700A9DFD8 /* TextCell.swift */,
-			);
-			name = "New Acocunt View";
-			sourceTree = "<group>";
-		};
 		184851F11BB0117800C1EA63 /* Home View */ = {
 			isa = PBXGroup;
 			children = (
@@ -254,7 +246,7 @@
 		18F39CBF1BA9629B0099B714 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				1842E95C1BB69FDD00A9DFD8 /* New Acocunt View */,
+				E23A4CD61BB8556F0047FD8D /* New Account */,
 				18988FDF1BB6418600D95BAC /* Login View */,
 				18A9897D1BB5C03E00CD6E28 /* Settings View */,
 				1892688F1BB52696006FA9C4 /* CustomAnimationTransition */,
@@ -406,6 +398,14 @@
 				9DB8A8621BA9EAC0000F03A1 /* CategoryCell.swift */,
 			);
 			name = "Select Category";
+			sourceTree = "<group>";
+		};
+		E23A4CD61BB8556F0047FD8D /* New Account */ = {
+			isa = PBXGroup;
+			children = (
+				1842E95D1BB6A00700A9DFD8 /* TextCell.swift */,
+			);
+			name = "New Account";
 			sourceTree = "<group>";
 		};
 		F3D0B671BD77741EE28235E3 /* Pods */ = {

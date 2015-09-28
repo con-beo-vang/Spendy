@@ -40,14 +40,21 @@ class Account: HTObject {
             guard let am = self["balance"] as! NSNumber? else { return 0 }
             return NSDecimalNumber(decimal: am.decimalValue)
         }
-        set { self["balance"] = newValue }
+        set {
+            let before = balance
+            self["balance"] = newValue
+            if before != balance {
+                save()
+            }
+        }
     }
 
     var _transactions: [Transaction]?
 
-    convenience init(name: String) {
+    convenience init(name: String, startingBalance: NSDecimalNumber = 0) {
         self.init()
         self.name = name
+        self.startingBalance = startingBalance
         self.userId = PFUser.currentUser()!.objectId!
     }
 
@@ -91,7 +98,7 @@ class Account: HTObject {
                 _transactions = Transaction.findByAccountId(objectId!)
 
                 recomputeBalance()
-                print("computed balance for \(_transactions?.count) items: \(balance)")
+                print("computed balance for \(_transactions!.count) items. Balance \(balance)")
                 return _transactions!
             }
 
@@ -133,21 +140,21 @@ class Account: HTObject {
 
         localQuery.whereKey("userId", equalTo: user.objectId!)
         localQuery.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
-            guard error == nil else {
-                print("Error loading accounts from Local: \(error)")
+            guard let objects = objects where error == nil else {
+                print("Error loading accounts from Local. Error: \(error)")
                 return
             }
 
-            _allAccounts = objects?.map({ Account(object: $0 ) })
+            _allAccounts = objects.map({ Account(object: $0 ) })
             print("\n[local] accounts: \(objects)")
 
-            if _allAccounts == nil || _allAccounts!.isEmpty {
+            if _allAccounts!.isEmpty {
                 // load from server
                 let remoteQuery = PFQuery(className: "Account")
                 remoteQuery.whereKey("userId", equalTo: user.objectId!)
                 remoteQuery.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
                     if let error = error {
-                        print("Error loading accounts from Server: \(error)", terminator: "\n")
+                        print("Error loading accounts from Server: \(error)")
                         return
                     }
 
@@ -155,10 +162,10 @@ class Account: HTObject {
                     _allAccounts = objects?.map({ Account(object: $0 ) })
 
                     if _allAccounts!.isEmpty {
-                        print("No account found for \(user). Creating Default Account", terminator: "\n")
+                        print("No account found for \(user). Creating default accounts:")
 
                         let defaultAccount = Account(name: "Default Account")
-                        let secondAccount  = Account(name: "Second Account")
+                        let secondAccount  = Account(name: "Bank")
 
                         defaultAccount.pinAndSaveEventuallyWithName("MyAccounts")
                         secondAccount.pinAndSaveEventuallyWithName("MyAccounts")
@@ -200,5 +207,15 @@ class Account: HTObject {
     override var description: String {
         let base = super.description
         return "uuid: \(uuid), userId: \(userId), name: \(name), icon: \(icon), base: \(base)"
+    }
+
+    class func create(account: Account) {
+        account.save()
+        _allAccounts!.append(account)
+    }
+
+    class func delete(account: Account) {
+        account._object?.deleteEventually()
+        _allAccounts = _allAccounts?.filter({ $0.uuid != account.uuid })
     }
 }

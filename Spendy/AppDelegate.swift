@@ -81,8 +81,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Local notification
         settingNotification(application)
 
+        // Call with true to reset data
         DataManager.setupDefaultData(false)
-        
         
         // Config apprearance
         

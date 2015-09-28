@@ -42,7 +42,7 @@ class SelectAccountOrCategoryViewController: UIViewController {
     func loadItems() {
         if itemClass == "Category" {
             navigationItem.title = "Select Category"
-            items = Category.all() as [Category]?
+            items = Category.all as! [Category]
             tableView.reloadData()
         } else if itemClass == "Account" {
             navigationItem.title = "Select Account"

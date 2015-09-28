@@ -34,16 +34,16 @@ class Category: HTObject {
         localQuery.fromLocalDatastore().findObjectsInBackgroundWithBlock {
             (objects, error) -> Void in
 
-            if let error = error {
-                print("Error loading categories from Local: \(error)", terminator: "\n")
+            guard let objects = objects where error != nil else {
+                print("Error loading categories from Local. error: \(error)")
                 return
             }
 
-            _allCategories = objects?.map({ Category(object: $0 ) })
-            print("\n[local] categories: \(objects)", terminator: "\n")
+            _allCategories = objects.map({ Category(object: $0 ) })
+            print("\n[local] categories: \(objects)")
 
-            if _allCategories == nil || _allCategories!.isEmpty {
-                print("No categories found locally. Loading from server", terminator: "\n")
+            if _allCategories!.isEmpty {
+                print("No categories found locally. Loading from server")
                 // load from remote
                 let remoteQuery = PFQuery(className: "Category")
                 remoteQuery.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
@@ -65,15 +65,21 @@ class Category: HTObject {
     }
 
     class func defaultCategory() -> Category? {
-        return _allCategories?.first
+        return all.first
     }
 
-    class func all() -> [Category]? {
-        return _allCategories;
+    class var all:[Category] {
+        if _allCategories == nil {
+            let localQuery = PFQuery(className: "Category")
+            let objects = try! localQuery.fromLocalDatastore().findObjects()
+            _allCategories = objects.map({ Category(object: $0) })
+        }
+
+        return _allCategories!
     }
 
     class func findById(objectId: String) -> Category? {
-        let record = _allCategories?.filter({ $0.objectId == objectId }).first
+        let record = all.filter({ $0.objectId == objectId }).first
         return record
     }
 }

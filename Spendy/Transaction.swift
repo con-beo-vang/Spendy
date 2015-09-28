@@ -9,17 +9,19 @@
 import Foundation
 import Parse
 
-/////////////////////////////////////////
-//Schema:
-//- kind (income | expense | transfer)
-//- user_id
-//- from_account
-//- to_account (when type is ‘transfer’)
-//- note
-//- amount
-//- category_id
-//- date
-/////////////////////////////////////////
+/*
+Schema:
+    version (maybe)
+    kind (income | expense | transfer)
+    userID
+    fromAccountId
+    toAccountId (when kind is 'transfer')
+    note
+    amount
+    categoryId
+    date
+    balanceSnapshot
+*/
 
 var _allTransactions: [Transaction]?
 
@@ -43,7 +45,13 @@ class Transaction: HTObject {
             }
             return NSDecimalNumber(decimal: am.decimalValue)
         }
-        set { self["balanceSnapshot"] = newValue }
+        set {
+            let before = balanceSnapshot
+            self["balanceSnapshot"] = newValue
+            if before != balanceSnapshot {
+                save()
+            }
+        }
     }
 
     // transaction.note =>

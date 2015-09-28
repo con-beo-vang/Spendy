@@ -49,7 +49,6 @@ class AccountsViewController: UIViewController {
         tableView.tableFooterView = UIView()
         
         accounts = Account.all()
-        
         tableView.reloadData()
         
         if (tableView.contentSize.height <= tableView.frame.size.height) {
@@ -61,6 +60,14 @@ class AccountsViewController: UIViewController {
         
         addBarButton()
         configPopup()
+
+
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "updateAccountList:", name:"AccountAddedOrUpdated", object: nil)
+    }
+
+    func updateAccountList(notification: NSNotification) {
+        accounts = Account.all()
+        tableView.reloadData()
     }
     
     override func didReceiveMemoryWarning() {
@@ -206,8 +213,7 @@ extension AccountsViewController: UITableViewDataSource, UITableViewDelegate {
         print("action", terminator: "\n")
         isPreparedDelete = true
         let delete = UITableViewRowAction(style: .Normal, title: "Delete") { action, index in
-            print("delete", terminator: "\n")
-            
+            print("Delete account:")
             
             let alertController = UIAlertController(title: "Warning", message: "Deleting Saving will cause to also delete its transactions.", preferredStyle: .Alert)
             let cancelAction = UIAlertAction(title: "Cancel", style: .Default) { (action) in
@@ -216,9 +222,14 @@ extension AccountsViewController: UITableViewDataSource, UITableViewDelegate {
             alertController.addAction(cancelAction)
             
             let deleteAction = UIAlertAction(title: "Delete", style: .Default) { (action) in
-                self.accounts?.removeAtIndex(indexPath.row)
+                if let accountToDelete = self.accounts?[indexPath.row] {
+                    self.accounts?.removeAtIndex(indexPath.row)
+                    Account.delete(accountToDelete)
+                }
+
+                // reload the entire table
+                // tableView.reloadData()
                 self.tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: UITableViewRowAnimation.Automatic)
-                // TODO: Delete this account and its transactions
             }
             alertController.addAction(deleteAction)
             
