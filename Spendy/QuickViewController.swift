@@ -40,15 +40,17 @@ class QuickViewController: UIViewController {
 
         tableView.dataSource = self
         tableView.delegate = self
-        
-        
         tableView.tableFooterView = UIView()
         
         // Swipe up to close Quick mode
-        let swipeUp = UISwipeGestureRecognizer(target: self, action: Selector("handleSwipe:"))
-        swipeUp.direction = .Up
-        swipeUp.delegate = self
-        tableView.addGestureRecognizer(swipeUp)
+        if (tableView.contentSize.height <= tableView.frame.size.height) {
+            tableView.scrollEnabled = false
+            
+            let swipeUp = UISwipeGestureRecognizer(target: self, action: Selector("handleSwipe:"))
+            swipeUp.direction = .Up
+            swipeUp.delegate = self
+            tableView.addGestureRecognizer(swipeUp)
+        }
         
         addBarButton()
 

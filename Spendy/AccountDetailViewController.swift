@@ -44,10 +44,8 @@ class AccountDetailViewController: UIViewController {
 //        tableView.addGestureRecognizer(downSwipe)
 
         self.refreshControl = UIRefreshControl()
-//        self.refreshControl!.attributedTitle = NSAttributedString(string: "Pull to refresh")
+        self.refreshControl!.attributedTitle = NSAttributedString(string: "Pull to open Quick mode")
         self.refreshControl!.addTarget(self, action: "openQuickMode", forControlEvents: UIControlEvents.ValueChanged)
-//        self.refreshControl!.hidden = true
-        self.refreshControl!.alpha = 0
         self.tableView.addSubview(refreshControl!)
 
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "updateCurrentAccount:", name:"TransactionAddedOrUpdated", object: nil)
@@ -196,6 +194,8 @@ extension AccountDetailViewController: UITableViewDataSource, UITableViewDelegat
         Helper.sharedInstance.setSeparatorFullWidth(cell)
         return cell
     }
+    
+    
 }
 
 // MARK: Handle gestures

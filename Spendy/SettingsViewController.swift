@@ -159,19 +159,17 @@ class SettingsViewController: UIViewController, ThemeCellDelegate, UITabBarContr
     
     func themeCell(themeCell: ThemeCell, didChangeValue value: Bool) {
         
-        //        let indexPath = tableView.indexPathForCell(themeCell)!
-        print("switch theme", terminator: "\n")
-        // TODO: handle time switch
         Color.isGreen = value
-        print(Color.isGreen)
-//        navigationController?.toolbar.backgroundColor = Color.strongColor
+        
+        NSUserDefaults.standardUserDefaults().setBool(value, forKey: "DefaultTheme")
+        
+        self.navigationController?.navigationBar.barTintColor = Color.strongColor
+        self.tabBarController!.tabBar.tintColor = Color.strongColor
         
         UINavigationBar.appearance().barTintColor = Color.strongColor
         UITabBar.appearance().tintColor = Color.strongColor
         
         self.viewDidLoad()
-        
-
     }
 }
 

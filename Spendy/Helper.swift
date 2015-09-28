@@ -171,6 +171,14 @@ extension UIImageView {
     }
 }
 
+extension UITableView {
+    
+    func reloadDataWithBlock(completion: ()->()) {
+        UIView.animateWithDuration(0, animations: { self.reloadData() })
+            { _ in completion() }
+    }
+}
+
 enum ViewMode: Int {
     case Weekly = 0,
     Monthly,
