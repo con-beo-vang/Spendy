@@ -27,8 +27,13 @@ class RootTabBarController: UITabBarController {
 //        } else {
 //            print("Error hooking up Settings tab", terminator: "")
 //        }
-        
-        
+
+        print("RootTabBarController:viewDidLoad")
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
+            // Call with true to reset data
+            DataManager.setupDefaultData(false)
+        }
+
         // Edit
         let storyboard = UIStoryboard(name: "Settings", bundle: nil)
         let settingsController = storyboard.instantiateInitialViewController() as! UINavigationController

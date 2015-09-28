@@ -99,11 +99,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let isLoggedIn = user != nil
         
         if isLoggedIn {
-            // Call with true to reset data
-            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
-                DataManager.setupDefaultData(false)
-            }
-
             // Go to Home screen
             let vc = storyboard.instantiateViewControllerWithIdentifier("RootTabBarController") as! RootTabBarController
             window?.rootViewController = vc

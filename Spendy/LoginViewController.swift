@@ -101,6 +101,26 @@ class LoginViewController: UIViewController {
 
     func processLoggingIn() {
         // TODO
+        PFUser.logInWithUsernameInBackground(email, password: password) {
+            (user: PFUser?, error: NSError?) -> Void in
+            guard let _ = user where error == nil else {
+                // stop animating
+
+                // display error message
+                if let message = error!.userInfo["error"] {
+                    // print("ERROR: \(message)")
+                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                        self.alertWithMessage("Error", message: message.description)
+                    })
+                }
+                return
+            }
+
+            print("Logging in as \(user!)")
+            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                self.performSegueWithIdentifier("GoToHome", sender: self)
+            })
+        }
     }
 
     func alertWithMessage(title: String?, message: String? = nil) {
