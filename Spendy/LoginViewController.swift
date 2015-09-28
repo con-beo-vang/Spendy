@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import Parse
+import SwiftSpinner
 
 class LoginViewController: UIViewController {
     
@@ -56,9 +58,8 @@ class LoginViewController: UIViewController {
 //        loginButton.layer.backgroundColor = UIColor(netHex: 0xfcc96f).CGColor
         
         tableViewHeightConstraint.constant = isRegisterMode ? 132 : 88
-
     }
-    
+
     override func viewWillAppear(animated: Bool) {
         setColor()
     }
@@ -69,7 +70,6 @@ class LoginViewController: UIViewController {
     }
     
     func setColor() {
-        
         view.backgroundColor = Color.loginBackgroundColor
         logoView.setNewTintColor(Color.strongColor)
         appNameLabel.textColor = Color.appNameColor
@@ -86,15 +86,122 @@ class LoginViewController: UIViewController {
         
         email = (getTextField(1)?.text)!
         password = (getTextField(2)?.text)!
-        
+
+        // start spinner
+        SwiftSpinner.show("Logging in...")
+
         if isRegisterMode {
             name = (getTextField(0)?.text)!
             // TODO: Handle Register
+            // confirmToRegister(sender)
+            processRegistration()
         } else {
             // TODO: Handle Login
+            processLoggingIn()
         }
+    }
+
+    func processLoggingIn() {
+        // TODO
+        PFUser.logInWithUsernameInBackground(email, password: password) {
+            (user: PFUser?, error: NSError?) -> Void in
+            guard let _ = user where error == nil else {
+                // display error message
+                if let message = error!.userInfo["error"] {
+                    // print("ERROR: \(message)")
+                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                        // self.alertWithMessage("Error", message: message.description)
+                        SwiftSpinner.show("\(message)", animated: false).addTapHandler(
+                            { SwiftSpinner.hide() },
+                            subtitle: "Tap to try again"
+                        )
+                    })
+                } else {
+                    SwiftSpinner.hide()
+                }
+                return
+            }
+
+            print("Logging in as \(user!)")
+            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                self.performSegueWithIdentifier("GoToHome", sender: self)
+            })
+        }
+    }
+
+    func alertWithMessage(title: String?, message: String? = nil) {
+        // Build the terms and conditions alert
+        let alertController = UIAlertController(title: title,
+            message: message,
+            preferredStyle: UIAlertControllerStyle.Alert
+        )
+        alertController.addAction(UIAlertAction(title: "OK",
+            style: UIAlertActionStyle.Default,
+            handler: nil)
+        )
+
+        // Display alert
+        self.presentViewController(alertController, animated: true, completion: nil)
+    }
+
+    // Optional: if we want user to agree to some terms
+    func confirmToRegister(sender: AnyObject) {
+        print("registering: \(name), \(email), \(password)")
+        // Build the terms and conditions alert
+        let alertController = UIAlertController(title: "Agree to terms and conditions",
+            message: "Click I AGREE to confirm that you agree to the End User Licence Agreement.",
+            preferredStyle: UIAlertControllerStyle.Alert
+        )
+        alertController.addAction(UIAlertAction(title: "I AGREE",
+            style: UIAlertActionStyle.Default,
+            handler: { alertController in self.processRegistration()})
+        )
+        alertController.addAction(UIAlertAction(title: "I do NOT agree",
+            style: UIAlertActionStyle.Default,
+            handler: nil)
+        )
         
-        performSegueWithIdentifier("GoToHome", sender: self)
+        // Display alert
+        self.presentViewController(alertController, animated: true, completion: nil)
+    }
+
+    func processRegistration() -> Bool {
+        email = (getTextField(1)?.text)!
+        email = email.lowercaseString
+        password = (getTextField(2)?.text)!
+        print("registering \(name), \(email), \(password)")
+
+        // update user
+        guard User.current() == nil else { return false }
+
+        let user = User()
+        user.name = name
+        user.username = email
+        user.email = email
+        user.password = password
+
+        user.object!.signUpInBackgroundWithBlock { (succeeded, error) -> Void in
+            if error == nil {
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    self.performSegueWithIdentifier("GoToHome", sender: self)
+                })
+            } else {
+                // display error message
+                if let message = error!.userInfo["error"] {
+                    // print("ERROR: \(message)")
+                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                        SwiftSpinner.show("\(message)", animated: false).addTapHandler(
+                            { SwiftSpinner.hide() },
+                            subtitle: "Tap to try again"
+                        )
+                    })
+                } else {
+                    SwiftSpinner.hide()
+                }
+            }
+        }
+
+        return true
     }
     
     @IBAction func onRegister(sender: UIButton) {
@@ -116,15 +223,12 @@ class LoginViewController: UIViewController {
             tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: UITableViewRowAnimation.Top)
             tableViewHeightConstraint.constant = 132
         }
-        
-
     }
     
     @IBAction func onRetrievePassword(sender: UIButton) {
         print("on Retrieve password")
     }
     
-
     // MARK: Keyboard
     
     func keyboardWasShown(notification: NSNotification) {
@@ -233,6 +337,4 @@ extension LoginViewController: UIViewControllerTransitioningDelegate {
     func animationControllerForDismissedController(dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         return customDismissAnimationController
     }
-    
 }
-

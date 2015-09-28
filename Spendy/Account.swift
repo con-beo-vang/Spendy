@@ -132,7 +132,7 @@ class Account: HTObject {
         if user.objectId == nil {
             do {
                 try user.save()
-                print("Success")
+                print("Just saved user")
             } catch {
                 print("An error occurred when saving user.")
             }
