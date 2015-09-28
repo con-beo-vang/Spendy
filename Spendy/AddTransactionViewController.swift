@@ -202,7 +202,6 @@ extension AddTransactionViewController: SelectAccountOrCategoryDelegate, PhotoVi
                     photoVC.delegate = self
                 }
             }
-            
         }
     }
     
@@ -219,7 +218,7 @@ extension AddTransactionViewController: SelectAccountOrCategoryDelegate, PhotoVi
     }
     
     func photoViewController(photoViewController: PhotoViewController, didUpdateImage image: UIImage) {
-        let photoCell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 2)) as? PhotoCell
+        let photoCell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 3)) as? PhotoCell
         if let photoCell = photoCell {
             photoCell.photoView.image = image
         }
@@ -423,11 +422,12 @@ extension AddTransactionViewController: UITableViewDataSource, UITableViewDelega
     func tapMoreCell(sender: UITapGestureRecognizer) {
         isCollaped = false
         
-        let noteCell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0)) as! NoteCell
-        selectedTransaction?.note = noteCell.noteText.text
+        selectedTransaction?.note = noteCell?.noteText.text
+        let amountDecimal = NSDecimalNumber(string: amountCell?.amountText.text)
         
-        let amountCell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 1, inSection: 0)) as! AmountCell
-        selectedTransaction?.amount = NSDecimalNumber(string: amountCell.amountText.text)
+        if amountDecimal != NSDecimalNumber.notANumber() {
+            selectedTransaction?.amount = amountDecimal
+        }
         
         UIView.transitionWithView(tableView,
             duration:0.5,
