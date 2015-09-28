@@ -39,6 +39,13 @@ class AddAccountViewController: UIViewController {
 
     }
 
+    override func viewWillAppear(animated: Bool) {
+        // TODO: Why is this not working?
+        if let nameCell = tableView.cellForRowAtIndexPath(NSIndexPath(forItem: 0, inSection: 0)) as! TextCell? {
+            nameCell.textField.becomeFirstResponder()
+        }
+    }
+
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
