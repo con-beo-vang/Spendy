@@ -42,11 +42,17 @@ class AddTransactionViewController: UIViewController {
         isCollaped = true
         
         addBarButton()
-
+        
+        imagePicker = UIImagePickerController()
+        imagePicker.delegate = self
+        
+    }
+    
+    override func viewWillAppear(animated: Bool) {
         if currentAccount == nil {
             currentAccount = Account.defaultAccount()
         }
-
+        
         if selectedTransaction != nil {
             navigationItem.title = "Edit Transaction"
         } else {
@@ -54,12 +60,10 @@ class AddTransactionViewController: UIViewController {
                 note: nil, amount: nil,
                 category: Category.defaultCategory(), account: currentAccount,
                 date: NSDate())
+            isCollaped = true
         }
-
-        tableView.reloadData()
         
-        imagePicker = UIImagePickerController()
-        imagePicker.delegate = self
+        tableView.reloadData()
     }
 
     override func didReceiveMemoryWarning() {
@@ -157,6 +161,7 @@ class AddTransactionViewController: UIViewController {
             navigationController!.popViewControllerAnimated(true)
         }
 
+        selectedTransaction = nil
         closeTabAndSwitchToHome()
     }
     
@@ -187,7 +192,7 @@ extension AddTransactionViewController: SelectAccountOrCategoryDelegate, PhotoVi
             // TODO: delegate
         } else if toController is PhotoViewController {
             
-            let photoCell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 2)) as? PhotoCell
+            let photoCell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 3)) as? PhotoCell
             if let photoCell = photoCell {
                 if photoCell.photoView.image == nil {
                     Helper.sharedInstance.showActionSheet(self, imagePicker: imagePicker)
@@ -226,11 +231,7 @@ extension AddTransactionViewController: SelectAccountOrCategoryDelegate, PhotoVi
 extension AddTransactionViewController: UITableViewDataSource, UITableViewDelegate {
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        if isCollaped {
-            return 2
-        } else {
-            return 3
-        }
+        return isCollaped ? 3 : 4
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -238,8 +239,10 @@ extension AddTransactionViewController: UITableViewDataSource, UITableViewDelega
         case 0:
             return 2
         case 1:
-            return 3
+            return 2
         case 2:
+            return 1
+        case 3:
             return 1
         default:
             return 0
@@ -247,7 +250,7 @@ extension AddTransactionViewController: UITableViewDataSource, UITableViewDelega
     }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return ((indexPath.section == 1 && indexPath.row == 2 && isShowDatePicker) ? 182 : 40)
+        return ((indexPath.section == 2 && isShowDatePicker) ? 182 : 40)
     }
     
     func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -270,7 +273,7 @@ extension AddTransactionViewController: UITableViewDataSource, UITableViewDelega
     }
     
     func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 34
+        return section == 2 ? 0 : 34
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -357,35 +360,6 @@ extension AddTransactionViewController: UITableViewDataSource, UITableViewDelega
                 }
                 return cell
                 
-            case 2:
-                if isCollaped {
-                    let cell = tableView.dequeueReusableCellWithIdentifier("ViewMoreCell", forIndexPath: indexPath)
-                    
-                    let tapCell = UITapGestureRecognizer(target: self, action: "tapMoreCell:")
-                    cell.addGestureRecognizer(tapCell)
-                    
-                    Helper.sharedInstance.setSeparatorFullWidth(cell)
-                    return cell
-                } else {
-                    let cell = tableView.dequeueReusableCellWithIdentifier("DateCell", forIndexPath: indexPath) as! DateCell
-                    cell.titleLabel.text = "Date"
-                    
-                    let tapCell = UITapGestureRecognizer(target: self, action: "tapDateCell:")
-                    cell.addGestureRecognizer(tapCell)
-                    
-                    if isShowDatePicker {
-                        cell.datePicker.alpha = 1
-                    } else {
-                        cell.datePicker.alpha = 0
-                    }
-                    
-                    Helper.sharedInstance.setSeparatorFullWidth(cell)
-                    if dateCell == nil {
-                        dateCell = cell
-                    }
-                    return cell
-                }
-                
             default:
                 break
             }
@@ -393,9 +367,36 @@ extension AddTransactionViewController: UITableViewDataSource, UITableViewDelega
             break
             
         case 2:
+            if isCollaped {
+                let cell = tableView.dequeueReusableCellWithIdentifier("ViewMoreCell", forIndexPath: indexPath)
+                
+                let tapCell = UITapGestureRecognizer(target: self, action: "tapMoreCell:")
+                cell.addGestureRecognizer(tapCell)
+                
+                Helper.sharedInstance.setSeparatorFullWidth(cell)
+                return cell
+            } else {
+                let cell = tableView.dequeueReusableCellWithIdentifier("DateCell", forIndexPath: indexPath) as! DateCell
+                cell.titleLabel.text = "Date"
+                
+                let tapCell = UITapGestureRecognizer(target: self, action: "tapDateCell:")
+                cell.addGestureRecognizer(tapCell)
+                
+                if isShowDatePicker {
+                    cell.datePicker.alpha = 1
+                } else {
+                    cell.datePicker.alpha = 0
+                }
+                
+                Helper.sharedInstance.setSeparatorFullWidth(cell)
+                if dateCell == nil {
+                    dateCell = cell
+                }
+                return cell
+            }
+            
+        case 3:
             let cell = tableView.dequeueReusableCellWithIdentifier("PhotoCell", forIndexPath: indexPath) as! PhotoCell
-//            let tapCell = UITapGestureRecognizer(target: self, action: "tapPhotoCell:")
-//            cell.addGestureRecognizer(tapCell)
             Helper.sharedInstance.setSeparatorFullWidth(cell)
             if photoCell == nil {
                 photoCell = cell
@@ -421,7 +422,21 @@ extension AddTransactionViewController: UITableViewDataSource, UITableViewDelega
     
     func tapMoreCell(sender: UITapGestureRecognizer) {
         isCollaped = false
-        tableView.reloadData()
+        
+        let noteCell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0)) as! NoteCell
+        selectedTransaction?.note = noteCell.noteText.text
+        
+        let amountCell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 1, inSection: 0)) as! AmountCell
+        selectedTransaction?.amount = NSDecimalNumber(string: amountCell.amountText.text)
+        
+        UIView.transitionWithView(tableView,
+            duration:0.5,
+            options: UIViewAnimationOptions.TransitionCrossDissolve,
+            animations:
+            { () -> Void in
+                self.tableView.reloadData()
+            },
+            completion: nil)
     }
     
     func tapDateCell(sender: UITapGestureRecognizer) {
@@ -431,10 +446,10 @@ extension AddTransactionViewController: UITableViewDataSource, UITableViewDelega
         
         if isShowDatePicker {
             isShowDatePicker = false
-            tableView.reloadSections(NSIndexSet(index: 1), withRowAnimation: UITableViewRowAnimation.Automatic)
+            tableView.reloadSections(NSIndexSet(index: 2), withRowAnimation: UITableViewRowAnimation.Automatic)
         } else {
             isShowDatePicker = true
-            tableView.reloadSections(NSIndexSet(index: 1), withRowAnimation: UITableViewRowAnimation.Automatic)
+            tableView.reloadSections(NSIndexSet(index: 2), withRowAnimation: UITableViewRowAnimation.Automatic)
         }
     }
     
@@ -491,7 +506,7 @@ extension AddTransactionViewController: PhotoTweaksViewControllerDelegate {
     
     func photoTweaksController(controller: PhotoTweaksViewController!, didFinishWithCroppedImage croppedImage: UIImage!) {
         // Get photo cell
-        let photoCell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 2)) as? PhotoCell
+        let photoCell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 3)) as? PhotoCell
         if let photoCell = photoCell {
             photoCell.photoView.contentMode = .ScaleToFill
             photoCell.photoView.image = croppedImage
