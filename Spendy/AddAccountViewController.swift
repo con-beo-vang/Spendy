@@ -18,6 +18,8 @@ class AddAccountViewController: UIViewController {
     var backButton: UIButton?
     
     var datePickerIsShown = false
+
+    var account: Account?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -54,10 +56,50 @@ class AddAccountViewController: UIViewController {
         Helper.sharedInstance.customizeBarButton(self, button: backButton!, imageName: "Bar-Back", isLeft: true)
         backButton!.addTarget(self, action: "onBackButton:", forControlEvents: UIControlEvents.TouchUpInside)
     }
-    
+
+    func updateFieldsForAccount() -> Bool {
+        if account == nil {
+            // adding an account
+
+            // validating inputs
+            let nameCell = tableView.cellForRowAtIndexPath(NSIndexPath(forItem: 0, inSection: 0)) as! TextCell
+            let startBalanceCell = tableView.cellForRowAtIndexPath(NSIndexPath(forItem: 1, inSection: 0)) as! TextCell
+
+            guard let name = nameCell.textField.text, balanceString = startBalanceCell.textField.text else {
+                return false
+            }
+
+            var startingBalance = NSDecimalNumber(string: balanceString)
+            if startingBalance == NSDecimalNumber.notANumber() {
+                startingBalance = 0
+            }
+            account = Account(name: name, startingBalance: startingBalance)
+
+            Account.create(account!)
+
+            NSNotificationCenter.defaultCenter().postNotificationName("AccountAddedOrUpdated", object: nil, userInfo: ["account": account!])
+        } else {
+            // TODO: editing an account?
+        }
+
+        return true
+    }
+
     func onAddButton(sender: UIButton!) {
         print("on Add", terminator: "\n")
         // TODO: create new account
+        guard updateFieldsForAccount() else {
+            let alertController = UIAlertController(title: "Please enter a name :)", message: nil, preferredStyle: .Alert)
+            let OKAction = UIAlertAction(title: "OK", style: .Default) { (action) in
+                // ...
+            }
+            alertController.addAction(OKAction)
+
+            presentViewController(alertController, animated: true) {}
+
+            return
+        }
+
         self.tabBarController?.tabBar.hidden = false
         navigationController?.popViewControllerAnimated(true)
     }
@@ -127,6 +169,7 @@ extension AddAccountViewController: UITableViewDataSource, UITableViewDelegate {
             
             if indexPath.row == 0 {
                 cell.label.text = "Name"
+                cell.textField.placeholder = "Account name"
             } else {
                 cell.label.text = "Start Balance"
                 cell.textField.keyboardType = .DecimalPad

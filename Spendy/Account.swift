@@ -51,9 +51,10 @@ class Account: HTObject {
 
     var _transactions: [Transaction]?
 
-    convenience init(name: String) {
+    convenience init(name: String, startingBalance: NSDecimalNumber = 0) {
         self.init()
         self.name = name
+        self.startingBalance = startingBalance
         self.userId = PFUser.currentUser()!.objectId!
     }
 
@@ -206,5 +207,15 @@ class Account: HTObject {
     override var description: String {
         let base = super.description
         return "uuid: \(uuid), userId: \(userId), name: \(name), icon: \(icon), base: \(base)"
+    }
+
+    class func create(account: Account) {
+        account.save()
+        _allAccounts!.append(account)
+    }
+
+    class func delete(account: Account) {
+        account._object?.deleteEventually()
+        _allAccounts = _allAccounts?.filter({ $0.uuid != account.uuid })
     }
 }
