@@ -21,7 +21,6 @@ class HomeViewController: UIViewController {
     
     @IBOutlet weak var todayLabel: UILabel!
     
-    
     @IBOutlet weak var popupSuperView: UIView!
     
     // View Mode
@@ -63,6 +62,8 @@ class HomeViewController: UIViewController {
     var viewMode = ViewMode.Monthly
     var weekOfYear = 0
     
+    var downSwipe: UISwipeGestureRecognizer!
+    
     let customPresentAnimationController = CustomPresentAnimationController()
     let customDismissAnimationController = CustomDismissAnimationController()
 
@@ -81,28 +82,15 @@ class HomeViewController: UIViewController {
         tableView.delegate = self
         tableView.tableFooterView = UIView()
         
-        let leftSwipe = UISwipeGestureRecognizer(target: self, action: Selector("handleSwipe:"))
-        leftSwipe.direction = .Left
-        leftSwipe.delegate = self
-        tableView.addGestureRecognizer(leftSwipe)
-        
-        let rightSwipe = UISwipeGestureRecognizer(target: self, action: Selector("handleSwipe:"))
-        rightSwipe.direction = .Right
-        rightSwipe.delegate = self
-        tableView.addGestureRecognizer(rightSwipe)
-        
-        let downSwipe = UISwipeGestureRecognizer(target: self, action: Selector("handleSwipe:"))
-        downSwipe.direction = .Down
-        downSwipe.delegate = self
-        tableView.addGestureRecognizer(downSwipe)
-        
         viewModeTableView.dataSource = self
         viewModeTableView.delegate = self
         viewModeTableView.tableFooterView = UIView()
         
+        addGestures()
         
-        incomes = ["Salary", "Bonus"]
-        expenses = ["Meal", "Drink", "Transport"]
+        
+        incomes = ["Salary", "Bonus", "Salary", "Bonus", "Salary", "Bonus"]
+        expenses = ["Meal", "Drink", "Transport",  "Meal", "Drink", "Transport"]
         
         
         configPopup()
@@ -143,6 +131,27 @@ class HomeViewController: UIViewController {
         
         Helper.sharedInstance.setPopupShadowAndColor(viewModePopup, label: viewModeTitleLabel)
         Helper.sharedInstance.setPopupShadowAndColor(datePopup, label: dateTitleLabel)
+    }
+    
+    func addGestures() {
+        let leftSwipe = UISwipeGestureRecognizer(target: self, action: Selector("handleSwipe:"))
+        leftSwipe.direction = .Left
+        leftSwipe.delegate = self
+        tableView.addGestureRecognizer(leftSwipe)
+        
+        let rightSwipe = UISwipeGestureRecognizer(target: self, action: Selector("handleSwipe:"))
+        rightSwipe.direction = .Right
+        rightSwipe.delegate = self
+        tableView.addGestureRecognizer(rightSwipe)
+        
+        downSwipe = UISwipeGestureRecognizer(target: self, action: Selector("handleSwipe:"))
+        downSwipe.direction = .Down
+        downSwipe.delegate = self
+        
+        if (tableView.contentSize.height <= tableView.frame.size.height) {
+            tableView.scrollEnabled = false
+            tableView.addGestureRecognizer(downSwipe)
+        }
     }
     
     // MARK: View mode
@@ -198,8 +207,6 @@ class HomeViewController: UIViewController {
         fromButton.setTitle(formatter.stringFromDate(today), forState: UIControlState.Normal)
         toButton.setTitle(formatter.stringFromDate(today), forState: UIControlState.Normal)
     }
-    
-    
     
     // MARK: Button
     
@@ -483,6 +490,8 @@ extension HomeViewController: UIGestureRecognizerDelegate {
                 break
             }
             tableView.reloadSections(NSIndexSet(indexesInRange: NSMakeRange(0, 3)), withRowAnimation: UITableViewRowAnimation.Left)
+            
+            
             break
         case UISwipeGestureRecognizerDirection.Right:
             switch viewMode {
@@ -513,15 +522,16 @@ extension HomeViewController: UIGestureRecognizerDelegate {
         }
     }
     
-
-    
     func tapIncome(sender: UITapGestureRecognizer) {
         if isCollapedIncome {
             isCollapedIncome = false
         } else {
             isCollapedIncome = true
         }
-        tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: UITableViewRowAnimation.Automatic)
+        
+        tableView.reloadDataWithBlock { () -> () in
+            self.configDownSwipeGesture()
+        }
     }
     
     func tapExpense(sender: UITapGestureRecognizer) {
@@ -530,7 +540,10 @@ extension HomeViewController: UIGestureRecognizerDelegate {
         } else {
             isCollapedExpense = true
         }
-        tableView.reloadSections(NSIndexSet(index: 1), withRowAnimation: UITableViewRowAnimation.Automatic)
+        
+        tableView.reloadDataWithBlock { () -> () in
+            self.configDownSwipeGesture()
+        }
     }
     
     func tapMode(sender: UITapGestureRecognizer) {
@@ -559,6 +572,16 @@ extension HomeViewController: UIGestureRecognizerDelegate {
             }
             viewModeTableView.reloadData()
             closePopup(viewModePopup)
+        }
+    }
+    
+    func configDownSwipeGesture() {
+        if (self.tableView.contentSize.height <= self.tableView.frame.size.height) {
+            self.tableView.scrollEnabled = false
+            self.tableView.addGestureRecognizer(self.downSwipe)
+        } else {
+            self.tableView.scrollEnabled = true
+            self.tableView.removeGestureRecognizer(self.downSwipe)
         }
     }
 }

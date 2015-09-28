@@ -29,6 +29,7 @@ class AccountCell: UITableViewCell {
             }
             nameLabel.text = account.name
             typeLabel.text = "\(account.startingBalance)"
+            iconView.setNewTintColor(Color.strongColor)
         }
     }
 
