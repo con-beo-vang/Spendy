@@ -58,6 +58,7 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework 'Pods/PhotoTweaks.framework'
   install_framework 'Pods/SCLAlertView.framework'
   install_framework 'Pods/SevenSwitch.framework'
+  install_framework 'Pods/SwiftSpinner.framework'
   install_framework 'Pods/VIPhotoView.framework'
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
@@ -67,5 +68,6 @@ if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework 'Pods/PhotoTweaks.framework'
   install_framework 'Pods/SCLAlertView.framework'
   install_framework 'Pods/SevenSwitch.framework'
+  install_framework 'Pods/SwiftSpinner.framework'
   install_framework 'Pods/VIPhotoView.framework'
 fi

@@ -83,10 +83,3 @@ class Category: HTObject {
         return record
     }
 }
-
-//extension Category: CustomStringConvertible {
-//    override var description: String {
-//        let base = super.description
-//        return "name: \(name), icon: \(icon), base: \(base)"
-//    }
-//}

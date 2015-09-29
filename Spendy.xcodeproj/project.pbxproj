@@ -58,6 +58,7 @@
 		9D78C5241BA5A47F00B00BC2 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9D78C5231BA5A47F00B00BC2 /* Images.xcassets */; };
 		9D78C5271BA5A47F00B00BC2 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9D78C5251BA5A47F00B00BC2 /* LaunchScreen.xib */; };
 		9D78C5331BA5A48000B00BC2 /* SpendyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D78C5321BA5A48000B00BC2 /* SpendyTests.swift */; };
+		9D862C0D1BB99AB500332B24 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D862C0C1BB99AB500332B24 /* User.swift */; settings = {ASSET_TAGS = (); }; };
 		9DB8A85F1BA9E5E6000F03A1 /* Config.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9DB8A85E1BA9E5E6000F03A1 /* Config.plist */; };
 		9DB8A8631BA9EAC0000F03A1 /* CategoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DB8A8621BA9EAC0000F03A1 /* CategoryCell.swift */; };
 		9DB8A8681BA9FAA6000F03A1 /* Settings.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9DB8A8671BA9FAA6000F03A1 /* Settings.storyboard */; };
@@ -139,6 +140,7 @@
 		9D78C5311BA5A48000B00BC2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9D78C5321BA5A48000B00BC2 /* SpendyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpendyTests.swift; sourceTree = "<group>"; };
 		9D78C53D1BA5A5FC00B00BC2 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		9D862C0C1BB99AB500332B24 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		9DB8A85E1BA9E5E6000F03A1 /* Config.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Config.plist; sourceTree = "<group>"; };
 		9DB8A8621BA9EAC0000F03A1 /* CategoryCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CategoryCell.swift; sourceTree = "<group>"; };
 		9DB8A8671BA9FAA6000F03A1 /* Settings.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Settings.storyboard; sourceTree = "<group>"; };
@@ -295,6 +297,7 @@
 				1881FB4B1BB7EC9F00314FD1 /* Color.swift */,
 				186640EC1BB8CDAC00076B70 /* ReminderItem.swift */,
 				186640EE1BB8D37A00076B70 /* ReminderList.swift */,
+				9D862C0C1BB99AB500332B24 /* User.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -606,6 +609,7 @@
 				1884A4E11BAD6EAA00D24257 /* TimeCell.swift in Sources */,
 				18F39CCD1BA9C8330099B714 /* AddTransactionViewController.swift in Sources */,
 				18F39CC31BA962D10099B714 /* HomeViewController.swift in Sources */,
+				9D862C0D1BB99AB500332B24 /* User.swift in Sources */,
 				9D3EA5FA1BAB3BBD00EF4B47 /* Transaction.swift in Sources */,
 				18499E1D1BAB237D0066E6E5 /* AccountCell.swift in Sources */,
 				9DFE8D9D1BAFA9E0001E6F9E /* DateUtilities.swift in Sources */,
