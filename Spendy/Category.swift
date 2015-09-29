@@ -173,25 +173,26 @@ extension Category {
 
     class func loadType(type: String, names: [String], objects: [PFObject]) {
         for name in names {
+            let sanitizedName = name.stringByReplacingOccurrencesOfString(" ", withString: "")
+            let iconName = "\(type)-\(sanitizedName)"
+
             let category:PFObject? = objects.filter({ (element) -> Bool in
-                if let n = element.objectForKey("name") as! String? {
-                    return n == name
+                if let n = element.objectForKey("icon") as! String? {
+                    return n == iconName
                 } else {
                     return false
                 }
             }).first
 
             if category == nil {
-                let sanitizedName = name.stringByReplacingOccurrencesOfString(" ", withString: "")
-                let iconName = "\(type)-\(sanitizedName)"
                 let c = Category(name: name, icon: iconName)
                 c._object!.saveInBackgroundWithBlock({ (succeeded, error) -> Void in
                     if succeeded {
-                        print("Added \(type) category \(name)")
+                        print("Added \(type) category \(name) with image \(iconName)")
                     }
                 })
             } else {
-                print("Found \(name). No change")
+                print("Found \(iconName). No change")
             }
         }
 
