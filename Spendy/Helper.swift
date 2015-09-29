@@ -155,6 +155,8 @@ class Helper: NSObject {
     func setIconLayer(iconView: UIImageView) {
         iconView.layer.cornerRadius = iconView.frame.height / 2
         iconView.layer.masksToBounds = true
+        // TODO: remove this line after category has type
+        iconView.layer.backgroundColor = Color.strongColor.CGColor
     }
     
 }
