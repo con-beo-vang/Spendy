@@ -113,11 +113,7 @@ class Helper: NSObject {
     func setPopupShadowAndColor(popupView: UIView, label: UILabel) {
         
         // Set shadow
-        //        viewModePopup.clipsToBounds = false
-        //        viewModePopup.layer.masksToBounds = false
-        //        popupView.layer.cornerRadius = 5
         popupView.layer.shadowPath = UIBezierPath(roundedRect: popupView.layer.bounds, cornerRadius: 5).CGPath
-//        popupView.layer.shadowColor = UIColor(netHex: 0xd99652).CGColor
         popupView.layer.shadowColor = Color.strongColor.CGColor
         popupView.layer.shadowOffset = CGSizeMake(5, 5)
         popupView.layer.shadowRadius = 5
@@ -128,8 +124,40 @@ class Helper: NSObject {
         label.textColor = UIColor.whiteColor()
     }
     
-    // MARK: Local notificaiton
+    // MARK: Category
     
+    func createIcon(imageName: String) -> UIImage {
+        
+        let markerView = UIView(frame:CGRectMake(0, 0, 50, 50))
+        
+        //Add icon
+        let icon = UIImageView(frame: CGRectMake(7, 7, 36, 36))
+        icon.image = UIImage(named: imageName)
+        markerView.addSubview(icon)
+        
+        return imageFromView(markerView)
+    }
+    
+    func imageFromView(aView:UIView) -> UIImage {
+        
+        if(UIScreen.mainScreen().respondsToSelector("scale")) {
+            UIGraphicsBeginImageContextWithOptions(aView.frame.size, false, UIScreen.mainScreen().scale)
+        }
+        else {
+            UIGraphicsBeginImageContext(aView.frame.size)
+        }
+        aView.layer.renderInContext(UIGraphicsGetCurrentContext()!)
+        let image = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return image
+    }
+    
+    func setIconLayer(iconView: UIImageView) {
+        iconView.layer.cornerRadius = iconView.frame.height / 2
+        iconView.layer.masksToBounds = true
+        // TODO: remove this line after category has type
+        iconView.layer.backgroundColor = Color.strongColor.CGColor
+    }
     
 }
 

@@ -191,6 +191,10 @@ extension QuickViewController: UITableViewDataSource, UITableViewDelegate, UIGes
         
         cell.amoutSegment.addTarget(self, action: "amountSegmentChanged:", forControlEvents: UIControlEvents.ValueChanged)
         
+        cell.iconView.image = Helper.sharedInstance.createIcon("Category-Meal")
+        cell.iconView.setNewTintColor(UIColor.whiteColor())
+        cell.iconView.layer.backgroundColor = Color.expenseIconColor.CGColor
+        
         // Swipe left to delete this row
         let leftSwipe = UISwipeGestureRecognizer(target: self, action: Selector("handleSwipe:"))
         leftSwipe.direction = .Left

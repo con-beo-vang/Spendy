@@ -23,7 +23,8 @@ class QuickCell: UITableViewCell {
         let attributes = NSDictionary(object: font, forKey: NSFontAttributeName)
         amoutSegment.setTitleTextAttributes(attributes as [NSObject : AnyObject], forState: UIControlState.Normal)
         
-        iconView.setNewTintColor(Color.strongColor)
+        Helper.sharedInstance.setIconLayer(iconView)
+        
         categoryLabel.textColor = Color.quickCategoryColor
         amoutSegment.tintColor = Color.quickSegmentColor
     }
