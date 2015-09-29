@@ -21,6 +21,7 @@ class SelectAccountOrCategoryCell: UITableViewCell {
             guard let category = category else { return }
             titleLabel.text = "Category"
             typeLabel.text = category.name
+
             itemTypeFilter = category.type()
         }
     }

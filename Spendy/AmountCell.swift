@@ -16,6 +16,7 @@ class AmountCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
+        print("init selectedSegmentIndex = 1")
         typeSegment.selectedSegmentIndex = 1
         typeSegment.tintColor = Color.expenseColor
     }

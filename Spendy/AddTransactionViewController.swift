@@ -32,6 +32,8 @@ class AddTransactionViewController: UIViewController {
 
     var currentAccount: Account!
 
+    var backupCategories = [String:Category?]()
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -353,12 +355,8 @@ extension AddTransactionViewController: UITableViewDataSource, UITableViewDelega
                 
                 cell.itemClass = "Category"
                 cell.titleLabel.text = "Category"
+                cell.category = selectedTransaction!.category
 
-                // this got rendered too soon!
-                
-                let category = selectedTransaction?.category ?? Category.defaultExpenseCategory()
-                cell.typeLabel.text = category!.name // TODO: replace with default category
-                
                 Helper.sharedInstance.setSeparatorFullWidth(cell)
                 
                 if categoryCell == nil {
@@ -476,7 +474,9 @@ extension AddTransactionViewController: UITableViewDataSource, UITableViewDelega
     }
     
     func typeSegmentChanged(sender: UISegmentedControl) {
-        selectedTransaction!.kind = Transaction.kinds[sender.selectedSegmentIndex]
+        guard let selectedTransaction = selectedTransaction else { return }
+
+        selectedTransaction.kind = Transaction.kinds[sender.selectedSegmentIndex]
         
         if sender.selectedSegmentIndex != 2 {
             // TODO: dynamic binding for Account
@@ -487,17 +487,42 @@ extension AddTransactionViewController: UITableViewDataSource, UITableViewDelega
         switch sender.selectedSegmentIndex {
         case 0:
             sender.tintColor = Color.incomeColor
-            categoryCell!.category = Category.defaultIncomeCategory()
+
+            // change transaction.category to an income one
+            guard let category = selectedTransaction.category,
+                      type = category.type() else { return }
+
+            if type != "Income" {
+                backupCategories[type] = category
+                selectedTransaction.category = backupCategories["Income"] ?? Category.defaultIncomeCategory()
+                categoryCell!.category = selectedTransaction.category
+            }
+
         case 1:
             sender.tintColor = Color.expenseColor
-            categoryCell!.category = Category.defaultExpenseCategory()
+
+            guard let category = selectedTransaction.category,
+                type = category.type() else { return }
+
+            if type != "Expense" {
+                backupCategories[type] = category
+                selectedTransaction.category = backupCategories["Expense"] ?? Category.defaultExpenseCategory()
+                categoryCell!.category = selectedTransaction.category
+            }
+
         case 2:
             sender.tintColor = Color.balanceColor
-            
+
             categoryCell!.titleLabel.text = "From Account"
             categoryCell!.typeLabel.text = "None"
             accountCell!.titleLabel.text = "To Account"
             accountCell!.typeLabel.text = "None"
+            guard let category = selectedTransaction.category,
+                type = category.type() else { return }
+
+            backupCategories[type] = category
+            selectedTransaction.category = nil
+
         default:
             break
         }
