@@ -189,6 +189,12 @@ extension AddTransactionViewController: SelectAccountOrCategoryDelegate, PhotoVi
             vc.itemTypeFilter = cell.itemTypeFilter
             vc.delegate = self
             
+            if cell.itemClass == "Category" {
+                vc.selectedItem = selectedTransaction?.category
+            } else {
+                vc.selectedItem = selectedTransaction?.account
+            }
+            
             // TODO: delegate
         } else if toController is PhotoViewController {
             
