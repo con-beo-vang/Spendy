@@ -11,6 +11,10 @@ import Parse
 
 var _allCategories: [Category]?
 
+enum CategoryType: String {
+    case Expense = "Expense", Income = "Income"
+}
+
 class Category: HTObject {
     static let incomeCats = [
         "Bonus",
@@ -132,15 +136,15 @@ class Category: HTObject {
 
     // TODO: decide which categories should be the default
     class func defaultExpenseCategory() -> Category? {
-        return all.filter({$0.icon == "Category-Other"}).first
+        return all.filter({$0.icon == "Expense-Other"}).first
     }
 
     class func defaultIncomeCategory() -> Category? {
         return all.filter({$0.icon == "Income-Other"}).first
     }
 
-    class func defaultCategoryFor(type: String) -> Category? {
-        let name = "\(type)-Other"
+    class func defaultCategoryFor(typeString: String) -> Category? {
+        let name = "\(typeString)-Other"
         return all.filter({$0.icon == name}).first
     }
 
@@ -189,14 +193,14 @@ extension Category {
         let objects = try! query.findObjects()
         print("Found: \(objects.count) existing categories")
 
-        loadType("Category", names: expenseCats, objects: objects)
-        loadType("Income", names: incomeCats, objects: objects)
+        loadType(CategoryType.Expense, names: expenseCats, objects: objects)
+        loadType(CategoryType.Income, names: incomeCats, objects: objects)
     }
 
-    class func loadType(type: String, names: [String], objects: [PFObject]) {
+    class func loadType(type: CategoryType, names: [String], objects: [PFObject]) {
         for name in names {
             let sanitizedName = name.stringByReplacingOccurrencesOfString(" ", withString: "")
-            let iconName = "\(type)-\(sanitizedName)"
+            let iconName = "\(type.rawValue)-\(sanitizedName)"
 
             let category:PFObject? = objects.filter({ (element) -> Bool in
                 if let n = element.objectForKey("icon") as! String? {

@@ -98,12 +98,15 @@ extension SelectAccountOrCategoryViewController: UITableViewDataSource, UITableV
                 
                 cell.iconImageView.image = Helper.sharedInstance.createIcon(icon)
                 cell.iconImageView.setNewTintColor(UIColor.whiteColor())
-                // TODO: set color for icon depending on kind of transaction
-//                if [expense] {
-//                    cell.iconImageView.layer.backgroundColor = Color.expenseIconColor.CGColor
-//                } else {
-//                    cell.iconImageView.layer.backgroundColor = Color.expenseIconColor.CGColor
-//                }
+                switch itemTypeFilter {
+                case .Some("Expense"):
+                    cell.iconImageView.layer.backgroundColor = Color.expenseIconColor.CGColor
+                case .Some("Income"):
+                    cell.iconImageView.layer.backgroundColor = Color.incomeIconColor.CGColor
+                default:
+                    // nothing
+                    cell
+                }
             }
         }
         return cell
