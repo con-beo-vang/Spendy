@@ -24,6 +24,8 @@ class SelectAccountOrCategoryViewController: UIViewController {
 
     var backButton: UIButton?
     
+    var selectedItem: HTObject?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -95,15 +97,24 @@ extension SelectAccountOrCategoryViewController: UITableViewDataSource, UITableV
 
         if let item = items?[indexPath.row] {
             cell.nameLabel.text = item["name"] as! String?
+            
+            if item.objectId == selectedItem?.objectId {
+                cell.selectedIcon.hidden = false
+            } else {
+                cell.selectedIcon.hidden = true
+            }
+            
             if let icon = item["icon"] as? String {
                 
                 cell.iconImageView.image = Helper.sharedInstance.createIcon(icon)
                 cell.iconImageView.setNewTintColor(UIColor.whiteColor())
                 switch itemTypeFilter {
                 case .Some("Expense"):
-                    cell.iconImageView.layer.backgroundColor = Color.expenseIconColor.CGColor
+                    cell.iconImageView.layer.backgroundColor = Color.expenseColor.CGColor
+                    cell.selectedIcon.setNewTintColor(Color.expenseColor)
                 case .Some("Income"):
-                    cell.iconImageView.layer.backgroundColor = Color.incomeIconColor.CGColor
+                    cell.iconImageView.layer.backgroundColor = Color.incomeColor.CGColor
+                    cell.selectedIcon.setNewTintColor(Color.incomeColor)
                 default:
                     // nothing
                     cell
