@@ -12,7 +12,19 @@ class SelectAccountOrCategoryCell: UITableViewCell {
     
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var typeLabel: UILabel!
+
     var itemClass: String!
+    var itemTypeFilter: String?
+
+    var category: Category? {
+        didSet {
+            guard let category = category else { return }
+            titleLabel.text = "Category"
+            typeLabel.text = category.name
+
+            itemTypeFilter = category.type()
+        }
+    }
 
     override func awakeFromNib() {
         super.awakeFromNib()

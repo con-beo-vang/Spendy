@@ -23,7 +23,21 @@ class AccountsViewController: UIViewController {
     var selectedDragCell: AccountCell?
     var previousCell: AccountCell?
     
-//    let customNavigationAnimationController = CustomNavigationAnimationController()
+    // Popup
+    
+    @IBOutlet weak var popupSuperView: UIView!
+    
+    @IBOutlet weak var popupView: UIView!
+    
+    @IBOutlet weak var titleLabel: UILabel!
+    
+    @IBOutlet weak var messageLabel: UILabel!
+    
+    @IBOutlet weak var amountText: UITextField!
+    
+    @IBOutlet weak var cancelButton: UIButton!
+    
+    @IBOutlet weak var transferButton: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,7 +49,6 @@ class AccountsViewController: UIViewController {
         tableView.tableFooterView = UIView()
         
         accounts = Account.all()
-        
         tableView.reloadData()
         
         if (tableView.contentSize.height <= tableView.frame.size.height) {
@@ -46,6 +59,15 @@ class AccountsViewController: UIViewController {
         }
         
         addBarButton()
+        configPopup()
+
+
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "updateAccountList:", name:"AccountAddedOrUpdated", object: nil)
+    }
+
+    func updateAccountList(notification: NSNotification) {
+        accounts = Account.all()
+        tableView.reloadData()
     }
     
     override func didReceiveMemoryWarning() {
@@ -55,6 +77,7 @@ class AccountsViewController: UIViewController {
     
     override func viewWillAppear(animated: Bool) {
         tableView.reloadData()
+        setColor()
     }
     
     // MARK: Button
@@ -69,6 +92,66 @@ class AccountsViewController: UIViewController {
     func onAddAccountButton(sender: UIButton!) {
         print("on Add account", terminator: "\n")
         performSegueWithIdentifier("AddAccount", sender: self)
+    }
+    
+    // MARK: Popup
+    
+    func configPopup() {
+        
+        popupSuperView.hidden = true
+        popupSuperView.backgroundColor = UIColor.grayColor().colorWithAlphaComponent(0.5)
+        
+        amountText.keyboardType = UIKeyboardType.DecimalPad
+        
+        Helper.sharedInstance.setPopupShadowAndColor(popupView, label: titleLabel)
+    }
+    
+    func setColor() {
+        popupView.backgroundColor = Color.popupBackgroundColor
+        cancelButton.setTitleColor(Color.popupButtonColor, forState: UIControlState.Normal)
+        transferButton.setTitleColor(Color.popupButtonColor, forState: UIControlState.Normal)
+    }
+    
+    func showPopup() {
+        
+        popupSuperView.hidden = false
+        popupView.transform = CGAffineTransformMakeScale(1.3, 1.3)
+        popupView.alpha = 0.0;
+        UIView.animateWithDuration(0.25, animations: {
+            self.popupView.alpha = 1.0
+            self.popupView.transform = CGAffineTransformMakeScale(1.0, 1.0)
+        });
+        
+        amountText.becomeFirstResponder()
+        
+        // Disable bar button
+        addAccountButton?.enabled = false
+    }
+    
+    func closePopup() {
+        
+        UIView.animateWithDuration(0.25, animations: {
+            self.popupView.transform = CGAffineTransformMakeScale(1.3, 1.3)
+            self.popupView.alpha = 0.0;
+            }, completion:{(finished : Bool)  in
+                if (finished) {
+                    self.popupSuperView.hidden = true
+                    self.amountText.resignFirstResponder()
+                    
+                    // enable bar button
+                    self.addAccountButton?.enabled = true
+                }
+        });
+    }
+    
+    @IBAction func onCancelButton(sender: UIButton) {
+        closePopup()
+    }
+    
+    @IBAction func onTransferButton(sender: UIButton) {
+        // TODO: Handle transfer
+        let amountString = amountText.text
+        closePopup()
     }
     
     // MARK: Transfer between 2 views
@@ -130,16 +213,27 @@ extension AccountsViewController: UITableViewDataSource, UITableViewDelegate {
         print("action", terminator: "\n")
         isPreparedDelete = true
         let delete = UITableViewRowAction(style: .Normal, title: "Delete") { action, index in
-            print("delete", terminator: "\n")
-            let alertView = SCLAlertView()
-            alertView.addButton("Delete", action: { () -> Void in
-                self.accounts?.removeAtIndex(indexPath.row)
+            print("Delete account:")
+            
+            let alertController = UIAlertController(title: "Warning", message: "Deleting Saving will cause to also delete its transactions.", preferredStyle: .Alert)
+            let cancelAction = UIAlertAction(title: "Cancel", style: .Default) { (action) in
+                // ...
+            }
+            alertController.addAction(cancelAction)
+            
+            let deleteAction = UIAlertAction(title: "Delete", style: .Default) { (action) in
+                if let accountToDelete = self.accounts?[indexPath.row] {
+                    self.accounts?.removeAtIndex(indexPath.row)
+                    Account.delete(accountToDelete)
+                }
+
+                // reload the entire table
+                // tableView.reloadData()
                 self.tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: UITableViewRowAnimation.Automatic)
-                // TODO: Delete this account and its transactions
-            })
+            }
+            alertController.addAction(deleteAction)
             
-            alertView.showWarning("Warning", subTitle: "Deleting Saving will cause to also delete its transactions.", closeButtonTitle: "Cancel", colorStyle: 0x55AEED, colorTextButton: 0xFFFFFF)
-            
+            self.presentViewController(alertController, animated: true) {}
         }
         delete.backgroundColor = UIColor.redColor()
 
@@ -235,12 +329,8 @@ extension AccountsViewController: UIGestureRecognizerDelegate {
                     let toAcc = previousCell?.nameLabel.text ?? ""
                     
                     if !fromAcc.isEmpty && !toAcc.isEmpty {
-                        let alert = SCLAlertView()
-                        let txt = alert.addAmoutField("Enter the amount")
-                        alert.addButton("Transfer") {
-                            print("Amount value: \(txt.text)", terminator: "\n")
-                        }
-                        alert.showEdit("Transfer", subTitle: "Transfer from \(fromAcc) account to \(toAcc) account", closeButtonTitle: "Cancel", colorStyle: 0x55AEED, colorTextButton: 0xFFFFFF)
+                        messageLabel.text = "Transfer from \(fromAcc) to \(toAcc)"
+                        showPopup()
                     }
                 }
                 break
@@ -268,17 +358,3 @@ extension AccountsViewController: UIGestureRecognizerDelegate {
         return nil
     }
 }
-
-// MARK: Custom transition
-
-//extension AccountsViewController: UINavigationControllerDelegate {
-//    
-//    func navigationController(navigationController: UINavigationController, animationControllerForOperation operation: UINavigationControllerOperation, fromViewController fromVC: UIViewController, toViewController toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-////        if operation == .Push {
-////            
-////            customInteractionController.attachToViewController(toVC)
-////        }
-//        customNavigationAnimationController.reverse = operation == .Pop
-//        return customNavigationAnimationController
-//    }
-//}

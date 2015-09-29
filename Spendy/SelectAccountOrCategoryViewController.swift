@@ -16,12 +16,15 @@ protocol SelectAccountOrCategoryDelegate {
 class SelectAccountOrCategoryViewController: UIViewController {
     // Account or Category
     var itemClass: String!
+    var itemTypeFilter: String?
     var delegate: SelectAccountOrCategoryDelegate?
 
     @IBOutlet weak var tableView: UITableView!
     var items: [HTObject]?
 
     var backButton: UIButton?
+    
+    var selectedItem: HTObject?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,9 +43,20 @@ class SelectAccountOrCategoryViewController: UIViewController {
     }
 
     func loadItems() {
+        print("loadItems: \(itemTypeFilter)")
         if itemClass == "Category" {
             navigationItem.title = "Select Category"
-            items = Category.all() as [Category]?
+            switch itemTypeFilter {
+            case .Some("Income"):
+                items = Category.allIncomeType as [Category]
+
+            case .Some("Expense"):
+                items = Category.allExpenseType as [Category]
+
+            default:
+                items = Category.all as [Category]
+            }
+
             tableView.reloadData()
         } else if itemClass == "Account" {
             navigationItem.title = "Select Account"
@@ -83,9 +97,28 @@ extension SelectAccountOrCategoryViewController: UITableViewDataSource, UITableV
 
         if let item = items?[indexPath.row] {
             cell.nameLabel.text = item["name"] as! String?
+            
+            if item.objectId == selectedItem?.objectId {
+                cell.selectedIcon.hidden = false
+            } else {
+                cell.selectedIcon.hidden = true
+            }
+            
             if let icon = item["icon"] as? String {
-                cell.iconImageView.image = UIImage(named: icon)
-                cell.iconImageView.setNewTintColor(Color.strongColor)
+                
+                cell.iconImageView.image = Helper.sharedInstance.createIcon(icon)
+                cell.iconImageView.setNewTintColor(UIColor.whiteColor())
+                switch itemTypeFilter {
+                case .Some("Expense"):
+                    cell.iconImageView.layer.backgroundColor = Color.expenseColor.CGColor
+                    cell.selectedIcon.setNewTintColor(Color.expenseColor)
+                case .Some("Income"):
+                    cell.iconImageView.layer.backgroundColor = Color.incomeColor.CGColor
+                    cell.selectedIcon.setNewTintColor(Color.incomeColor)
+                default:
+                    // nothing
+                    cell
+                }
             }
         }
         return cell

@@ -14,7 +14,7 @@ var logoColor = UIColor.redColor()
 class Helper: NSObject {
     
     static let sharedInstance = Helper()
-   
+    
     func customizeBarButton(viewController: UIViewController, button: UIButton, imageName: String, isLeft: Bool) {
         
         let avatar = UIImageView(frame: CGRect(x: 0, y: 0, width: 22, height: 22))
@@ -51,28 +51,7 @@ class Helper: NSObject {
         }
     }
     
-    func getWeek(weekOfYear: Int) -> (NSDate?, NSDate?) {
-        
-        var beginningOfWeek: NSDate?
-        var endOfWeek: NSDate?
-        
-        let cal = NSCalendar.currentCalendar()
-        
-        let components = NSDateComponents()
-        components.weekOfYear = weekOfYear
-        
-        if let date = cal.dateByAddingComponents(components, toDate: NSDate(), options: NSCalendarOptions(rawValue: 0)) {
-            var weekDuration = NSTimeInterval()
-            if cal.rangeOfUnit(NSCalendarUnit.WeekOfYear, startDate: &beginningOfWeek, interval: &weekDuration, forDate: date) {
-                endOfWeek = beginningOfWeek?.dateByAddingTimeInterval(weekDuration)
-            }
-            
-            beginningOfWeek = cal.dateByAddingUnit(NSCalendarUnit.Day, value: 1, toDate: beginningOfWeek!, options: NSCalendarOptions(rawValue: 0))
-            
-        }
-        
-        return (beginningOfWeek!, endOfWeek!)
-    }
+    
     
     func showActionSheet(viewController: UIViewController, imagePicker: UIImagePickerController) {
         
@@ -113,11 +92,7 @@ class Helper: NSObject {
     func setPopupShadowAndColor(popupView: UIView, label: UILabel) {
         
         // Set shadow
-        //        viewModePopup.clipsToBounds = false
-        //        viewModePopup.layer.masksToBounds = false
-        //        popupView.layer.cornerRadius = 5
         popupView.layer.shadowPath = UIBezierPath(roundedRect: popupView.layer.bounds, cornerRadius: 5).CGPath
-//        popupView.layer.shadowColor = UIColor(netHex: 0xd99652).CGColor
         popupView.layer.shadowColor = Color.strongColor.CGColor
         popupView.layer.shadowOffset = CGSizeMake(5, 5)
         popupView.layer.shadowRadius = 5
@@ -128,8 +103,40 @@ class Helper: NSObject {
         label.textColor = UIColor.whiteColor()
     }
     
-    // MARK: Local notificaiton
+    // MARK: Category
     
+    func createIcon(imageName: String) -> UIImage {
+        
+        let markerView = UIView(frame:CGRectMake(0, 0, 50, 50))
+        
+        //Add icon
+        let icon = UIImageView(frame: CGRectMake(7, 7, 36, 36))
+        icon.image = UIImage(named: imageName)
+        markerView.addSubview(icon)
+        
+        return imageFromView(markerView)
+    }
+    
+    func imageFromView(aView:UIView) -> UIImage {
+        
+        if(UIScreen.mainScreen().respondsToSelector("scale")) {
+            UIGraphicsBeginImageContextWithOptions(aView.frame.size, false, UIScreen.mainScreen().scale)
+        }
+        else {
+            UIGraphicsBeginImageContext(aView.frame.size)
+        }
+        aView.layer.renderInContext(UIGraphicsGetCurrentContext()!)
+        let image = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return image
+    }
+    
+    func setIconLayer(iconView: UIImageView) {
+        iconView.layer.cornerRadius = iconView.frame.height / 2
+        iconView.layer.masksToBounds = true
+        // TODO: remove this line after category has type
+        iconView.layer.backgroundColor = Color.strongColor.CGColor
+    }
     
 }
 
@@ -168,6 +175,14 @@ extension UIImageView {
     func setNewTintColor(color: UIColor) {
         self.image = self.image!.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
         self.tintColor = color
+    }
+}
+
+extension UITableView {
+    
+    func reloadDataWithBlock(completion: ()->()) {
+        UIView.animateWithDuration(0, animations: { self.reloadData() })
+            { _ in completion() }
     }
 }
 

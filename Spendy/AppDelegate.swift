@@ -30,7 +30,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Remove this line if you don't want to use Local Datastore features or want to use cachePolicy.
         Parse.enableLocalDatastore()
 
-
         // ****************************************************************************
         // Uncomment this line if you want to enable Crash Reporting
         // ParseCrashReporting.enable()
@@ -53,7 +52,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // ****************************************************************************
 
         // allows anonymousm users
-        PFUser.enableAutomaticUser()
+        // PFUser.enableAutomaticUser()
 
         let defaultACL = PFACL();
 
@@ -81,11 +80,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Local notification
         settingNotification(application)
 
-        DataManager.setupDefaultData(false)
-        
-        
         // Config apprearance
-        Color.isGreen = false
+        
+        Color.isGreen = NSUserDefaults.standardUserDefaults().boolForKey("DefaultTheme") ?? true
+        
         UINavigationBar.appearance().barTintColor = Color.strongColor
         UINavigationBar.appearance().tintColor = UIColor.whiteColor()
         UINavigationBar.appearance().titleTextAttributes = [NSForegroundColorAttributeName : UIColor.whiteColor()]
@@ -94,9 +92,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         UITabBar.appearance().tintColor = Color.strongColor
         
-        
+
+        let user = User.current()
+
         // TODO: check login
-        let isLoggedIn = false
+        let isLoggedIn = user != nil
         
         if isLoggedIn {
             // Go to Home screen
@@ -107,6 +107,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             let vc = storyboard.instantiateViewControllerWithIdentifier("LoginVC") as! LoginViewController
             window?.rootViewController = vc
         }
+
+        // Uncomment this out to run if you have more categories to addd
+         Category.bootstrapCategories()
 
         return true
     }

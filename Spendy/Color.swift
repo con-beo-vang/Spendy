@@ -50,6 +50,10 @@ class Color: NSObject {
     static var expenseColor = UIColor(netHex: 0xCA2437)
     static var balanceColor = UIColor(netHex: 0x4682B4)
     
+    static var incomeIconColor = UIColor(netHex: 0x28AD60)
+    static var expenseIconColor = UIColor(netHex: 0xE6A447)
+    static var transferIconColor = UIColor(netHex: 0x4682B4)
+    
     static var isGreen = true {
         didSet {
             if isGreen {

@@ -21,9 +21,9 @@ class TransactionCell: UITableViewCell {
             // TODO: change back to just note
             if let noteText = transaction.note {
                 if noteText.isEmpty {
-                    noteLabel.text = transaction.category?.name
+                    noteLabel.text = transaction.kind?.capitalizedString
                 } else {
-                    noteLabel.text = transaction.note
+                    noteLabel.text = noteText
                 }
             }
 
@@ -39,8 +39,18 @@ class TransactionCell: UITableViewCell {
             balanceLabel.text = transaction.formattedBalanceSnapshot()
 
             if let icon = transaction.category?.icon {
-                iconView.image = UIImage(named: icon)
-                iconView.setNewTintColor(Color.strongColor)
+                iconView.image = Helper.sharedInstance.createIcon(icon)
+                iconView.setNewTintColor(UIColor.whiteColor())
+                switch transaction.kind! {
+                case Transaction.expenseKind:
+                    iconView.layer.backgroundColor = Color.expenseColor.CGColor
+                case Transaction.incomeKind:
+                    iconView.layer.backgroundColor = Color.incomeColor.CGColor
+                case Transaction.transferKind:
+                    iconView.layer.backgroundColor = Color.transferIconColor.CGColor
+                default:
+                    break
+                }
             }
 
         }
@@ -49,7 +59,7 @@ class TransactionCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
-        iconView.setNewTintColor(Color.strongColor)
+        Helper.sharedInstance.setIconLayer(iconView)
     }
 
     override func setSelected(selected: Bool, animated: Bool) {

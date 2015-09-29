@@ -7,17 +7,25 @@
 //
 
 import UIKit
+import Parse
+import SwiftSpinner
+
+enum LoginMode: Int {
+    case Login = 0
+    case Register
+    case ForgotPassword
+}
 
 class LoginViewController: UIViewController {
     
     @IBOutlet weak var logoView: UIImageView!
     
     @IBOutlet weak var appNameLabel: UILabel!
+
+    @IBOutlet weak var primaryButton: UIButton!
     
-    @IBOutlet weak var loginButton: UIButton!
-    
-    @IBOutlet weak var registerButton: UIButton!
-    
+    @IBOutlet weak var secondaryButton: UIButton!
+
     @IBOutlet weak var retrievePassword: UIButton!
     
     @IBOutlet weak var tableView: UITableView!
@@ -29,15 +37,16 @@ class LoginViewController: UIViewController {
     @IBOutlet weak var logoTopConstraint: NSLayoutConstraint!
     
     @IBOutlet weak var logoBottomConstraint: NSLayoutConstraint!
-    
-    var isRegisterMode = false
-    
-    var name = ""
-    var email = ""
-    var password = ""
-    
+
+    // Default mode is Login mode
+    var loginMode = LoginMode.Login
+
     let customPresentAnimationController = CustomPresentAnimationController()
     let customDismissAnimationController = CustomDismissAnimationController()
+
+    var name: String? { return getTextField(0)?.text }
+    var email: String? { return getTextField(1)?.text?.lowercaseString }
+    var password: String? { return getTextField(2)?.text }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -53,12 +62,11 @@ class LoginViewController: UIViewController {
         tableView.layer.borderColor = UIColor(netHex: 0xE9E9E9).CGColor
         tableView.layer.borderWidth = 1
         
-//        loginButton.layer.backgroundColor = UIColor(netHex: 0xfcc96f).CGColor
+//        primaryButton.layer.backgroundColor = UIColor(netHex: 0xfcc96f).CGColor
         
-        tableViewHeightConstraint.constant = isRegisterMode ? 132 : 88
-
+        tableViewHeightConstraint.constant = loginMode == .Register ? 132 : 88
     }
-    
+
     override func viewWillAppear(animated: Bool) {
         setColor()
     }
@@ -69,62 +77,196 @@ class LoginViewController: UIViewController {
     }
     
     func setColor() {
-        
         view.backgroundColor = Color.loginBackgroundColor
         logoView.setNewTintColor(Color.strongColor)
         appNameLabel.textColor = Color.appNameColor
-        loginButton.layer.backgroundColor = Color.strongColor.CGColor
-        loginButton.tintColor = UIColor.whiteColor()
-        registerButton.setTitleColor(Color.registerColor, forState: UIControlState.Normal)
+        primaryButton.layer.backgroundColor = Color.strongColor.CGColor
+        primaryButton.tintColor = UIColor.whiteColor()
+        secondaryButton.setTitleColor(Color.registerColor, forState: UIControlState.Normal)
         retrievePassword.setTitleColor(Color.forgotPasswordColor, forState: UIControlState.Normal)
     }
     
     // MARK: Button
     
-    @IBAction func onLogin(sender: UIButton) {
-        print("on Login")
+    @IBAction func onPrimaryButton(sender: UIButton) {
         
-        email = (getTextField(1)?.text)!
-        password = (getTextField(2)?.text)!
-        
-        if isRegisterMode {
-            name = (getTextField(0)?.text)!
-            // TODO: Handle Register
-        } else {
-            // TODO: Handle Login
+        // Dismiss keyoboard
+        for i in 0...2 {
+            let textField = getTextField(i)
+            if let textField = textField {
+                textField.resignFirstResponder()
+            }
         }
         
-        performSegueWithIdentifier("GoToHome", sender: self)
-    }
-    
-    @IBAction func onRegister(sender: UIButton) {
-        if isRegisterMode {
-            isRegisterMode = false
-            loginButton.setTitle("Login", forState: UIControlState.Normal)
-            registerButton.setTitle("Register", forState: UIControlState.Normal)
-            name = (getTextField(0)?.text)!
-            email = (getTextField(1)?.text)!
-            password = (getTextField(2)?.text)!
-            tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: UITableViewRowAnimation.Top)
-            tableViewHeightConstraint.constant = 88
-        } else {
-            isRegisterMode = true
-            loginButton.setTitle("Register", forState: UIControlState.Normal)
-            registerButton.setTitle("Back to Login", forState: UIControlState.Normal)
-            email = (getTextField(1)?.text)!
-            password = (getTextField(2)?.text)!
-            tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: UITableViewRowAnimation.Top)
-            tableViewHeightConstraint.constant = 132
-        }
-        
+        switch loginMode {
+        // TODO: add checkbox or popup to ask the user to agree on terms?
+        case .Register:
+            // confirmToRegister(sender)
+            processRegistration()
 
+        case .Login:
+            processLoggingIn()
+
+        case .ForgotPassword:
+            processPasswordRetrieval()
+        }
     }
-    
+
+    // display error message to user
+    func handleUserInfoError(error: NSError) {
+        if let message = error.userInfo["error"] {
+            dispatch_async(dispatch_get_main_queue()) { () -> Void in
+                SwiftSpinner.show("\(message)", animated: false).addTapHandler(
+                    { SwiftSpinner.hide() }, subtitle: "Tap to try again"
+                )
+            }
+        } else { SwiftSpinner.hide() }
+    }
+
+    func processLoggingIn() {
+        SwiftSpinner.show("Logging in...")
+        PFUser.logInWithUsernameInBackground(email!, password: password!) {
+            (user: PFUser?, error: NSError?) -> Void in
+            if let error = error {
+                self.handleUserInfoError(error)
+                return
+            }
+
+            if let user = user {
+                print("Logging in as \(user)")
+                dispatch_async(dispatch_get_main_queue()) { () -> Void in
+                    self.performSegueWithIdentifier("GoToHome", sender: self)
+                }
+            }
+        }
+    }
+
+    func processRegistration() -> Bool {
+        SwiftSpinner.show("Registering...")
+
+        // update user
+        guard User.current() == nil else { return false }
+
+        let user = User()
+        user.name = name
+        user.username = email
+        user.email = email
+        user.password = password
+
+        // TODO: validate user info here and return false if invalid
+
+        // TODO: refactor into User
+        user.object!.signUpInBackgroundWithBlock { (succeeded, error) -> Void in
+            if let error = error {
+                self.handleUserInfoError(error)
+                return
+            }
+
+            dispatch_async(dispatch_get_main_queue()) { () -> Void in
+                self.performSegueWithIdentifier("GoToHome", sender: self)
+            }
+        }
+
+        return true
+    }
+
+    func processPasswordRetrieval() {
+        SwiftSpinner.show("Sending you instructions...")
+        guard let email = email else {
+            print("Email is empty")
+            return
+        }
+
+        PFUser.requestPasswordResetForEmailInBackground(email) { (succeeded, error) -> Void in
+            if let error = error {
+                self.handleUserInfoError(error)
+            } else {
+                dispatch_async(dispatch_get_main_queue()) { () -> Void in
+                    SwiftSpinner.show("Your request is successful. Please check your email", animated: false).addTapHandler(
+                        { SwiftSpinner.hide() }, subtitle: "Tap to return"
+                    )
+                }
+            }
+        }
+    }
+
+    // Extra: we're displaying error messages with SwiftSpinner instead
+    func alertWithMessage(title: String?, message: String? = nil) {
+        // Build the terms and conditions alert
+        let alertController = UIAlertController(title: title,
+            message: message,
+            preferredStyle: UIAlertControllerStyle.Alert
+        )
+        alertController.addAction(UIAlertAction(title: "OK",
+            style: UIAlertActionStyle.Default,
+            handler: nil)
+        )
+
+        // Display alert
+        self.presentViewController(alertController, animated: true, completion: nil)
+    }
+
+    // Optional: if we want user to agree to some terms
+    func confirmToRegister(sender: AnyObject) {
+        // Build the terms and conditions alert
+        let alertController = UIAlertController(title: "Agree to terms and conditions",
+            message: "Click I AGREE to confirm that you agree to the End User Licence Agreement.",
+            preferredStyle: UIAlertControllerStyle.Alert
+        )
+        alertController.addAction(UIAlertAction(title: "I AGREE",
+            style: UIAlertActionStyle.Default,
+            handler: { alertController in self.processRegistration()})
+        )
+        alertController.addAction(UIAlertAction(title: "I do NOT agree",
+            style: UIAlertActionStyle.Default,
+            handler: nil)
+        )
+        
+        // Display alert
+        self.presentViewController(alertController, animated: true, completion: nil)
+    }
+
+    func showFieldsToLogin() {
+        loginMode = .Login
+        primaryButton.setTitle("Login", forState: UIControlState.Normal)
+        secondaryButton.setTitle("Register", forState: UIControlState.Normal)
+        
+        tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: UITableViewRowAnimation.Top)
+        tableViewHeightConstraint.constant = 88
+    }
+
+    func showFieldsToRegister() {
+        loginMode = .Register
+        primaryButton.setTitle("Register", forState: UIControlState.Normal)
+        secondaryButton.setTitle("Back to Login", forState: UIControlState.Normal)
+        
+        tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: UITableViewRowAnimation.Top)
+        tableViewHeightConstraint.constant = 132
+    }
+
+    func showFieldsToResetPassword() {
+        loginMode = .ForgotPassword
+        primaryButton.setTitle("Email me to reset my password", forState: UIControlState.Normal)
+        secondaryButton.setTitle("Back to Login", forState: UIControlState.Normal)
+        tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: UITableViewRowAnimation.Top)
+        tableViewHeightConstraint.constant = 44
+    }
+
+    // clicking on the secondaryButton will reset the login form
+    @IBAction func onSecondaryButton(sender: UIButton) {
+        switch loginMode {
+        case .Register: showFieldsToLogin()
+        case .Login: showFieldsToRegister()
+        case .ForgotPassword: showFieldsToLogin()
+        }
+    }
+
+    // click on link "Forgot your password" at the bottom will update the login form
     @IBAction func onRetrievePassword(sender: UIButton) {
         print("on Retrieve password")
+        showFieldsToResetPassword()
     }
     
-
     // MARK: Keyboard
     
     func keyboardWasShown(notification: NSNotification) {
@@ -171,7 +313,7 @@ extension LoginViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         if indexPath.row == 0 {
-            return isRegisterMode ? 44 : 0
+            return loginMode == .Register ? 44 : 0
         } else {
             return 44
         }
@@ -185,11 +327,14 @@ extension LoginViewController: UITableViewDataSource, UITableViewDelegate {
         case 0:
             cell.textField.placeholder = "Name"
             cell.textField.text = name
+            cell.textField.secureTextEntry = false
             break
             
         case 1:
             cell.textField.placeholder = "Email Address"
             cell.textField.text = email
+            cell.textField.secureTextEntry = false
+            cell.textField.keyboardType = .EmailAddress
             break
             
         case 2:
@@ -233,6 +378,4 @@ extension LoginViewController: UIViewControllerTransitioningDelegate {
     func animationControllerForDismissedController(dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         return customDismissAnimationController
     }
-    
 }
-
