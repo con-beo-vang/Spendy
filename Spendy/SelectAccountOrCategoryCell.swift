@@ -26,6 +26,14 @@ class SelectAccountOrCategoryCell: UITableViewCell {
         }
     }
 
+    var account: Account? {
+        didSet {
+            guard let account = account else { return }
+            titleLabel.text = "Account"
+            typeLabel.text = account.name
+        }
+    }
+
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

@@ -369,9 +369,7 @@ extension AddTransactionViewController: UITableViewDataSource, UITableViewDelega
                 
                 cell.itemClass = "Account"
                 cell.titleLabel.text = "Account"
-                
-                let account = selectedTransaction?.account
-                cell.typeLabel.text = account?.name
+                cell.account = selectedTransaction!.account
                 
                 Helper.sharedInstance.setSeparatorFullWidth(cell)
                 if accountCell == nil {
@@ -513,10 +511,13 @@ extension AddTransactionViewController: UITableViewDataSource, UITableViewDelega
         case 2:
             sender.tintColor = Color.balanceColor
 
-            categoryCell!.titleLabel.text = "From Account"
+            categoryCell!.titleLabel.text = "To Account"
             categoryCell!.typeLabel.text = "None"
-            accountCell!.titleLabel.text = "To Account"
+
+            accountCell!.account = account
+            accountCell!.titleLabel.text = "From Account"
             accountCell!.typeLabel.text = "None"
+
             guard let category = selectedTransaction.category,
                 type = category.type() else { return }
 
