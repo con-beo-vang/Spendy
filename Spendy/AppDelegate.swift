@@ -108,8 +108,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             window?.rootViewController = vc
         }
 
-        // Comment this out to run if you have more categories to addd
-        Category.bootstrapCategories()
+        // Uncomment this out to run if you have more categories to addd
+        // Category.bootstrapCategories()
 
         return true
     }

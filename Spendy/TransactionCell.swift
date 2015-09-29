@@ -21,9 +21,9 @@ class TransactionCell: UITableViewCell {
             // TODO: change back to just note
             if let noteText = transaction.note {
                 if noteText.isEmpty {
-                    noteLabel.text = transaction.category?.name
+                    noteLabel.text = transaction.kind?.capitalizedString
                 } else {
-                    noteLabel.text = transaction.note
+                    noteLabel.text = noteText
                 }
             }
 
