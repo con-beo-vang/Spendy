@@ -162,7 +162,7 @@ class Category: HTObject {
     }
 
     class var allExpenseType: [Category] {
-        return all.filter({$0.type() == "Category"})
+        return all.filter({$0.type() == "Expense"})
     }
 
     class var allIncomeType: [Category] {

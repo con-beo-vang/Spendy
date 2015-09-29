@@ -41,6 +41,7 @@ class SelectAccountOrCategoryViewController: UIViewController {
     }
 
     func loadItems() {
+        print("loadItems: \(itemTypeFilter)")
         if itemClass == "Category" {
             navigationItem.title = "Select Category"
             switch itemTypeFilter {

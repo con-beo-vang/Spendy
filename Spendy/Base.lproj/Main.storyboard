@@ -29,7 +29,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="83"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Category-Meal" translatesAutoresizingMaskIntoConstraints="NO" id="gSb-Th-KZQ">
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Expense-Meal" translatesAutoresizingMaskIntoConstraints="NO" id="gSb-Th-KZQ">
                                                     <rect key="frame" x="8" y="8" width="32" height="32"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="32" id="DfL-gl-z9w"/>
@@ -496,7 +496,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="55"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Category-Meal" translatesAutoresizingMaskIntoConstraints="NO" id="Wno-ml-daO">
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Expense-Meal" translatesAutoresizingMaskIntoConstraints="NO" id="Wno-ml-daO">
                                                     <rect key="frame" x="8" y="8" width="40" height="40"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="40" id="J1T-PZ-1h0"/>
@@ -1047,7 +1047,7 @@
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="Category-Meal" translatesAutoresizingMaskIntoConstraints="NO" id="F6t-n0-Z7u">
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="Expense-Meal" translatesAutoresizingMaskIntoConstraints="NO" id="F6t-n0-Z7u">
                                                     <rect key="frame" x="8" y="12" width="39" height="39"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="39" id="2qA-1N-djK"/>
@@ -1567,7 +1567,7 @@
         <image name="AccountInactive" width="25" height="25"/>
         <image name="AddInactive" width="25" height="25"/>
         <image name="Bar-Add" width="25" height="25"/>
-        <image name="Category-Meal" width="256" height="256"/>
+        <image name="Expense-Meal" width="256" height="256"/>
         <image name="CheckCircle" width="50" height="50"/>
         <image name="Expand" width="100" height="100"/>
         <image name="HomeInactive" width="25" height="25"/>
