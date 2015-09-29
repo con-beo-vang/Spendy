@@ -16,7 +16,6 @@ enum LoginMode: Int {
     case ForgotPassword
 }
 
-
 class LoginViewController: UIViewController {
     
     @IBOutlet weak var logoView: UIImageView!
@@ -42,12 +41,12 @@ class LoginViewController: UIViewController {
     // Default mode is Login mode
     var loginMode = LoginMode.Login
 
-    var name = ""
-    var email = ""
-    var password = ""
-    
     let customPresentAnimationController = CustomPresentAnimationController()
     let customDismissAnimationController = CustomDismissAnimationController()
+
+    var name: String? { return getTextField(0)?.text }
+    var email: String? { return getTextField(1)?.text?.lowercaseString }
+    var password: String? { return getTextField(2)?.text }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -89,55 +88,100 @@ class LoginViewController: UIViewController {
     
     // MARK: Button
     
-    @IBAction func onLogin(sender: UIButton) {
+    @IBAction func onPrimaryButton(sender: UIButton) {
         switch loginMode {
+        // TODO: add checkbox or popup to ask the user to agree on terms?
         case .Register:
-            name = (getTextField(0)?.text)!
-            // TODO: add checkbox or popup to ask the user to agree on terms?
             // confirmToRegister(sender)
             processRegistration()
+
         case .Login:
-            // TODO: Handle Login
             processLoggingIn()
+
         case .ForgotPassword:
             processPasswordRetrieval()
         }
     }
 
+    // display error message to user
+    func handleUserInfoError(error: NSError) {
+        if let message = error.userInfo["error"] {
+            dispatch_async(dispatch_get_main_queue()) { () -> Void in
+                SwiftSpinner.show("\(message)", animated: false).addTapHandler(
+                    { SwiftSpinner.hide() }, subtitle: "Tap to try again"
+                )
+            }
+        } else { SwiftSpinner.hide() }
+    }
+
     func processLoggingIn() {
         SwiftSpinner.show("Logging in...")
-        // TODO
-        PFUser.logInWithUsernameInBackground(email, password: password) {
+        PFUser.logInWithUsernameInBackground(email!, password: password!) {
             (user: PFUser?, error: NSError?) -> Void in
-            guard let _ = user where error == nil else {
-                // display error message
-                if let message = error!.userInfo["error"] {
-                    // print("ERROR: \(message)")
-                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                        // self.alertWithMessage("Error", message: message.description)
-                        SwiftSpinner.show("\(message)", animated: false).addTapHandler(
-                            { SwiftSpinner.hide() },
-                            subtitle: "Tap to try again"
-                        )
-                    })
-                } else {
-                    SwiftSpinner.hide()
-                }
+            if let error = error {
+                self.handleUserInfoError(error)
                 return
             }
 
-            print("Logging in as \(user!)")
-            dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                self.performSegueWithIdentifier("GoToHome", sender: self)
-            })
+            if let user = user {
+                print("Logging in as \(user)")
+                dispatch_async(dispatch_get_main_queue()) { () -> Void in
+                    self.performSegueWithIdentifier("GoToHome", sender: self)
+                }
+            }
         }
+    }
+
+    func processRegistration() -> Bool {
+        SwiftSpinner.show("Registering...")
+
+        // update user
+        guard User.current() == nil else { return false }
+
+        let user = User()
+        user.name = name
+        user.username = email
+        user.email = email
+        user.password = password
+
+        // TODO: validate user info here and return false if invalid
+
+        // TODO: refactor into User
+        user.object!.signUpInBackgroundWithBlock { (succeeded, error) -> Void in
+            if let error = error {
+                self.handleUserInfoError(error)
+                return
+            }
+
+            dispatch_async(dispatch_get_main_queue()) { () -> Void in
+                self.performSegueWithIdentifier("GoToHome", sender: self)
+            }
+        }
+
+        return true
     }
 
     func processPasswordRetrieval() {
         SwiftSpinner.show("Sending you instructions...")
+        guard let email = email else {
+            print("Email is empty")
+            return
+        }
 
+        PFUser.requestPasswordResetForEmailInBackground(email) { (succeeded, error) -> Void in
+            if let error = error {
+                self.handleUserInfoError(error)
+            } else {
+                dispatch_async(dispatch_get_main_queue()) { () -> Void in
+                    SwiftSpinner.show("Your request is successful. Please check your email", animated: false).addTapHandler(
+                        { SwiftSpinner.hide() }, subtitle: "Tap to return"
+                    )
+                }
+            }
+        }
     }
 
+    // Extra: we're displaying error messages with SwiftSpinner instead
     func alertWithMessage(title: String?, message: String? = nil) {
         // Build the terms and conditions alert
         let alertController = UIAlertController(title: title,
@@ -155,7 +199,6 @@ class LoginViewController: UIViewController {
 
     // Optional: if we want user to agree to some terms
     func confirmToRegister(sender: AnyObject) {
-        print("registering: \(name), \(email), \(password)")
         // Build the terms and conditions alert
         let alertController = UIAlertController(title: "Agree to terms and conditions",
             message: "Click I AGREE to confirm that you agree to the End User Licence Agreement.",
@@ -174,74 +217,45 @@ class LoginViewController: UIViewController {
         self.presentViewController(alertController, animated: true, completion: nil)
     }
 
-    func processRegistration() -> Bool {
-        SwiftSpinner.show("Registering...")
-
-        email = (getTextField(1)?.text)!
-        email = email.lowercaseString
-        password = (getTextField(2)?.text)!
-        print("registering \(name), \(email), \(password)")
-
-        // update user
-        guard User.current() == nil else { return false }
-
-        let user = User()
-        user.name = name
-        user.username = email
-        user.email = email
-        user.password = password
-
-        user.object!.signUpInBackgroundWithBlock { (succeeded, error) -> Void in
-            if error == nil {
-                dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                    self.performSegueWithIdentifier("GoToHome", sender: self)
-                })
-            } else {
-                // display error message
-                if let message = error!.userInfo["error"] {
-                    // print("ERROR: \(message)")
-                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                        SwiftSpinner.show("\(message)", animated: false).addTapHandler(
-                            { SwiftSpinner.hide() },
-                            subtitle: "Tap to try again"
-                        )
-                    })
-                } else {
-                    SwiftSpinner.hide()
-                }
-            }
-        }
-
-        return true
+    func showFieldsToLogin() {
+        loginMode = .Login
+        primaryButton.setTitle("Login", forState: UIControlState.Normal)
+        secondaryButton.setTitle("Register", forState: UIControlState.Normal)
+        
+        tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: UITableViewRowAnimation.Top)
+        tableViewHeightConstraint.constant = 88
     }
-    
-    @IBAction func onRegister(sender: UIButton) {
-        if loginMode == .Register {
-            loginMode = .Login
-            primaryButton.setTitle("Login", forState: UIControlState.Normal)
-            secondaryButton.setTitle("Register", forState: UIControlState.Normal)
 
-            name = (getTextField(0)?.text)!
-            email = (getTextField(1)?.text)!
-            password = (getTextField(2)?.text)!
+    func showFieldsToRegister() {
+        loginMode = .Register
+        primaryButton.setTitle("Register", forState: UIControlState.Normal)
+        secondaryButton.setTitle("Back to Login", forState: UIControlState.Normal)
+        
+        tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: UITableViewRowAnimation.Top)
+        tableViewHeightConstraint.constant = 132
+    }
 
-            tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: UITableViewRowAnimation.Top)
-            tableViewHeightConstraint.constant = 88
-        } else {
-            loginMode = .Register
-            primaryButton.setTitle("Register", forState: UIControlState.Normal)
-            secondaryButton.setTitle("Back to Login", forState: UIControlState.Normal)
+    func showFieldsToResetPassword() {
+        loginMode = .ForgotPassword
+        primaryButton.setTitle("Email me to reset my password", forState: UIControlState.Normal)
+        secondaryButton.setTitle("Back to Login", forState: UIControlState.Normal)
+        tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: UITableViewRowAnimation.Top)
+        tableViewHeightConstraint.constant = 44
+    }
 
-            email = (getTextField(1)?.text)!
-            password = (getTextField(2)?.text)!
-
-            tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: UITableViewRowAnimation.Top)
-            tableViewHeightConstraint.constant = 132
+    // clicking on the secondaryButton will reset the login form
+    @IBAction func onSecondaryButton(sender: UIButton) {
+        switch loginMode {
+        case .Register: showFieldsToLogin()
+        case .Login: showFieldsToRegister()
+        case .ForgotPassword: showFieldsToLogin()
         }
     }
-    
+
+    // click on link "Forgot your password" at the bottom will update the login form
     @IBAction func onRetrievePassword(sender: UIButton) {
         print("on Retrieve password")
+        showFieldsToResetPassword()
     }
     
     // MARK: Keyboard
@@ -304,11 +318,13 @@ extension LoginViewController: UITableViewDataSource, UITableViewDelegate {
         case 0:
             cell.textField.placeholder = "Name"
             cell.textField.text = name
+            cell.textField.secureTextEntry = false
             break
             
         case 1:
             cell.textField.placeholder = "Email Address"
             cell.textField.text = email
+            cell.textField.secureTextEntry = false
             break
             
         case 2:

@@ -582,7 +582,7 @@
                                 </constraints>
                                 <state key="normal" title="Login"/>
                                 <connections>
-                                    <action selector="onLogin:" destination="Y3E-Ge-Kiz" eventType="touchUpInside" id="VJv-6f-VkD"/>
+                                    <action selector="onPrimaryButton:" destination="Y3E-Ge-Kiz" eventType="touchUpInside" id="MgT-n7-izK"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="82o-fK-VRB">
@@ -591,7 +591,7 @@
                                     <color key="titleColor" red="0.76862745098039209" green="0.53333333333333333" blue="0.32549019607843138" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
                                 <connections>
-                                    <action selector="onRegister:" destination="Y3E-Ge-Kiz" eventType="touchUpInside" id="Jhu-Rs-jbT"/>
+                                    <action selector="onSecondaryButton:" destination="Y3E-Ge-Kiz" eventType="touchUpInside" id="KZu-pX-UYV"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3a7-bz-tau">
