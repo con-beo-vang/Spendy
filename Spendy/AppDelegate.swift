@@ -109,7 +109,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
 
         // Comment this out to run if you have more categories to addd
-        // Category.bootstrapCategories()
+        Category.bootstrapCategories()
 
         return true
     }

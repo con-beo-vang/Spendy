@@ -12,6 +12,50 @@ import Parse
 var _allCategories: [Category]?
 
 class Category: HTObject {
+    static let incomeCats = [
+        "Bonus",
+        "Other",
+        "Salary",
+        "Saving Deposit",
+        "Tax Refund"
+    ]
+
+    static let expenseCats = [
+        "Auto",
+        "Bank Charge",
+        "Book",
+        "Cash",
+        "Charity",
+        "Child Care",
+        "Clothing",
+        "Commute",
+        "Credit Card Payment",
+        "Drink",
+        "Education",
+        "Electric",
+        "Entertainment",
+        "Garbage & Recycling",
+        "Gift",
+        "Groceries",
+        "Health & Fitness",
+        "Home Repair",
+        "House Hold",
+        "Insurance",
+        "Internet",
+        "Loan",
+        "Meal",
+        "Medical",
+        "Movie",
+        "Other",
+        "Pet",
+        "Rent",
+        "Tax",
+        "Telephone",
+        "Travel",
+        "TV",
+        "Water"
+    ]
+
     var name: String {
         get { return self["name"] as! String }
         set { self["name"] = newValue }
@@ -116,42 +160,6 @@ class Category: HTObject {
 // safe to run again as it doesn't create new categories if already set up
 extension Category {
     class func bootstrapCategories() {
-        let names = [
-            "Auto",
-            "Bank Charge",
-            "Book",
-            "Cash",
-            "Charity",
-            "Child Care",
-            "Clothing",
-            "Commute",
-            "Credit Card Payment",
-            "Drink",
-            "Education",
-            "Electric",
-            "Entertainment",
-            "Garbage & Recycling",
-            "Gift",
-            "Groceries",
-            "Health & Fitness",
-            "Home Repair",
-            "House Hold",
-            "Insurance",
-            "Internet",
-            "Loan",
-            "Meal",
-            "Medical",
-            "Movie",
-            "Other",
-            "Pet",
-            "Rent",
-            "Tax",
-            "Telephone",
-            "Travel",
-            "TV",
-            "Water"
-        ]
-
         print("\n********BOOTSTRAPING CATEGORIES********")
 
         let query = PFQuery(className: "Category")
@@ -159,6 +167,11 @@ extension Category {
         let objects = try! query.findObjects()
         print("Found: \(objects.count) existing categories")
 
+        loadType("Category", names: expenseCats, objects: objects)
+        loadType("Income", names: incomeCats, objects: objects)
+    }
+
+    class func loadType(type: String, names: [String], objects: [PFObject]) {
         for name in names {
             let category:PFObject? = objects.filter({ (element) -> Bool in
                 if let n = element.objectForKey("name") as! String? {
@@ -170,11 +183,11 @@ extension Category {
 
             if category == nil {
                 let sanitizedName = name.stringByReplacingOccurrencesOfString(" ", withString: "")
-                let iconName = "Category-\(sanitizedName)"
+                let iconName = "\(type)-\(sanitizedName)"
                 let c = Category(name: name, icon: iconName)
                 c._object!.saveInBackgroundWithBlock({ (succeeded, error) -> Void in
                     if succeeded {
-                        print("Added \(c)")
+                        print("Added \(type) category \(name)")
                     }
                 })
             } else {
