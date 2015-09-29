@@ -31,7 +31,7 @@ class RootTabBarController: UITabBarController {
 
         SwiftSpinner.hide()
 
-        print("RootTabBarController:viewDidLoad")
+        // print("RootTabBarController:viewDidLoad")
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
             // Call with true to reset data
             DataManager.setupDefaultData(false)

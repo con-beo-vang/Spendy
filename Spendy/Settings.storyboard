@@ -213,7 +213,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="61.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Category-Meal" translatesAutoresizingMaskIntoConstraints="NO" id="rnD-tW-Cl5">
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Expense-Meal" translatesAutoresizingMaskIntoConstraints="NO" id="rnD-tW-Cl5">
                                                     <rect key="frame" x="8" y="11" width="39" height="39"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="39" id="9Im-tn-0Ni"/>
@@ -469,7 +469,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="Category-Meal" width="50" height="50"/>
+        <image name="Expense-Meal" width="50" height="50"/>
         <image name="PlusCircle" width="50" height="50"/>
         <image name="SettingInactive" width="25" height="25"/>
         <image name="User" width="50" height="50"/>

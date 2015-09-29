@@ -159,7 +159,7 @@ class Transaction: HTObject {
 
         get {
             guard let categoryId = categoryId else {
-                if let category = Category.defaultCategory() {
+                if let category = Category.defaultCategoryFor(kind!) {
                     print("category missing in transaction: setting defaultCategory for it")
                     self.category = category
                     return category

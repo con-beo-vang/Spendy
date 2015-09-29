@@ -32,6 +32,8 @@ class AddTransactionViewController: UIViewController {
 
     var currentAccount: Account!
 
+    var backupCategories = [String:Category?]()
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -58,7 +60,7 @@ class AddTransactionViewController: UIViewController {
         } else {
             selectedTransaction = Transaction(kind: Transaction.expenseKind,
                 note: nil, amount: nil,
-                category: Category.defaultCategory(), account: currentAccount,
+                category: Category.defaultExpenseCategory(), account: currentAccount,
                 date: NSDate())
             isCollaped = true
         }
@@ -164,7 +166,6 @@ class AddTransactionViewController: UIViewController {
         selectedTransaction = nil
         closeTabAndSwitchToHome()
     }
-    
 }
 
 // MARK: Transfer between 2 views
@@ -187,7 +188,14 @@ extension AddTransactionViewController: SelectAccountOrCategoryDelegate, PhotoVi
             
             let cell = sender as! SelectAccountOrCategoryCell
             vc.itemClass = cell.itemClass
+            vc.itemTypeFilter = cell.itemTypeFilter
             vc.delegate = self
+            
+            if cell.itemClass == "Category" {
+                vc.selectedItem = selectedTransaction?.category
+            } else {
+                vc.selectedItem = selectedTransaction?.account
+            }
             
             // TODO: delegate
         } else if toController is PhotoViewController {
@@ -213,7 +221,7 @@ extension AddTransactionViewController: SelectAccountOrCategoryDelegate, PhotoVi
             selectedTransaction!.category = (item as! Category)
             tableView.reloadData()
         } else {
-            print("Error: item is \(item)", terminator: "\n")
+            print("Error: item is \(item)")
         }
     }
     
@@ -306,15 +314,32 @@ extension AddTransactionViewController: UITableViewDataSource, UITableViewDelega
                 
                 cell.typeSegment.addTarget(self, action: "typeSegmentChanged:", forControlEvents: UIControlEvents.ValueChanged)
                 
-                if selectedTransaction != nil {
-                    // TODO: set default value for typeSegment
-                }
-                
                 cell.amountText.keyboardType = UIKeyboardType.DecimalPad
                 Helper.sharedInstance.setSeparatorFullWidth(cell)
                 if amountCell == nil {
                     amountCell = cell
                 }
+
+                // TODO refactor into AmountCell
+                guard let transaction = selectedTransaction,
+                          segmentIndex = Transaction.kinds.indexOf(transaction.kind!),
+                          segment = cell.typeSegment else {
+                    return cell
+                }
+
+                segment.selectedSegmentIndex = segmentIndex
+                switch segmentIndex {
+                case 0:
+                    segment.tintColor = Color.incomeColor
+                case 1:
+                    segment.tintColor = Color.expenseColor
+                case 2:
+                    segment.tintColor = Color.balanceColor
+                default:
+                    // er just need something here
+                    segment
+                }
+
                 return cell
                 
             default:
@@ -330,13 +355,8 @@ extension AddTransactionViewController: UITableViewDataSource, UITableViewDelega
                 
                 cell.itemClass = "Category"
                 cell.titleLabel.text = "Category"
-                print("selectedTransaction: \(selectedTransaction)", terminator: "\n")
-                
-                // this got rendered too soon!
-                
-                let category = selectedTransaction?.category ?? Category.defaultCategory()
-                cell.typeLabel.text = category!.name // TODO: replace with default category
-                
+                cell.category = selectedTransaction!.category
+
                 Helper.sharedInstance.setSeparatorFullWidth(cell)
                 
                 if categoryCell == nil {
@@ -454,11 +474,12 @@ extension AddTransactionViewController: UITableViewDataSource, UITableViewDelega
     }
     
     func typeSegmentChanged(sender: UISegmentedControl) {
+        guard let selectedTransaction = selectedTransaction else { return }
+
+        selectedTransaction.kind = Transaction.kinds[sender.selectedSegmentIndex]
         
         if sender.selectedSegmentIndex != 2 {
-            
-            categoryCell!.titleLabel.text = "Category"
-            categoryCell!.typeLabel.text = "Other"
+            // TODO: dynamic binding for Account
             accountCell!.titleLabel.text = "Account"
             accountCell!.typeLabel.text = "Cash"
         }
@@ -466,15 +487,42 @@ extension AddTransactionViewController: UITableViewDataSource, UITableViewDelega
         switch sender.selectedSegmentIndex {
         case 0:
             sender.tintColor = Color.incomeColor
+
+            // change transaction.category to an income one
+            guard let category = selectedTransaction.category,
+                      type = category.type() else { return }
+
+            if type != "Income" {
+                backupCategories[type] = category
+                selectedTransaction.category = backupCategories["Income"] ?? Category.defaultIncomeCategory()
+                categoryCell!.category = selectedTransaction.category
+            }
+
         case 1:
             sender.tintColor = Color.expenseColor
+
+            guard let category = selectedTransaction.category,
+                type = category.type() else { return }
+
+            if type != "Expense" {
+                backupCategories[type] = category
+                selectedTransaction.category = backupCategories["Expense"] ?? Category.defaultExpenseCategory()
+                categoryCell!.category = selectedTransaction.category
+            }
+
         case 2:
             sender.tintColor = Color.balanceColor
-            
+
             categoryCell!.titleLabel.text = "From Account"
             categoryCell!.typeLabel.text = "None"
             accountCell!.titleLabel.text = "To Account"
             accountCell!.typeLabel.text = "None"
+            guard let category = selectedTransaction.category,
+                type = category.type() else { return }
+
+            backupCategories[type] = category
+            selectedTransaction.category = nil
+
         default:
             break
         }

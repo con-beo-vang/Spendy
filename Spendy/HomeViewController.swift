@@ -70,8 +70,6 @@ class HomeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        print("Home")
-        
         settingStatusBar()
         
         navigationItem.title = getTodayString("MMMM")
