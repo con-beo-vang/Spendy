@@ -9,7 +9,6 @@
 import UIKit
 
 class AmountCell: UITableViewCell {
-    
     @IBOutlet weak var typeSegment: UISegmentedControl!
     
     @IBOutlet weak var amountText: UITextField!

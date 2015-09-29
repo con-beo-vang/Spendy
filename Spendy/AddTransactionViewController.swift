@@ -187,6 +187,7 @@ extension AddTransactionViewController: SelectAccountOrCategoryDelegate, PhotoVi
             
             let cell = sender as! SelectAccountOrCategoryCell
             vc.itemClass = cell.itemClass
+            vc.itemTypeFilter = cell.itemTypeFilter
             vc.delegate = self
             
             // TODO: delegate
@@ -213,7 +214,7 @@ extension AddTransactionViewController: SelectAccountOrCategoryDelegate, PhotoVi
             selectedTransaction!.category = (item as! Category)
             tableView.reloadData()
         } else {
-            print("Error: item is \(item)", terminator: "\n")
+            print("Error: item is \(item)")
         }
     }
     
@@ -330,8 +331,7 @@ extension AddTransactionViewController: UITableViewDataSource, UITableViewDelega
                 
                 cell.itemClass = "Category"
                 cell.titleLabel.text = "Category"
-                print("selectedTransaction: \(selectedTransaction)", terminator: "\n")
-                
+
                 // this got rendered too soon!
                 
                 let category = selectedTransaction?.category ?? Category.defaultExpenseCategory()
@@ -454,11 +454,10 @@ extension AddTransactionViewController: UITableViewDataSource, UITableViewDelega
     }
     
     func typeSegmentChanged(sender: UISegmentedControl) {
+        selectedTransaction!.kind = Transaction.kinds[sender.selectedSegmentIndex]
         
         if sender.selectedSegmentIndex != 2 {
-            
-            categoryCell!.titleLabel.text = "Category"
-            categoryCell!.typeLabel.text = "Other"
+            // TODO: dynamic binding for Account
             accountCell!.titleLabel.text = "Account"
             accountCell!.typeLabel.text = "Cash"
         }
@@ -466,8 +465,10 @@ extension AddTransactionViewController: UITableViewDataSource, UITableViewDelega
         switch sender.selectedSegmentIndex {
         case 0:
             sender.tintColor = Color.incomeColor
+            categoryCell!.category = Category.defaultIncomeCategory()
         case 1:
             sender.tintColor = Color.expenseColor
+            categoryCell!.category = Category.defaultExpenseCategory()
         case 2:
             sender.tintColor = Color.balanceColor
             

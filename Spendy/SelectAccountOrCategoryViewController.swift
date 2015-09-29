@@ -16,6 +16,7 @@ protocol SelectAccountOrCategoryDelegate {
 class SelectAccountOrCategoryViewController: UIViewController {
     // Account or Category
     var itemClass: String!
+    var itemTypeFilter: String?
     var delegate: SelectAccountOrCategoryDelegate?
 
     @IBOutlet weak var tableView: UITableView!
@@ -42,7 +43,17 @@ class SelectAccountOrCategoryViewController: UIViewController {
     func loadItems() {
         if itemClass == "Category" {
             navigationItem.title = "Select Category"
-            items = Category.all as [Category]
+            switch itemTypeFilter {
+            case .Some("Income"):
+                items = Category.allIncomeType as [Category]
+
+            case .Some("Expense"):
+                items = Category.allExpenseType as [Category]
+
+            default:
+                items = Category.all as [Category]
+            }
+
             tableView.reloadData()
         } else if itemClass == "Account" {
             navigationItem.title = "Select Account"
