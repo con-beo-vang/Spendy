@@ -14,7 +14,7 @@ var logoColor = UIColor.redColor()
 class Helper: NSObject {
     
     static let sharedInstance = Helper()
-   
+    
     func customizeBarButton(viewController: UIViewController, button: UIButton, imageName: String, isLeft: Bool) {
         
         let avatar = UIImageView(frame: CGRect(x: 0, y: 0, width: 22, height: 22))
@@ -51,28 +51,7 @@ class Helper: NSObject {
         }
     }
     
-    func getWeek(weekOfYear: Int) -> (NSDate?, NSDate?) {
-        
-        var beginningOfWeek: NSDate?
-        var endOfWeek: NSDate?
-        
-        let cal = NSCalendar.currentCalendar()
-        
-        let components = NSDateComponents()
-        components.weekOfYear = weekOfYear
-        
-        if let date = cal.dateByAddingComponents(components, toDate: NSDate(), options: NSCalendarOptions(rawValue: 0)) {
-            var weekDuration = NSTimeInterval()
-            if cal.rangeOfUnit(NSCalendarUnit.WeekOfYear, startDate: &beginningOfWeek, interval: &weekDuration, forDate: date) {
-                endOfWeek = beginningOfWeek?.dateByAddingTimeInterval(weekDuration)
-            }
-            
-            beginningOfWeek = cal.dateByAddingUnit(NSCalendarUnit.Day, value: 1, toDate: beginningOfWeek!, options: NSCalendarOptions(rawValue: 0))
-            
-        }
-        
-        return (beginningOfWeek!, endOfWeek!)
-    }
+    
     
     func showActionSheet(viewController: UIViewController, imagePicker: UIImagePickerController) {
         

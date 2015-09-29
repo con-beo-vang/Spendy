@@ -49,7 +49,7 @@ class HomeViewController: UIViewController {
     
     @IBOutlet weak var doneButton: UIButton!
     
-    var formatter: NSDateFormatter!
+    var formatter = NSDateFormatter()
     
     let dayCountInMonth = 30
     
@@ -60,13 +60,22 @@ class HomeViewController: UIViewController {
     var isCollapedExpense = true
     
     var viewMode = ViewMode.Monthly
-    var weekOfYear = 0
+    
+    var weekIndex = 0
+    var monthIndex = 0
+    var yearIndex = 0
+    
+    
+    var fromDate: NSDate?
+    var toDate: NSDate?
+    
+    let oneDay:Double = 60 * 60 * 24
     
     var downSwipe: UISwipeGestureRecognizer!
     
     let customPresentAnimationController = CustomPresentAnimationController()
     let customDismissAnimationController = CustomDismissAnimationController()
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -92,14 +101,15 @@ class HomeViewController: UIViewController {
         
         
         configPopup()
-
         
+        // set current month as default
+        let (begin, end) = getMonth(0)
+        fromDate = begin
+        toDate = end.dateByAddingTimeInterval(oneDay)
         
-//        for item in (tabBarController?.tabBar.items)! {
-//            if let image = item.image {
-//                item.image = image.imageWithRenderingMode(.AlwaysOriginal)
-//            }
-//        }
+        // TODO: set data for table view based on fromDate and toDate
+        tableView.reloadData()
+        
         
         
     }
@@ -107,7 +117,7 @@ class HomeViewController: UIViewController {
     override func viewWillAppear(animated: Bool) {
         setColor()
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -174,26 +184,9 @@ class HomeViewController: UIViewController {
         showPopup(viewModePopup)
     }
     
-    func getWeekText(weekOfYear: Int) -> String {
-        var result = "Weekly"
-        let (beginWeek, endWeek) = Helper.sharedInstance.getWeek(weekOfYear)
-        if beginWeek != nil && endWeek != nil {
-            let formatter = NSDateFormatter()
-            formatter.dateFormat = "dd MMM"
-            result = formatter.stringFromDate(beginWeek!) + " - " + formatter.stringFromDate(endWeek!)
-        }
-        return result
-    }
-    
-    func getTodayString(dateFormat: String) -> String {
-        let formatter = NSDateFormatter()
-        formatter.dateFormat = dateFormat
-        return formatter.stringFromDate(NSDate())
-    }
     
     func configPopup() {
         
-        formatter = NSDateFormatter()
         formatter.dateFormat = "MM-dd-yyyy"
         
         popupSuperView.hidden = true
@@ -210,6 +203,7 @@ class HomeViewController: UIViewController {
     
     @IBAction func onFromButton(sender: UIButton) {
         
+        formatter.dateFormat = "MM-dd-yyyy"
         let defaultDate = formatter.dateFromString((sender.titleLabel?.text)!)
         
         DatePickerDialog().show(title: "From Date", doneButtonTitle: "Done", cancelButtonTitle: "Cancel", defaultDate: defaultDate!, minDate: nil, datePickerMode: .Date) {
@@ -230,6 +224,7 @@ class HomeViewController: UIViewController {
     
     @IBAction func onToButton(sender: UIButton) {
         
+        formatter.dateFormat = "MM-dd-yyyy"
         let defaultDate = formatter.dateFromString((sender.titleLabel?.text)!)
         let minDate = formatter.dateFromString((fromButton.titleLabel?.text)!)
         
@@ -245,6 +240,7 @@ class HomeViewController: UIViewController {
     
     @IBAction func onDoneDatePopup(sender: UIButton) {
         
+        formatter.dateFormat = "MM-dd-yyyy"
         let fromDate = formatter.dateFromString((fromButton.titleLabel!.text)!)
         let toDate = formatter.dateFromString((toButton.titleLabel!.text)!)
         
@@ -289,10 +285,10 @@ class HomeViewController: UIViewController {
                 }
         });
     }
-
+    
 }
 
-// MARK: Table view
+// MARK: - Table view
 
 extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
     
@@ -435,7 +431,11 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
             switch indexPath.row {
             case 0:
                 viewMode = ViewMode.Weekly
-                navigationItem.title = getWeekText(weekOfYear)
+                let (beginWeek, endWeek) = getWeek(weekIndex)
+                
+                if beginWeek != nil && endWeek != nil {
+                    navigationItem.title = getWeekText(beginWeek!, endWeek: endWeek!)
+                }
                 break
             case 1:
                 viewMode = ViewMode.Monthly
@@ -458,7 +458,7 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
     }
 }
 
-// MARK: Handle gesture
+// MARK: - Handle gesture
 
 extension HomeViewController: UIGestureRecognizerDelegate {
     
@@ -468,55 +468,53 @@ extension HomeViewController: UIGestureRecognizerDelegate {
     
     func handleSwipe(sender: UISwipeGestureRecognizer) {
         
-        //        var today = NSDate()
-        
         switch sender.direction {
         case UISwipeGestureRecognizerDirection.Left:
             switch viewMode {
             case ViewMode.Weekly:
-                weekOfYear += 1
-                navigationItem.title = getWeekText(weekOfYear)
-                
-                break
+                weekIndex += 1
+                handleSwipeWeek()
             case ViewMode.Monthly:
-                
-                break
+                monthIndex += 1
+                handleSwipeMonth()
             case ViewMode.Yearly:
-                
-                break
+                yearIndex += 1
+                handleSwipeYear()
             default:
-                break
+                return
             }
-            tableView.reloadSections(NSIndexSet(indexesInRange: NSMakeRange(0, 3)), withRowAnimation: UITableViewRowAnimation.Left)
             
+            // TODO: set data for table view based on fromDate and toDate
+            tableView.reloadSections(NSIndexSet(indexesInRange: NSMakeRange(0, 3)), withRowAnimation: UITableViewRowAnimation.Left)
             
             break
         case UISwipeGestureRecognizerDirection.Right:
             switch viewMode {
             case ViewMode.Weekly:
-                weekOfYear -= 1
-                navigationItem.title = getWeekText(weekOfYear)
-                
-                break
+                weekIndex -= 1
+                handleSwipeWeek()
             case ViewMode.Monthly:
-                
-                break
+                monthIndex -= 1
+                handleSwipeMonth()
             case ViewMode.Yearly:
-                
-                break
+                yearIndex -= 1
+                handleSwipeYear()
             default:
-                break
+                return
             }
+            
+            // TODO: set data for table view based on fromDate and toDate
             tableView.reloadSections(NSIndexSet(indexesInRange: NSMakeRange(0, 3)), withRowAnimation: UITableViewRowAnimation.Right)
             break
+            
         case UISwipeGestureRecognizerDirection.Down:
-//            let dvc = self.storyboard?.instantiateViewControllerWithIdentifier("QuickVC") as! QuickViewController
-//            let nc = UINavigationController(rootViewController: dvc)
-//            self.presentViewController(nc, animated: true, completion: nil)
+            //            let dvc = self.storyboard?.instantiateViewControllerWithIdentifier("QuickVC") as! QuickViewController
+            //            let nc = UINavigationController(rootViewController: dvc)
+            //            self.presentViewController(nc, animated: true, completion: nil)
             performSegueWithIdentifier("QuickMode", sender: self)
-            break
+            
         default:
-            break
+            return
         }
     }
     
@@ -552,7 +550,11 @@ extension HomeViewController: UIGestureRecognizerDelegate {
             switch indexPath!.row {
             case 0:
                 viewMode = ViewMode.Weekly
-                navigationItem.title = getWeekText(weekOfYear)
+                let (beginWeek, endWeek) = getWeek(weekIndex)
+                
+                if beginWeek != nil && endWeek != nil {
+                    navigationItem.title = getWeekText(beginWeek!, endWeek: endWeek!)
+                }
                 break
             case 1:
                 viewMode = ViewMode.Monthly
@@ -584,7 +586,7 @@ extension HomeViewController: UIGestureRecognizerDelegate {
     }
 }
 
-// MARK: Custom transition
+// MARK: - Custom transition
 
 extension HomeViewController: UIViewControllerTransitioningDelegate {
     
@@ -605,3 +607,126 @@ extension HomeViewController: UIViewControllerTransitioningDelegate {
         return customDismissAnimationController
     }
 }
+
+// MARK: - Handle date
+
+extension HomeViewController {
+    
+    func getWeek(weekIndex: Int) -> (NSDate?, NSDate?) {
+        
+        var beginningOfWeek: NSDate?
+        var endOfWeek: NSDate?
+        
+        let cal = NSCalendar.currentCalendar()
+        
+        let components = NSDateComponents()
+        components.weekOfYear = weekIndex
+        
+        if let date = cal.dateByAddingComponents(components, toDate: NSDate(), options: NSCalendarOptions(rawValue: 0)) {
+            var weekDuration = NSTimeInterval()
+            if cal.rangeOfUnit(NSCalendarUnit.WeekOfYear, startDate: &beginningOfWeek, interval: &weekDuration, forDate: date) {
+                endOfWeek = beginningOfWeek?.dateByAddingTimeInterval(weekDuration)
+            }
+            
+            beginningOfWeek = cal.dateByAddingUnit(NSCalendarUnit.Day, value: 1, toDate: beginningOfWeek!, options: NSCalendarOptions(rawValue: 0))
+            
+        }
+        
+        return (beginningOfWeek!, endOfWeek!)
+    }
+    
+    func getMonth(monthIndex: Int) -> (NSDate, NSDate) {
+        // monthIndex = -1: previous month
+        // monthIndex = 0: current month
+        // monthIndex = 1: next month
+        
+        let calendar = NSCalendar.currentCalendar()
+        
+        // Create an NSDate for the first and last day of the month
+        let components = calendar.components(NSCalendarUnit.Month, fromDate: NSDate())
+        
+        // Get suitable month
+        components.month += monthIndex
+        
+        // Getting the First and Last date of the month
+        components.day = 1
+        let firstDateOfMonth: NSDate = calendar.dateFromComponents(components)!
+        
+        components.month += 1
+        components.day = 0
+        let lastDateOfMonth: NSDate = calendar.dateFromComponents(components)!
+        
+        return (firstDateOfMonth, lastDateOfMonth)
+    }
+    
+    func getYear(yearIndex: Int) -> (NSDate, NSDate) {
+        
+        let calendar = NSCalendar.currentCalendar()
+        
+        // Create an NSDate for the first and last day of the month
+        let components = calendar.components(NSCalendarUnit.Year, fromDate: NSDate())
+        
+        // Get suitable month
+        components.year += yearIndex
+        
+        // Getting the First and Last date of the month
+        components.day = 1
+        let firstDateOfYear: NSDate = calendar.dateFromComponents(components)!
+        
+        components.year += 1
+        components.day = 0
+        let lastDateOfYear: NSDate = calendar.dateFromComponents(components)!
+        
+        return (firstDateOfYear, lastDateOfYear)
+    }
+    
+    func handleSwipeWeek() {
+        
+        let (beginWeek, endWeek) = getWeek(weekIndex)
+        if beginWeek != nil && endWeek != nil {
+            navigationItem.title = getWeekText(beginWeek!, endWeek: endWeek!)
+        }
+        fromDate = beginWeek
+        toDate = endWeek?.dateByAddingTimeInterval(oneDay)
+    }
+    
+    func handleSwipeMonth() {
+        
+        let (beginMonth, endMonth) = getMonth(monthIndex)
+        fromDate = beginMonth
+        toDate = endMonth.dateByAddingTimeInterval(oneDay)
+        formatter.dateFormat = "MMMM"
+        navigationItem.title = formatter.stringFromDate(beginMonth)
+        
+        // TODO: Explain about fromDate and toDate
+        
+        // beginMonth and endMonth are at the begin of day (time: 12:00:00)
+        // so set toDate = endMonth + 1 day
+        // create a method to get transaction between 2 dates
+        // fromDate <= transaction's date < toDate
+        
+        // remove these code when clear about fromDate and toDate
+        formatter.dateFormat = "MM-dd-yyyy hh:mm:ss"
+        print(formatter.stringFromDate(fromDate!))
+        print(formatter.stringFromDate(toDate!))
+    }
+    
+    func handleSwipeYear() {
+        let (beginYear, endYear) = getYear(yearIndex)
+        fromDate = beginYear
+        toDate = endYear.dateByAddingTimeInterval(oneDay)
+        formatter.dateFormat = "yyyy"
+        navigationItem.title = formatter.stringFromDate(beginYear)
+    }
+    
+    func getWeekText(beginWeek: NSDate, endWeek: NSDate) -> String {
+        formatter.dateFormat = "dd MMM"
+        return formatter.stringFromDate(beginWeek) + " - " + formatter.stringFromDate(endWeek)
+    }
+    
+    func getTodayString(dateFormat: String) -> String {
+        formatter.dateFormat = dateFormat
+        return formatter.stringFromDate(NSDate())
+    }
+}
+
