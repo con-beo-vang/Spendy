@@ -164,7 +164,6 @@ class AddTransactionViewController: UIViewController {
         selectedTransaction = nil
         closeTabAndSwitchToHome()
     }
-    
 }
 
 // MARK: Transfer between 2 views
@@ -307,15 +306,32 @@ extension AddTransactionViewController: UITableViewDataSource, UITableViewDelega
                 
                 cell.typeSegment.addTarget(self, action: "typeSegmentChanged:", forControlEvents: UIControlEvents.ValueChanged)
                 
-                if selectedTransaction != nil {
-                    // TODO: set default value for typeSegment
-                }
-                
                 cell.amountText.keyboardType = UIKeyboardType.DecimalPad
                 Helper.sharedInstance.setSeparatorFullWidth(cell)
                 if amountCell == nil {
                     amountCell = cell
                 }
+
+                // TODO refactor into AmountCell
+                guard let transaction = selectedTransaction,
+                          segmentIndex = Transaction.kinds.indexOf(transaction.kind!),
+                          segment = cell.typeSegment else {
+                    return cell
+                }
+
+                segment.selectedSegmentIndex = segmentIndex
+                switch segmentIndex {
+                case 0:
+                    segment.tintColor = Color.incomeColor
+                case 1:
+                    segment.tintColor = Color.expenseColor
+                case 2:
+                    segment.tintColor = Color.balanceColor
+                default:
+                    // er just need something here
+                    segment
+                }
+
                 return cell
                 
             default:
