@@ -27,14 +27,32 @@ class Category: HTObject {
         set { self["icon"] = newValue }
     }
 
+    static var forceLoadFromRemote = false
+
+    convenience init(name: String?, icon: String?) {
+        self.init()
+        if let name = name {
+            self.name = name
+        }
+
+        if let icon = icon {
+            self.icon = icon
+        }
+    }
+
     class func loadAll() {
         // load from local first
-        let localQuery = PFQuery(className: "Category")
+        let query = PFQuery(className: "Category")
+        query.limit = 100
 
-        localQuery.fromLocalDatastore().findObjectsInBackgroundWithBlock {
+        if !forceLoadFromRemote {
+            query.fromLocalDatastore()
+        }
+
+        query.findObjectsInBackgroundWithBlock {
             (objects, error) -> Void in
 
-            guard let objects = objects where error != nil else {
+            guard let objects = objects where error == nil else {
                 print("Error loading categories from Local. error: \(error)")
                 return
             }
@@ -70,8 +88,11 @@ class Category: HTObject {
 
     class var all:[Category] {
         if _allCategories == nil {
-            let localQuery = PFQuery(className: "Category")
-            let objects = try! localQuery.fromLocalDatastore().findObjects()
+            let query = PFQuery(className: "Category")
+            if !forceLoadFromRemote {
+                query.fromLocalDatastore()
+            }
+            let objects = try! query.fromLocalDatastore().findObjects()
             _allCategories = objects.map({ Category(object: $0) })
         }
 
@@ -81,5 +102,86 @@ class Category: HTObject {
     class func findById(objectId: String) -> Category? {
         let record = all.filter({ $0.objectId == objectId }).first
         return record
+    }
+
+    override var description: String {
+        let base = super.description
+        return "[Category] name: \(name), icon: \(icon), base: \(base)"
+    }
+}
+
+// preload categories
+// only have to do this once each time setting up a new Parse app
+// you will need to run this manually if you use your own Parse key
+// safe to run again as it doesn't create new categories if already set up
+extension Category {
+    class func bootstrapCategories() {
+        let names = [
+            "Auto",
+            "Bank Charge",
+            "Book",
+            "Cash",
+            "Charity",
+            "Child Care",
+            "Clothing",
+            "Commute",
+            "Credit Card Payment",
+            "Drink",
+            "Education",
+            "Electric",
+            "Entertainment",
+            "Garbage & Recycling",
+            "Gift",
+            "Groceries",
+            "Health & Fitness",
+            "Home Repair",
+            "House Hold",
+            "Insurance",
+            "Internet",
+            "Loan",
+            "Meal",
+            "Medical",
+            "Movie",
+            "Other",
+            "Pet",
+            "Rent",
+            "Tax",
+            "Telephone",
+            "Travel",
+            "TV",
+            "Water"
+        ]
+
+        print("\n********BOOTSTRAPING CATEGORIES********")
+
+        let query = PFQuery(className: "Category")
+        query.limit = 100
+        let objects = try! query.findObjects()
+        print("Found: \(objects.count) existing categories")
+
+        for name in names {
+            let category:PFObject? = objects.filter({ (element) -> Bool in
+                if let n = element.objectForKey("name") as! String? {
+                    return n == name
+                } else {
+                    return false
+                }
+            }).first
+
+            if category == nil {
+                let sanitizedName = name.stringByReplacingOccurrencesOfString(" ", withString: "")
+                let iconName = "Category-\(sanitizedName)"
+                let c = Category(name: name, icon: iconName)
+                c._object!.saveInBackgroundWithBlock({ (succeeded, error) -> Void in
+                    if succeeded {
+                        print("Added \(c)")
+                    }
+                })
+            } else {
+                print("Found \(name). No change")
+            }
+        }
+
+        forceLoadFromRemote = true
     }
 }
