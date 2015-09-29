@@ -58,7 +58,7 @@ class AddTransactionViewController: UIViewController {
         } else {
             selectedTransaction = Transaction(kind: Transaction.expenseKind,
                 note: nil, amount: nil,
-                category: Category.defaultCategory(), account: currentAccount,
+                category: Category.defaultExpenseCategory(), account: currentAccount,
                 date: NSDate())
             isCollaped = true
         }
@@ -334,7 +334,7 @@ extension AddTransactionViewController: UITableViewDataSource, UITableViewDelega
                 
                 // this got rendered too soon!
                 
-                let category = selectedTransaction?.category ?? Category.defaultCategory()
+                let category = selectedTransaction?.category ?? Category.defaultExpenseCategory()
                 cell.typeLabel.text = category!.name // TODO: replace with default category
                 
                 Helper.sharedInstance.setSeparatorFullWidth(cell)

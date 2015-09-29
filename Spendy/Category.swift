@@ -71,6 +71,10 @@ class Category: HTObject {
         set { self["icon"] = newValue }
     }
 
+    func type() -> String? {
+        return icon.componentsSeparatedByString("-").first
+    }
+
     static var forceLoadFromRemote = false
 
     convenience init(name: String?, icon: String?) {
@@ -126,8 +130,18 @@ class Category: HTObject {
         }
     }
 
-    class func defaultCategory() -> Category? {
-        return all.first
+    // TODO: decide which categories should be the default
+    class func defaultExpenseCategory() -> Category? {
+        return all.filter({$0.icon == "Category-Other"}).first
+    }
+
+    class func defaultIncomeCategory() -> Category? {
+        return all.filter({$0.icon == "Income-Other"}).first
+    }
+
+    class func defaultCategoryFor(type: String) -> Category? {
+        let name = "\(type)-Other"
+        return all.filter({$0.icon == name}).first
     }
 
     class var all:[Category] {
@@ -141,6 +155,14 @@ class Category: HTObject {
         }
 
         return _allCategories!
+    }
+
+    class var allExpenseType: [Category] {
+        return all.filter({$0.type() == "Category"})
+    }
+
+    class var allIncomeType: [Category] {
+        return all.filter({$0.type() == "Income"})
     }
 
     class func findById(objectId: String) -> Category? {
