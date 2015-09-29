@@ -89,6 +89,15 @@ class LoginViewController: UIViewController {
     // MARK: Button
     
     @IBAction func onPrimaryButton(sender: UIButton) {
+        
+        // Dismiss keyoboard
+        for i in 0...2 {
+            let textField = getTextField(i)
+            if let textField = textField {
+                textField.resignFirstResponder()
+            }
+        }
+        
         switch loginMode {
         // TODO: add checkbox or popup to ask the user to agree on terms?
         case .Register:
@@ -325,6 +334,7 @@ extension LoginViewController: UITableViewDataSource, UITableViewDelegate {
             cell.textField.placeholder = "Email Address"
             cell.textField.text = email
             cell.textField.secureTextEntry = false
+            cell.textField.keyboardType = .EmailAddress
             break
             
         case 2:
