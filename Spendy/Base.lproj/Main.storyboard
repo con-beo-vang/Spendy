@@ -582,7 +582,7 @@
                                 </constraints>
                                 <state key="normal" title="Login"/>
                                 <connections>
-                                    <action selector="onLogin:" destination="Y3E-Ge-Kiz" eventType="touchUpInside" id="VJv-6f-VkD"/>
+                                    <action selector="onPrimaryButton:" destination="Y3E-Ge-Kiz" eventType="touchUpInside" id="MgT-n7-izK"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="82o-fK-VRB">
@@ -591,7 +591,7 @@
                                     <color key="titleColor" red="0.76862745098039209" green="0.53333333333333333" blue="0.32549019607843138" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
                                 <connections>
-                                    <action selector="onRegister:" destination="Y3E-Ge-Kiz" eventType="touchUpInside" id="Jhu-Rs-jbT"/>
+                                    <action selector="onSecondaryButton:" destination="Y3E-Ge-Kiz" eventType="touchUpInside" id="KZu-pX-UYV"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3a7-bz-tau">
@@ -667,12 +667,12 @@
                     <connections>
                         <outlet property="appNameLabel" destination="ZiJ-MC-Jxq" id="IUk-Ji-z1P"/>
                         <outlet property="bottomConstraint" destination="bwM-H4-0RF" id="B7v-sC-2g4"/>
-                        <outlet property="loginButton" destination="oON-b3-k27" id="qp7-6B-wiW"/>
                         <outlet property="logoBottomConstraint" destination="Ogo-Ra-P7B" id="tex-CK-PGl"/>
                         <outlet property="logoTopConstraint" destination="McB-zw-Lhb" id="SgH-EA-tBI"/>
                         <outlet property="logoView" destination="hqM-F6-DGE" id="enz-WJ-da2"/>
-                        <outlet property="registerButton" destination="82o-fK-VRB" id="62U-kr-DW7"/>
+                        <outlet property="primaryButton" destination="oON-b3-k27" id="pPb-mo-KWb"/>
                         <outlet property="retrievePassword" destination="3a7-bz-tau" id="8pB-y8-WdI"/>
+                        <outlet property="secondaryButton" destination="82o-fK-VRB" id="Kcw-mz-JwY"/>
                         <outlet property="tableView" destination="1vd-mT-JQ5" id="If0-kr-61H"/>
                         <outlet property="tableViewHeightConstraint" destination="gH4-xj-H3G" id="UdV-3r-oAS"/>
                         <segue destination="BsO-hW-yMh" kind="modal" identifier="GoToHome" id="zpz-0j-kK4"/>
