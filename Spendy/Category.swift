@@ -17,7 +17,7 @@ enum CategoryType: String {
 
 class Category: HTObject {
     static let transferCats = [
-        "Other"
+        "Transfer"
     ]
     
     static let incomeCats = [
@@ -152,7 +152,14 @@ class Category: HTObject {
     }
 
     class func defaultCategoryFor(typeString: String) -> Category? {
-        let name = "\(typeString)-Other"
+        var name: String
+
+        if typeString == "Transfer" {
+            name = "Transfer-Transfer"
+        } else {
+            name = "\(typeString)-Other"
+
+        }
         return all.filter({$0.icon == name}).first
     }
 
@@ -200,7 +207,7 @@ extension Category {
     class func bootstrapCategories() {
         print("\n********BOOTSTRAPING CATEGORIES********")
         // remove all stale categories
-        // try! PFObject.unpinAllObjects()
+        try! PFObject.unpinAllObjects()
 
         let query = PFQuery(className: "Category")
         query.limit = 100
