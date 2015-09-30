@@ -50,7 +50,9 @@ class RootTabBarController: UITabBarController {
         }
         
         // Test notification
-        ReminderList.sharedInstance.addReminderNotification("Meal", amount: 5.00, date: NSDate(timeIntervalSinceNow: 15))
+        
+//        let cat = Category.findById("zy2eBTXhuP")
+//        ReminderList.sharedInstance.addReminderNotification(cat!, amount: 5.00, date: NSDate(timeIntervalSinceNow: 15))
 
     }
 

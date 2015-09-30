@@ -221,13 +221,13 @@
                                                     </constraints>
                                                 </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Meal" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WGc-0i-fdM">
-                                                    <rect key="frame" x="55" y="8" width="37" height="21"/>
+                                                    <rect key="frame" x="55" y="8" width="37" height="20.5"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1pm, 8pm" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bTi-jX-iWf">
-                                                    <rect key="frame" x="55" y="35" width="72" height="20"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1pm, 8pm" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bTi-jX-iWf">
+                                                    <rect key="frame" x="55" y="34" width="198" height="19.5"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                     <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
@@ -241,8 +241,10 @@
                                                 </view>
                                             </subviews>
                                             <constraints>
+                                                <constraint firstAttribute="bottom" secondItem="bTi-jX-iWf" secondAttribute="bottom" constant="8" id="42y-iO-hPf"/>
                                                 <constraint firstItem="WGc-0i-fdM" firstAttribute="leading" secondItem="bTi-jX-iWf" secondAttribute="leading" id="CCA-Mu-JgS"/>
                                                 <constraint firstItem="rnD-tW-Cl5" firstAttribute="centerY" secondItem="AKD-rF-GAT" secondAttribute="centerY" id="Wex-po-Aav"/>
+                                                <constraint firstItem="HjT-gC-xWM" firstAttribute="leading" secondItem="bTi-jX-iWf" secondAttribute="trailing" constant="8" id="YlB-yA-Fck"/>
                                                 <constraint firstAttribute="centerY" secondItem="HjT-gC-xWM" secondAttribute="centerY" id="awn-al-p9K"/>
                                                 <constraint firstItem="bTi-jX-iWf" firstAttribute="top" secondItem="WGc-0i-fdM" secondAttribute="bottom" constant="6" id="day-Tt-fzp"/>
                                                 <constraint firstItem="WGc-0i-fdM" firstAttribute="top" secondItem="AKD-rF-GAT" secondAttribute="top" constant="8" id="gFx-fn-ym0"/>
@@ -469,7 +471,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="Expense-Meal" width="50" height="50"/>
+        <image name="Expense-Meal" width="256" height="256"/>
         <image name="PlusCircle" width="50" height="50"/>
         <image name="SettingInactive" width="25" height="25"/>
         <image name="User" width="50" height="50"/>

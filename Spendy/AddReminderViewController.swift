@@ -15,9 +15,11 @@ class AddReminderViewController: UIViewController, TimeCellDelegate {
     var addButton: UIButton!
     var backButton: UIButton!
     
-    var selectedRemider: String!
+    //    var selectedCategory: String!
+    var selectedCategory: Category!
     
-    var times = [String]()
+    //    var times = [String]()
+    //    var times = [ReminderItem]()
     
     var formatter: NSDateFormatter!
     
@@ -30,8 +32,9 @@ class AddReminderViewController: UIViewController, TimeCellDelegate {
         tableView.delegate = self
         tableView.tableFooterView = UIView()
         
-        if selectedRemider != nil {
+        if selectedCategory != nil {
             navigationItem.title = "Edit Reminder"
+            //            times = selectedCategory.timeSlots
         }
         
         addGestures()
@@ -40,13 +43,13 @@ class AddReminderViewController: UIViewController, TimeCellDelegate {
         formatter.dateFormat = "hh:mm a"
         
         // TODO: Change to TimeSlot object. Each category has a list of time slot
-        // TimeSlot { 
+        // TimeSlot {
         //        reminderItem: ReminderItem
         //        isActive: Bool
         // }
         
         
-        times = ["08:00 AM", "02:00 PM", "07:00 PM"]
+        //        times = ["08:00 AM", "02:00 PM", "07:00 PM"]
     }
     
     override func didReceiveMemoryWarning() {
@@ -80,20 +83,24 @@ class AddReminderViewController: UIViewController, TimeCellDelegate {
     
     func timeCell(timeCell: TimeCell, didChangeValue value: Bool) {
         
-        //        let indexPath = tableView.indexPathForCell(timeCell)!
+        let indexPath = tableView.indexPathForCell(timeCell)!
         print("switch time", terminator: "\n")
         
-        // TODO: handle time switch
+        selectedCategory.timeSlots[indexPath.row].isActive = value
+        // TODO: update in Parse
+        timeCell.onSwitch.on = value
         if value {
-            // pass params category and predictive amount to this method
-            //            ReminderList.sharedInstance.addReminderNotification("Meal", amount: 5.00, date: formatter.dateFromString(timeCell.timeLabel.text!)!)
+            ReminderList.sharedInstance.addReminderNotification(selectedCategory.timeSlots[indexPath.row])
             print("add new notification")
         } else {
             // pass ReminderItem of this cell to this method
-            //            ReminderList.sharedInstance.removeReminderNotification(<#T##item: ReminderItem##ReminderItem#>)
+            ReminderList.sharedInstance.removeReminderNotification(selectedCategory.timeSlots[indexPath.row])
             print("remove old notification")
         }
     }
+    
+    
+    
     
 }
 
@@ -110,7 +117,7 @@ extension AddReminderViewController: UITableViewDataSource, UITableViewDelegate 
         if section == 0 {
             return 1
         } else {
-            return times.count + 1
+            return selectedCategory.timeSlots.count + 1
         }
     }
     
@@ -131,8 +138,8 @@ extension AddReminderViewController: UITableViewDataSource, UITableViewDelegate 
             
             let cell = tableView.dequeueReusableCellWithIdentifier("CategoryReminderCell", forIndexPath: indexPath) as! CategoryReminderCell
             
-            if let selectedRemider = selectedRemider {
-                cell.categoryLabel.text = selectedRemider
+            if let selectedCategory = selectedCategory {
+                cell.categoryLabel.text = selectedCategory.name
             }
             
             let tapSelectCategory = UITapGestureRecognizer(target: self, action: Selector("tapSelectCategory:"))
@@ -144,11 +151,11 @@ extension AddReminderViewController: UITableViewDataSource, UITableViewDelegate 
             
         } else {
             
-            if indexPath.row < times.count {
+            if indexPath.row < selectedCategory.timeSlots.count {
                 let cell = tableView.dequeueReusableCellWithIdentifier("TimeCell", forIndexPath: indexPath) as! TimeCell
                 
+                cell.reminderItem = selectedCategory.timeSlots[indexPath.row]
                 cell.delegate = self
-                cell.timeLabel.text = times[indexPath.row]
                 
                 Helper.sharedInstance.setSeparatorFullWidth(cell)
                 return cell
@@ -163,7 +170,7 @@ extension AddReminderViewController: UITableViewDataSource, UITableViewDelegate 
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         if indexPath.section == 1 {
-            if indexPath.row < times.count {
+            if indexPath.row < selectedCategory.timeSlots.count {
                 
                 let selectedCell = tableView.cellForRowAtIndexPath(indexPath) as? TimeCell
                 let timeString = selectedCell!.timeLabel.text
@@ -174,21 +181,22 @@ extension AddReminderViewController: UITableViewDataSource, UITableViewDelegate 
                     (time) -> Void in
                     print(time, terminator: "\n")
                     
-                    // TODO: Handle edit time. Pass params to these method
+                    var selectedItem = self.selectedCategory.timeSlots[indexPath.row]
+                    
                     // Remove old notification
-                    //                    ReminderList.sharedInstance.removeReminderNotification(<#T##item: ReminderItem##ReminderItem#>)
+                    ReminderList.sharedInstance.removeReminderNotification(selectedItem)
                     print("remove old notification")
                     
-                    // Turn on switch automatically <--- needed?
-                    selectedCell?.onSwitch.on = true
+                    // Turn on switch automatically
+                    selectedItem.isActive = true
                     
                     // Add new notification
-                    //                    ReminderList.sharedInstance.addReminderNotification("Meal", amount: 5.00, date: time)
-                    print("add new notification")
+                    selectedItem.reminderTime = time
+                    ReminderList.sharedInstance.addReminderNotification(selectedItem)
                     
-                    let timeString = self.formatter.stringFromDate(time)
-                    print("formated: \(timeString)", terminator: "\n")
-                    self.times[indexPath.row] = timeString
+                    self.selectedCategory.timeSlots[indexPath.row] = selectedItem
+                    print("add new notification")
+                    // TODO: update this item in Parse
                     
                     self.tableView.reloadSections(NSIndexSet(index: 1), withRowAnimation: UITableViewRowAnimation.Automatic)
                 }
@@ -235,13 +243,13 @@ extension AddReminderViewController: UIGestureRecognizerDelegate {
                 let timeCell = selectedCell as! TimeCell
                 let indexPath = tableView.indexPathForCell(timeCell)
                 
-                // TODO: Handle remove notification. Pass params to these method
                 // Remove old notification
-                //                    ReminderList.sharedInstance.removeReminderNotification(<#T##item: ReminderItem##ReminderItem#>)
+                ReminderList.sharedInstance.removeReminderNotification(selectedCategory.timeSlots[indexPath!.row])
                 print("remove old notification")
                 
                 if let indexPath = indexPath {
-                    times.removeAtIndex(indexPath.row)
+                    selectedCategory.timeSlots.removeAtIndex(indexPath.row)
+                    // TODO: remove this item in Parse
                     tableView.reloadSections(NSIndexSet(index: 1), withRowAnimation: UITableViewRowAnimation.Automatic)
                 }
             }
@@ -259,13 +267,12 @@ extension AddReminderViewController: UIGestureRecognizerDelegate {
             print(time, terminator: "\n")
             
             // Add notification
-            // TODO: pass params category and predictive amount to this method
-            //            ReminderList.sharedInstance.addReminderNotification("Meal", amount: 5.00, date: time)
-            print("add new notification")
+            let newItem = ReminderItem(category: self.selectedCategory, reminderTime: time, UUID: NSUUID().UUIDString)
+            ReminderList.sharedInstance.addReminderNotification(newItem)
+            self.selectedCategory.timeSlots.append(newItem)
+            // TODO: add newItem to Parse
             
-            let timeString = self.formatter.stringFromDate(time)
-            print("formated: \(timeString)", terminator: "\n")
-            self.times.append(timeString)
+            print("add new notification")
             
             self.tableView.reloadSections(NSIndexSet(index: 1), withRowAnimation: UITableViewRowAnimation.Automatic)
         }
@@ -280,5 +287,34 @@ extension AddReminderViewController: UIGestureRecognizerDelegate {
         
         navigationController?.pushViewController(selectCategoryVC, animated: true)
         
+    }
+}
+
+// MARK: Transfer between 2 views
+
+extension AddReminderViewController: SelectAccountOrCategoryDelegate {
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        let toController = segue.destinationViewController
+        
+        if toController is SelectAccountOrCategoryViewController {
+            let vc = toController as! SelectAccountOrCategoryViewController
+            
+            vc.itemClass = "Category"
+            vc.selectedItem = selectedCategory
+            vc.delegate = self
+        }
+    }
+    
+    func selectAccountOrCategoryViewController(selectAccountOrCategoryController: SelectAccountOrCategoryViewController, selectedItem item: AnyObject) {
+//        if item is Category {
+//            selectedCategory = (item as! Category)
+//            tableView.reloadData()
+//        } else if item is Category {
+//            selectedTransaction!.category = (item as! Category)
+//            tableView.reloadData()
+//        } else {
+//            print("Error: item is \(item)")
+//        }
     }
 }

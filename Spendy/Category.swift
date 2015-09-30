@@ -74,6 +74,14 @@ class Category: HTObject {
         get { return self["icon"] as! String }
         set { self["icon"] = newValue }
     }
+    
+    // Add for reminder
+    
+    var reminderOn = false
+    var predictiveAmount = NSDecimalNumber(double: 20)
+    var timeSlots = [ReminderItem]()
+    
+    
 
     func type() -> String? {
         return icon.componentsSeparatedByString("-").first

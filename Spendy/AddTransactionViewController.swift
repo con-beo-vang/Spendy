@@ -57,12 +57,19 @@ class AddTransactionViewController: UIViewController {
         
         if selectedTransaction != nil {
             navigationItem.title = "Edit Transaction"
+            
+            // Test notification
+//            ReminderList.sharedInstance.addReminderNotification((selectedTransaction?.category)!, date: NSDate(timeIntervalSinceNow: 15))
+//            print("add reminder")
+            
         } else {
             selectedTransaction = Transaction(kind: Transaction.expenseKind,
                 note: nil, amount: nil,
                 category: Category.defaultExpenseCategory(), account: currentAccount,
                 date: NSDate())
             isCollaped = true
+            
+
         }
         
         tableView.reloadData()

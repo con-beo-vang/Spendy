@@ -17,55 +17,55 @@ import Parse
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
-
+    
     var window: UIWindow?
     var storyboard = UIStoryboard(name: "Main", bundle: nil)
-
+    
     //--------------------------------------
     // MARK: - UIApplicationDelegate
     //--------------------------------------
-
+    
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Enable storing and querying data from Local Datastore.
         // Remove this line if you don't want to use Local Datastore features or want to use cachePolicy.
         Parse.enableLocalDatastore()
-
+        
         // ****************************************************************************
         // Uncomment this line if you want to enable Crash Reporting
         // ParseCrashReporting.enable()
-
+        
         guard let config = NSDictionary(contentsOfFile: NSBundle.mainBundle().pathForResource("Config", ofType: "plist")!) else {
             print("Please set up Parse keys in Config.plist file", terminator: "\n")
             return false
         }
-
+        
         print("loaded config: \(config)")
         let applicationId = config["parse_application_id"] as? String
         let clientKey = config["parse_client_key"] as? String
         Parse.setApplicationId(applicationId!, clientKey: clientKey!)
-
+        
         //
         // If you are using Facebook, uncomment and add your FacebookAppID to your bundle's plist as
         // described here: https://developers.facebook.com/docs/getting-started/facebook-sdk-for-ios/
         // Uncomment the line inside ParseStartProject-Bridging-Header and the following line here:
         // PFFacebookUtils.initializeFacebook()
         // ****************************************************************************
-
+        
         // allows anonymousm users
         // PFUser.enableAutomaticUser()
-
+        
         let defaultACL = PFACL();
-
+        
         // If you would like all objects to be private by default, remove this line.
         defaultACL.setPublicReadAccess(true)
-
+        
         PFACL.setDefaultACL(defaultACL, withAccessForCurrentUser:true)
-
+        
         if application.applicationState != UIApplicationState.Background {
             // Track an app open here if we launch with a push, unless
             // "content_available" was used to trigger a background push (introduced in iOS 7).
             // In that case, we skip tracking here to avoid double counting the app-open.
-
+            
             let preBackgroundPush = !application.respondsToSelector("backgroundRefreshStatus")
             let oldPushHandlerOnly = !self.respondsToSelector("application:didReceiveRemoteNotification:fetchCompletionHandler:")
             var noPushPayload = false;
@@ -79,7 +79,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         // Local notification
         settingNotification(application)
-
+        
+        
+        // Remove all old notification
+        for notification in UIApplication.sharedApplication().scheduledLocalNotifications as [UILocalNotification]! {
+            UIApplication.sharedApplication().cancelLocalNotification(notification) // there should be a maximum of one match on UUID
+        }
+        
+        
+        
         // Config apprearance
         
         Color.isGreen = NSUserDefaults.standardUserDefaults().boolForKey("DefaultTheme") ?? true
@@ -92,9 +100,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         UITabBar.appearance().tintColor = Color.strongColor
         
-
+        
         let user = User.current()
-
+        
         // TODO: check login
         let isLoggedIn = user != nil
         
@@ -107,22 +115,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             let vc = storyboard.instantiateViewControllerWithIdentifier("LoginVC") as! LoginViewController
             window?.rootViewController = vc
         }
-
+        
         // Uncomment this out to run if you have more categories to addd
-         Category.bootstrapCategories()
-
+        Category.bootstrapCategories()
+        
         return true
     }
-
+    
     //--------------------------------------
     // MARK: Push Notifications
     //--------------------------------------
-
+    
     func application(application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData) {
         let installation = PFInstallation.currentInstallation()
         installation.setDeviceTokenFromData(deviceToken)
         installation.saveInBackground()
-
+        
         PFPush.subscribeToChannelInBackground("") { (succeeded: Bool, error: NSError?) in
             if succeeded {
                 print("ParseStarterProject successfully subscribed to push notifications on the broadcast channel.", terminator: "\n");
@@ -131,7 +139,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
         }
     }
-
+    
     func application(application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: NSError) {
         if error.code == 3010 {
             print("Push notifications are not supported in the iOS Simulator.", terminator: "\n")
@@ -139,14 +147,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             print("application:didFailToRegisterForRemoteNotificationsWithError: %@", error, terminator: "")
         }
     }
-
+    
     func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject]) {
         PFPush.handlePush(userInfo)
         if application.applicationState == UIApplicationState.Inactive {
             PFAnalytics.trackAppOpenedWithRemoteNotificationPayload(userInfo)
         }
     }
-
+    
     ///////////////////////////////////////////////////////////
     // Uncomment this method if you want to use Push Notifications with Background App Refresh
     ///////////////////////////////////////////////////////////
@@ -155,11 +163,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     //         PFAnalytics.trackAppOpenedWithRemoteNotificationPayload(userInfo)
     //     }
     // }
-
+    
     //--------------------------------------
     // MARK: Facebook SDK Integration
     //--------------------------------------
-
+    
     ///////////////////////////////////////////////////////////
     // Uncomment this method if you are using Facebook
     ///////////////////////////////////////////////////////////
@@ -197,7 +205,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(application: UIApplication, handleActionWithIdentifier identifier: String?, forLocalNotification notification: UILocalNotification, completionHandler: () -> Void) {
         
-        let item = ReminderItem(category: notification.userInfo!["category"] as! String!, predictiveAmount: NSDecimalNumber(decimal: (notification.userInfo!["predictiveAmount"] as! NSNumber).decimalValue), reminderTime: notification.fireDate!, UUID: notification.userInfo!["UUID"] as! String!)
+        let item = ReminderItem(category: Category.findById(notification.userInfo!["categoryId"] as! String!)!, reminderTime: notification.fireDate!, UUID: notification.userInfo!["UUID"] as! String!)
         
         switch (identifier!) {
         case "CHANGE":
@@ -207,11 +215,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             window?.rootViewController?.presentViewController(nc, animated: true, completion: nil)
         case "YES":
             print("YES")
-            ReminderList.sharedInstance.scheduleReminderforItem(item)
+            // TODO: Add new transaction
         default: // switch statements must be exhaustive - this condition should never be met
             print("Error: unexpected notification action identifier!")
         }
         completionHandler() // per developer documentation, app will terminate if we fail to call this
     }
-
+    
 }
