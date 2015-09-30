@@ -23,6 +23,7 @@ class AddTransactionViewController: UIViewController {
     var amountCell: AmountCell?
     var categoryCell: SelectAccountOrCategoryCell?
     var accountCell: SelectAccountOrCategoryCell?
+    var toAccountCell: SelectAccountOrCategoryCell?
     var dateCell: DateCell?
     var photoCell: PhotoCell?
     
@@ -116,8 +117,7 @@ class AddTransactionViewController: UIViewController {
             return
         }
 
-        guard let transaction = selectedTransaction else {
-            print("Error: selectedTransaction is nil")
+        guard let transaction = selectedTransaction else { print("Error: selectedTransaction is nil")
             return
         }
 
@@ -216,6 +216,8 @@ extension AddTransactionViewController: SelectAccountOrCategoryDelegate, PhotoVi
     
     func selectAccountOrCategoryViewController(selectAccountOrCategoryController: SelectAccountOrCategoryViewController, selectedItem item: AnyObject) {
         if item is Account {
+            // only allow changing fromAccount
+            // toAccount is read-only; otherwise the code becomes unnecessarily complicated
             selectedTransaction!.fromAccount = (item as! Account)
             tableView.reloadData()
         } else if item is Category {
@@ -247,7 +249,18 @@ extension AddTransactionViewController: UITableViewDataSource, UITableViewDelega
         case 0:
             return 2
         case 1:
-            return 2
+            if amountCell?.typeSegment.selectedSegmentIndex == 2 {
+                // 3 rows:
+                // Category (fixed as Transfer)
+                // From Account
+                // To Account
+                return 3
+            } else {
+                // 2 rows:
+                // Category
+                // Account
+                return 2
+            }
         case 2:
             return 1
         case 3:
@@ -313,11 +326,14 @@ extension AddTransactionViewController: UITableViewDataSource, UITableViewDelega
                 
                 let tapCell = UITapGestureRecognizer(target: self, action: "tapAmoutCell:")
                 cell.addGestureRecognizer(tapCell)
-                
+                print("Added tapAmountCell gesture")
+
                 cell.typeSegment.addTarget(self, action: "typeSegmentChanged:", forControlEvents: UIControlEvents.ValueChanged)
-                
+                print("Added typeSegmentChanged gesture")
+
                 cell.amountText.keyboardType = UIKeyboardType.DecimalPad
                 Helper.sharedInstance.setSeparatorFullWidth(cell)
+
                 if amountCell == nil {
                     amountCell = cell
                 }
@@ -369,15 +385,29 @@ extension AddTransactionViewController: UITableViewDataSource, UITableViewDelega
                 
                 cell.itemClass = "Account"
                 cell.fromAccount = selectedTransaction!.fromAccount
-                // override "From Account" to "Account"
-                cell.titleLabel.text = "Account"
-                
+
                 Helper.sharedInstance.setSeparatorFullWidth(cell)
+
                 if accountCell == nil {
                     accountCell = cell
                 }
                 return cell
+
+            case 2:
+                // Only for Transfer category type
+                guard let category = selectedTransaction!.category where category.type() == "Transfer" else { break }
+
+                let cell = tableView.dequeueReusableCellWithIdentifier("SelectAccountOrCategoryCell", forIndexPath: indexPath) as! SelectAccountOrCategoryCell
                 
+                cell.itemClass = "Account"
+                cell.toAccount = selectedTransaction!.toAccount
+
+                Helper.sharedInstance.setSeparatorFullWidth(cell)
+                if toAccountCell == nil {
+                    toAccountCell = cell
+                }
+                return cell
+
             default:
                 break
             }
@@ -475,51 +505,20 @@ extension AddTransactionViewController {
     }
     
     func typeSegmentChanged(sender: UISegmentedControl) {
-        guard let selectedTransaction = selectedTransaction else { return }
+        updateFieldsToTransaction()
 
-        selectedTransaction.kind = Transaction.kinds[sender.selectedSegmentIndex]
-
-        guard let oldCategory = selectedTransaction.category else { return }
-
+        // back up category choice for each segment value
+        // so that when we switch back, it can be resumed
         let newType = ["Income", "Expense", "Transfer"][sender.selectedSegmentIndex]
 
-        // set new category
-        selectedTransaction.category = backupCategories[newType] ?? Category.defaultCategoryFor(newType)
-
-        // update cell
-        categoryCell!.category = selectedTransaction.category
-
-        // back up category choice
-        backupCategories[oldCategory.type()!] = oldCategory
-
-        switch sender.selectedSegmentIndex {
-        case 0:
-            sender.tintColor = Color.incomeColor
-
-        case 1:
-            sender.tintColor = Color.expenseColor
-
-        case 2:
-            sender.tintColor = Color.balanceColor
-
-            if let fromAccount = selectedTransaction.fromAccount {
-                accountCell!.fromAccount = fromAccount
-            } else {
-                accountCell!.titleLabel.text = "From Account"
-                accountCell!.typeLabel.text = "None"
-            }
-            
-//            if let toAccount = selectedTransaction.toAccount {
-//                categoryCell!.toAccount = toAccount
-//            } else {
-//                categoryCell!.titleLabel.text = "To Account"
-//                categoryCell!.typeLabel.text = "None"
-//            }
-
-
-        default:
-            break
+        if let oldCategory = selectedTransaction!.category {
+            backupCategories[oldCategory.type()!] = oldCategory
         }
+
+        // set new category
+        selectedTransaction!.category = backupCategories[newType] ?? Category.defaultCategoryFor(newType)
+
+        tableView.reloadData()
     }
 }
 

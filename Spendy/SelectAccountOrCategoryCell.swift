@@ -30,14 +30,22 @@ class SelectAccountOrCategoryCell: UITableViewCell {
     var fromAccount: Account? {
         didSet {
             guard let account = fromAccount else { return }
-            titleLabel.text = "From Account"
+            if category?.type() == "Transfer" {
+                titleLabel.text = "From Account"
+            } else {
+                titleLabel.text = "Account"
+            }
             typeLabel.text = account.name
         }
     }
     
     var toAccount: Account? {
         didSet {
-            guard let account = toAccount else { return }
+            guard let account = toAccount else {
+                titleLabel.text = "To Account"
+                typeLabel.text = "None"
+                return
+            }
             titleLabel.text = "To Account"
             typeLabel.text = account.name
         }
