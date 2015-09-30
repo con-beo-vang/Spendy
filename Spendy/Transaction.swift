@@ -34,9 +34,9 @@ class Transaction: HTObject {
     class var kinds: [String] {
         return [incomeKind, expenseKind, transferKind]
     }
-    static let expenseKind: String = "expense"
-    static let incomeKind: String = "income"
-    static let transferKind: String = "transfer"
+    static let expenseKind: String = "Expense"
+    static let incomeKind: String = "Income"
+    static let transferKind: String = "Transfer"
 
     var balanceSnapshot: NSDecimalNumber {
         get {

@@ -36,6 +36,8 @@ class AddTransactionViewController: UIViewController {
     // remember the selected category under each transaction kind
     var backupCategories = [String:Category?]()
 
+    var validationErrors = [String]()
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -76,18 +78,35 @@ class AddTransactionViewController: UIViewController {
     }
 
     func updateFieldsToTransaction() -> Bool {
+        validationErrors = []
+
         if let transaction = selectedTransaction {
             transaction.note = noteCell?.noteText.text
             transaction.kind = Transaction.kinds[amountCell!.typeSegment.selectedSegmentIndex]
 
             let amountDecimal = NSDecimalNumber(string: amountCell?.amountText.text)
-            guard amountDecimal != NSDecimalNumber.notANumber() else { return false }
-            transaction.amount = amountDecimal
+            if amountDecimal != NSDecimalNumber.notANumber() {
+                transaction.amount = amountDecimal
+            } else {
+               validationErrors.append("Please enter an amount")
+            }
+
             // TODO: parse date
-            // transaction["date"] = dateCell?.datePicker.date ?? NSDate()
+            // validate date is in the past
+            let date = dateCell?.datePicker.date
+            print("date: \(date)")
+
+
+            if transaction.kind == Transaction.transferKind {
+                if transaction.toAccount == nil {
+                    validationErrors.append("Please specifiy To Account:")
+                } else if transaction.toAccount?.objectId == transaction.fromAccount?.objectId {
+                    validationErrors.append("From and To accounts must be different")
+                }
+            }
         }
 
-        return true
+        return validationErrors.isEmpty
     }
 
     // MARK: Button
@@ -106,7 +125,9 @@ class AddTransactionViewController: UIViewController {
     func onAddButton(sender: UIButton!) {
         // update fields
         guard updateFieldsToTransaction() else {
-            let alertController = UIAlertController(title: "Please enter an amount", message: nil, preferredStyle: .Alert)
+            let nextError = validationErrors.first!
+
+            let alertController = UIAlertController(title: nextError, message: nil, preferredStyle: .Alert)
             let OKAction = UIAlertAction(title: "OK", style: .Default) { (action) in
                 // ...
             }
@@ -217,7 +238,7 @@ extension AddTransactionViewController: SelectAccountOrCategoryDelegate, PhotoVi
     func selectAccountOrCategoryViewController(selectAccountOrCategoryController: SelectAccountOrCategoryViewController, selectedItem item: AnyObject) {
         if item is Account {
             // only allow changing fromAccount
-            // toAccount is read-only; otherwise the code becomes unnecessarily complicated
+            // toAccount is read-only
             selectedTransaction!.fromAccount = (item as! Account)
             tableView.reloadData()
         } else if item is Category {
@@ -299,7 +320,6 @@ extension AddTransactionViewController: UITableViewDataSource, UITableViewDelega
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
 
-        
         let dummyCell = UITableViewCell()
         
         switch indexPath.section {
@@ -384,7 +404,13 @@ extension AddTransactionViewController: UITableViewDataSource, UITableViewDelega
                 let cell = tableView.dequeueReusableCellWithIdentifier("SelectAccountOrCategoryCell", forIndexPath: indexPath) as! SelectAccountOrCategoryCell
                 
                 cell.itemClass = "Account"
-                cell.fromAccount = selectedTransaction!.fromAccount
+
+                print("kind: \(selectedTransaction!.kind)")
+                if selectedTransaction!.kind == "Transfer" {
+                    cell.fromAccount = selectedTransaction!.fromAccount
+                } else {
+                    cell.account = selectedTransaction!.fromAccount
+                }
 
                 Helper.sharedInstance.setSeparatorFullWidth(cell)
 
@@ -403,6 +429,7 @@ extension AddTransactionViewController: UITableViewDataSource, UITableViewDelega
                 cell.toAccount = selectedTransaction!.toAccount
 
                 Helper.sharedInstance.setSeparatorFullWidth(cell)
+
                 if toAccountCell == nil {
                     toAccountCell = cell
                 }
@@ -517,6 +544,13 @@ extension AddTransactionViewController {
 
         // set new category
         selectedTransaction!.category = backupCategories[newType] ?? Category.defaultCategoryFor(newType)
+
+        if newType == "Transfer" {
+            selectedTransaction!.toAccount = Account.defaultAccount()
+        } else {
+            selectedTransaction!.toAccount = nil
+        }
+
 
         tableView.reloadData()
     }
