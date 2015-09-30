@@ -323,19 +323,19 @@ extension AddTransactionViewController: UITableViewDataSource, UITableViewDelega
                 let cell = tableView.dequeueReusableCellWithIdentifier("AmountCell", forIndexPath: indexPath) as! AmountCell
                 
                 cell.amountText.text = selectedTransaction?.amount?.stringValue
-                
-                let tapCell = UITapGestureRecognizer(target: self, action: "tapAmoutCell:")
-                cell.addGestureRecognizer(tapCell)
-                print("Added tapAmountCell gesture")
-
-                cell.typeSegment.addTarget(self, action: "typeSegmentChanged:", forControlEvents: UIControlEvents.ValueChanged)
-                print("Added typeSegmentChanged gesture")
-
                 cell.amountText.keyboardType = UIKeyboardType.DecimalPad
+
                 Helper.sharedInstance.setSeparatorFullWidth(cell)
 
                 if amountCell == nil {
                     amountCell = cell
+
+                    // only add gesture recognizers once
+                    cell.typeSegment.addTarget(self, action: "typeSegmentChanged:", forControlEvents: UIControlEvents.ValueChanged)
+                    print("Added typeSegmentChanged gesture. Should only do once")
+                    let tapCell = UITapGestureRecognizer(target: self, action: "tapAmoutCell:")
+                    cell.addGestureRecognizer(tapCell)
+                    print("Added tapAmountCell gesture")
                 }
 
                 // TODO refactor into AmountCell
