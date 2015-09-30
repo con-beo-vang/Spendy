@@ -48,12 +48,6 @@ class RootTabBarController: UITabBarController {
         } else {
             print("Error hooking up Settings tab", terminator: "")
         }
-        
-        // Test notification
-        
-//        let cat = Category.findById("zy2eBTXhuP")
-//        ReminderList.sharedInstance.addReminderNotification(cat!, amount: 5.00, date: NSDate(timeIntervalSinceNow: 15))
-
     }
 
     override func didReceiveMemoryWarning() {

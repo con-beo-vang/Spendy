@@ -510,7 +510,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="CheckCircle" translatesAutoresizingMaskIntoConstraints="NO" id="5M3-eF-lMV">
-                                                    <rect key="frame" x="287" y="16" width="25" height="25"/>
+                                                    <rect key="frame" x="287" y="15" width="25" height="25"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="25" id="7g9-Yh-qCV"/>
                                                         <constraint firstAttribute="width" constant="25" id="pKH-lu-ZWG"/>

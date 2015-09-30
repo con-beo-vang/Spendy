@@ -81,12 +81,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         settingNotification(application)
         
         
-        // Remove all old notification
-        for notification in UIApplication.sharedApplication().scheduledLocalNotifications as [UILocalNotification]! {
-            UIApplication.sharedApplication().cancelLocalNotification(notification) // there should be a maximum of one match on UUID
-        }
-        
-        
+        // Uncommnet these lines if you want to remove all old notifications
+//        for notification in UIApplication.sharedApplication().scheduledLocalNotifications as [UILocalNotification]! {
+//            UIApplication.sharedApplication().cancelLocalNotification(notification)
+//        }
         
         // Config apprearance
         
