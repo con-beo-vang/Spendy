@@ -31,6 +31,7 @@ class SelectAccountOrCategoryCell: UITableViewCell {
         didSet {
             titleLabel.text = "Account"
             typeLabel.text = account?.name ?? "None"
+            itemTypeFilter = "Account"
         }
     }
 
@@ -38,6 +39,7 @@ class SelectAccountOrCategoryCell: UITableViewCell {
         didSet {
             titleLabel.text = "From Account"
             typeLabel.text = fromAccount?.name ?? "None"
+            itemTypeFilter = "FromAccount"
         }
     }
     
@@ -50,6 +52,7 @@ class SelectAccountOrCategoryCell: UITableViewCell {
             }
             titleLabel.text = "To Account"
             typeLabel.text = account.name
+            itemTypeFilter = "ToAccount"
         }
     }
     override func awakeFromNib() {

@@ -209,14 +209,20 @@ extension AddTransactionViewController: SelectAccountOrCategoryDelegate, PhotoVi
             let vc = toController as! SelectAccountOrCategoryViewController
             
             let cell = sender as! SelectAccountOrCategoryCell
+
             vc.itemClass = cell.itemClass
             vc.itemTypeFilter = cell.itemTypeFilter
+
             vc.delegate = self
             
             if cell.itemClass == "Category" {
-                vc.selectedItem = selectedTransaction?.category
+                vc.selectedItem = selectedTransaction!.category
             } else {
-                vc.selectedItem = selectedTransaction?.fromAccount
+                if cell.itemTypeFilter == "ToAccount" {
+                    vc.selectedItem = selectedTransaction!.toAccount
+                } else {
+                    vc.selectedItem = selectedTransaction!.fromAccount
+                }
             }
             
             // TODO: delegate
@@ -235,14 +241,18 @@ extension AddTransactionViewController: SelectAccountOrCategoryDelegate, PhotoVi
         }
     }
     
-    func selectAccountOrCategoryViewController(selectAccountOrCategoryController: SelectAccountOrCategoryViewController, selectedItem item: AnyObject) {
+    func selectAccountOrCategoryViewController(selectAccountOrCategoryController: SelectAccountOrCategoryViewController, selectedItem item: AnyObject, selectedType type: String?) {
         if item is Account {
-            // only allow changing fromAccount
-            // toAccount is read-only
-            selectedTransaction!.fromAccount = (item as! Account)
+            if let type = type where type == "ToAccount" {
+                selectedTransaction!.toAccount = (item as! Account)
+            } else {
+                selectedTransaction!.fromAccount = (item as! Account)
+            }
+
             tableView.reloadData()
         } else if item is Category {
             selectedTransaction!.category = (item as! Category)
+
             tableView.reloadData()
         } else {
             print("Error: item is \(item)")

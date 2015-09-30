@@ -10,7 +10,7 @@ import UIKit
 import Parse
 
 protocol SelectAccountOrCategoryDelegate {
-    func selectAccountOrCategoryViewController(selectAccountOrCategoryController: SelectAccountOrCategoryViewController, selectedItem item: AnyObject)
+    func selectAccountOrCategoryViewController(selectAccountOrCategoryController: SelectAccountOrCategoryViewController, selectedItem item: AnyObject, selectedType type: String?)
 }
 
 class SelectAccountOrCategoryViewController: UIViewController {
@@ -30,7 +30,7 @@ class SelectAccountOrCategoryViewController: UIViewController {
     var backButton: UIButton?
     
     var selectedItem: HTObject?
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -141,7 +141,6 @@ extension SelectAccountOrCategoryViewController: UITableViewDataSource, UITableV
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         // var cell = tableView.cellForRowAtIndexPath(indexPath) as! CategoryCell
         navigationController?.popViewControllerAnimated(true)
-        delegate?.selectAccountOrCategoryViewController(self, selectedItem: items![indexPath.row])
+        delegate?.selectAccountOrCategoryViewController(self, selectedItem: items![indexPath.row], selectedType: itemTypeFilter)
     }
-
 }
