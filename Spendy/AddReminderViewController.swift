@@ -58,8 +58,8 @@ class AddReminderViewController: UIViewController, TimeCellDelegate {
         print("on Back", terminator: "\n")
         if isNewReminder {
             // Pop 2 view controller, back to Notification Settings view
-            let viewControllers: [UIViewController] = self.navigationController!.viewControllers as [UIViewController];
-            self.navigationController!.popToViewController(viewControllers[viewControllers.count - 3], animated: true);
+            let viewControllers: [UIViewController] = self.navigationController!.viewControllers as [UIViewController]
+            self.navigationController!.popToViewController(viewControllers[viewControllers.count - 3], animated: true)
         } else {
             navigationController?.popViewControllerAnimated(true)
         }
