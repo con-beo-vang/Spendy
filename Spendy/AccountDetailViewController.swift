@@ -179,9 +179,7 @@ extension AccountDetailViewController: UITableViewDataSource, UITableViewDelegat
 
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("TransactionCell", forIndexPath: indexPath) as! TransactionCell
-
         cell.transaction = accountTransactions[indexPath.section][indexPath.row]
-//        print("cell transaction: \(cell.transaction)")
 
         let rightSwipe = UISwipeGestureRecognizer(target: self, action: Selector("handleSwipe:"))
         rightSwipe.direction = .Right

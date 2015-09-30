@@ -76,6 +76,7 @@ class Transaction: HTObject {
         set { self["fromAccountId"] = newValue }
     }
 
+    // only contains values if kind is Transfer
     var toAccountId: String? {
         get { return self["toAccountId"] as! String? }
         set { self["toAccountId"] = newValue }
@@ -117,7 +118,11 @@ class Transaction: HTObject {
     }
 
     func clone() -> Transaction {
-        let t = Transaction(kind: kind, note: note, amount: amount, category: category, account: account, date: date)
+        let t = Transaction(kind: kind, note: note, amount: amount, category: category, account: fromAccount, date: date)
+        if toAccount != nil {
+            t.toAccount = toAccount
+        }
+        
         return t
     }
 
@@ -133,7 +138,7 @@ class Transaction: HTObject {
     }
 
     // MARK: - relations
-    var account: Account? {
+    var fromAccount: Account? {
         set {
             fromAccountId = newValue?.objectId
         }
@@ -142,13 +147,26 @@ class Transaction: HTObject {
             guard let fromAccountId = fromAccountId else {
                 if let account = Account.defaultAccount() {
                     print("account missing in transaction: setting defaultAccount for it")
-                    self.account = account
+                    self.fromAccount = account
                     return account
                 } else {
                     return nil
                 }
             }
             return Account.findById(fromAccountId)
+        }
+    }
+    
+    var toAccount: Account? {
+        set {
+            toAccountId = newValue?.objectId
+        }
+        get {
+            guard let toAccountId = toAccountId else {
+                return nil
+            }
+            
+            return Account.findById(toAccountId)
         }
     }
 
@@ -288,7 +306,7 @@ class Transaction: HTObject {
 
     class func add(element: Transaction) {
         element.save()
-        element.account!.addTransaction(element)
+        element.fromAccount!.addTransaction(element)
     }
 
     override var description: String {

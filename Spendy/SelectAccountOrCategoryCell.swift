@@ -23,17 +23,25 @@ class SelectAccountOrCategoryCell: UITableViewCell {
             typeLabel.text = category.name
 
             itemTypeFilter = category.type()
+            print("itemTypeFilter = \(itemTypeFilter)")
         }
     }
 
-    var account: Account? {
+    var fromAccount: Account? {
         didSet {
-            guard let account = account else { return }
-            titleLabel.text = "Account"
+            guard let account = fromAccount else { return }
+            titleLabel.text = "From Account"
             typeLabel.text = account.name
         }
     }
-
+    
+    var toAccount: Account? {
+        didSet {
+            guard let account = toAccount else { return }
+            titleLabel.text = "To Account"
+            typeLabel.text = account.name
+        }
+    }
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

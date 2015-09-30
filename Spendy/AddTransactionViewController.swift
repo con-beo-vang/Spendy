@@ -32,6 +32,7 @@ class AddTransactionViewController: UIViewController {
 
     var currentAccount: Account!
 
+    // remember the selected category under each transaction kind
     var backupCategories = [String:Category?]()
 
     override func viewDidLoad() {
@@ -128,7 +129,7 @@ class AddTransactionViewController: UIViewController {
         }
 
         print("posting notification TransactionAddedOrUpdated")
-        NSNotificationCenter.defaultCenter().postNotificationName("TransactionAddedOrUpdated", object: nil, userInfo: ["account": transaction.account!])
+        NSNotificationCenter.defaultCenter().postNotificationName("TransactionAddedOrUpdated", object: nil, userInfo: ["account": transaction.fromAccount!])
 
         closeView()
     }
@@ -194,7 +195,7 @@ extension AddTransactionViewController: SelectAccountOrCategoryDelegate, PhotoVi
             if cell.itemClass == "Category" {
                 vc.selectedItem = selectedTransaction?.category
             } else {
-                vc.selectedItem = selectedTransaction?.account
+                vc.selectedItem = selectedTransaction?.fromAccount
             }
             
             // TODO: delegate
@@ -215,7 +216,7 @@ extension AddTransactionViewController: SelectAccountOrCategoryDelegate, PhotoVi
     
     func selectAccountOrCategoryViewController(selectAccountOrCategoryController: SelectAccountOrCategoryViewController, selectedItem item: AnyObject) {
         if item is Account {
-            selectedTransaction!.account = (item as! Account)
+            selectedTransaction!.fromAccount = (item as! Account)
             tableView.reloadData()
         } else if item is Category {
             selectedTransaction!.category = (item as! Category)
@@ -284,6 +285,7 @@ extension AddTransactionViewController: UITableViewDataSource, UITableViewDelega
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+
         
         let dummyCell = UITableViewCell()
         
@@ -336,8 +338,7 @@ extension AddTransactionViewController: UITableViewDataSource, UITableViewDelega
                 case 2:
                     segment.tintColor = Color.balanceColor
                 default:
-                    // er just need something here
-                    segment
+                    print("Invalid segment index: \(segmentIndex)")
                 }
 
                 return cell
@@ -352,9 +353,8 @@ extension AddTransactionViewController: UITableViewDataSource, UITableViewDelega
             switch indexPath.row {
             case 0:
                 let cell = tableView.dequeueReusableCellWithIdentifier("SelectAccountOrCategoryCell", forIndexPath: indexPath) as! SelectAccountOrCategoryCell
-                
+
                 cell.itemClass = "Category"
-                cell.titleLabel.text = "Category"
                 cell.category = selectedTransaction!.category
 
                 Helper.sharedInstance.setSeparatorFullWidth(cell)
@@ -368,8 +368,9 @@ extension AddTransactionViewController: UITableViewDataSource, UITableViewDelega
                 let cell = tableView.dequeueReusableCellWithIdentifier("SelectAccountOrCategoryCell", forIndexPath: indexPath) as! SelectAccountOrCategoryCell
                 
                 cell.itemClass = "Account"
+                cell.fromAccount = selectedTransaction!.fromAccount
+                // override "From Account" to "Account"
                 cell.titleLabel.text = "Account"
-                cell.account = selectedTransaction!.account
                 
                 Helper.sharedInstance.setSeparatorFullWidth(cell)
                 if accountCell == nil {
@@ -426,7 +427,9 @@ extension AddTransactionViewController: UITableViewDataSource, UITableViewDelega
         
         return dummyCell
     }
-    
+}
+
+extension AddTransactionViewController {
     // MARK: Handle gestures
     
     func tapNoteCell(sender: UITapGestureRecognizer) {
@@ -475,54 +478,44 @@ extension AddTransactionViewController: UITableViewDataSource, UITableViewDelega
         guard let selectedTransaction = selectedTransaction else { return }
 
         selectedTransaction.kind = Transaction.kinds[sender.selectedSegmentIndex]
-        
-        if sender.selectedSegmentIndex != 2 {
-            // TODO: dynamic binding for Account
-            accountCell!.titleLabel.text = "Account"
-            accountCell!.typeLabel.text = "Cash"
-        }
-        
+
+        guard let oldCategory = selectedTransaction.category else { return }
+
+        let newType = ["Income", "Expense", "Transfer"][sender.selectedSegmentIndex]
+
+        // set new category
+        selectedTransaction.category = backupCategories[newType] ?? Category.defaultCategoryFor(newType)
+
+        // update cell
+        categoryCell!.category = selectedTransaction.category
+
+        // back up category choice
+        backupCategories[oldCategory.type()!] = oldCategory
+
         switch sender.selectedSegmentIndex {
         case 0:
             sender.tintColor = Color.incomeColor
 
-            // change transaction.category to an income one
-            guard let category = selectedTransaction.category,
-                      type = category.type() else { return }
-
-            if type != "Income" {
-                backupCategories[type] = category
-                selectedTransaction.category = backupCategories["Income"] ?? Category.defaultIncomeCategory()
-                categoryCell!.category = selectedTransaction.category
-            }
-
         case 1:
             sender.tintColor = Color.expenseColor
-
-            guard let category = selectedTransaction.category,
-                type = category.type() else { return }
-
-            if type != "Expense" {
-                backupCategories[type] = category
-                selectedTransaction.category = backupCategories["Expense"] ?? Category.defaultExpenseCategory()
-                categoryCell!.category = selectedTransaction.category
-            }
 
         case 2:
             sender.tintColor = Color.balanceColor
 
-            categoryCell!.titleLabel.text = "To Account"
-            categoryCell!.typeLabel.text = "None"
+            if let fromAccount = selectedTransaction.fromAccount {
+                accountCell!.fromAccount = fromAccount
+            } else {
+                accountCell!.titleLabel.text = "From Account"
+                accountCell!.typeLabel.text = "None"
+            }
+            
+//            if let toAccount = selectedTransaction.toAccount {
+//                categoryCell!.toAccount = toAccount
+//            } else {
+//                categoryCell!.titleLabel.text = "To Account"
+//                categoryCell!.typeLabel.text = "None"
+//            }
 
-            accountCell!.account = account
-            accountCell!.titleLabel.text = "From Account"
-            accountCell!.typeLabel.text = "None"
-
-            guard let category = selectedTransaction.category,
-                type = category.type() else { return }
-
-            backupCategories[type] = category
-            selectedTransaction.category = nil
 
         default:
             break

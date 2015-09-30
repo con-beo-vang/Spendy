@@ -12,10 +12,14 @@ import Parse
 var _allCategories: [Category]?
 
 enum CategoryType: String {
-    case Expense = "Expense", Income = "Income"
+    case Income = "Income", Transfer = "Transfer", Expense = "Expense"
 }
 
 class Category: HTObject {
+    static let transferCats = [
+        "Other"
+    ]
+    
     static let incomeCats = [
         "Bonus",
         "Other",
@@ -142,6 +146,10 @@ class Category: HTObject {
     class func defaultIncomeCategory() -> Category? {
         return all.filter({$0.icon == "Income-Other"}).first
     }
+    
+    class func defaultTransferCategory() -> Category? {
+        return defaultCategoryFor("Transfer")
+    }
 
     class func defaultCategoryFor(typeString: String) -> Category? {
         let name = "\(typeString)-Other"
@@ -167,6 +175,10 @@ class Category: HTObject {
 
     class var allIncomeType: [Category] {
         return all.filter({$0.type() == "Income"})
+    }
+
+    class var allTransferType: [Category] {
+        return all.filter({$0.type() == "Transfer"})
     }
 
     class func findById(objectId: String) -> Category? {
@@ -195,6 +207,7 @@ extension Category {
         let objects = try! query.findObjects()
         print("Found: \(objects.count) existing categories")
 
+        loadType(CategoryType.Transfer, names: transferCats, objects: objects)
         loadType(CategoryType.Expense, names: expenseCats, objects: objects)
         loadType(CategoryType.Income, names: incomeCats, objects: objects)
     }
