@@ -66,14 +66,21 @@ class Account: HTObject {
             guard let kind = t.kind else { print("Unexpected nil kind in \(t)"); continue }
 
             switch kind {
-            case Transaction.expenseKind, Transaction.transferKind:
+            case Transaction.transferKind:
+                if t.toAccountId == self.objectId {
+                    bal = bal.decimalNumberByAdding(t.amount!)
+                } else {
+                    bal = bal.decimalNumberBySubtracting(t.amount!)
+                }
+
+            case Transaction.expenseKind:
                 bal = bal.decimalNumberBySubtracting(t.amount!)
                 
             case Transaction.incomeKind:
                 bal = bal.decimalNumberByAdding(t.amount!)
                 
             default:
-                print("unexpected kind")
+                print("unexpected kind: \(kind)")
             }
             
             if bal != t.balanceSnapshot {
