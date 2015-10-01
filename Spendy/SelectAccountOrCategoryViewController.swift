@@ -10,22 +10,27 @@ import UIKit
 import Parse
 
 protocol SelectAccountOrCategoryDelegate {
-    func selectAccountOrCategoryViewController(selectAccountOrCategoryController: SelectAccountOrCategoryViewController, selectedItem item: AnyObject)
+    func selectAccountOrCategoryViewController(selectAccountOrCategoryController: SelectAccountOrCategoryViewController, selectedItem item: AnyObject, selectedType type: String?)
 }
 
 class SelectAccountOrCategoryViewController: UIViewController {
     // Account or Category
     var itemClass: String!
+
+    // Income, Expense or Transfer
     var itemTypeFilter: String?
+
+    // pass back selected item
     var delegate: SelectAccountOrCategoryDelegate?
 
     @IBOutlet weak var tableView: UITableView!
+
     var items: [HTObject]?
 
     var backButton: UIButton?
     
     var selectedItem: HTObject?
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -46,6 +51,7 @@ class SelectAccountOrCategoryViewController: UIViewController {
         print("loadItems: \(itemTypeFilter)")
         if itemClass == "Category" {
             navigationItem.title = "Select Category"
+
             switch itemTypeFilter {
             case .Some("Income"):
                 items = Category.allIncomeType as [Category]
@@ -53,7 +59,11 @@ class SelectAccountOrCategoryViewController: UIViewController {
             case .Some("Expense"):
                 items = Category.allExpenseType as [Category]
 
+            case .Some("Transfer"):
+                items = Category.allTransferType as [Category]
+
             default:
+                print("WARNING: loadItems called on unrecognized type \(itemTypeFilter)")
                 items = Category.all as [Category]
             }
 
@@ -108,6 +118,7 @@ extension SelectAccountOrCategoryViewController: UITableViewDataSource, UITableV
                 
                 cell.iconImageView.image = Helper.sharedInstance.createIcon(icon)
                 cell.iconImageView.setNewTintColor(UIColor.whiteColor())
+
                 switch itemTypeFilter {
                 case .Some("Expense"):
                     cell.iconImageView.layer.backgroundColor = Color.expenseColor.CGColor
@@ -115,6 +126,9 @@ extension SelectAccountOrCategoryViewController: UITableViewDataSource, UITableV
                 case .Some("Income"):
                     cell.iconImageView.layer.backgroundColor = Color.incomeColor.CGColor
                     cell.selectedIcon.setNewTintColor(Color.incomeColor)
+                case .Some("Transfer"):
+                    cell.iconImageView.layer.backgroundColor = Color.balanceColor.CGColor
+                    cell.selectedIcon.setNewTintColor(Color.balanceColor)
                 default:
                     // nothing
                     cell
@@ -125,9 +139,8 @@ extension SelectAccountOrCategoryViewController: UITableViewDataSource, UITableV
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-//        var cell = tableView.cellForRowAtIndexPath(indexPath) as! CategoryCell
+        // var cell = tableView.cellForRowAtIndexPath(indexPath) as! CategoryCell
         navigationController?.popViewControllerAnimated(true)
-        delegate?.selectAccountOrCategoryViewController(self, selectedItem: items![indexPath.row])
+        delegate?.selectAccountOrCategoryViewController(self, selectedItem: items![indexPath.row], selectedType: itemTypeFilter)
     }
-
 }

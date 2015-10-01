@@ -135,7 +135,7 @@ extension AddAccountViewController: SelectAccountOrCategoryDelegate {
         }
     }
     
-    func selectAccountOrCategoryViewController(selectAccountOrCategoryController: SelectAccountOrCategoryViewController, selectedItem item: AnyObject) {
+    func selectAccountOrCategoryViewController(selectAccountOrCategoryController: SelectAccountOrCategoryViewController, selectedItem item: AnyObject, selectedType type: String?) {
         if item is Account {
             // TODO: set selected acocunt for current account's type
             // selectedTransaction!.account = (item as! Account)

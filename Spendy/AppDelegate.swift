@@ -214,6 +214,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         case "YES":
             print("YES")
             // TODO: Add new transaction
+            item.category?.save()
         default: // switch statements must be exhaustive - this condition should never be met
             print("Error: unexpected notification action identifier!")
         }

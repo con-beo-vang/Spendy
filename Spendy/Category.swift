@@ -12,10 +12,14 @@ import Parse
 var _allCategories: [Category]?
 
 enum CategoryType: String {
-    case Expense = "Expense", Income = "Income"
+    case Income = "Income", Transfer = "Transfer", Expense = "Expense"
 }
 
 class Category: HTObject {
+    static let transferCats = [
+        "Transfer"
+    ]
+    
     static let incomeCats = [
         "Bonus",
         "Other",
@@ -150,9 +154,20 @@ class Category: HTObject {
     class func defaultIncomeCategory() -> Category? {
         return all.filter({$0.icon == "Income-Other"}).first
     }
+    
+    class func defaultTransferCategory() -> Category? {
+        return defaultCategoryFor("Transfer")
+    }
 
     class func defaultCategoryFor(typeString: String) -> Category? {
-        let name = "\(typeString)-Other"
+        var name: String
+
+        if typeString == "Transfer" {
+            name = "Transfer-Transfer"
+        } else {
+            name = "\(typeString)-Other"
+
+        }
         return all.filter({$0.icon == name}).first
     }
 
@@ -177,6 +192,10 @@ class Category: HTObject {
         return all.filter({$0.type() == "Income"})
     }
 
+    class var allTransferType: [Category] {
+        return all.filter({$0.type() == "Transfer"})
+    }
+
     class func findById(objectId: String) -> Category? {
         let record = all.filter({ $0.objectId == objectId }).first
         return record
@@ -196,13 +215,14 @@ extension Category {
     class func bootstrapCategories() {
         print("\n********BOOTSTRAPING CATEGORIES********")
         // remove all stale categories
-        // try! PFObject.unpinAllObjects()
+        try! PFObject.unpinAllObjects()
 
         let query = PFQuery(className: "Category")
         query.limit = 100
         let objects = try! query.findObjects()
         print("Found: \(objects.count) existing categories")
 
+        loadType(CategoryType.Transfer, names: transferCats, objects: objects)
         loadType(CategoryType.Expense, names: expenseCats, objects: objects)
         loadType(CategoryType.Income, names: incomeCats, objects: objects)
     }

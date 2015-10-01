@@ -23,9 +23,38 @@ class SelectAccountOrCategoryCell: UITableViewCell {
             typeLabel.text = category.name
 
             itemTypeFilter = category.type()
+            print("itemTypeFilter = \(itemTypeFilter)")
         }
     }
 
+    var account: Account? {
+        didSet {
+            titleLabel.text = "Account"
+            typeLabel.text = account?.name ?? "None"
+            itemTypeFilter = "Account"
+        }
+    }
+
+    var fromAccount: Account? {
+        didSet {
+            titleLabel.text = "From Account"
+            typeLabel.text = fromAccount?.name ?? "None"
+            itemTypeFilter = "FromAccount"
+        }
+    }
+    
+    var toAccount: Account? {
+        didSet {
+            guard let account = toAccount else {
+                titleLabel.text = "To Account"
+                typeLabel.text = "None"
+                return
+            }
+            titleLabel.text = "To Account"
+            typeLabel.text = account.name
+            itemTypeFilter = "ToAccount"
+        }
+    }
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

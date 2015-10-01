@@ -129,3 +129,7 @@ class HTObject {
         return _object != nil ? "object: \(_object!)" : "object is nil"
     }
 }
+
+func ==(lhs: HTObject, rhs: HTObject) -> Bool {
+    return lhs === rhs || lhs.objectId == rhs.objectId
+}
