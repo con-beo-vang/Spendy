@@ -102,10 +102,10 @@ class TutorialViewController: PresentationController {
             "At Home page \n\n Pull down to open Quick add mode. \n\n Then pull up to close",
             "At Account page \n\n Drag an account to another to transfer money between 2 accounts \n\n Swipe left to delete account",
             "At Account's detail page \n\n Swipe left to delete transacion \n\n Swipe right to dupplicate this transaction to today",
-            "At Notification settings \n\n Pull down to create new reminder or new time slot \n\n Swipe lef to delete reminder or time slots",
+            "At Notification settings \n\n Pull down to create new reminder or new time slot \n\n Swipe left to delete reminder or time slots",
             "http://cheetah.com"].map { title -> Content in
                 let label = UILabel(frame: CGRect(x: 0, y: 0, width: width - 30, height: 200))
-                label.numberOfLines = 6
+                label.numberOfLines = 7
                 label.attributedText = NSAttributedString(string: title, attributes: attributes)
                 label.textColor = UIColor.blackColor()
                 let position = Position(left: 0.7, top: 0.35)
@@ -173,6 +173,7 @@ class TutorialViewController: PresentationController {
     }
     
     func onSkip(sender: UIButton) {
+        NSUserDefaults.standardUserDefaults().setBool(true, forKey: "gotTutorial")
         dismissViewControllerAnimated(true, completion: nil)
     }
 }

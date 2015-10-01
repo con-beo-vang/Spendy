@@ -136,7 +136,6 @@ class LoginViewController: UIViewController {
                 print("Logging in as \(user)")
                 dispatch_async(dispatch_get_main_queue()) { () -> Void in
                     self.performSegueWithIdentifier("GoToHome", sender: self)
-//                    self.goToNextPage()
                 }
             }
         }
@@ -165,7 +164,6 @@ class LoginViewController: UIViewController {
 
             dispatch_async(dispatch_get_main_queue()) { () -> Void in
                 self.performSegueWithIdentifier("GoToHome", sender: self)
-//                self.goToNextPage()
             }
         }
 
@@ -192,14 +190,6 @@ class LoginViewController: UIViewController {
         }
     }
     
-    func goToNextPage() {
-        let presentationController: TutorialViewController = {
-            return TutorialViewController(pages: [])
-            }()
-        
-        presentViewController(presentationController, animated: true, completion: nil)
-    }
-
     // Extra: we're displaying error messages with SwiftSpinner instead
     func alertWithMessage(title: String?, message: String? = nil) {
         // Build the terms and conditions alert

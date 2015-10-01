@@ -168,8 +168,9 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
             let presentationController: TutorialViewController = {
                 return TutorialViewController(pages: [])
                 }()
-            
-            presentViewController(presentationController, animated: true, completion: nil)
+            dispatch_async(dispatch_get_main_queue()) { () -> Void in
+                self.presentViewController(presentationController, animated: true, completion: nil)
+            }
         default:
             break
         }

@@ -110,14 +110,13 @@ class HomeViewController: UIViewController {
         // TODO: set data for table view based on fromDate and toDate
         tableView.reloadData()
         
-        
-        
     }
     
     override func viewWillAppear(animated: Bool) {
         setColor()
-        let notSeeTutorial = true
-        if !notSeeTutorial {
+        let gotTutorial = NSUserDefaults.standardUserDefaults().boolForKey("gotTutorial") ?? false
+        
+        if !gotTutorial {
             goToTutorial()
         }
     }
@@ -204,8 +203,6 @@ class HomeViewController: UIViewController {
         popupSuperView.hidden = true
         popupSuperView.backgroundColor = UIColor.grayColor().colorWithAlphaComponent(0.5)
         
-        
-        
         let today = NSDate()
         fromButton.setTitle(formatter.stringFromDate(today), forState: UIControlState.Normal)
         toButton.setTitle(formatter.stringFromDate(today), forState: UIControlState.Normal)
@@ -231,7 +228,6 @@ class HomeViewController: UIViewController {
                 self.toButton.setTitle(self.formatter.stringFromDate(date), forState: UIControlState.Normal)
             }
         }
-        
     }
     
     @IBAction func onToButton(sender: UIButton) {
@@ -297,7 +293,6 @@ class HomeViewController: UIViewController {
                 }
         });
     }
-    
 }
 
 // MARK: - Table view
