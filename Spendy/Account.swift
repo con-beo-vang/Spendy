@@ -94,7 +94,8 @@ class Account: HTObject {
     }
 
     func formattedBalance() -> String {
-        return String(format: "$%.02f", abs(balance.doubleValue))
+        let bal = NSDecimalNumber(double: abs(balance.doubleValue))
+        return Transaction.currencyFormatter.stringFromNumber(bal)!
     }
 
     var transactions: [Transaction] {

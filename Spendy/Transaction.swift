@@ -209,7 +209,16 @@ class Transaction: HTObject {
         }
     }
 
-    static var currencyFormatter = NSNumberFormatter()
+    static var _currencyFormatter: NSNumberFormatter?
+    static var currencyFormatter : NSNumberFormatter {
+        guard _currencyFormatter != nil else {
+            _currencyFormatter = NSNumberFormatter()
+            _currencyFormatter!.numberStyle = .CurrencyStyle
+            return _currencyFormatter!
+        }
+
+        return _currencyFormatter!
+   }
 
     // Ex: September 21, 2015
     func dateOnly() -> String? {
@@ -244,17 +253,16 @@ class Transaction: HTObject {
     // MARK: - view helpers
     func formattedAmount() -> String? {
         if amount != nil {
-            return String(format: "$%.02f", amount!.doubleValue)
+            // return String(format: "$%.02f", amount!.doubleValue)
+            return Transaction.currencyFormatter.stringFromNumber(amount!)
         } else {
             return nil
         }
     }
 
     func formattedBalanceSnapshot() -> String? {
-        let formatter = Transaction.currencyFormatter
-        formatter.numberStyle = .CurrencyStyle
 
-        return formatter.stringFromNumber(balanceSnapshot)
+        return Transaction.currencyFormatter.stringFromNumber(balanceSnapshot)
     }
 
     // MARK: - Utilities
