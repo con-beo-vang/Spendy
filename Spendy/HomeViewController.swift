@@ -116,6 +116,10 @@ class HomeViewController: UIViewController {
     
     override func viewWillAppear(animated: Bool) {
         setColor()
+        let notSeeTutorial = true
+        if !notSeeTutorial {
+            goToTutorial()
+        }
     }
     
     override func didReceiveMemoryWarning() {
@@ -160,6 +164,14 @@ class HomeViewController: UIViewController {
             tableView.scrollEnabled = false
             tableView.addGestureRecognizer(downSwipe)
         }
+    }
+    
+    func goToTutorial() {
+        let presentationController: TutorialViewController = {
+            return TutorialViewController(pages: [])
+            }()
+        
+        presentViewController(presentationController, animated: true, completion: nil)
     }
     
     // MARK: View mode

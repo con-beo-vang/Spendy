@@ -100,7 +100,7 @@
                                             <segue destination="P1m-50-n6C" kind="push" id="sHg-Z8-5Xk"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ThemeCell" id="ibt-BL-mAB" customClass="ThemeCell" customModule="Spendy" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="ThemeCell" id="ibt-BL-mAB" customClass="ThemeCell" customModule="Spendy" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="110" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ibt-BL-mAB" id="J4q-IH-FmW">
@@ -469,7 +469,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="Expense-Meal" width="50" height="50"/>
+        <image name="Expense-Meal" width="256" height="256"/>
         <image name="PlusCircle" width="50" height="50"/>
         <image name="SettingInactive" width="25" height="25"/>
         <image name="User" width="50" height="50"/>

@@ -115,7 +115,7 @@ class SettingsViewController: UIViewController, ThemeCellDelegate, UITabBarContr
 
 extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 4
+        return 5
     }
 
     // Row display. Implementers should *always* try to reuse cells by setting each cell's reuseIdentifier and querying for available reusable cells with dequeueReusableCellWithIdentifier:
@@ -139,6 +139,12 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
             cell.onSwitch.onTintColor =  Color.strongColor
             return cell
         case 3:
+            let cell = UITableViewCell()
+            cell.textLabel?.text = "View Tutorial"
+            cell.accessoryType = .DisclosureIndicator
+            cell.selectionStyle = .None
+            return cell
+        case 4:
             let cell = tableView.dequeueReusableCellWithIdentifier("LogOutCell", forIndexPath: indexPath) as! LogOutCell
             cell.logoutButton.setTitleColor(Color.moreDetailColor, forState: UIControlState.Normal)
             return cell
@@ -150,13 +156,22 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        if indexPath.row == 0 {
+        switch indexPath.row {
+        case 0:
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
             let selectCategoryVC = storyboard.instantiateViewControllerWithIdentifier("SelectAccountOrCategoryVC") as! SelectAccountOrCategoryViewController
             
             selectCategoryVC.itemClass = "Account"
             
             navigationController?.pushViewController(selectCategoryVC, animated: true)
+        case 3:
+            let presentationController: TutorialViewController = {
+                return TutorialViewController(pages: [])
+                }()
+            
+            presentViewController(presentationController, animated: true, completion: nil)
+        default:
+            break
         }
     }
 
