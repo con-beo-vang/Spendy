@@ -215,7 +215,7 @@ extension Category {
     class func bootstrapCategories() {
         print("\n********BOOTSTRAPING CATEGORIES********")
         // remove all stale categories
-        try! PFObject.unpinAllObjects()
+        // try! PFObject.unpinAllObjects()
 
         let query = PFQuery(className: "Category")
         query.limit = 100

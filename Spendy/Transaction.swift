@@ -25,7 +25,7 @@ Schema:
 
 var _allTransactions: [Transaction]?
 
-// newTransaction = Transaction(name: , amount: )
+// newTransaction = Transaction(name: , amount: , ...)
 // newTransaction.save()
 // newTransaction.delete()
 // account.addTransaction(newTransaction)
@@ -34,6 +34,7 @@ class Transaction: HTObject {
     class var kinds: [String] {
         return [incomeKind, expenseKind, transferKind]
     }
+
     static let expenseKind: String = "Expense"
     static let incomeKind: String = "Income"
     static let transferKind: String = "Transfer"
@@ -291,10 +292,15 @@ class Transaction: HTObject {
     }
 
     class func findByAccountId(accountId: String) -> [Transaction] {
-        let query = PFQuery(className: "Transaction")
-        query.fromLocalDatastore()
-        query.whereKey("fromAccountId", equalTo: accountId)
+        let queryWithFrom = PFQuery(className: "Transaction")
+        queryWithFrom.whereKey("fromAccountId", equalTo: accountId)
+
+        let queryWithTo = PFQuery(className: "Transaction")
+        queryWithTo.whereKey("toAccountId", equalTo: accountId)
+
+        let query = PFQuery.orQueryWithSubqueries([queryWithFrom, queryWithTo])
         query.orderByAscending("date")
+        query.fromLocalDatastore()
 
         do {
             return try query.findObjects().map{Transaction(object: $0)}
