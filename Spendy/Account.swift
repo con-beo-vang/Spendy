@@ -199,8 +199,11 @@ class Account: HTObject {
 
     // TODO: a different way to specify defaultAccount
     class func defaultAccount() -> Account? {
-        let defaultAccount = PFUser.currentUser()!.objectForKey("defaultAccount") as! Account?
-        return defaultAccount ?? all.first
+        if let existing = PFUser.currentUser()!.objectForKey("defaultAccount") as! PFObject? {
+            return Account(object: existing)
+        } else {
+            return all.first
+        }
     }
 
     class var all: [Account] {

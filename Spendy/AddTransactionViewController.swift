@@ -281,7 +281,7 @@ extension AddTransactionViewController: UITableViewDataSource, UITableViewDelega
         case 0:
             return 2
         case 1:
-            if selectedTransaction!.kind == Transaction.transferKind {
+            if selectedTransaction?.kind == Transaction.transferKind {
                 // 3 rows:
                 // Category (fixed as Transfer)
                 // From Account
