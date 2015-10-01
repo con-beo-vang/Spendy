@@ -177,7 +177,7 @@ class Category: HTObject {
             if !forceLoadFromRemote {
                 query.fromLocalDatastore()
             }
-            let objects = try! query.fromLocalDatastore().findObjects()
+            let objects = try! query.findObjects()
             _allCategories = objects.map({ Category(object: $0) })
         }
 

@@ -48,7 +48,7 @@ class AccountsViewController: UIViewController {
         tableView.delegate = self
         tableView.tableFooterView = UIView()
         
-        accounts = Account.all()
+        accounts = Account.all
         tableView.reloadData()
         
         if (tableView.contentSize.height <= tableView.frame.size.height) {
@@ -66,7 +66,7 @@ class AccountsViewController: UIViewController {
     }
 
     func updateAccountList(notification: NSNotification) {
-        accounts = Account.all()
+        accounts = Account.all
         tableView.reloadData()
     }
     

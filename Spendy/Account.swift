@@ -49,6 +49,7 @@ class Account: HTObject {
         }
     }
 
+    static var forceLoadFromRemote = false
     var _transactions: [Transaction]?
 
     convenience init(name: String, startingBalance: NSDecimalNumber = 0) {
@@ -198,16 +199,28 @@ class Account: HTObject {
 
     // TODO: a different way to specify defaultAccount
     class func defaultAccount() -> Account? {
-        return all()?.first
+        let defaultAccount = PFUser.currentUser()!.objectForKey("defaultAccount") as! Account?
+        return defaultAccount ?? all.first
     }
 
-    class func all() -> [Account]? {
-        return _allAccounts;
+    class var all: [Account] {
+        if _allAccounts == nil {
+            let user = PFUser.currentUser()!
+
+            let query = PFQuery(className: "Account")
+            query.whereKey("userId", equalTo: user.objectId!)
+
+            if !forceLoadFromRemote {
+                query.fromLocalDatastore()
+            }
+            let objects = try! query.findObjects()
+            _allAccounts = objects.map({ Account(object: $0) })
+        }
+
+        return _allAccounts!
     }
 
     class func findById(objectId: String) -> Account? {
-        guard let all = all() else { return nil }
-
         return all.filter({ $0.objectId == objectId }).first
     }
 
