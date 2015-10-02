@@ -21,9 +21,14 @@ PODS:
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
   - Bolts/Tasks (1.2.2)
+  - Cartography (0.6.0)
+  - Pages (0.6.2)
   - Parse (1.8.3):
     - Bolts/Tasks (>= 1.2.2)
   - PhotoTweaks (1.0.2)
+  - Presentation (2.0.0):
+    - Cartography (~> 0.6.0)
+    - Pages (~> 0.6.2)
   - SCLAlertView (0.4.1)
   - SevenSwitch (2.0.0)
   - SwiftSpinner (0.8.0)
@@ -33,6 +38,7 @@ DEPENDENCIES:
   - AFNetworking (~> 2.5)
   - Parse
   - PhotoTweaks (~> 1.0.2)
+  - Presentation
   - SCLAlertView
   - SevenSwitch
   - SwiftSpinner (~> 0.8.0)
@@ -41,8 +47,11 @@ DEPENDENCIES:
 SPEC CHECKSUMS:
   AFNetworking: 79f7eb1a0fcfa7beb409332b2ca49afe9ce53b05
   Bolts: 20a2bd788273360cb1e31530dc19b8544eef2544
+  Cartography: 70af183a248547694a8cfaa6b989cb7e04589985
+  Pages: 6c042132f8c63c34d242789b7763d4c64e9681a0
   Parse: 4b251ac63b76d12b334a32579cc3b174446f0c39
   PhotoTweaks: e91ce097f9df435049e7c35d419f9a7749e252bc
+  Presentation: 156bb732160bc092e3a288aa2c43a808a9a2d627
   SCLAlertView: 9e60641edd9efcfc6d58227558eb7b03678dbcf3
   SevenSwitch: 4ae92ffcad0ef93b38553b39a25e753c94eb7847
   SwiftSpinner: 11c2c5ec7443d92f3026d3067ca8a91d4adef13f

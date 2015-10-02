@@ -54,8 +54,11 @@ code_sign_if_enabled() {
 if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework 'Pods/AFNetworking.framework'
   install_framework 'Pods/Bolts.framework'
+  install_framework 'Pods/Cartography.framework'
+  install_framework 'Pods/Pages.framework'
   install_framework 'Pods/Parse.framework'
   install_framework 'Pods/PhotoTweaks.framework'
+  install_framework 'Pods/Presentation.framework'
   install_framework 'Pods/SCLAlertView.framework'
   install_framework 'Pods/SevenSwitch.framework'
   install_framework 'Pods/SwiftSpinner.framework'
@@ -64,8 +67,11 @@ fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework 'Pods/AFNetworking.framework'
   install_framework 'Pods/Bolts.framework'
+  install_framework 'Pods/Cartography.framework'
+  install_framework 'Pods/Pages.framework'
   install_framework 'Pods/Parse.framework'
   install_framework 'Pods/PhotoTweaks.framework'
+  install_framework 'Pods/Presentation.framework'
   install_framework 'Pods/SCLAlertView.framework'
   install_framework 'Pods/SevenSwitch.framework'
   install_framework 'Pods/SwiftSpinner.framework'
