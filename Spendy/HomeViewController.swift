@@ -114,7 +114,7 @@ class HomeViewController: UIViewController {
     
     override func viewWillAppear(animated: Bool) {
         setColor()
-        let gotTutorial = NSUserDefaults.standardUserDefaults().boolForKey("gotTutorial") ?? false
+        let gotTutorial = NSUserDefaults.standardUserDefaults().boolForKey("GotTutorial") ?? false
         
         if !gotTutorial {
             goToTutorial()
