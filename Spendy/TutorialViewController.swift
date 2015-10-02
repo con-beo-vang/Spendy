@@ -97,13 +97,39 @@ class TutorialViewController: PresentationController {
         
         let attributes = [NSFontAttributeName: font, NSForegroundColorAttributeName: color,
             NSParagraphStyleAttributeName: paragraphStyle]
-        
+
+        let screen1 = [
+            "Quick Add on Home screen",
+            "Pull down to open",
+            "Pull up to close"
+        ].joinWithSeparator("\n\n")
+
+        let screen2 = [
+            "Shortcuts on Accounts screen",
+            "Drag and drop from one account to another to transfer!",
+            "Swipe left to delete an account"
+        ].joinWithSeparator("\n\n")
+
+        let screen3 = [
+            "When viewing an Account",
+            "Swipe left to delete a transaction",
+            "Swipe right to duplicate a transaction to today"
+        ].joinWithSeparator("\n\n")
+
+        let screen4 = [
+            "Things you can do in Notification settings",
+            "Pull down to create new a new reminder or a time slot",
+            "Swipe left to delete a reminder or a time slot"
+        ].joinWithSeparator("\n\n")
+
+        let screen5 = [
+            "Check us out at",
+            "http://cheetah.com"
+        ].joinWithSeparator("\n\n")
+
         let titles = [
-            "At Home page \n\n Pull down to open Quick add mode. \n\n Then pull up to close",
-            "At Account page \n\n Drag an account to another to transfer money between 2 accounts \n\n Swipe left to delete account",
-            "At Account's detail page \n\n Swipe left to delete transacion \n\n Swipe right to dupplicate this transaction to today",
-            "At Notification settings \n\n Pull down to create new reminder or new time slot \n\n Swipe left to delete reminder or time slots",
-            "http://cheetah.com"].map { title -> Content in
+            screen1, screen2, screen3, screen4, screen5
+        ].map { title -> Content in
                 let label = UILabel(frame: CGRect(x: 0, y: 0, width: width - 30, height: 200))
                 label.numberOfLines = 7
                 label.attributedText = NSAttributedString(string: title, attributes: attributes)
