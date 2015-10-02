@@ -37,6 +37,7 @@ class SettingsViewController: UIViewController, ThemeCellDelegate, UITabBarContr
         tableView.dataSource = self
         tableView.delegate = self
         tableView.tableFooterView = UIView()
+        
         tableView.reloadData()
         
         avatarView.setNewTintColor(Color.strongColor)

@@ -9,19 +9,31 @@
 import UIKit
 
 struct ReminderItem {
-    var category: String
-    var predictiveAmount: NSDecimalNumber
+    
+    var categoryId: String?
+//    var category: String
+//    var predictiveAmount: NSDecimalNumber
     var reminderTime: NSDate
     var UUID: String
+    var isActive: Bool
     
-    init(category: String, predictiveAmount: NSDecimalNumber, reminderTime: NSDate, UUID: String) {
-        self.category = category
-        self.predictiveAmount = predictiveAmount
+    init(category: Category, reminderTime: NSDate, UUID: String) {
+        self.categoryId = category.objectId
+//        self.predictiveAmount = predictiveAmount
         self.reminderTime = reminderTime
         self.UUID = UUID
+        self.isActive = true
     }
     
-    //    var isOverdue: Bool {
-    //        return (NSDate().compare(self.deadline) == NSComparisonResult.OrderedDescending) // deadline is earlier than current date
-    //    }
+    var category: Category? {
+        set {
+            categoryId = newValue?.objectId
+        }
+        
+        get {
+            return Category.findById(categoryId!)
+        }
+    }
+    
+    
 }

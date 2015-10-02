@@ -79,7 +79,7 @@ class HomeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        settingStatusBar()
+//        settingStatusBar()
         
         navigationItem.title = getTodayString("MMMM")
         let tapTitle = UITapGestureRecognizer(target: self, action: Selector("chooseMode:"))
@@ -121,6 +121,10 @@ class HomeViewController: UIViewController {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    override func viewDidLayoutSubviews() {
+        settingStatusBar()
     }
     
     func setColor() {
