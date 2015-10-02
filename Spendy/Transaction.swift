@@ -323,6 +323,17 @@ class Transaction: HTObject {
         element.fromAccount!.addTransaction(element)
     }
 
+    func delete() {
+        _object?.unpinInBackground()
+        _object?.deleteEventually()
+        if let toAccount = toAccount {
+            toAccount.detactTransaction(self)
+        }
+        if let fromAccount = fromAccount {
+            fromAccount.detactTransaction(self)
+        }
+    }
+
     override var description: String {
         let base = super.description
         return "categoryId: \(categoryId), fromAccountId: \(fromAccountId), toAccountId: \(toAccountId), base: \(base)"

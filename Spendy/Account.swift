@@ -126,7 +126,11 @@ class Account: HTObject {
 
     func removeTransaction(transaction: Transaction) {
         // TODO: implement UNDO
-        transaction._object?.deleteEventually()
+        transaction.delete()
+    }
+
+    // called by Transaction:delete method
+    func detactTransaction(transaction: Transaction) {
         transactions = transactions.filter({ $0.uuid != transaction.uuid })
         recomputeBalance()
     }
@@ -173,7 +177,7 @@ class Account: HTObject {
                     if _allAccounts!.isEmpty {
                         print("No account found for \(user). Creating default accounts:")
 
-                        let defaultAccount = Account(name: "Default Account")
+                        let defaultAccount = Account(name: "Primary Account")
                         let secondAccount  = Account(name: "Bank")
 
                         defaultAccount.pinAndSaveEventuallyWithName("MyAccounts")
@@ -197,12 +201,20 @@ class Account: HTObject {
         }
     }
 
-    // TODO: a different way to specify defaultAccount
     class func defaultAccount() -> Account? {
         if let existing = PFUser.currentUser()!.objectForKey("defaultAccount") as! PFObject? {
             return Account(object: existing)
         } else {
             return all.first
+        }
+    }
+
+    // used for a transaction's To Account field
+    class func nonDefaultAccount() -> Account? {
+        if let defaultAcc = defaultAccount() {
+            return all.filter({$0 != defaultAcc}).first
+        } else {
+            return nil
         }
     }
 

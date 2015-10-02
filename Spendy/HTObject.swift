@@ -133,3 +133,7 @@ class HTObject {
 func ==(lhs: HTObject, rhs: HTObject) -> Bool {
     return lhs === rhs || lhs.objectId == rhs.objectId
 }
+
+func !=(lhs: HTObject, rhs: HTObject) -> Bool {
+    return lhs !== rhs || lhs.objectId != rhs.objectId
+}

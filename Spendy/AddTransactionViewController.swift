@@ -60,7 +60,7 @@ class AddTransactionViewController: UIViewController {
             currentAccount = Account.defaultAccount()
         }
         
-        if selectedTransaction != nil {
+        if let transaction = selectedTransaction where !transaction.isNew() {
             navigationItem.title = "Edit Transaction"
         } else {
             selectedTransaction = Transaction(kind: Transaction.expenseKind,
@@ -558,12 +558,16 @@ extension AddTransactionViewController {
 
         if newType == "Transfer" {
             // reset cached value
-            selectedTransaction!.toAccount = backupAccounts["ToAccount"]!
+            selectedTransaction!.toAccount = backupAccounts["ToAccount"] ?? Account.nonDefaultAccount()
         } else {
             // back up, then nullify
-            backupAccounts["ToAccount"] = selectedTransaction!.toAccount
+            if let toAccount = selectedTransaction!.toAccount {
+                backupAccounts["ToAccount"] = toAccount
+            }
             selectedTransaction!.toAccount = nil
         }
+
+        print("transaction: \(selectedTransaction?.description)")
 
         tableView.reloadData()
     }
