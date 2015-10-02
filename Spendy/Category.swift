@@ -75,18 +75,11 @@ class Category: HTObject {
     }
 
     var icon: String {
-        get { return self["icon"] as! String }
+        get {
+            return self["icon"] as! String }
         set { self["icon"] = newValue }
     }
     
-    // Add for reminder
-    
-    var reminderOn = false
-    var predictiveAmount = NSDecimalNumber(double: 20)
-    var timeSlots = [ReminderItem]()
-    
-    
-
     func type() -> String? {
         return icon.componentsSeparatedByString("-").first
     }
@@ -122,7 +115,7 @@ class Category: HTObject {
             }
 
             _allCategories = objects.map({ Category(object: $0 ) })
-            print("\n[local] categories: \(objects)")
+            print("\n[local] loaded \(objects.count) categories")
 
             if _allCategories!.isEmpty {
                 print("No categories found locally. Loading from server")
@@ -132,7 +125,7 @@ class Category: HTObject {
                     if let error = error {
                         print("Error loading categories from Server: \(error)")
                     } else {
-                        print("[server] categories: \(objects)")
+                        print("[server] loaded \(objects!.count) categories")
                         _allCategories = objects?.map({ Category(object: $0 ) })
 
                         // already in background

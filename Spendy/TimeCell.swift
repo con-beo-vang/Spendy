@@ -10,7 +10,7 @@ import UIKit
 import SevenSwitch
 
 @objc protocol TimeCellDelegate {
-    optional func timeCell(timeCell: TimeCell, didChangeValue value: Bool)
+    optional func timeCellSwitchValueChanged(timeCell: TimeCell, didChangeValue value: Bool)
 }
 
 class TimeCell: UITableViewCell {
@@ -56,9 +56,7 @@ class TimeCell: UITableViewCell {
     }
     
     func switchValueChanged() {
-        if delegate != nil {
-            delegate?.timeCell?(self, didChangeValue: onSwitch.on)
-        }
+        delegate?.timeCellSwitchValueChanged!(self, didChangeValue: onSwitch.on)
     }
 
 }

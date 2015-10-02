@@ -69,6 +69,7 @@
 		9DB8A86E1BAA43B4000F03A1 /* SelectAccountOrCategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DB8A86D1BAA43B4000F03A1 /* SelectAccountOrCategoryViewController.swift */; };
 		9DFE8D9D1BAFA9E0001E6F9E /* DateUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DFE8D9C1BAFA9E0001E6F9E /* DateUtilities.swift */; };
 		A77E0D207AB770857E146536 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CFE2D5C782640C353708467 /* Pods.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		E20830B51BBE30ED006D7B3D /* UserCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = E20830B41BBE30ED006D7B3D /* UserCategory.swift */; settings = {ASSET_TAGS = (); }; };
 		E29F203B1BAEAF150076AEFB /* HTObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = E29F203A1BAEAF150076AEFB /* HTObject.swift */; };
 /* End PBXBuildFile section */
 
@@ -152,6 +153,7 @@
 		9DB8A86B1BAA064E000F03A1 /* RootTabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RootTabBarController.swift; sourceTree = "<group>"; };
 		9DB8A86D1BAA43B4000F03A1 /* SelectAccountOrCategoryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectAccountOrCategoryViewController.swift; sourceTree = "<group>"; };
 		9DFE8D9C1BAFA9E0001E6F9E /* DateUtilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateUtilities.swift; sourceTree = "<group>"; };
+		E20830B41BBE30ED006D7B3D /* UserCategory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserCategory.swift; sourceTree = "<group>"; };
 		E29F203A1BAEAF150076AEFB /* HTObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HTObject.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -304,6 +306,7 @@
 				186640EC1BB8CDAC00076B70 /* ReminderItem.swift */,
 				186640EE1BB8D37A00076B70 /* ReminderList.swift */,
 				9D862C0C1BB99AB500332B24 /* User.swift */,
+				E20830B41BBE30ED006D7B3D /* UserCategory.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -630,6 +633,7 @@
 				18988FDE1BB63A1D00D95BAC /* LoginViewController.swift in Sources */,
 				18F39CC71BA966190099B714 /* QuickCell.swift in Sources */,
 				1842E95B1BB6969900A9DFD8 /* AddAccountViewController.swift in Sources */,
+				E20830B51BBE30ED006D7B3D /* UserCategory.swift in Sources */,
 				E29F203B1BAEAF150076AEFB /* HTObject.swift in Sources */,
 				18AB69AE1BAD4C6F0061029F /* ReminderCell.swift in Sources */,
 				18499E1F1BAB23FB0066E6E5 /* AccountsViewController.swift in Sources */,

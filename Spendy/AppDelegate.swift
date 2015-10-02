@@ -116,7 +116,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         // Uncomment this out to run if you have more categories to addd
         Category.bootstrapCategories()
-        
+
+        print("<<<<<<<<<<\nNotifications: \(ReminderList.sharedInstance.notifications())\n>>>>>>>>>>")
+        UIApplication.sharedApplication().cancelAllLocalNotifications()
+
         return true
     }
     
@@ -202,8 +205,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func application(application: UIApplication, handleActionWithIdentifier identifier: String?, forLocalNotification notification: UILocalNotification, completionHandler: () -> Void) {
-        
-        let item = ReminderItem(category: Category.findById(notification.userInfo!["categoryId"] as! String!)!, reminderTime: notification.fireDate!, UUID: notification.userInfo!["UUID"] as! String!)
+
+        let categoryId = notification.userInfo!["categoryId"] as! String!
+        let userCategory = UserCategory.findByCategoryId(categoryId)!
+
+        let item = ReminderItem(userCategory: userCategory, reminderTime: notification.fireDate!, UUID: notification.userInfo!["UUID"] as! String!)
         
         switch (identifier!) {
         case "CHANGE":

@@ -98,6 +98,11 @@ class HTObject {
         }
     }
 
+    func delete() {
+        _object?.unpinInBackground()
+        _object?.deleteEventually()
+    }
+
     // An object is new if it has not been saved to the server
     // TODO: what about localId?
     func isNew() -> Bool {

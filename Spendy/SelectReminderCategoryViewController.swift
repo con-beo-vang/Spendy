@@ -27,7 +27,6 @@ class SelectReminderCategoryViewController: UIViewController {
         
         items = Category.allExpenseType as [Category]
         tableView.reloadData()
-        
     }
 
     override func didReceiveMemoryWarning() {
@@ -57,7 +56,10 @@ class SelectReminderCategoryViewController: UIViewController {
         
         if toController is AddReminderViewController {
             let vc = toController as! AddReminderViewController
-            vc.selectedCategory = items?[indexPath!.row]
+
+            let category:Category = items![indexPath!.row]
+            vc.selectedUserCategory = UserCategory.findByCategoryId(category.objectId!)
+
             vc.isNewReminder = true
         }
     }

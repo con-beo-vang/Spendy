@@ -7,33 +7,65 @@
 //
 
 import UIKit
+import Parse
 
-struct ReminderItem {
+class ReminderItem: HTObject {
+    // user Pointer for relation
+    var userCategory: UserCategory? {
+        get {
+            if let obj = self["userCategory"] as! PFObject? {
+                return UserCategory(object: obj)
+            }
+            else {
+                return nil
+            }
+        }
+        set {
+            self["userCategory"] = newValue?._object
+        }
+    }
+
+    var reminderTime: NSDate! {
+        get {
+            return self["reminderTime"] as! NSDate
+        }
+        set {
+            self["reminderTime"] = newValue
+        }
+    }
+
+    var UUID: String! {
+        get {
+            return self["UUID"] as! String
+        }
+        set {
+            self["UUID"] = newValue
+        }
+    }
+
+    var isActive: Bool {
+        get {
+            if let iA = self["isActive"] as! Bool? {
+                return iA
+            } else {
+                return false
+            }
+        }
+        set { self["isActive"] = newValue }
+    }
     
-    var categoryId: String?
-//    var category: String
-//    var predictiveAmount: NSDecimalNumber
-    var reminderTime: NSDate
-    var UUID: String
-    var isActive: Bool
-    
-    init(category: Category, reminderTime: NSDate, UUID: String) {
-        self.categoryId = category.objectId
-//        self.predictiveAmount = predictiveAmount
+    convenience init(userCategory: UserCategory, reminderTime: NSDate, UUID: String) {
+        self.init()
+        
+        self.userCategory = userCategory
         self.reminderTime = reminderTime
         self.UUID = UUID
         self.isActive = true
     }
-    
+
     var category: Category? {
-        set {
-            categoryId = newValue?.objectId
-        }
-        
-        get {
-            return Category.findById(categoryId!)
-        }
+        return userCategory?.category
     }
-    
-    
+
+    var predictedAmount: NSNumber = 0
 }
