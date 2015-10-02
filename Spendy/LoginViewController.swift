@@ -189,7 +189,7 @@ class LoginViewController: UIViewController {
             }
         }
     }
-
+    
     // Extra: we're displaying error messages with SwiftSpinner instead
     func alertWithMessage(title: String?, message: String? = nil) {
         // Build the terms and conditions alert
