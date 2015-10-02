@@ -9,7 +9,8 @@
 import UIKit
 import Presentation
 
-// TutorialViewController
+let IDIOM = UI_USER_INTERFACE_IDIOM()
+let IPAD = UIUserInterfaceIdiom.Pad
 
 class TutorialViewController: PresentationController {
     
@@ -89,8 +90,12 @@ class TutorialViewController: PresentationController {
     // MARK: - Configuration
     
     func configureSlides() {
-//        let font = UIFont(name: "HelveticaNeue", size: 17.0)!
-        let font = UIFont.systemFontOfSize(17)
+        var font = UIFont()
+        if IDIOM == IPAD {
+            font = UIFont.systemFontOfSize(34)
+        } else {
+            font = UIFont.systemFontOfSize(17)
+        }
         let color = UIColor(netHex: 0xFFE8A9)
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.alignment = NSTextAlignment.Center
@@ -152,17 +157,33 @@ class TutorialViewController: PresentationController {
     }
     
     func configureBackground() {
-        let backgroundImages = [
-            BackgroundImage(name: "Trees", left: 0.0, top: 0.743, speed: -0.3),
-            BackgroundImage(name: "Bus", left: 0.02, top: 0.77, speed: 0.25),
-            BackgroundImage(name: "Truck", left: 1.3, top: 0.73, speed: -1.5),
-            BackgroundImage(name: "Roadlines", left: 0.0, top: 0.79, speed: -0.24),
-            BackgroundImage(name: "Houses", left: 0.0, top: 0.627, speed: -0.16),
-            BackgroundImage(name: "Hills", left: 0.0, top: 0.51, speed: -0.08),
-            BackgroundImage(name: "Mountains", left: 0.0, top: 0.29, speed: 0.0),
-            BackgroundImage(name: "Clouds", left: -0.415, top: 0.14, speed: 0.18),
-            BackgroundImage(name: "Sun", left: 0.8, top: 0.07, speed: 0.0)
-        ]
+        var backgroundImages: [BackgroundImage]!
+        
+        if IDIOM == IPAD {
+            backgroundImages = [
+                BackgroundImage(name: "Tutorial_Trees_iPad", left: 0.0, top: 0.743, speed: -0.3),
+                BackgroundImage(name: "Tutorial_Bus_iPad", left: 0.02, top: 0.77, speed: 0.25),
+                BackgroundImage(name: "Tutorial_Truck_iPad", left: 1.3, top: 0.73, speed: -1.5),
+                BackgroundImage(name: "Tutorial_Roadlines_iPad", left: 0.0, top: 0.79, speed: -0.24),
+                BackgroundImage(name: "Tutorial_Houses_iPad", left: 0.0, top: 0.627, speed: -0.16),
+                BackgroundImage(name: "Tutorial_Hills_iPad", left: 0.0, top: 0.51, speed: -0.08),
+                BackgroundImage(name: "Tutorial_Mountains_iPad", left: 0.0, top: 0.29, speed: 0.0),
+                BackgroundImage(name: "Tutorial_Clouds_iPad", left: -0.415, top: 0.14, speed: 0.18),
+                BackgroundImage(name: "Tutorial_Sun_iPad", left: 0.8, top: 0.07, speed: 0.0)
+            ]
+        } else {
+            backgroundImages = [
+                BackgroundImage(name: "Tutorial_Trees", left: 0.0, top: 0.77, speed: -0.3),
+                BackgroundImage(name: "Tutorial_Bus", left: 0.02, top: 0.79, speed: 0.25),
+                BackgroundImage(name: "Tutorial_Truck", left: 1.3, top: 0.73, speed: -1.5),
+                BackgroundImage(name: "Tutorial_Roadlines", left: 0.0, top: 0.77, speed: -0.24),
+                BackgroundImage(name: "Tutorial_Houses", left: 0.0, top: 0.624, speed: -0.16),
+                BackgroundImage(name: "Tutorial_Hills", left: 0.0, top: 0.51, speed: -0.08),
+                BackgroundImage(name: "Tutorial_Mountains", left: 0.0, top: 0.29, speed: 0.0),
+                BackgroundImage(name: "Tutorial_Clouds", left: -0.415, top: 0.14, speed: 0.18),
+                BackgroundImage(name: "Tutorial_Sun", left: 0.8, top: 0.07, speed: 0.0)
+            ]
+        }
         
         var contents = [Content]()
         
@@ -189,17 +210,17 @@ class TutorialViewController: PresentationController {
             }
         }
         
-        let groundView = UIView(frame: CGRect(x: 0, y: 0, width: 1024, height: 60))
+        let groundView = UIView(frame: CGRect(x: 0, y: 0, width: 1024, height: 100))
         groundView.backgroundColor = UIColor(netHex: 0xFFCD41)
         let groundContent = Content(view: groundView,
-            position: Position(left: 0.0, bottom: 0.063), centered: false)
+            position: Position(left: 0.0, bottom: 0.1), centered: false)
         contents.append(groundContent)
         
         addToBackground([groundContent])
     }
     
     func onSkip(sender: UIButton) {
-        NSUserDefaults.standardUserDefaults().setBool(true, forKey: "gotTutorial")
+        NSUserDefaults.standardUserDefaults().setBool(true, forKey: "GotTutorial")
         dismissViewControllerAnimated(true, completion: nil)
     }
 }

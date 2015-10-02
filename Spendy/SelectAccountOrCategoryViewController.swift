@@ -117,7 +117,6 @@ extension SelectAccountOrCategoryViewController: UITableViewDataSource, UITableV
             if let icon = item["icon"] as? String {
                 
                 cell.iconImageView.image = Helper.sharedInstance.createIcon(icon)
-                cell.iconImageView.setNewTintColor(UIColor.whiteColor())
 
                 switch itemTypeFilter {
                 case .Some("Expense"):
@@ -134,6 +133,14 @@ extension SelectAccountOrCategoryViewController: UITableViewDataSource, UITableV
                     cell
                 }
             }
+            
+            if itemClass == "Account" {
+                cell.iconImageView.image = Helper.sharedInstance.createIcon("Account")
+                cell.iconImageView.layer.backgroundColor = Color.strongColor.CGColor
+                cell.selectedIcon.setNewTintColor(Color.strongColor)
+            }
+            
+            cell.iconImageView.setNewTintColor(UIColor.whiteColor())
         }
         return cell
     }

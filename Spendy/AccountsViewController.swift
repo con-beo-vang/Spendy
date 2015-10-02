@@ -59,8 +59,6 @@ class AccountsViewController: UIViewController {
         }
         
         addBarButton()
-        configPopup()
-
 
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "updateAccountList:", name:"AccountAddedOrUpdated", object: nil)
     }
@@ -77,6 +75,7 @@ class AccountsViewController: UIViewController {
     
     override func viewWillAppear(animated: Bool) {
         tableView.reloadData()
+        configPopup()
         setColor()
     }
     

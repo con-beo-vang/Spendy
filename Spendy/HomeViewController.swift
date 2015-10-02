@@ -95,12 +95,8 @@ class HomeViewController: UIViewController {
         
         addGestures()
         
-        
         incomes = ["Salary", "Bonus", "Salary", "Bonus", "Salary", "Bonus"]
         expenses = ["Meal", "Drink", "Transport",  "Meal", "Drink", "Transport"]
-        
-        
-        configPopup()
         
         // set current month as default
         let (begin, end) = getMonth(0)
@@ -113,12 +109,15 @@ class HomeViewController: UIViewController {
     }
     
     override func viewWillAppear(animated: Bool) {
+        configPopup()
         setColor()
-        let gotTutorial = NSUserDefaults.standardUserDefaults().boolForKey("gotTutorial") ?? false
+        let gotTutorial = NSUserDefaults.standardUserDefaults().boolForKey("GotTutorial") ?? false
         
         if !gotTutorial {
             goToTutorial()
         }
+        
+        viewModeTableView.reloadData()
     }
     
     override func didReceiveMemoryWarning() {

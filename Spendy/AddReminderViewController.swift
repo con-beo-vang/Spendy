@@ -216,15 +216,4 @@ extension AddReminderViewController: UIGestureRecognizerDelegate {
             self.tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: UITableViewRowAnimation.Automatic)
         }
     }
-    
-//    func tapSelectCategory(sender: UITapGestureRecognizer) {
-//        
-//        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-//        let selectCategoryVC = storyboard.instantiateViewControllerWithIdentifier("SelectAccountOrCategoryVC") as! SelectAccountOrCategoryViewController
-//        
-//        selectCategoryVC.itemClass = "Category"
-//        
-//        navigationController?.pushViewController(selectCategoryVC, animated: true)
-//        
-//    }
 }

@@ -1591,7 +1591,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="Account" width="50" height="50"/>
+        <image name="Account" width="256" height="256"/>
         <image name="AccountInactive" width="25" height="25"/>
         <image name="AddInactive" width="25" height="25"/>
         <image name="Bar-Add" width="25" height="25"/>
