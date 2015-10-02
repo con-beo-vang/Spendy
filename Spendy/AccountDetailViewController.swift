@@ -180,6 +180,14 @@ extension AccountDetailViewController: UITableViewDataSource, UITableViewDelegat
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("TransactionCell", forIndexPath: indexPath) as! TransactionCell
         cell.transaction = accountTransactions[indexPath.section][indexPath.row]
+        
+        if accountTransactions[indexPath.section][indexPath.row].kind == Transaction.transferKind {
+            if currentAccount.objectId == accountTransactions[indexPath.section][indexPath.row].fromAccountId {
+                cell.amountLabel.textColor = Color.expenseColor
+            } else {
+                cell.amountLabel.textColor = Color.incomeColor
+            }
+        }
 
         let rightSwipe = UISwipeGestureRecognizer(target: self, action: Selector("handleSwipe:"))
         rightSwipe.direction = .Right
@@ -254,36 +262,3 @@ extension AccountDetailViewController: UIGestureRecognizerDelegate {
         }
     }
 }
-
-//extension AccountDetailViewController: UIViewControllerTransitioningDelegate {
-//
-//    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-//        if segue.identifier == "QuickMode" {
-//            let toViewController = segue.destinationViewController as! UINavigationController
-//            toViewController.transitioningDelegate = self
-//            customPresentAnimationController.animationType = CustomSegueAnimation.SwipeDown
-//            customDismissAnimationController.animationType = CustomSegueAnimation.SwipeDown
-//        } else {
-//            // Edit transaction
-//            let vc = segue.destinationViewController
-//
-//            if vc is AddTransactionViewController {
-//                let addTransactionViewController = vc as! AddTransactionViewController
-//
-//                var indexPath: AnyObject!
-//                indexPath = tableView.indexPathForCell(sender as! UITableViewCell)
-//
-//                addTransactionViewController.selectedTransaction = sampleTransactions[indexPath.section][indexPath.row]
-//                print("pass selectedTransaction to AddTransactionView: \(addTransactionViewController.selectedTransaction))", terminator: "\n")
-//            }
-//        }
-//    }
-//
-//    func animationControllerForPresentedController(presented: UIViewController, presentingController presenting: UIViewController, sourceController source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-//        return customPresentAnimationController
-//    }
-//
-//    func animationControllerForDismissedController(dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-//        return customDismissAnimationController
-//    }
-//}
