@@ -52,30 +52,11 @@ class NotificationSettingViewController: UIViewController, ReminderCellDelegate 
         // TODO: Load data from Parse
         // Each cell is a Category which has the number of ReminderItem > 0
         
-        let date1 = NSDate().dateByAddingTimeInterval(15)
-        let date2 = date1.dateByAddingTimeInterval(60 * 60 * 3)
-        let date3 = date1.dateByAddingTimeInterval(60 * 60 * 5)
-        //        let date4 = date1.dateByAddingTimeInterval(60 * 60 * 6)
-        
-        let entertainment = Category.findById("mMSafCuzkL")
-        entertainment?.reminderOn = true
-        
-        let meal = Category.findById("o9s4IEV0gJ")
-        meal?.reminderOn = false
-        
-        let book = Category.findById("RXhPRosXiF")
-        book?.reminderOn = false
-        
-        reminders = [entertainment!, meal!, book!]
-        
-        for category in reminders {
-            category.timeSlots.append(ReminderItem(category: category, reminderTime: date1, UUID: NSUUID().UUIDString))
-            category.timeSlots.append(ReminderItem(category: category, reminderTime: date2, UUID: NSUUID().UUIDString))
-            category.timeSlots.append(ReminderItem(category: category, reminderTime: date3, UUID: NSUUID().UUIDString))
-        }
-        
-        //        meal?.timeSlots.append(ReminderItem(category: meal!, reminderTime: date4, UUID: NSUUID().UUIDString))
-        
+        // get list categories with time slots
+        // TODO: time slot must be for the current user
+        // Reminder(user: user, category: cateogry)
+        reminders = Category.allWithReminderSettings()
+        tableView.reloadData()
     }
     
     override func didReceiveMemoryWarning() {
@@ -102,7 +83,7 @@ class NotificationSettingViewController: UIViewController, ReminderCellDelegate 
     func reminderCell(reminderCell: ReminderCell, didChangeValue value: Bool) {
         
         let indexPath = tableView.indexPathForCell(reminderCell)!
-        print("switch cell", terminator: "\n")
+        print("switch cell")
         if value {
             // Add all active time slots of this category
             for item in reminders[indexPath.row].timeSlots {

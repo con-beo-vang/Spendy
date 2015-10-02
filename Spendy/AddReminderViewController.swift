@@ -31,13 +31,14 @@ class AddReminderViewController: UIViewController, TimeCellDelegate {
         
         if !isNewReminder {
             navigationItem.title = "Edit Reminder"
+        } else {
+            
         }
         
         addGestures()
         
         formatter = NSDateFormatter()
         formatter.dateFormat = "hh:mm a"
-        
     }
     
     override func didReceiveMemoryWarning() {
@@ -70,18 +71,19 @@ class AddReminderViewController: UIViewController, TimeCellDelegate {
     func timeCell(timeCell: TimeCell, didChangeValue value: Bool) {
         
         let indexPath = tableView.indexPathForCell(timeCell)!
-        print("switch time", terminator: "\n")
+        print("switch time")
         
         selectedCategory.timeSlots[indexPath.row].isActive = value
         // TODO: update in Parse
         timeCell.onSwitch.on = value
+
         if value {
             ReminderList.sharedInstance.addReminderNotification(selectedCategory.timeSlots[indexPath.row])
-            print("add new notification")
+            print("add new notification via switch for \(indexPath.row)")
         } else {
             // pass ReminderItem of this cell to this method
             ReminderList.sharedInstance.removeReminderNotification(selectedCategory.timeSlots[indexPath.row])
-            print("remove old notification")
+            print("remove new notification via switch for \(indexPath.row)")
         }
     }
 }
@@ -138,23 +140,16 @@ extension AddReminderViewController: UITableViewDataSource, UITableViewDelegate 
             
             DatePickerDialog().show(title: "Choose Time", doneButtonTitle: "Done", cancelButtonTitle: "Cancel", defaultDate: defaultDate!, minDate: nil, datePickerMode: .Time) {
                 (time) -> Void in
-                print(time, terminator: "\n")
+
+                // update reminder item
+                print("Newly picked time: \(time)")
                 
-                var selectedItem = self.selectedCategory.timeSlots[indexPath.row]
-                
-                // Remove old notification
-                ReminderList.sharedInstance.removeReminderNotification(selectedItem)
-                print("remove old notification")
-                
-                // Turn on switch automatically
-                selectedItem.isActive = true
-                
-                // Add new notification
-                selectedItem.reminderTime = time
-                ReminderList.sharedInstance.addReminderNotification(selectedItem)
-                
-                self.selectedCategory.timeSlots[indexPath.row] = selectedItem
-                print("add new notification")
+                self.selectedCategory.updateReminder(indexPath.row, newTime: time)
+
+                // is it necessary?
+                // TODO: change to
+                // self.selectedCategory.timeSlots[indexPath.row] = selectedItem
+
                 // TODO: update this item in Parse
                 
                 self.tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: UITableViewRowAnimation.Automatic)
@@ -163,7 +158,6 @@ extension AddReminderViewController: UITableViewDataSource, UITableViewDelegate 
             addTime()
         }
     }
-    
 }
 
 // MARK: Handle gestures
@@ -225,13 +219,8 @@ extension AddReminderViewController: UIGestureRecognizerDelegate {
             print(time, terminator: "\n")
             
             // Add notification
-            let newItem = ReminderItem(category: self.selectedCategory, reminderTime: time, UUID: NSUUID().UUIDString)
-            ReminderList.sharedInstance.addReminderNotification(newItem)
-            self.selectedCategory.timeSlots.append(newItem)
-            // TODO: add newItem to Parse
-            
-            print("add new notification")
-            
+            self.selectedCategory.addReminder(time)
+
             self.tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: UITableViewRowAnimation.Automatic)
         }
     }
