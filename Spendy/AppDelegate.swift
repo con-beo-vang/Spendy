@@ -98,22 +98,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         UITabBar.appearance().tintColor = Color.strongColor
         
-        
-        let user = User.current()
-        
-        // TODO: check login
-        let isLoggedIn = user != nil
-        
-        if isLoggedIn {
-            // Go to Home screen
-            let vc = storyboard.instantiateViewControllerWithIdentifier("RootTabBarController") as! RootTabBarController
-            window?.rootViewController = vc
-        } else {
-            // Go to Login screen
-            let vc = storyboard.instantiateViewControllerWithIdentifier("LoginVC") as! LoginViewController
-            window?.rootViewController = vc
-        }
-        
         // Uncomment this out to run if you have more categories to addd
         Category.bootstrapCategories()
 
