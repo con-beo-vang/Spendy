@@ -9,31 +9,22 @@
 import UIKit
 
 struct ReminderItem {
-    
-    var categoryId: String?
-//    var category: String
-//    var predictiveAmount: NSDecimalNumber
+    var userCategory: UserCategory?
     var reminderTime: NSDate
+
     var UUID: String
     var isActive: Bool
     
-    init(category: Category, reminderTime: NSDate, UUID: String) {
-        self.categoryId = category.objectId
-//        self.predictiveAmount = predictiveAmount
+    init(userCategory: UserCategory, reminderTime: NSDate, UUID: String) {
+        self.userCategory = userCategory
         self.reminderTime = reminderTime
         self.UUID = UUID
         self.isActive = true
     }
-    
+
     var category: Category? {
-        set {
-            categoryId = newValue?.objectId
-        }
-        
-        get {
-            return Category.findById(categoryId!)
-        }
+        return userCategory?.category
     }
-    
-    
+
+    var predictedAmount: NSNumber = 0
 }

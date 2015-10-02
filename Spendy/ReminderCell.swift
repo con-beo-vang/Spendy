@@ -29,17 +29,18 @@ class ReminderCell: UITableViewCell {
     
     var category: Category! {
         didSet {
+            let userCategory = UserCategory.findByCategoryId(category.objectId!)!
+
             categoryLabel.text = category.name
-            timesLabel.text = getTimeSlotsString(category.timeSlots)
+
+            timesLabel.text = getTimeSlotsString(userCategory.timeSlots)
 //            timesLabel.sizeToFit()
             
             iconView.image = Helper.sharedInstance.createIcon(category.icon)
             iconView.setNewTintColor(UIColor.whiteColor())
             iconView.layer.backgroundColor = Color.expenseColor.CGColor
             
-            
-            onSwitch.on = category.reminderOn
-            
+            onSwitch.on = userCategory.reminderOn
         }
     }
     

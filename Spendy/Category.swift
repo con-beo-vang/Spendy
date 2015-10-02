@@ -80,22 +80,6 @@ class Category: HTObject {
         set { self["icon"] = newValue }
     }
     
-    // Add for reminder
-    var reminderOn : Bool {
-        get {
-            if let val = self["reminderOn"] as! Bool? {
-                return val
-            } else {
-                self.reminderOn = false
-                return false
-            }
-        }
-        set { self["reminderOn"] = newValue }
-    }
-
-    var predictiveAmount = NSDecimalNumber(double: 20)
-    var timeSlots = [ReminderItem]()
-    
     func type() -> String? {
         return icon.componentsSeparatedByString("-").first
     }
@@ -262,40 +246,5 @@ extension Category {
         }
 
         forceLoadFromRemote = true
-    }
-}
-
-// MARK - Reminder stuff
-extension Category {
-    // returns categories that have at least one reminder item
-    class func allWithReminderSettings() -> [Category] {
-        return all.filter({ !$0.timeSlots.isEmpty })
-    }
-
-    func addReminder(time: NSDate) {
-        let item = ReminderItem(category: self, reminderTime: time, UUID: NSUUID().UUIDString)
-        timeSlots.append(item)
-
-        print("add notification for \(item) at \(time)")
-        ReminderList.sharedInstance.addReminderNotification(item)
-    }
-
-    func removeReminder(item: ReminderItem) {
-
-        print("remove old notification")
-        ReminderList.sharedInstance.removeReminderNotification(item)
-    }
-
-    func updateReminder(index: Int, newTime: NSDate) {
-        var item = timeSlots[index]
-
-        ReminderList.sharedInstance.removeReminderNotification(item)
-
-        item.reminderTime = newTime
-        // Turn on switch automatically
-        item.isActive = true
-
-        // Add new notification
-        ReminderList.sharedInstance.addReminderNotification(item)
     }
 }

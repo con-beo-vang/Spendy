@@ -15,7 +15,7 @@ class NotificationSettingViewController: UIViewController, ReminderCellDelegate 
     var addButton: UIButton!
     var backButton: UIButton!
     
-    var reminders = [Category]()
+    var reminders = [UserCategory]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -55,7 +55,7 @@ class NotificationSettingViewController: UIViewController, ReminderCellDelegate 
         // get list categories with time slots
         // TODO: time slot must be for the current user
         // Reminder(user: user, category: cateogry)
-        reminders = Category.allWithReminderSettings()
+        reminders = UserCategory.allWithReminderSettings()
         tableView.reloadData()
     }
     
@@ -116,7 +116,7 @@ class NotificationSettingViewController: UIViewController, ReminderCellDelegate 
             
             // If select 1 remider
             if indexPath.row < reminders.count {
-                addViewController.selectedCategory = reminders[indexPath.row]
+                addViewController.selectedUserCategory = reminders[indexPath.row]
             }
         }
     }
@@ -139,7 +139,7 @@ extension NotificationSettingViewController: UITableViewDataSource, UITableViewD
         if indexPath.row != reminders.count {
             let cell = tableView.dequeueReusableCellWithIdentifier("ReminderCell", forIndexPath: indexPath) as! ReminderCell
             
-            cell.category = reminders[indexPath.row]
+            cell.category = reminders[indexPath.row].category
             cell.delegate = self
             
             Helper.sharedInstance.setSeparatorFullWidth(cell)

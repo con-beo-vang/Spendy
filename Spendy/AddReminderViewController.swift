@@ -15,7 +15,8 @@ class AddReminderViewController: UIViewController, TimeCellDelegate {
     var addButton: UIButton!
     var backButton: UIButton!
     
-    var selectedCategory: Category!
+//    var selectedCategory: Category!
+    var selectedUserCategory: UserCategory!
     var isNewReminder = false
     
     var formatter: NSDateFormatter!
@@ -73,16 +74,16 @@ class AddReminderViewController: UIViewController, TimeCellDelegate {
         let indexPath = tableView.indexPathForCell(timeCell)!
         print("switch time")
         
-        selectedCategory.timeSlots[indexPath.row].isActive = value
+        selectedUserCategory.timeSlots[indexPath.row].isActive = value
         // TODO: update in Parse
         timeCell.onSwitch.on = value
 
         if value {
-            ReminderList.sharedInstance.addReminderNotification(selectedCategory.timeSlots[indexPath.row])
+            ReminderList.sharedInstance.addReminderNotification(selectedUserCategory.timeSlots[indexPath.row])
             print("add new notification via switch for \(indexPath.row)")
         } else {
             // pass ReminderItem of this cell to this method
-            ReminderList.sharedInstance.removeReminderNotification(selectedCategory.timeSlots[indexPath.row])
+            ReminderList.sharedInstance.removeReminderNotification(selectedUserCategory.timeSlots[indexPath.row])
             print("remove new notification via switch for \(indexPath.row)")
         }
     }
@@ -93,7 +94,7 @@ class AddReminderViewController: UIViewController, TimeCellDelegate {
 extension AddReminderViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return selectedCategory.timeSlots.count + 1
+        return selectedUserCategory.timeSlots.count + 1
     }
     
     func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -101,7 +102,7 @@ extension AddReminderViewController: UITableViewDataSource, UITableViewDelegate 
         headerView.backgroundColor = UIColor(netHex: 0xDCDCDC)
         
         let categoryNameLabel = UILabel(frame: CGRect(x: 0, y: 10, width: UIScreen.mainScreen().bounds.width, height: 20))
-        categoryNameLabel.text = selectedCategory.name
+        categoryNameLabel.text = selectedUserCategory.name
         categoryNameLabel.textAlignment = .Center
         headerView.addSubview(categoryNameLabel)
         
@@ -114,10 +115,10 @@ extension AddReminderViewController: UITableViewDataSource, UITableViewDelegate 
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
-        if indexPath.row < selectedCategory.timeSlots.count {
+        if indexPath.row < selectedUserCategory.timeSlots.count {
             let cell = tableView.dequeueReusableCellWithIdentifier("TimeCell", forIndexPath: indexPath) as! TimeCell
             
-            cell.reminderItem = selectedCategory.timeSlots[indexPath.row]
+            cell.reminderItem = selectedUserCategory.timeSlots[indexPath.row]
             cell.delegate = self
             
             Helper.sharedInstance.setSeparatorFullWidth(cell)
@@ -131,7 +132,7 @@ extension AddReminderViewController: UITableViewDataSource, UITableViewDelegate 
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        if indexPath.row < selectedCategory.timeSlots.count {
+        if indexPath.row < selectedUserCategory.timeSlots.count {
             
             let selectedCell = tableView.cellForRowAtIndexPath(indexPath) as? TimeCell
             let timeString = selectedCell!.timeLabel.text
@@ -144,7 +145,7 @@ extension AddReminderViewController: UITableViewDataSource, UITableViewDelegate 
                 // update reminder item
                 print("Newly picked time: \(time)")
                 
-                self.selectedCategory.updateReminder(indexPath.row, newTime: time)
+                self.selectedUserCategory.updateReminder(indexPath.row, newTime: time)
 
                 // is it necessary?
                 // TODO: change to
@@ -196,11 +197,11 @@ extension AddReminderViewController: UIGestureRecognizerDelegate {
                 let indexPath = tableView.indexPathForCell(timeCell)
                 
                 // Remove old notification
-                ReminderList.sharedInstance.removeReminderNotification(selectedCategory.timeSlots[indexPath!.row])
+                ReminderList.sharedInstance.removeReminderNotification(selectedUserCategory.timeSlots[indexPath!.row])
                 print("remove old notification")
                 
                 if let indexPath = indexPath {
-                    selectedCategory.timeSlots.removeAtIndex(indexPath.row)
+                    selectedUserCategory.timeSlots.removeAtIndex(indexPath.row)
                     // TODO: remove this item in Parse
                     tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: UITableViewRowAnimation.Automatic)
                 }
@@ -214,25 +215,25 @@ extension AddReminderViewController: UIGestureRecognizerDelegate {
     
     func addTime() {
         
-        DatePickerDialog().show(title: "Choose Time", doneButtonTitle: "Done", cancelButtonTitle: "Cancel", minDate: nil, datePickerMode: .Time) {
-            (time) -> Void in
-            print(time, terminator: "\n")
-            
+        DatePickerDialog().show(title: "Choose Time", doneButtonTitle: "Done", cancelButtonTitle: "Cancel", minDate: nil, datePickerMode: .Time) { (time) -> Void in
+
+            print("addTime: \(time)")
+
             // Add notification
-            self.selectedCategory.addReminder(time)
+            self.selectedUserCategory.addReminder(time)
 
             self.tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: UITableViewRowAnimation.Automatic)
         }
     }
     
-    func tapSelectCategory(sender: UITapGestureRecognizer) {
-        
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let selectCategoryVC = storyboard.instantiateViewControllerWithIdentifier("SelectAccountOrCategoryVC") as! SelectAccountOrCategoryViewController
-        
-        selectCategoryVC.itemClass = "Category"
-        
-        navigationController?.pushViewController(selectCategoryVC, animated: true)
-        
-    }
+//    func tapSelectCategory(sender: UITapGestureRecognizer) {
+//        
+//        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+//        let selectCategoryVC = storyboard.instantiateViewControllerWithIdentifier("SelectAccountOrCategoryVC") as! SelectAccountOrCategoryViewController
+//        
+//        selectCategoryVC.itemClass = "Category"
+//        
+//        navigationController?.pushViewController(selectCategoryVC, animated: true)
+//        
+//    }
 }
