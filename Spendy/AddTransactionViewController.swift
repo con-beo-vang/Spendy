@@ -60,8 +60,12 @@ class AddTransactionViewController: UIViewController {
             currentAccount = Account.defaultAccount()
         }
         
-        if let transaction = selectedTransaction where !transaction.isNew() {
-            navigationItem.title = "Edit Transaction"
+        if let transaction = selectedTransaction {
+            if !transaction.isNew() {
+                navigationItem.title = "Edit Transaction"
+            } else {
+                navigationItem.title = "Add Transaction"
+            }
         } else {
             selectedTransaction = Transaction(kind: Transaction.expenseKind,
                 note: nil, amount: nil,
