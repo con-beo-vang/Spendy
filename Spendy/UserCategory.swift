@@ -51,7 +51,29 @@ class UserCategory: HTObject {
     }
 
     var predictedAmount = NSDecimalNumber(double: 20)
-    var timeSlots = [ReminderItem]()
+
+    var timeSlots: [ReminderItem] {
+        set {
+            self["timeSlots"] = newValue.map({$0._object!})
+        }
+        get {
+            if let objects = self["timeSlots"] as! [PFObject]? {
+                do {
+                    try PFObject.fetchAllIfNeeded(objects)
+                    return objects.map{ ReminderItem(object: $0) }
+                } catch {
+                    // remove invalid objects
+                    PFObject.unpinAllInBackground(objects)
+                    PFObject.deleteAllInBackground(objects)
+                    self["timeSlots"] = []
+                    return []
+                }
+            } else {
+                self["timeSlots"] = []
+                return []
+            }
+        }
+    }
 
     convenience init(category: Category) {
         self.init()
@@ -118,6 +140,7 @@ extension UserCategory {
         if self.isNew() {
             save()
         }
+        save()
 
         print("add notification for \(item) at \(time)")
         ReminderList.sharedInstance.addReminderNotification(item)
@@ -130,7 +153,7 @@ extension UserCategory {
     }
 
     func updateReminder(index: Int, newTime: NSDate) {
-        var item = timeSlots[index]
+        let item = timeSlots[index]
 
         ReminderList.sharedInstance.removeReminderNotification(item)
 

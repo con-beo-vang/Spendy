@@ -87,7 +87,7 @@ class NotificationSettingViewController: UIViewController, ReminderCellDelegate 
         if value {
             // Add all active time slots of this category
             for item in reminders[indexPath.row].timeSlots {
-                if item.isActive {
+                if (item.isActive != nil) {
                     ReminderList.sharedInstance.addReminderNotification(item)
                 }
             }
@@ -95,7 +95,7 @@ class NotificationSettingViewController: UIViewController, ReminderCellDelegate 
         } else {
             // Remove all active time slots of this category
             for item in reminders[indexPath.row].timeSlots {
-                if item.isActive {
+                if (item.isActive != nil) {
                     ReminderList.sharedInstance.removeReminderNotification(item)
                 }
             }
@@ -177,7 +177,7 @@ extension NotificationSettingViewController: UIGestureRecognizerDelegate {
                 
                 for item in reminders[indexPath!.row].timeSlots {
                     // Remove all active time slots of this category from Notification
-                    if item.isActive {
+                    if (item.isActive != nil) {
                         ReminderList.sharedInstance.removeReminderNotification(item)
                     }
                     // TODO: Delete reminder item

@@ -7,15 +7,50 @@
 //
 
 import UIKit
+import Parse
 
-struct ReminderItem {
-    var userCategory: UserCategory?
-    var reminderTime: NSDate
+class ReminderItem: HTObject {
+    // user Pointer for relation
+    var userCategory: UserCategory? {
+        get {
+            if let obj = self["userCategory"] as! PFObject? {
+                return UserCategory(object: obj)
+            }
+            else {
+                return nil
+            }
+        }
+        set {
+            self["userCategory"] = newValue?._object
+        }
+    }
 
-    var UUID: String
-    var isActive: Bool
+    var reminderTime: NSDate! {
+        get {
+            return self["reminderTime"] as! NSDate
+        }
+        set {
+            self["reminderTime"] = newValue
+        }
+    }
+
+    var UUID: String! {
+        get {
+            return self["UUID"] as! String
+        }
+        set {
+            self["UUID"] = newValue
+        }
+    }
+
+    var isActive: Bool! {
+        get { return self["isActive"] as! Bool }
+        set { self["isActive"] = newValue }
+    }
     
-    init(userCategory: UserCategory, reminderTime: NSDate, UUID: String) {
+    convenience init(userCategory: UserCategory, reminderTime: NSDate, UUID: String) {
+        self.init()
+        
         self.userCategory = userCategory
         self.reminderTime = reminderTime
         self.UUID = UUID
