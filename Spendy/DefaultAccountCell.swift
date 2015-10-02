@@ -12,6 +12,12 @@ class DefaultAccountCell: UITableViewCell {
     
     @IBOutlet weak var defaultAccountLabel: UILabel!
 
+    var account: Account! {
+        didSet {
+            defaultAccountLabel.text = account.name
+        }
+    }
+
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

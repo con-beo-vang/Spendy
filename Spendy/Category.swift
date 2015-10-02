@@ -177,7 +177,7 @@ class Category: HTObject {
             if !forceLoadFromRemote {
                 query.fromLocalDatastore()
             }
-            let objects = try! query.fromLocalDatastore().findObjects()
+            let objects = try! query.findObjects()
             _allCategories = objects.map({ Category(object: $0) })
         }
 
@@ -215,7 +215,7 @@ extension Category {
     class func bootstrapCategories() {
         print("\n********BOOTSTRAPING CATEGORIES********")
         // remove all stale categories
-//        try! PFObject.unpinAllObjects()
+        // try! PFObject.unpinAllObjects()
 
         let query = PFQuery(className: "Category")
         query.limit = 100

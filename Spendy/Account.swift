@@ -49,6 +49,7 @@ class Account: HTObject {
         }
     }
 
+    static var forceLoadFromRemote = false
     var _transactions: [Transaction]?
 
     convenience init(name: String, startingBalance: NSDecimalNumber = 0) {
@@ -66,14 +67,21 @@ class Account: HTObject {
             guard let kind = t.kind else { print("Unexpected nil kind in \(t)"); continue }
 
             switch kind {
-            case Transaction.expenseKind, Transaction.transferKind:
+            case Transaction.transferKind:
+                if t.toAccountId == self.objectId {
+                    bal = bal.decimalNumberByAdding(t.amount!)
+                } else {
+                    bal = bal.decimalNumberBySubtracting(t.amount!)
+                }
+
+            case Transaction.expenseKind:
                 bal = bal.decimalNumberBySubtracting(t.amount!)
                 
             case Transaction.incomeKind:
                 bal = bal.decimalNumberByAdding(t.amount!)
                 
             default:
-                print("unexpected kind")
+                print("unexpected kind: \(kind)")
             }
             
             if bal != t.balanceSnapshot {
@@ -87,7 +95,8 @@ class Account: HTObject {
     }
 
     func formattedBalance() -> String {
-        return String(format: "$%.02f", abs(balance.doubleValue))
+        let bal = NSDecimalNumber(double: abs(balance.doubleValue))
+        return Transaction.currencyFormatter.stringFromNumber(bal)!
     }
 
     var transactions: [Transaction] {
@@ -117,7 +126,11 @@ class Account: HTObject {
 
     func removeTransaction(transaction: Transaction) {
         // TODO: implement UNDO
-        transaction._object?.deleteEventually()
+        transaction.delete()
+    }
+
+    // called by Transaction:delete method
+    func detactTransaction(transaction: Transaction) {
         transactions = transactions.filter({ $0.uuid != transaction.uuid })
         recomputeBalance()
     }
@@ -164,7 +177,7 @@ class Account: HTObject {
                     if _allAccounts!.isEmpty {
                         print("No account found for \(user). Creating default accounts:")
 
-                        let defaultAccount = Account(name: "Default Account")
+                        let defaultAccount = Account(name: "Primary Account")
                         let secondAccount  = Account(name: "Bank")
 
                         defaultAccount.pinAndSaveEventuallyWithName("MyAccounts")
@@ -188,18 +201,41 @@ class Account: HTObject {
         }
     }
 
-    // TODO: a different way to specify defaultAccount
     class func defaultAccount() -> Account? {
-        return all()?.first
+        if let existing = PFUser.currentUser()!.objectForKey("defaultAccount") as! PFObject? {
+            return Account(object: existing)
+        } else {
+            return all.first
+        }
     }
 
-    class func all() -> [Account]? {
-        return _allAccounts;
+    // used for a transaction's To Account field
+    class func nonDefaultAccount() -> Account? {
+        if let defaultAcc = defaultAccount() {
+            return all.filter({$0 != defaultAcc}).first
+        } else {
+            return nil
+        }
+    }
+
+    class var all: [Account] {
+        if _allAccounts == nil {
+            let user = PFUser.currentUser()!
+
+            let query = PFQuery(className: "Account")
+            query.whereKey("userId", equalTo: user.objectId!)
+
+            if !forceLoadFromRemote {
+                query.fromLocalDatastore()
+            }
+            let objects = try! query.findObjects()
+            _allAccounts = objects.map({ Account(object: $0) })
+        }
+
+        return _allAccounts!
     }
 
     class func findById(objectId: String) -> Account? {
-        guard let all = all() else { return nil }
-
         return all.filter({ $0.objectId == objectId }).first
     }
 

@@ -25,7 +25,7 @@ Schema:
 
 var _allTransactions: [Transaction]?
 
-// newTransaction = Transaction(name: , amount: )
+// newTransaction = Transaction(name: , amount: , ...)
 // newTransaction.save()
 // newTransaction.delete()
 // account.addTransaction(newTransaction)
@@ -34,6 +34,7 @@ class Transaction: HTObject {
     class var kinds: [String] {
         return [incomeKind, expenseKind, transferKind]
     }
+
     static let expenseKind: String = "Expense"
     static let incomeKind: String = "Income"
     static let transferKind: String = "Transfer"
@@ -208,7 +209,16 @@ class Transaction: HTObject {
         }
     }
 
-    static var currencyFormatter = NSNumberFormatter()
+    static var _currencyFormatter: NSNumberFormatter?
+    static var currencyFormatter : NSNumberFormatter {
+        guard _currencyFormatter != nil else {
+            _currencyFormatter = NSNumberFormatter()
+            _currencyFormatter!.numberStyle = .CurrencyStyle
+            return _currencyFormatter!
+        }
+
+        return _currencyFormatter!
+   }
 
     // Ex: September 21, 2015
     func dateOnly() -> String? {
@@ -243,17 +253,16 @@ class Transaction: HTObject {
     // MARK: - view helpers
     func formattedAmount() -> String? {
         if amount != nil {
-            return String(format: "$%.02f", amount!.doubleValue)
+            // return String(format: "$%.02f", amount!.doubleValue)
+            return Transaction.currencyFormatter.stringFromNumber(amount!)
         } else {
             return nil
         }
     }
 
     func formattedBalanceSnapshot() -> String? {
-        let formatter = Transaction.currencyFormatter
-        formatter.numberStyle = .CurrencyStyle
 
-        return formatter.stringFromNumber(balanceSnapshot)
+        return Transaction.currencyFormatter.stringFromNumber(balanceSnapshot)
     }
 
     // MARK: - Utilities
@@ -291,10 +300,15 @@ class Transaction: HTObject {
     }
 
     class func findByAccountId(accountId: String) -> [Transaction] {
-        let query = PFQuery(className: "Transaction")
-        query.fromLocalDatastore()
-        query.whereKey("fromAccountId", equalTo: accountId)
+        let queryWithFrom = PFQuery(className: "Transaction")
+        queryWithFrom.whereKey("fromAccountId", equalTo: accountId)
+
+        let queryWithTo = PFQuery(className: "Transaction")
+        queryWithTo.whereKey("toAccountId", equalTo: accountId)
+
+        let query = PFQuery.orQueryWithSubqueries([queryWithFrom, queryWithTo])
         query.orderByAscending("date")
+        query.fromLocalDatastore()
 
         do {
             return try query.findObjects().map{Transaction(object: $0)}
@@ -307,6 +321,17 @@ class Transaction: HTObject {
     class func add(element: Transaction) {
         element.save()
         element.fromAccount!.addTransaction(element)
+    }
+
+    func delete() {
+        _object?.unpinInBackground()
+        _object?.deleteEventually()
+        if let toAccount = toAccount {
+            toAccount.detactTransaction(self)
+        }
+        if let fromAccount = fromAccount {
+            fromAccount.detactTransaction(self)
+        }
     }
 
     override var description: String {

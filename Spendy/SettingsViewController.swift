@@ -129,6 +129,7 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
         switch indexPath.row {
             case 0:
             let cell = tableView.dequeueReusableCellWithIdentifier("DefaultAccountCell", forIndexPath: indexPath) as! DefaultAccountCell
+            cell.account = Account.defaultAccount()
             return cell
         case 1:
             let cell = tableView.dequeueReusableCellWithIdentifier("NotificationSettingsCell", forIndexPath: indexPath)
@@ -163,6 +164,7 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
             let selectCategoryVC = storyboard.instantiateViewControllerWithIdentifier("SelectAccountOrCategoryVC") as! SelectAccountOrCategoryViewController
             
             selectCategoryVC.itemClass = "Account"
+            selectCategoryVC.delegate = self
             
             navigationController?.pushViewController(selectCategoryVC, animated: true)
         case 3:
@@ -176,5 +178,18 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
             break
         }
     }
+}
 
+extension SettingsViewController: SelectAccountOrCategoryDelegate {
+    func selectAccountOrCategoryViewController(selectAccountOrCategoryController: SelectAccountOrCategoryViewController, selectedItem item: AnyObject, selectedType type: String?) {
+        if item is Account {
+            let account = item as! Account
+            print(account)
+            let user = User.current()!
+            user.object!.setObject(account._object!, forKey: "defaultAccount")
+            user.save()
+
+            tableView.reloadData()
+        }
+    }
 }

@@ -35,6 +35,7 @@ class AddTransactionViewController: UIViewController {
 
     // remember the selected category under each transaction kind
     var backupCategories = [String:Category?]()
+    var backupAccounts   = [String:Account?]()
 
     var validationErrors = [String]()
 
@@ -59,7 +60,7 @@ class AddTransactionViewController: UIViewController {
             currentAccount = Account.defaultAccount()
         }
         
-        if selectedTransaction != nil {
+        if let transaction = selectedTransaction where !transaction.isNew() {
             navigationItem.title = "Edit Transaction"
         } else {
             selectedTransaction = Transaction(kind: Transaction.expenseKind,
@@ -280,7 +281,7 @@ extension AddTransactionViewController: UITableViewDataSource, UITableViewDelega
         case 0:
             return 2
         case 1:
-            if amountCell?.typeSegment.selectedSegmentIndex == 2 {
+            if selectedTransaction?.kind == Transaction.transferKind {
                 // 3 rows:
                 // Category (fixed as Transfer)
                 // From Account
@@ -556,11 +557,17 @@ extension AddTransactionViewController {
         selectedTransaction!.category = backupCategories[newType] ?? Category.defaultCategoryFor(newType)
 
         if newType == "Transfer" {
-            selectedTransaction!.toAccount = Account.defaultAccount()
+            // reset cached value
+            selectedTransaction!.toAccount = backupAccounts["ToAccount"] ?? Account.nonDefaultAccount()
         } else {
+            // back up, then nullify
+            if let toAccount = selectedTransaction!.toAccount {
+                backupAccounts["ToAccount"] = toAccount
+            }
             selectedTransaction!.toAccount = nil
         }
 
+        print("transaction: \(selectedTransaction?.description)")
 
         tableView.reloadData()
     }
