@@ -27,10 +27,29 @@ class ReminderCell: UITableViewCell {
     
     var delegate: ReminderCellDelegate!
     
+    var category: Category! {
+        didSet {
+            categoryLabel.text = category.name
+            timesLabel.text = getTimeSlotsString(category.timeSlots)
+//            timesLabel.sizeToFit()
+            
+            iconView.image = Helper.sharedInstance.createIcon(category.icon)
+            iconView.setNewTintColor(UIColor.whiteColor())
+            iconView.layer.backgroundColor = Color.expenseColor.CGColor
+            
+            
+            onSwitch.on = category.reminderOn
+            
+        }
+    }
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         
-        iconView.setNewTintColor(Color.strongColor)
+        timesLabel.preferredMaxLayoutWidth = timesLabel.frame.size.width
+        
+        Helper.sharedInstance.setIconLayer(iconView)
+        iconView.layer.backgroundColor = Color.expenseColor.CGColor
         
         onSwitch = SevenSwitch(frame: CGRect(x: 0, y: 0, width: 51, height: 31))
         
@@ -45,6 +64,11 @@ class ReminderCell: UITableViewCell {
         
         onSwitch.addTarget(self, action: "switchValueChanged", forControlEvents: UIControlEvents.ValueChanged)
     }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        timesLabel.preferredMaxLayoutWidth = timesLabel.frame.size.width
+    }
 
     override func setSelected(selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
@@ -56,6 +80,20 @@ class ReminderCell: UITableViewCell {
         if delegate != nil {
             delegate?.reminderCell?(self, didChangeValue: onSwitch.on)
         }
+    }
+    
+    func getTimeSlotsString(timeSlots: [ReminderItem]) -> String {
+        var result = ""
+        
+        let formatter = NSDateFormatter()
+        formatter.dateFormat = "h:mm a"
+        
+        for item in timeSlots {
+            result += formatter.stringFromDate(item.reminderTime) + ", "
+        }
+        
+        result = result[0..<result.characters.count - 2]
+        return result
     }
 
 }

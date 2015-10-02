@@ -27,6 +27,7 @@
 		1884A4DC1BAD62EB00D24257 /* AddReminderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1884A4DB1BAD62EB00D24257 /* AddReminderViewController.swift */; };
 		1884A4DF1BAD6E9A00D24257 /* CategoryReminderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1884A4DE1BAD6E9A00D24257 /* CategoryReminderCell.swift */; };
 		1884A4E11BAD6EAA00D24257 /* TimeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1884A4E01BAD6EAA00D24257 /* TimeCell.swift */; };
+		189002411BBC3247003D0BAC /* SelectReminderCategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 189002401BBC3247003D0BAC /* SelectReminderCategoryViewController.swift */; settings = {ASSET_TAGS = (); }; };
 		1892689C1BB52728006FA9C4 /* CustomDismissAnimationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 189268981BB52728006FA9C4 /* CustomDismissAnimationController.swift */; settings = {ASSET_TAGS = (); }; };
 		1892689D1BB52728006FA9C4 /* CustomInteractionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 189268991BB52728006FA9C4 /* CustomInteractionController.swift */; settings = {ASSET_TAGS = (); }; };
 		1892689E1BB52728006FA9C4 /* CustomNavigationAnimationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1892689A1BB52728006FA9C4 /* CustomNavigationAnimationController.swift */; settings = {ASSET_TAGS = (); }; };
@@ -102,6 +103,7 @@
 		1884A4DB1BAD62EB00D24257 /* AddReminderViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddReminderViewController.swift; sourceTree = "<group>"; };
 		1884A4DE1BAD6E9A00D24257 /* CategoryReminderCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CategoryReminderCell.swift; sourceTree = "<group>"; };
 		1884A4E01BAD6EAA00D24257 /* TimeCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimeCell.swift; sourceTree = "<group>"; };
+		189002401BBC3247003D0BAC /* SelectReminderCategoryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectReminderCategoryViewController.swift; sourceTree = "<group>"; };
 		189268981BB52728006FA9C4 /* CustomDismissAnimationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomDismissAnimationController.swift; sourceTree = "<group>"; };
 		189268991BB52728006FA9C4 /* CustomInteractionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomInteractionController.swift; sourceTree = "<group>"; };
 		1892689A1BB52728006FA9C4 /* CustomNavigationAnimationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomNavigationAnimationController.swift; sourceTree = "<group>"; };
@@ -283,6 +285,7 @@
 				18988FDD1BB63A1D00D95BAC /* LoginViewController.swift */,
 				1842E95A1BB6969900A9DFD8 /* AddAccountViewController.swift */,
 				18C3014E1BBD2D6E00342B57 /* TutorialViewController.swift */,
+				189002401BBC3247003D0BAC /* SelectReminderCategoryViewController.swift */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
@@ -632,6 +635,7 @@
 				18499E1F1BAB23FB0066E6E5 /* AccountsViewController.swift in Sources */,
 				9D3153FC1BB0C75500F1F32B /* DataManager.swift in Sources */,
 				18AB69A91BACF6DB0061029F /* TransactionCell.swift in Sources */,
+				189002411BBC3247003D0BAC /* SelectReminderCategoryViewController.swift in Sources */,
 				18F39CD71BA9D2E70099B714 /* SelectAccountOrCategoryCell.swift in Sources */,
 				1881FB501BB80CC800314FD1 /* LogOutCell.swift in Sources */,
 				9D3EA6001BABFF0B00EF4B47 /* Category.swift in Sources */,

@@ -22,6 +22,15 @@ class TimeCell: UITableViewCell {
     var onSwitch: SevenSwitch!
     
     var delegate: TimeCellDelegate!
+    
+    var reminderItem: ReminderItem! {
+        didSet {
+            let formatter = NSDateFormatter()
+            formatter.dateFormat = "hh:mm a"
+            timeLabel.text = formatter.stringFromDate(reminderItem.reminderTime)
+            onSwitch.on = reminderItem.isActive
+        }
+    }
 
     override func awakeFromNib() {
         super.awakeFromNib()
