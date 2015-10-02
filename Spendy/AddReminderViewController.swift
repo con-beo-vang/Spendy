@@ -15,7 +15,6 @@ class AddReminderViewController: UIViewController, TimeCellDelegate {
     var addButton: UIButton!
     var backButton: UIButton!
     
-//    var selectedCategory: Category!
     var selectedUserCategory: UserCategory!
     var isNewReminder = false
     
@@ -32,10 +31,8 @@ class AddReminderViewController: UIViewController, TimeCellDelegate {
         
         if !isNewReminder {
             navigationItem.title = "Edit Reminder"
-        } else {
-            
         }
-        
+            
         addGestures()
         
         formatter = NSDateFormatter()
@@ -69,8 +66,7 @@ class AddReminderViewController: UIViewController, TimeCellDelegate {
     
     // MARK: Implement delegate
     
-    func timeCell(timeCell: TimeCell, didChangeValue value: Bool) {
-        
+    func timeCellSwitchValueChanged(timeCell: TimeCell, didChangeValue value: Bool) {
         let indexPath = tableView.indexPathForCell(timeCell)!
         print("switch time")
         
@@ -78,14 +74,9 @@ class AddReminderViewController: UIViewController, TimeCellDelegate {
         // TODO: update in Parse
         timeCell.onSwitch.on = value
 
-        if value {
-            ReminderList.sharedInstance.addReminderNotification(selectedUserCategory.timeSlots[indexPath.row])
-            print("add new notification via switch for \(indexPath.row)")
-        } else {
-            // pass ReminderItem of this cell to this method
-            ReminderList.sharedInstance.removeReminderNotification(selectedUserCategory.timeSlots[indexPath.row])
-            print("remove new notification via switch for \(indexPath.row)")
-        }
+        let reminderItem = selectedUserCategory.timeSlots[indexPath.row]
+
+        reminderItem.userCategory!.updateReminder(reminderItem, newValue: value)
     }
 }
 

@@ -43,8 +43,14 @@ class ReminderItem: HTObject {
         }
     }
 
-    var isActive: Bool! {
-        get { return self["isActive"] as! Bool }
+    var isActive: Bool {
+        get {
+            if let iA = self["isActive"] as! Bool? {
+                return iA
+            } else {
+                return false
+            }
+        }
         set { self["isActive"] = newValue }
     }
     

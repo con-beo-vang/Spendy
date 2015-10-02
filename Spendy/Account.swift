@@ -103,7 +103,8 @@ class Account: HTObject {
         get {
             guard _transactions != nil else {
                 // load from DB
-                print("loading transactions from local for account \(objectId)")
+                // TODO: optimize
+                print("loading transactions from local for account \(objectId!)")
                 _transactions = Transaction.findByAccountId(objectId!)
 
                 recomputeBalance()
@@ -159,7 +160,7 @@ class Account: HTObject {
             }
 
             _allAccounts = objects.map({ Account(object: $0 ) })
-            print("\n[local] accounts: \(objects)")
+            print("\n[local] loaded \(objects.count) accounts")
 
             if _allAccounts!.isEmpty {
                 // load from server
@@ -171,7 +172,7 @@ class Account: HTObject {
                         return
                     }
 
-                    print("\n[server] accounts: \(objects!)")
+                    print("\n[server] loaded \(objects!.count) accounts")
                     _allAccounts = objects?.map({ Account(object: $0 ) })
 
                     if _allAccounts!.isEmpty {

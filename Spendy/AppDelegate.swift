@@ -116,7 +116,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         // Uncomment this out to run if you have more categories to addd
         Category.bootstrapCategories()
-        
+
+        print("<<<<<<<<<<\nNotifications: \(ReminderList.sharedInstance.notifications())\n>>>>>>>>>>")
+        UIApplication.sharedApplication().cancelAllLocalNotifications()
+
         return true
     }
     

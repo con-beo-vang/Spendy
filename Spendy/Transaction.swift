@@ -323,7 +323,7 @@ class Transaction: HTObject {
         element.fromAccount!.addTransaction(element)
     }
 
-    func delete() {
+    override func delete() {
         _object?.unpinInBackground()
         _object?.deleteEventually()
         if let toAccount = toAccount {

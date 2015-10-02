@@ -43,11 +43,16 @@ class UserCategory: HTObject {
             if let val = self["reminderOn"] as! Bool? {
                 return val
             } else {
-                self.reminderOn = false
                 return false
             }
         }
-        set { self["reminderOn"] = newValue }
+        set {
+            let oldValue = reminderOn
+            self["reminderOn"] = newValue
+            if oldValue != newValue {
+                save()
+            }
+        }
     }
 
     var predictedAmount = NSDecimalNumber(double: 20)
@@ -87,9 +92,8 @@ class UserCategory: HTObject {
         self.userId = User.current()!.objectId!
     }
 
-    var name: String? {
-        return category.name
-    }
+    var name: String { return category.name }
+    var icon: String { return category.icon }
 
     static var _all: [UserCategory]?
 
@@ -135,11 +139,8 @@ extension UserCategory {
 
     func addReminder(time: NSDate) {
         let item = ReminderItem(userCategory: self, reminderTime: time, UUID: NSUUID().UUIDString)
-        timeSlots.append(item)
 
-        if self.isNew() {
-            save()
-        }
+        timeSlots.append(item)
         save()
 
         print("add notification for \(item) at \(time)")
@@ -147,9 +148,11 @@ extension UserCategory {
     }
 
     func removeReminder(item: ReminderItem) {
-
-        print("remove old notification")
+        print("remove old notification for \(item)")
         ReminderList.sharedInstance.removeReminderNotification(item)
+        timeSlots = timeSlots.filter {$0.UUID != item.UUID}
+        item.delete()
+        save()
     }
 
     func updateReminder(index: Int, newTime: NSDate) {
@@ -158,10 +161,60 @@ extension UserCategory {
         ReminderList.sharedInstance.removeReminderNotification(item)
 
         item.reminderTime = newTime
+
         // Turn on switch automatically
         item.isActive = true
 
         // Add new notification
         ReminderList.sharedInstance.addReminderNotification(item)
+    }
+
+    func updateReminder(reminderItem: ReminderItem, newValue: Bool) {
+        // attempt to remove reminderItem first
+        ReminderList.sharedInstance.removeReminderNotification(reminderItem)
+
+        if newValue {
+            ReminderList.sharedInstance.addReminderNotification(reminderItem)
+        }
+
+        checkReminderOnStatus()
+    }
+
+    func turnOff() {
+        reminderOn = false
+        for t in timeSlots {
+            if t.isActive {
+                // turn off notification but keep values
+                // t.isActive = false
+                ReminderList.sharedInstance.removeReminderNotification(t)
+            }
+        }
+    }
+
+    func turnOn() -> Bool {
+        let activeSlots = timeSlots.filter {$0.isActive}
+
+        guard !activeSlots.isEmpty else {
+            reminderOn = false
+            return false
+        }
+
+        reminderOn = true
+
+        for t in activeSlots {
+            if t.isActive {
+                ReminderList.sharedInstance.addReminderNotification(t)
+            }
+        }
+        return true
+    }
+
+    func checkReminderOnStatus() {
+        let activeSlots = timeSlots.filter {$0.isActive}
+
+        if activeSlots.isEmpty && reminderOn {
+            reminderOn = false
+            return
+        }
     }
 }

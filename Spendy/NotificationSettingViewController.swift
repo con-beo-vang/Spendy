@@ -15,7 +15,7 @@ class NotificationSettingViewController: UIViewController, ReminderCellDelegate 
     var addButton: UIButton!
     var backButton: UIButton!
     
-    var reminders = [UserCategory]()
+    var userCategories = [UserCategory]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,7 +40,6 @@ class NotificationSettingViewController: UIViewController, ReminderCellDelegate 
     }
     
     override func viewWillAppear(animated: Bool) {
-        
         // Load data from Parse when this view will appear
         // (both cases from Settings view and from Add reminder view
         // The right way is creating a delegate for AddReminderViewController
@@ -49,13 +48,8 @@ class NotificationSettingViewController: UIViewController, ReminderCellDelegate 
         // so I use the "cheating" way :D
         // If you don't like this, you can use delegate. It's up to you.
         
-        // TODO: Load data from Parse
-        // Each cell is a Category which has the number of ReminderItem > 0
-        
-        // get list categories with time slots
-        // TODO: time slot must be for the current user
-        // Reminder(user: user, category: cateogry)
-        reminders = UserCategory.allWithReminderSettings()
+        // get list user categories with time slots
+        userCategories = UserCategory.allWithReminderSettings()
         tableView.reloadData()
     }
     
@@ -80,26 +74,19 @@ class NotificationSettingViewController: UIViewController, ReminderCellDelegate 
     
     // MARK: Implement delegate
     
-    func reminderCell(reminderCell: ReminderCell, didChangeValue value: Bool) {
-        
+    func reminderCellSwitchValueChanged(reminderCell: ReminderCell, didChangeValue value: Bool) {
         let indexPath = tableView.indexPathForCell(reminderCell)!
-        print("switch cell")
+
+        let userCategory = userCategories[indexPath.row]
+
         if value {
             // Add all active time slots of this category
-            for item in reminders[indexPath.row].timeSlots {
-                if (item.isActive != nil) {
-                    ReminderList.sharedInstance.addReminderNotification(item)
-                }
-            }
-            print("active reminder")
+            userCategory.turnOn()
+            print("Turn on reminders for \(userCategory.name)")
         } else {
             // Remove all active time slots of this category
-            for item in reminders[indexPath.row].timeSlots {
-                if (item.isActive != nil) {
-                    ReminderList.sharedInstance.removeReminderNotification(item)
-                }
-            }
-            print("remove reminder")
+            userCategory.turnOff()
+            print("Remove all reminders for \(userCategory.name)")
         }
     }
     
@@ -115,8 +102,8 @@ class NotificationSettingViewController: UIViewController, ReminderCellDelegate 
             indexPath = tableView.indexPathForCell(sender as! UITableViewCell)
             
             // If select 1 remider
-            if indexPath.row < reminders.count {
-                addViewController.selectedUserCategory = reminders[indexPath.row]
+            if indexPath.row < userCategories.count {
+                addViewController.selectedUserCategory = userCategories[indexPath.row]
             }
         }
     }
@@ -132,14 +119,14 @@ extension NotificationSettingViewController: UITableViewDataSource, UITableViewD
     //    }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return reminders.count + 1
+        return userCategories.count + 1
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        if indexPath.row != reminders.count {
+        if indexPath.row != userCategories.count {
             let cell = tableView.dequeueReusableCellWithIdentifier("ReminderCell", forIndexPath: indexPath) as! ReminderCell
             
-            cell.category = reminders[indexPath.row].category
+            cell.userCategory = userCategories[indexPath.row]
             cell.delegate = self
             
             Helper.sharedInstance.setSeparatorFullWidth(cell)
@@ -175,16 +162,16 @@ extension NotificationSettingViewController: UIGestureRecognizerDelegate {
                 let reminderCell = selectedCell as! ReminderCell
                 let indexPath = tableView.indexPathForCell(reminderCell)
                 
-                for item in reminders[indexPath!.row].timeSlots {
+                for item in userCategories[indexPath!.row].timeSlots {
                     // Remove all active time slots of this category from Notification
-                    if (item.isActive != nil) {
+                    if item.isActive {
                         ReminderList.sharedInstance.removeReminderNotification(item)
                     }
                     // TODO: Delete reminder item
                 }
                 
                 if let indexPath = indexPath {
-                    reminders.removeAtIndex(indexPath.row)
+                    userCategories.removeAtIndex(indexPath.row)
                     tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: UITableViewRowAnimation.Automatic)
                 }
             }

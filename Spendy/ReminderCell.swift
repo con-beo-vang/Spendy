@@ -10,7 +10,7 @@ import UIKit
 import SevenSwitch
 
 @objc protocol ReminderCellDelegate {
-    optional func reminderCell(reminderCell: ReminderCell, didChangeValue value: Bool)
+    optional func reminderCellSwitchValueChanged(reminderCell: ReminderCell, didChangeValue value: Bool)
 }
 
 class ReminderCell: UITableViewCell {
@@ -26,24 +26,22 @@ class ReminderCell: UITableViewCell {
     var onSwitch: SevenSwitch!
     
     var delegate: ReminderCellDelegate!
-    
-    var category: Category! {
+
+    var userCategory: UserCategory! {
         didSet {
-            let userCategory = UserCategory.findByCategoryId(category.objectId!)!
-
-            categoryLabel.text = category.name
-
+            categoryLabel.text = userCategory.name
             timesLabel.text = getTimeSlotsString(userCategory.timeSlots)
 //            timesLabel.sizeToFit()
             
-            iconView.image = Helper.sharedInstance.createIcon(category.icon)
+            iconView.image = Helper.sharedInstance.createIcon(userCategory.icon)
+
             iconView.setNewTintColor(UIColor.whiteColor())
             iconView.layer.backgroundColor = Color.expenseColor.CGColor
             
             onSwitch.on = userCategory.reminderOn
         }
     }
-    
+
     override func awakeFromNib() {
         super.awakeFromNib()
         
@@ -79,7 +77,7 @@ class ReminderCell: UITableViewCell {
     
     func switchValueChanged() {
         if delegate != nil {
-            delegate?.reminderCell?(self, didChangeValue: onSwitch.on)
+            delegate?.reminderCellSwitchValueChanged?(self, didChangeValue: onSwitch.on)
         }
     }
     
