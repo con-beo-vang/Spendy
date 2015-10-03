@@ -79,6 +79,13 @@ class HomeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // Set color for inactive icon in tab bar
+        for item in (tabBarController?.tabBar.items as [UITabBarItem]?)! {
+            if let image = item.image {
+                item.image = image.imageWithRenderingMode(.AlwaysOriginal)
+            }
+        }
+        
 //        settingStatusBar()
         
         navigationItem.title = getTodayString("MMMM")

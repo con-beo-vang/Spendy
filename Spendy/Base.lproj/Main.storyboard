@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="8191" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="BsO-hW-yMh">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="8191" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="RGP-yE-2Qy">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
@@ -566,7 +566,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Settings" image="SettingInactive" id="Zbt-ne-WmM"/>
+                    <tabBarItem key="tabBarItem" title="Settings" image="InactiveSetting" id="Zbt-ne-WmM"/>
                     <navigationItem key="navigationItem" id="JQB-jq-oFn"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="GIC-Ge-lpi" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1511,6 +1511,24 @@
             </objects>
             <point key="canvasLocation" x="265" y="-28"/>
         </scene>
+        <!--Splash View Controller-->
+        <scene sceneID="n7a-2O-Bel">
+            <objects>
+                <viewController id="RGP-yE-2Qy" customClass="SplashViewController" customModule="Spendy" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="LoB-zl-WmK"/>
+                        <viewControllerLayoutGuide type="bottom" id="p76-Ip-3hb"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="1ym-qN-mc9">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="J39-Ap-W4l" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1014" y="242"/>
+        </scene>
         <!--Root Tab Bar Controller-->
         <scene sceneID="yeq-Qy-ugT">
             <objects>
@@ -1536,7 +1554,7 @@
         <scene sceneID="W2z-fe-FEB">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Op4-t9-Ysm" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Home" image="HomeInactive" id="sSm-lY-XV6"/>
+                    <tabBarItem key="tabBarItem" title="Home" image="InactiveHome" id="sSm-lY-XV6"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="ywG-jn-nEB">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -1555,7 +1573,7 @@
         <scene sceneID="fqd-1i-eRN">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="VYT-47-MUC" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Add" image="AddInactive" id="cqP-kH-Cq2"/>
+                    <tabBarItem key="tabBarItem" title="Add" image="InactiveAdd" id="cqP-kH-Cq2"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="bAs-c7-yri">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -1574,7 +1592,7 @@
         <scene sceneID="ZYI-dj-VAJ">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="7Pr-uo-vd1" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Account" image="AccountInactive" id="5lG-5z-L5B"/>
+                    <tabBarItem key="tabBarItem" title="Account" image="InactiveAccount" id="5lG-5z-L5B"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="Lgw-VF-ASH">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -1592,21 +1610,21 @@
     </scenes>
     <resources>
         <image name="Account" width="256" height="256"/>
-        <image name="AccountInactive" width="25" height="25"/>
-        <image name="AddInactive" width="25" height="25"/>
         <image name="Bar-Add" width="25" height="25"/>
         <image name="CheckCircle" width="50" height="50"/>
         <image name="Expand" width="100" height="100"/>
         <image name="Expense-Meal" width="256" height="256"/>
         <image name="Expense-Other" width="256" height="256"/>
-        <image name="HomeInactive" width="25" height="25"/>
+        <image name="InactiveAccount" width="25" height="25"/>
+        <image name="InactiveAdd" width="25" height="25"/>
+        <image name="InactiveHome" width="25" height="25"/>
+        <image name="InactiveSetting" width="25" height="25"/>
         <image name="Logo" width="50" height="50"/>
         <image name="Minus" width="32" height="32"/>
-        <image name="SettingInactive" width="25" height="25"/>
         <image name="Transfer" width="32" height="32"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="GZy-oB-vHb"/>
+        <segue reference="H9y-Z9-HAK"/>
         <segue reference="9fp-4E-dIQ"/>
     </inferredMetricsTieBreakers>
 </document>

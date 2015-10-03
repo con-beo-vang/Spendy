@@ -54,6 +54,7 @@ code_sign_if_enabled() {
 if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework 'Pods/AFNetworking.framework'
   install_framework 'Pods/Bolts.framework'
+  install_framework 'Pods/CBZSplashView.framework'
   install_framework 'Pods/Cartography.framework'
   install_framework 'Pods/Pages.framework'
   install_framework 'Pods/Parse.framework'
@@ -67,6 +68,7 @@ fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework 'Pods/AFNetworking.framework'
   install_framework 'Pods/Bolts.framework'
+  install_framework 'Pods/CBZSplashView.framework'
   install_framework 'Pods/Cartography.framework'
   install_framework 'Pods/Pages.framework'
   install_framework 'Pods/Parse.framework'

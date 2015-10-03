@@ -491,7 +491,7 @@
         <scene sceneID="yBm-6G-CfF">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="R7L-I4-tBg" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Settings" image="SettingInactive" id="enM-57-kgP">
+                    <tabBarItem key="tabBarItem" title="Settings" image="InactiveSetting" id="enM-57-kgP">
                         <offsetWrapper key="titlePositionAdjustment" horizontal="0.0" vertical="0.0"/>
                     </tabBarItem>
                     <toolbarItems/>
@@ -512,8 +512,8 @@
     <resources>
         <image name="Expense-Meal" width="256" height="256"/>
         <image name="Expense-Other" width="256" height="256"/>
+        <image name="InactiveSetting" width="25" height="25"/>
         <image name="PlusCircle" width="50" height="50"/>
-        <image name="SettingInactive" width="25" height="25"/>
         <image name="User" width="50" height="50"/>
     </resources>
     <inferredMetricsTieBreakers>

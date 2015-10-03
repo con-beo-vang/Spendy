@@ -44,6 +44,8 @@ class AccountsViewController: UIViewController {
         
 //        navigationController?.delegate = self
         
+        tabBarItem.image = UIImage(named: "InactiveAccount")!.imageWithRenderingMode(UIImageRenderingMode.AlwaysOriginal)
+        
         tableView.dataSource = self
         tableView.delegate = self
         tableView.tableFooterView = UIView()
