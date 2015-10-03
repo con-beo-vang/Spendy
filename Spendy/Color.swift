@@ -54,6 +54,8 @@ class Color: NSObject {
     static var expenseIconColor = UIColor(netHex: 0xE6A447)
     static var transferIconColor = UIColor(netHex: 0x4682B4)
     
+    static var inactiveTabBarIconColor = UIColor(netHex: 0xBDBDBD)
+    
     static var isGreen = true {
         didSet {
             if isGreen {
