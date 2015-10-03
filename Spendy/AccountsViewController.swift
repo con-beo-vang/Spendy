@@ -149,8 +149,32 @@ class AccountsViewController: UIViewController {
     
     @IBAction func onTransferButton(sender: UIButton) {
         // TODO: Handle transfer
-        let amountString = amountText.text
-        closePopup()
+        let amountString = (amountText.text)!
+        
+        if amountString.isEmpty {
+            let alertController = UIAlertController(title: "Please enter an amount.", message: nil, preferredStyle: .Alert)
+            let cancelAction = UIAlertAction(title: "Cancel", style: .Default) { (action) in
+                // ...
+            }
+            alertController.addAction(cancelAction)
+            presentViewController(alertController, animated: true) {}
+        } else {
+            let amountDecimal = NSDecimalNumber(string: amountString)
+            let fromAccount = selectedDragCell?.account
+            let toAccount = previousCell?.account
+            print("transfer from \(fromAccount?.name) to \(toAccount?.name)")
+            
+            let transaction = Transaction(kind: Transaction.transferKind, note: "", amount: amountDecimal, category: Category.defaultTransferCategory(), account: fromAccount, date: NSDate())
+            transaction.toAccount = toAccount
+            Transaction.add(transaction)
+            tableView.reloadData()
+            
+            closePopup()
+        }
+        
+        
+        
+        
     }
     
     // MARK: Transfer between 2 views
@@ -324,6 +348,7 @@ extension AccountsViewController: UIGestureRecognizerDelegate {
                 
                 if previousCell != selectedDragCell && !isPreparedDelete {
                     
+                    amountText.text = ""
                     let fromAcc = selectedDragCell.nameLabel.text ?? ""
                     let toAcc = previousCell?.nameLabel.text ?? ""
                     
