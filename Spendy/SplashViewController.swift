@@ -14,9 +14,12 @@ class SplashViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        let icon = UIImage(named: "Cheetah-1")
+        // Choose a different image from a list of Cheetah-0, Cheetah-1, ... Cheetah-count etc
+        let count = 2
+        let index = Int(arc4random_uniform(UInt32(count)))
+        let icon = UIImage(named: "Cheetah-\(index)")
         let splashView = CBZSplashView(icon: icon, backgroundColor: Color.strongColor)
-        
+
         view.addSubview(splashView)
         
         splashView.animationDuration = 1.5
