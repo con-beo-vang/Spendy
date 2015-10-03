@@ -16,6 +16,8 @@ class TransactionCell: UITableViewCell {
     @IBOutlet weak var amountLabel: UILabel!
     @IBOutlet weak var balanceLabel: UILabel!
 
+    var currentAccount: Account?
+
     var transaction: Transaction! {
         didSet {
             if let noteText = transaction.note {
@@ -26,14 +28,20 @@ class TransactionCell: UITableViewCell {
                 }
             }
 
-            // TODO: use system currency
             if transaction.amount != nil {
                 amountLabel.text = transaction.formattedAmount()
                 amountLabel.textColor = transaction.kindColor()
             }
             dateLabel.text = transaction.dateOnly()
-            // TODO: retrieve balance amount
-            balanceLabel.text = transaction.formattedBalanceSnapshot()
+
+            // TODO: which balance to display
+            if let account = currentAccount,
+                    toAccount = transaction.toAccount
+                where account == toAccount {
+                balanceLabel.text = transaction.formattedToBalanceSnapshot()
+            } else {
+                balanceLabel.text = transaction.formattedBalanceSnapshot()
+            }
 
             if let icon = transaction.category?.icon {
                 iconView.image = Helper.sharedInstance.createIcon(icon)

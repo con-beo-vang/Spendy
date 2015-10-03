@@ -21,6 +21,7 @@ Schema:
     categoryId
     date
     balanceSnapshot
+    toBalanceSnapshot
 */
 
 var _allTransactions: [Transaction]?
@@ -50,6 +51,22 @@ class Transaction: HTObject {
             let before = balanceSnapshot
             self["balanceSnapshot"] = newValue
             if before != balanceSnapshot {
+                save()
+            }
+        }
+    }
+
+    var toBalanceSnapshot: NSDecimalNumber {
+        get {
+            guard let am = self["toBalanceSnapshot"] as! NSNumber? else {
+                return 0
+            }
+            return NSDecimalNumber(decimal: am.decimalValue)
+        }
+        set {
+            let before = toBalanceSnapshot
+            self["toBalanceSnapshot"] = newValue
+            if before != toBalanceSnapshot {
                 save()
             }
         }
@@ -258,8 +275,11 @@ class Transaction: HTObject {
     }
 
     func formattedBalanceSnapshot() -> String? {
-
         return Transaction.currencyFormatter.stringFromNumber(balanceSnapshot)
+    }
+
+    func formattedToBalanceSnapshot() -> String? {
+        return Transaction.currencyFormatter.stringFromNumber(toBalanceSnapshot)
     }
 
     // MARK: - Utilities
@@ -318,6 +338,7 @@ class Transaction: HTObject {
     class func add(element: Transaction) {
         element.save()
         element.fromAccount!.addTransaction(element)
+        element.toAccount?.addTransaction(element)
     }
 
     override func delete() {

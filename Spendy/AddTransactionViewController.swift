@@ -151,8 +151,8 @@ class AddTransactionViewController: UIViewController {
 
         print("[onAddButton] transaction: \(transaction)")
 
-        if transaction.isNew() { // currently not saving transaction yet
-            print("added transaction")
+        if transaction.isNew() {
+            // add transaction and update both fromAccount and toAccount stats
             Transaction.add(transaction)
         }
 
