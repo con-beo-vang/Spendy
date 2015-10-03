@@ -47,7 +47,7 @@
                                                     <color key="tintColor" red="0.76862745098039209" green="0.53333333333333333" blue="0.32549019607843138" alpha="1" colorSpace="calibratedRGB"/>
                                                 </segmentedControl>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Meals" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EgV-j5-4xM">
-                                                    <rect key="frame" x="48" y="13" width="46" height="21"/>
+                                                    <rect key="frame" x="48" y="13" width="45.5" height="20.5"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" red="0.90196078431372551" green="0.64313725490196072" blue="0.27843137254901962" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -73,7 +73,7 @@
                                 </prototypes>
                             </tableView>
                             <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="lbw-ID-crr">
-                                <rect key="frame" x="0.0" y="345" width="320" height="200"/>
+                                <rect key="frame" x="0.0" y="645" width="320" height="200"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9vj-Y7-Jkb">
                                         <rect key="frame" x="70" y="37" width="180" height="137"/>
@@ -144,15 +144,25 @@
                                     <constraint firstAttribute="centerX" secondItem="9vj-Y7-Jkb" secondAttribute="centerX" id="nKl-Ot-0IZ"/>
                                 </constraints>
                             </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="E2t-Ys-Gi9">
+                                <rect key="frame" x="8" y="530" width="304" height="30"/>
+                                <state key="normal" title="Done"/>
+                                <connections>
+                                    <action selector="onPrimaryButton:" destination="FZf-dF-VZb" eventType="touchUpInside" id="tqR-W1-dGE"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="lbw-ID-crr" firstAttribute="leading" secondItem="1vC-sq-2bW" secondAttribute="leading" id="1Qu-b1-tGE"/>
+                            <constraint firstAttribute="trailing" secondItem="E2t-Ys-Gi9" secondAttribute="trailing" constant="8" id="BoI-gw-rYa"/>
+                            <constraint firstItem="E2t-Ys-Gi9" firstAttribute="top" secondItem="Chg-Io-O6L" secondAttribute="bottom" constant="8" id="Cpd-aW-gZ8"/>
                             <constraint firstAttribute="trailing" secondItem="Chg-Io-O6L" secondAttribute="trailing" id="Jid-0b-WaD"/>
                             <constraint firstItem="Chg-Io-O6L" firstAttribute="top" secondItem="1vC-sq-2bW" secondAttribute="top" id="Kyy-r7-3ch"/>
+                            <constraint firstItem="E2t-Ys-Gi9" firstAttribute="leading" secondItem="1vC-sq-2bW" secondAttribute="leading" constant="8" id="LSj-fT-51f"/>
                             <constraint firstItem="Chg-Io-O6L" firstAttribute="leading" secondItem="1vC-sq-2bW" secondAttribute="leading" id="SGQ-dP-MNa"/>
+                            <constraint firstItem="ITb-Bs-YSq" firstAttribute="top" secondItem="E2t-Ys-Gi9" secondAttribute="bottom" constant="8" id="WES-Lh-Y4U"/>
                             <constraint firstItem="ITb-Bs-YSq" firstAttribute="top" secondItem="lbw-ID-crr" secondAttribute="bottom" id="bzd-VS-sPk"/>
-                            <constraint firstItem="ITb-Bs-YSq" firstAttribute="top" secondItem="Chg-Io-O6L" secondAttribute="bottom" id="dPs-TD-ZMI"/>
                             <constraint firstAttribute="trailing" secondItem="lbw-ID-crr" secondAttribute="trailing" id="pcC-lf-3M1"/>
                             <constraint firstItem="lbw-ID-crr" firstAttribute="top" secondItem="1vC-sq-2bW" secondAttribute="top" id="zd2-XA-Vnd"/>
                         </constraints>
@@ -165,6 +175,7 @@
                         <outlet property="popupSuperView" destination="lbw-ID-crr" id="aGi-ar-0d2"/>
                         <outlet property="popupTitleLabel" destination="ogG-o0-RXn" id="GuC-4p-JE8"/>
                         <outlet property="popupView" destination="9vj-Y7-Jkb" id="A2Z-5T-vpz"/>
+                        <outlet property="primaryButton" destination="E2t-Ys-Gi9" id="FKb-rR-qTi"/>
                         <outlet property="tableView" destination="Chg-Io-O6L" id="NJS-gB-X1m"/>
                     </connections>
                 </viewController>
