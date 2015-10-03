@@ -28,15 +28,28 @@ class QuickViewController: UIViewController {
     var addButton: UIButton?
     var cancelButton: UIButton?
 
-    var commonTracsations = [String]() // transaction object
+//    var commonTracsations = [String]() // transaction object
+
     var selectedIndexPath: NSIndexPath?
     var oldSelectedSegmentIndex: Int?
+
+    var userCategories: [UserCategory]!
+    var quickTransactions: [Transaction]!
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Load common transactions
-        commonTracsations = ["Meal", "Drink", "Transport"]
+//        commonTracsations = ["Meal", "Drink", "Transport"]
+
+        // Load top user categories
+        userCategories = UserCategory.allForQuickAdd()
+
+        quickTransactions = userCategories.map({ (userCat) -> Transaction in
+            let defaultAmount = userCat.quickAddAmounts().first
+
+            return Transaction(kind: Transaction.transferKind, note: nil, amount: defaultAmount, category: userCat.category, account: Account.defaultAccount(), date: NSDate())
+        })
 
         tableView.dataSource = self
         tableView.delegate = self
@@ -90,6 +103,16 @@ class QuickViewController: UIViewController {
     func onAddButton(sender: UIButton!) {
         print("on Add", terminator: "\n")
         // TODO: transfer to default account's detail
+
+        for transaction in quickTransactions {
+            Transaction.add(transaction)
+        }
+
+        dismissViewControllerAnimated(true, completion: nil)
+
+        let rootVC = parentViewController?.parentViewController as? RootTabBarController
+        // go to Accouns tab
+        rootVC?.selectedIndex = 1
     }
 
     func onCancelButton(sender: UIButton!) {
@@ -180,26 +203,27 @@ class QuickViewController: UIViewController {
 extension QuickViewController: UITableViewDataSource, UITableViewDelegate, UIGestureRecognizerDelegate {
 
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return commonTracsations.count
+        return quickTransactions.count
     }
 
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
 
         let cell = tableView.dequeueReusableCellWithIdentifier("QuickCell", forIndexPath: indexPath) as! QuickCell
 
-        cell.categoryLabel.text = commonTracsations[indexPath.row]
+        cell.amountValues = userCategories[indexPath.row].quickAddAmounts()
+        cell.transaction = quickTransactions[indexPath.row]
 
         cell.amoutSegment.addTarget(self, action: "amountSegmentChanged:", forControlEvents: UIControlEvents.ValueChanged)
 
-        cell.iconView.image = Helper.sharedInstance.createIcon("Expense-Meal")
-        cell.iconView.setNewTintColor(UIColor.whiteColor())
-        cell.iconView.layer.backgroundColor = Color.expenseIconColor.CGColor
+//        cell.categoryLabel.text = commonTracsations[indexPath.row]
+//        cell.iconView.image = Helper.sharedInstance.createIcon("Expense-Meal")
+//        cell.iconView.setNewTintColor(UIColor.whiteColor())
+//        cell.iconView.layer.backgroundColor = Color.expenseIconColor.CGColor
 
         // Swipe left to delete this row
         let leftSwipe = UISwipeGestureRecognizer(target: self, action: Selector("handleSwipe:"))
         leftSwipe.direction = .Left
         cell.addGestureRecognizer(leftSwipe)
-
 
         Helper.sharedInstance.setSeparatorFullWidth(cell)
 
@@ -207,12 +231,12 @@ extension QuickViewController: UITableViewDataSource, UITableViewDelegate, UIGes
     }
 
     func amountSegmentChanged(sender: UISegmentedControl) {
-
-        print("touch", terminator: "\n")
+        print("touch \(sender)")
 
         let segment = sender as! CustomSegmentedControl
         oldSelectedSegmentIndex = segment.oldValue
 
+        // show popup if Other is tapped
         if sender.selectedSegmentIndex == 3 {
             let selectedCell = sender.superview?.superview as! QuickCell
             let indexPath = tableView.indexPathForCell(selectedCell)
@@ -233,10 +257,11 @@ extension QuickViewController: UITableViewDataSource, UITableViewDelegate, UIGes
         case UISwipeGestureRecognizerDirection.Left:
             let selectedCell = sender.view as! QuickCell
             let indexPath = tableView.indexPathForCell(selectedCell)
-            commonTracsations.removeAtIndex(indexPath!.row)
+//            commonTracsations.removeAtIndex(indexPath!.row)
+            quickTransactions.removeAtIndex(indexPath!.row)
             tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: UITableViewRowAnimation.Automatic)
 
-            if commonTracsations.count == 0 {
+            if quickTransactions.count == 0 {
                 dismissViewControllerAnimated(true, completion: nil)
             }
             break
