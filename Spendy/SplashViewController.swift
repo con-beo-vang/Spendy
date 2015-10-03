@@ -14,7 +14,7 @@ class SplashViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        let icon = UIImage(named: "Cheetah")
+        let icon = UIImage(named: "Cheetah-1")
         let splashView = CBZSplashView(icon: icon, backgroundColor: Color.strongColor)
         
         view.addSubview(splashView)
