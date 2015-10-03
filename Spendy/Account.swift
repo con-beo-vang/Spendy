@@ -69,6 +69,7 @@ class Account: HTObject {
             switch kind {
             case Transaction.transferKind:
                 if t.toAccountId == self.objectId {
+                    // this is the transfer transaction displayed under destination account
                     bal = bal.decimalNumberByAdding(t.amount!)
                 } else {
                     bal = bal.decimalNumberBySubtracting(t.amount!)
@@ -83,9 +84,16 @@ class Account: HTObject {
             default:
                 print("unexpected kind: \(kind)")
             }
-            
-            if bal != t.balanceSnapshot {
-                t.balanceSnapshot = bal
+
+            if t.toAccountId == self.objectId {
+                // this is the transfer transaction displayed under destination account
+                if bal != t.toBalanceSnapshot {
+                    t.toBalanceSnapshot = bal
+                }
+            } else {
+                if bal != t.balanceSnapshot {
+                    t.balanceSnapshot = bal
+                }
             }
         }
 
@@ -120,7 +128,11 @@ class Account: HTObject {
     }
 
     func addTransaction(transaction: Transaction) {
-        transaction.save()
+        if transaction.isNew() {
+            // expect transaction to have been saved
+            // only save if it's a new record
+            transaction.save()
+        }
         transactions.append(transaction)
         recomputeBalance()
     }
