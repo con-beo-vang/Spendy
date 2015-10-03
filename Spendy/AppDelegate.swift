@@ -39,7 +39,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             return false
         }
         
-        print("loaded config: \(config)")
+        // print("loaded config: \(config)")
         let applicationId = config["parse_application_id"] as? String
         let clientKey = config["parse_client_key"] as? String
         Parse.setApplicationId(applicationId!, clientKey: clientKey!)

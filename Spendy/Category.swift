@@ -170,7 +170,7 @@ class Category: HTObject {
             if !forceLoadFromRemote {
                 query.fromLocalDatastore()
             }
-            let objects = try! query.findObjects()
+            let objects = (try? query.findObjects()) ?? (try! query.fromLocalDatastore().findObjects())
             _allCategories = objects.map({ Category(object: $0) })
         }
 
@@ -212,7 +212,7 @@ extension Category {
 
         let query = PFQuery(className: "Category")
         query.limit = 100
-        let objects = try! query.findObjects()
+        let objects = (try? query.findObjects()) ?? (try! query.fromLocalDatastore().findObjects())
         print("Found: \(objects.count) existing categories")
 
         loadType(CategoryType.Transfer, names: transferCats, objects: objects)
