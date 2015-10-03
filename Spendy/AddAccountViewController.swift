@@ -12,8 +12,6 @@ class AddAccountViewController: UIViewController {
 
     @IBOutlet weak var tableView: UITableView!
     
-    var formatter: NSDateFormatter!
-    
     var addButton: UIButton?
     var backButton: UIButton?
     
@@ -31,9 +29,6 @@ class AddAccountViewController: UIViewController {
         tableView.dataSource = self
         tableView.delegate = self
         tableView.tableFooterView = UIView()
-        
-        formatter = NSDateFormatter()
-        formatter.dateFormat = "EEE, MMM dd, yyyy"
         
         addBarButton()
 
@@ -188,7 +183,7 @@ extension AddAccountViewController: UITableViewDataSource, UITableViewDelegate {
             let cell = tableView.dequeueReusableCellWithIdentifier("DateCell", forIndexPath: indexPath) as! DateCell
             
             let today = NSDate()
-            cell.dateLabel.text = formatter.stringFromDate(today)
+            cell.dateLabel.text = DateFormatter.EEE_MMM_dd_yyyy.stringFromDate(today)
             
             Helper.sharedInstance.setSeparatorFullWidth(cell)
             return cell

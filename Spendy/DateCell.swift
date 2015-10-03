@@ -30,12 +30,7 @@ class DateCell: UITableViewCell {
     }
     
     @IBAction func onDatePicker(sender: AnyObject) {
-        
-        let dateFormatter = NSDateFormatter()
-        dateFormatter.dateFormat = "E, MMM dd, yyyy"
-        let strDate = dateFormatter.stringFromDate(datePicker.date)
+        let strDate = DateFormatter.E_MMM_dd_yyyy.stringFromDate(datePicker.date)
         dateLabel.text = strDate
     }
-    
-
 }

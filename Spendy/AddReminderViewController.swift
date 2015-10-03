@@ -18,8 +18,6 @@ class AddReminderViewController: UIViewController, TimeCellDelegate {
     var selectedUserCategory: UserCategory!
     var isNewReminder = false
     
-    var formatter: NSDateFormatter!
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -34,9 +32,6 @@ class AddReminderViewController: UIViewController, TimeCellDelegate {
         }
             
         addGestures()
-        
-        formatter = NSDateFormatter()
-        formatter.dateFormat = "hh:mm a"
     }
     
     override func didReceiveMemoryWarning() {
@@ -128,7 +123,7 @@ extension AddReminderViewController: UITableViewDataSource, UITableViewDelegate 
             let selectedCell = tableView.cellForRowAtIndexPath(indexPath) as? TimeCell
             let timeString = selectedCell!.timeLabel.text
             
-            let defaultDate = formatter.dateFromString(timeString!)
+            let defaultDate = DateFormatter.hh_mm_a.dateFromString(timeString!)
             
             DatePickerDialog().show(title: "Choose Time", doneButtonTitle: "Done", cancelButtonTitle: "Cancel", defaultDate: defaultDate!, minDate: nil, datePickerMode: .Time) {
                 (time) -> Void in

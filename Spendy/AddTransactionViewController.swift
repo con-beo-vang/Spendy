@@ -98,9 +98,10 @@ class AddTransactionViewController: UIViewController {
 
             // TODO: parse date
             // validate date is in the past
-            let date = dateCell!.datePicker.date
-            transaction.date = date
-            print("date: \(date)")
+            if let date = dateCell?.datePicker.date {
+                transaction.date = date
+                print("date: \(date)")
+            }
 
 
             if transaction.kind == Transaction.transferKind {
@@ -321,9 +322,7 @@ extension AddTransactionViewController: UITableViewDataSource, UITableViewDelega
             todayLabel.font = UIFont.systemFontOfSize(14)
             
             let today = NSDate()
-            let formatter = NSDateFormatter()
-            formatter.dateStyle = NSDateFormatterStyle.FullStyle
-            todayLabel.text = formatter.stringFromDate(today)
+            todayLabel.text = DateFormatter.fullStyle.stringFromDate(today)
             
             headerView.addSubview(todayLabel)
         }
@@ -469,7 +468,10 @@ extension AddTransactionViewController: UITableViewDataSource, UITableViewDelega
             } else {
                 let cell = tableView.dequeueReusableCellWithIdentifier("DateCell", forIndexPath: indexPath) as! DateCell
                 cell.titleLabel.text = "Date"
-                
+                let date = selectedTransaction!.date ?? NSDate()
+                cell.datePicker.date = date
+                cell.dateLabel.text = DateFormatter.E_MMM_dd_yyyy.stringFromDate(date)
+
                 let tapCell = UITapGestureRecognizer(target: self, action: "tapDateCell:")
                 cell.addGestureRecognizer(tapCell)
                 
@@ -516,13 +518,8 @@ extension AddTransactionViewController {
     
     func tapMoreCell(sender: UITapGestureRecognizer) {
         isCollaped = false
-        
-        selectedTransaction?.note = noteCell?.noteText.text
-        let amountDecimal = NSDecimalNumber(string: amountCell?.amountText.text)
-        
-        if amountDecimal != NSDecimalNumber.notANumber() {
-            selectedTransaction?.amount = amountDecimal
-        }
+
+        updateFieldsToTransaction()
         
         UIView.transitionWithView(tableView,
             duration:0.5,
@@ -535,7 +532,6 @@ extension AddTransactionViewController {
     }
     
     func tapDateCell(sender: UITapGestureRecognizer) {
-        
         noteCell!.noteText.resignFirstResponder()
         amountCell!.amountText.resignFirstResponder()
         

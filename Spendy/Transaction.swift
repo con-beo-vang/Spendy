@@ -193,6 +193,7 @@ class Transaction: HTObject {
     
     // MARK: - date formatter
     static var dateFormatter = NSDateFormatter()
+
     func dateToString(dateStyle: NSDateFormatterStyle? = nil, dateFormat: String? = nil) -> String? {
         if let date = date {
             if dateStyle != nil {
@@ -209,16 +210,11 @@ class Transaction: HTObject {
         }
     }
 
-    static var _currencyFormatter: NSNumberFormatter?
-    static var currencyFormatter : NSNumberFormatter {
-        guard _currencyFormatter != nil else {
-            _currencyFormatter = NSNumberFormatter()
-            _currencyFormatter!.numberStyle = .CurrencyStyle
-            return _currencyFormatter!
-        }
-
-        return _currencyFormatter!
-   }
+    static var currencyFormatter: NSNumberFormatter = {
+        let formatter = NSNumberFormatter()
+        formatter.numberStyle = .CurrencyStyle
+        return formatter
+    }()
 
     // Ex: September 21, 2015
     func dateOnly() -> String? {

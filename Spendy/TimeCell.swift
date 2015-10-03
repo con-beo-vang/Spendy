@@ -25,9 +25,7 @@ class TimeCell: UITableViewCell {
     
     var reminderItem: ReminderItem! {
         didSet {
-            let formatter = NSDateFormatter()
-            formatter.dateFormat = "hh:mm a"
-            timeLabel.text = formatter.stringFromDate(reminderItem.reminderTime)
+            timeLabel.text = DateFormatter.hh_mm_a.stringFromDate(reminderItem.reminderTime)
             onSwitch.on = reminderItem.isActive
         }
     }
