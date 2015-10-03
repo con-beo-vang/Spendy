@@ -98,7 +98,8 @@ class AddTransactionViewController: UIViewController {
 
             // TODO: parse date
             // validate date is in the past
-            let date = dateCell?.datePicker.date
+            let date = dateCell!.datePicker.date
+            transaction.date = date
             print("date: \(date)")
 
 
@@ -479,9 +480,10 @@ extension AddTransactionViewController: UITableViewDataSource, UITableViewDelega
                 }
                 
                 Helper.sharedInstance.setSeparatorFullWidth(cell)
-                if dateCell == nil {
-                    dateCell = cell
-                }
+
+                // override previous datecell with this datecell with datepicker
+                dateCell = cell
+
                 return cell
             }
             
