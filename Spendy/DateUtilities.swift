@@ -36,14 +36,16 @@ class DateFormatter {
     static var E_MMM_dd_yyyy   = DateFormatter.formatFromString("E, MMM dd, yyyy")
     static var EEE_MMM_dd_yyyy = DateFormatter.formatFromString("EEE, MMM dd, yyyy")
     static var fullStyle       = DateFormatter.formatFromString(style: NSDateFormatterStyle.FullStyle)
+    static var MM_dd_yyyy_hh_mm_ss = DateFormatter.formatFromString("MM-dd-yyyy hh:mm:ss")
+
+    static var MMMM_dd_yyyy    = DateFormatter.formatFromString("MMMM dd, yyyy")
+    static var MMM_dd_yyyy     = DateFormatter.formatFromString("MMM dd, yyyy")
     static var MM_dd_yyyy      = DateFormatter.formatFromString("MM-dd-yyyy")
+    static var dd_MMMM         = DateFormatter.formatFromString("dd MMMM")
+
     static var MMMM            = DateFormatter.formatFromString("MMMM")
     static var yyyy            = DateFormatter.formatFromString("yyyy")
-    static var MM_dd_yyyy_hh_mm_ss = DateFormatter.formatFromString("MM-dd-yyyy hh:mm:ss")
-    static var dd_MMMM            = DateFormatter.formatFromString("dd MMMM")
-    static var MMMM_dd_yyyy    = DateFormatter.formatFromString("MMMM dd, yyyy")
-    static var MMM_dd_yyyy    = DateFormatter.formatFromString("MMM dd, yyyy")
 
     static var hh_mm_a         = DateFormatter.formatFromString("hh:mm a")
-    static var h_mm_a         = DateFormatter.formatFromString("h:mm a")
+    static var h_mm_a          = DateFormatter.formatFromString("h:mm a")
 }
