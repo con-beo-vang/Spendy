@@ -82,7 +82,7 @@ class HomeViewController: UIViewController {
         // Set color for inactive icon in tab bar
         for item in (tabBarController?.tabBar.items as [UITabBarItem]?)! {
             if let image = item.image {
-                item.image = image.imageWithRenderingMode(.AlwaysOriginal)
+                item.image = image.imageWithColor(Color.inactiveTabBarIconColor).imageWithRenderingMode(.AlwaysOriginal)
             }
         }
         
