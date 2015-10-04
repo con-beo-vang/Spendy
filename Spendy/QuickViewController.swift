@@ -70,7 +70,7 @@ class QuickViewController: UIViewController {
     }
 
     func setColor() {
-        primaryButton.backgroundColor = Color.quickSegmentColor
+        primaryButton.backgroundColor = Color.strongColor
         primaryButton.setTitleColor(UIColor.whiteColor(), forState: .Normal)
         primaryButton.layer.cornerRadius = 5
         primaryButton.layer.masksToBounds = true
