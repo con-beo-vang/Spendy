@@ -129,7 +129,7 @@ class Transaction: HTObject {
     // TODO: support validation errors
     override func isValid() -> Bool {
         guard super.isValid() else { return false }
-        guard note != nil else {return false }
+        guard amount != nil else {return false }
         guard fromAccountId != nil else { return false }
         guard !fromAccountId!.isEmpty else { return false }
 

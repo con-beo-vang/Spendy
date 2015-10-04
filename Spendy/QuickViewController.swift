@@ -39,16 +39,13 @@ class QuickViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Load common transactions
-//        commonTracsations = ["Meal", "Drink", "Transport"]
-
         // Load top user categories
         userCategories = UserCategory.allForQuickAdd()
 
         quickTransactions = userCategories.map({ (userCat) -> Transaction in
             let defaultAmount = userCat.quickAddAmounts().first
 
-            return Transaction(kind: Transaction.transferKind, note: nil, amount: defaultAmount, category: userCat.category, account: Account.defaultAccount(), date: NSDate())
+            return Transaction(kind: Transaction.expenseKind, note: nil, amount: defaultAmount, category: userCat.category, account: Account.defaultAccount(), date: NSDate())
         })
 
         tableView.dataSource = self
@@ -104,7 +101,11 @@ class QuickViewController: UIViewController {
         print("on Add", terminator: "\n")
         // TODO: transfer to default account's detail
 
-        for transaction in quickTransactions {
+        for (index, transaction) in quickTransactions.enumerate() {
+            let cell = tableView.cellForRowAtIndexPath( NSIndexPath(forRow: index, inSection: 0) ) as! QuickCell
+            let segment = cell.amoutSegment
+            let amountText = segment.titleForSegmentAtIndex(segment.selectedSegmentIndex)
+            transaction.amount = NSDecimalNumber(string: amountText)
             Transaction.add(transaction)
         }
 
@@ -215,11 +216,6 @@ extension QuickViewController: UITableViewDataSource, UITableViewDelegate, UIGes
 
         cell.amoutSegment.addTarget(self, action: "amountSegmentChanged:", forControlEvents: UIControlEvents.ValueChanged)
 
-//        cell.categoryLabel.text = commonTracsations[indexPath.row]
-//        cell.iconView.image = Helper.sharedInstance.createIcon("Expense-Meal")
-//        cell.iconView.setNewTintColor(UIColor.whiteColor())
-//        cell.iconView.layer.backgroundColor = Color.expenseIconColor.CGColor
-
         // Swipe left to delete this row
         let leftSwipe = UISwipeGestureRecognizer(target: self, action: Selector("handleSwipe:"))
         leftSwipe.direction = .Left
@@ -246,7 +242,6 @@ extension QuickViewController: UITableViewDataSource, UITableViewDelegate, UIGes
     }
 
     // MARK: Handle gestures
-
     func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWithGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         return true
     }
@@ -257,7 +252,6 @@ extension QuickViewController: UITableViewDataSource, UITableViewDelegate, UIGes
         case UISwipeGestureRecognizerDirection.Left:
             let selectedCell = sender.view as! QuickCell
             let indexPath = tableView.indexPathForCell(selectedCell)
-//            commonTracsations.removeAtIndex(indexPath!.row)
             quickTransactions.removeAtIndex(indexPath!.row)
             tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: UITableViewRowAnimation.Automatic)
 
@@ -273,10 +267,5 @@ extension QuickViewController: UITableViewDataSource, UITableViewDelegate, UIGes
         default:
             break
         }
-
-
     }
 }
-
-
-

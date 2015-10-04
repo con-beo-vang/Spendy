@@ -197,8 +197,6 @@ extension AccountDetailViewController: UITableViewDataSource, UITableViewDelegat
         Helper.sharedInstance.setSeparatorFullWidth(cell)
         return cell
     }
-    
-    
 }
 
 // MARK: Handle gestures
