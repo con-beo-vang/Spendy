@@ -747,6 +747,8 @@ extension HomeViewController {
     }
 }
 
+// MARK: - Implement delegate
+
 extension HomeViewController: QuickViewControllerDelegate {
     
     func quickViewController(quickViewController: QuickViewController, didAddTransaction status: Bool) {
@@ -755,7 +757,8 @@ extension HomeViewController: QuickViewControllerDelegate {
             tabBarController?.selectedIndex = 1
             let accountsNVC = tabBarController?.viewControllers?.at(1) as? UINavigationController
             let accountsVC = accountsNVC?.topViewController as? AccountsViewController
-            accountsVC?.isFromQuickAdd = true
+            accountsVC?.justAddTransactions = true
+            accountsVC?.addedAccount = Account.defaultAccount()
         }
     }
 }

@@ -168,11 +168,17 @@ class AddTransactionViewController: UIViewController {
         let rootVC = parentViewController?.parentViewController as? RootTabBarController
         // go to Accouns tab
         rootVC?.selectedIndex = 1
+        
+        let accountsNVC = rootVC?.viewControllers?.at(1) as? UINavigationController
+        let accountsVC = accountsNVC?.topViewController as? AccountsViewController
+        accountsVC?.justAddTransactions = true
+        accountsVC?.addedAccount = Account.findById((selectedTransaction?.fromAccountId)!)
+        
+        selectedTransaction = nil
     }
 
     func onCancelButton(sender: UIButton!) {
         print("onCancelButton", terminator: "\n")
-
         closeView()
     }
 
@@ -192,7 +198,7 @@ class AddTransactionViewController: UIViewController {
             navigationController!.popViewControllerAnimated(true)
         }
 
-        selectedTransaction = nil
+        
         closeTabAndSwitchToHome()
     }
 }
