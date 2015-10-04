@@ -133,12 +133,6 @@ extension AddReminderViewController: UITableViewDataSource, UITableViewDelegate 
                 
                 self.selectedUserCategory.updateReminder(indexPath.row, newTime: time)
 
-                // is it necessary?
-                // TODO: change to
-                // self.selectedCategory.timeSlots[indexPath.row] = selectedItem
-
-                // TODO: update this item in Parse
-                
                 self.tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: UITableViewRowAnimation.Automatic)
             }
         } else {
@@ -207,6 +201,11 @@ extension AddReminderViewController: UIGestureRecognizerDelegate {
 
             // Add notification
             self.selectedUserCategory.addReminder(time)
+
+            // Turn category on if it's a new one
+            if self.selectedUserCategory.timeSlots.count == 1 {
+                self.selectedUserCategory.turnOn()
+            }
 
             self.tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: UITableViewRowAnimation.Automatic)
         }
