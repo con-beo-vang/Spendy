@@ -747,6 +747,8 @@ extension HomeViewController {
     }
 }
 
+// MARK: - Implement delegate
+
 extension HomeViewController: QuickViewControllerDelegate {
     
     func quickViewController(quickViewController: QuickViewController, didAddTransaction status: Bool) {

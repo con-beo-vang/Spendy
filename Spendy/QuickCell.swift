@@ -32,7 +32,7 @@ class QuickCell: UITableViewCell {
             iconView.image = Helper.sharedInstance.createIcon(category.icon)
             iconView.setNewTintColor(UIColor.whiteColor())
             // it is possible to support a different category color here
-            iconView.layer.backgroundColor = Color.expenseIconColor.CGColor
+            iconView.layer.backgroundColor = Color.expenseColor.CGColor
         }
     }
 
