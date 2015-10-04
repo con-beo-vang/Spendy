@@ -8,6 +8,10 @@
 
 import UIKit
 
+@objc protocol QuickViewControllerDelegate {
+    optional func quickViewController(quickViewController: QuickViewController, didAddTransaction status: Bool)
+}
+
 class QuickViewController: UIViewController {
 
 
@@ -25,6 +29,8 @@ class QuickViewController: UIViewController {
 
     @IBOutlet weak var donePopupButton: UIButton!
 
+    @IBOutlet weak var primaryButton: UIButton!
+
     var addButton: UIButton?
     var cancelButton: UIButton?
 
@@ -32,6 +38,8 @@ class QuickViewController: UIViewController {
 
     var selectedIndexPath: NSIndexPath?
     var oldSelectedSegmentIndex: Int?
+
+    weak var delegate: QuickViewControllerDelegate?
 
     var userCategories: [UserCategory]!
     var quickTransactions: [Transaction]!
@@ -64,7 +72,6 @@ class QuickViewController: UIViewController {
 
         addBarButton()
 
-
         configPopup()
 
     }
@@ -79,6 +86,11 @@ class QuickViewController: UIViewController {
     }
 
     func setColor() {
+        primaryButton.backgroundColor = Color.strongColor
+        primaryButton.setTitleColor(UIColor.whiteColor(), forState: .Normal)
+        primaryButton.layer.cornerRadius = 5
+        primaryButton.layer.masksToBounds = true
+
         popupView.backgroundColor = Color.popupBackgroundColor
         cancelPopupButton.setTitleColor(Color.popupButtonColor, forState: UIControlState.Normal)
         donePopupButton.setTitleColor(Color.popupButtonColor, forState: UIControlState.Normal)
@@ -98,9 +110,20 @@ class QuickViewController: UIViewController {
     }
 
     func onAddButton(sender: UIButton!) {
-        print("on Add", terminator: "\n")
-        // TODO: transfer to default account's detail
+        addQuickTransactions()
+    }
 
+    func onCancelButton(sender: UIButton!) {
+        delegate?.quickViewController!(self, didAddTransaction: false)
+        dismissViewControllerAnimated(true, completion: nil)
+    }
+
+    @IBAction func onPrimaryButton(sender: UIButton) {
+        addQuickTransactions()
+    }
+
+    func addQuickTransactions() {
+        print("Add transactions")
         for (index, transaction) in quickTransactions.enumerate() {
             let cell = tableView.cellForRowAtIndexPath( NSIndexPath(forRow: index, inSection: 0) ) as! QuickCell
             let segment = cell.amoutSegment
@@ -109,16 +132,10 @@ class QuickViewController: UIViewController {
             Transaction.add(transaction)
         }
 
-        dismissViewControllerAnimated(true, completion: nil)
-
-        let rootVC = parentViewController?.parentViewController as? RootTabBarController
-        // go to Accouns tab
-        rootVC?.selectedIndex = 1
+        delegate?.quickViewController!(self, didAddTransaction: true)
+        dismissViewControllerAnimated(false, completion: nil)
     }
 
-    func onCancelButton(sender: UIButton!) {
-        dismissViewControllerAnimated(true, completion: nil)
-    }
 
     // MARK: Popup
 
@@ -205,6 +222,26 @@ extension QuickViewController: UITableViewDataSource, UITableViewDelegate, UIGes
 
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return quickTransactions.count
+    }
+
+    func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+
+        let headerView = UIView(frame: CGRect(x: 0, y: 0, width: UIScreen.mainScreen().bounds.width, height: 30))
+        headerView.backgroundColor = UIColor(netHex: 0xDCDCDC)
+
+        if section == 0 {
+            let accountLabel = UILabel(frame: CGRect(x: 8, y: 2, width: UIScreen.mainScreen().bounds.width - 16, height: 30))
+            accountLabel.font = UIFont.systemFontOfSize(14)
+
+            accountLabel.text = "* Add transactions to \((Account.defaultAccount()?.name)!)"
+
+            headerView.addSubview(accountLabel)
+        }
+        return headerView
+    }
+
+    func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 34
     }
 
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
