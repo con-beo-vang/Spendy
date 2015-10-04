@@ -12,9 +12,13 @@ class AccountDetailViewController: UIViewController {
 
     @IBOutlet weak var tableView: UITableView!
 
+    @IBOutlet weak var createdDateLabel: UILabel!
+    
+    @IBOutlet weak var startingBalanceLabel: UILabel!
+
     var addButton: UIButton?
     var cancelButton: UIButton?
-
+    
     var accountTransactions: [[Transaction]]!
 
     var currentAccount: Account!
@@ -73,6 +77,12 @@ class AccountDetailViewController: UIViewController {
     override func viewWillAppear(animated: Bool) {
         if let currentAccount = currentAccount {
             navigationItem.title = currentAccount.name
+            
+            let formatter = NSDateFormatter()
+            formatter.dateFormat = "MM/dd/yyyy"
+            
+            createdDateLabel.text = "Created on: \(formatter.stringFromDate(currentAccount.createdAt()))"
+            startingBalanceLabel.text = "Starting balance: $\(currentAccount.startingBalance)"
         }
 
         print("viewWillAppear", terminator: "\n")
@@ -168,11 +178,11 @@ extension AccountDetailViewController: UITableViewDataSource, UITableViewDelegat
 
         return headerView
     }
-
+    
     func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 34
     }
-
+    
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         return 62
     }

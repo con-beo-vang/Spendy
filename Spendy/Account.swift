@@ -48,6 +48,10 @@ class Account: HTObject {
             }
         }
     }
+    
+    func createdAt() -> NSDate {
+        return (_object?.createdAt)!
+    }
 
     static var forceLoadFromRemote = false
     var _transactions: [Transaction]?
