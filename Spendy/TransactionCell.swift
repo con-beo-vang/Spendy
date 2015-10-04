@@ -22,10 +22,12 @@ class TransactionCell: UITableViewCell {
         didSet {
             if let noteText = transaction.note {
                 if noteText.isEmpty {
-                    noteLabel.text = transaction.kind?.capitalizedString
+                    noteLabel.text = transaction.category?.name
                 } else {
                     noteLabel.text = noteText
                 }
+            } else {
+                noteLabel.text = transaction.category?.name
             }
 
             if transaction.amount != nil {

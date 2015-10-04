@@ -217,4 +217,31 @@ extension UserCategory {
             return
         }
     }
+
+    class func fromCategories(categories: [Category]) -> [UserCategory] {
+        return categories.map({ findByCategoryId($0.objectId!)! })
+    }
+}
+
+var _allForQuickAdd: [UserCategory]?
+
+// MARK: - Quick Add
+extension UserCategory {
+    class func allForQuickAdd() -> [UserCategory] {
+        guard _allForQuickAdd != nil else {
+            let defaultCategoryNames = ["Meal", "Drink", "Commute"]
+            let cats = Category.all.filter({ defaultCategoryNames.contains($0.name) })
+            _allForQuickAdd = fromCategories(cats)
+            return _allForQuickAdd!
+        }
+
+        return _allForQuickAdd!
+
+    }
+
+    func quickAddAmounts() -> [NSDecimalNumber] {
+        let amounts = [5, 10, 50].map({ NSDecimalNumber(double: $0) })
+        // TODO: retrieve the above dynamically
+        return amounts
+    }
 }
