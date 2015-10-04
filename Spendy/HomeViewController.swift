@@ -49,8 +49,6 @@ class HomeViewController: UIViewController {
     
     @IBOutlet weak var doneButton: UIButton!
     
-    var formatter = NSDateFormatter()
-    
     let dayCountInMonth = 30
     
     var incomes = [String]()
@@ -88,7 +86,7 @@ class HomeViewController: UIViewController {
         
 //        settingStatusBar()
         
-        navigationItem.title = getTodayString("MMMM")
+        navigationItem.title = DateFormatter.MMMM.stringFromDate(NSDate())
         let tapTitle = UITapGestureRecognizer(target: self, action: Selector("chooseMode:"))
         navigationController?.navigationBar.addGestureRecognizer(tapTitle)
         
@@ -192,7 +190,7 @@ class HomeViewController: UIViewController {
         statusBarView.layer.cornerRadius = 6
         statusBarView.layer.masksToBounds = true
         
-        todayLabel.text = getTodayString("MMMM dd, yyyy")
+        todayLabel.text = DateFormatter.MMMM_dd_yyyy.stringFromDate(NSDate())
         
         let day = NSCalendar.currentCalendar().component(NSCalendarUnit.Day, fromDate: NSDate())
         var ratio = CGFloat(day) / CGFloat(dayCountInMonth)
@@ -208,63 +206,57 @@ class HomeViewController: UIViewController {
     
     func configPopup() {
         
-        formatter.dateFormat = "MM-dd-yyyy"
-        
         popupSuperView.hidden = true
         popupSuperView.backgroundColor = UIColor.grayColor().colorWithAlphaComponent(0.5)
         
         let today = NSDate()
-        fromButton.setTitle(formatter.stringFromDate(today), forState: UIControlState.Normal)
-        toButton.setTitle(formatter.stringFromDate(today), forState: UIControlState.Normal)
+        fromButton.setTitle(DateFormatter.MM_dd_yyyy.stringFromDate(today), forState: UIControlState.Normal)
+        toButton.setTitle(DateFormatter.MM_dd_yyyy.stringFromDate(today), forState: UIControlState.Normal)
     }
     
     // MARK: Button
     
     @IBAction func onFromButton(sender: UIButton) {
         
-        formatter.dateFormat = "MM-dd-yyyy"
-        let defaultDate = formatter.dateFromString((sender.titleLabel?.text)!)
+        let defaultDate = DateFormatter.MM_dd_yyyy.dateFromString((sender.titleLabel?.text)!)
         
         DatePickerDialog().show(title: "From Date", doneButtonTitle: "Done", cancelButtonTitle: "Cancel", defaultDate: defaultDate!, minDate: nil, datePickerMode: .Date) {
             (date) -> Void in
             print(date, terminator: "\n")
             
-            let dateString = self.formatter.stringFromDate(date)
+            let dateString = DateFormatter.MM_dd_yyyy.stringFromDate(date)
             print("formated: \(dateString)", terminator: "\n")
             sender.setTitle(dateString, forState: UIControlState.Normal)
             
-            let currentToDate = self.formatter.dateFromString((self.toButton.titleLabel?.text)!)
+            let currentToDate = DateFormatter.MM_dd_yyyy.dateFromString((self.toButton.titleLabel?.text)!)
             if currentToDate < date {
-                self.toButton.setTitle(self.formatter.stringFromDate(date), forState: UIControlState.Normal)
+                self.toButton.setTitle(DateFormatter.MM_dd_yyyy.stringFromDate(date), forState: UIControlState.Normal)
             }
         }
     }
     
     @IBAction func onToButton(sender: UIButton) {
-        
-        formatter.dateFormat = "MM-dd-yyyy"
-        let defaultDate = formatter.dateFromString((sender.titleLabel?.text)!)
-        let minDate = formatter.dateFromString((fromButton.titleLabel?.text)!)
+        let defaultDate = DateFormatter.MM_dd_yyyy.dateFromString((sender.titleLabel?.text)!)
+        let minDate = DateFormatter.MM_dd_yyyy.dateFromString((fromButton.titleLabel?.text)!)
         
         DatePickerDialog().show(title: "To Date", doneButtonTitle: "Done", cancelButtonTitle: "Cancel", defaultDate: defaultDate!, minDate: minDate, datePickerMode: .Date) {
             (date) -> Void in
-            print(date, terminator: "\n")
+            print("DatePickerDialog: \(date)")
             
-            let dateString = self.formatter.stringFromDate(date)
-            print("formated: \(dateString)", terminator: "\n")
+            let dateString = DateFormatter.MM_dd_yyyy.stringFromDate(date)
+            print("formated: \(dateString)")
             sender.setTitle(dateString, forState: UIControlState.Normal)
         }
     }
     
     @IBAction func onDoneDatePopup(sender: UIButton) {
         
-        formatter.dateFormat = "MM-dd-yyyy"
-        let fromDate = formatter.dateFromString((fromButton.titleLabel!.text)!)
-        let toDate = formatter.dateFromString((toButton.titleLabel!.text)!)
+
+        let formatter1 = DateFormatter.MM_dd_yyyy
+        let fromDate = formatter1.dateFromString((fromButton.titleLabel!.text)!)
+        let toDate = formatter1.dateFromString((toButton.titleLabel!.text)!)
         
-        let formater2 = NSDateFormatter()
-        formater2.dateFormat = "MMM dd, yyyy"
-        
+        let formater2 = DateFormatter.MMM_dd_yyyy
         navigationItem.title = formater2.stringFromDate(fromDate!) + " - " + formater2.stringFromDate(toDate!)
         closePopup(datePopup)
     }
@@ -456,11 +448,11 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
                 break
             case 1:
                 viewMode = ViewMode.Monthly
-                navigationItem.title = getTodayString("MMMM")
+                navigationItem.title = DateFormatter.MMMM.stringFromDate(NSDate())
                 break
             case 2:
                 viewMode = ViewMode.Yearly
-                navigationItem.title = getTodayString("yyyy")
+                navigationItem.title = DateFormatter.yyyy.stringFromDate(NSDate())
                 break
             case 3:
                 viewMode = ViewMode.Custom
@@ -575,11 +567,12 @@ extension HomeViewController: UIGestureRecognizerDelegate {
                 break
             case 1:
                 viewMode = ViewMode.Monthly
-                navigationItem.title = getTodayString("MMMM")
+                navigationItem.title = DateFormatter.MMMM.stringFromDate(NSDate())
                 break
             case 2:
                 viewMode = ViewMode.Yearly
-                navigationItem.title = getTodayString("yyyy")
+                // get today's string
+                navigationItem.title = DateFormatter.yyyy.stringFromDate(NSDate())
                 break
             case 3:
                 viewMode = ViewMode.Custom
@@ -712,8 +705,7 @@ extension HomeViewController {
         let (beginMonth, endMonth) = getMonth(monthIndex)
         fromDate = beginMonth
         toDate = endMonth.dateByAddingTimeInterval(oneDay)
-        formatter.dateFormat = "MMMM"
-        navigationItem.title = formatter.stringFromDate(beginMonth)
+        navigationItem.title = DateFormatter.MMMM.stringFromDate(beginMonth)
         
         // TODO: Explain about fromDate and toDate
         
@@ -723,27 +715,19 @@ extension HomeViewController {
         // fromDate <= transaction's date < toDate
         
         // remove these code when clear about fromDate and toDate
-        formatter.dateFormat = "MM-dd-yyyy hh:mm:ss"
-        print(formatter.stringFromDate(fromDate!))
-        print(formatter.stringFromDate(toDate!))
+        print(DateFormatter.MM_dd_yyyy_hh_mm_ss.stringFromDate(fromDate!))
+        print(DateFormatter.MM_dd_yyyy_hh_mm_ss.stringFromDate(toDate!))
     }
     
     func handleSwipeYear() {
         let (beginYear, endYear) = getYear(yearIndex)
         fromDate = beginYear
         toDate = endYear.dateByAddingTimeInterval(oneDay)
-        formatter.dateFormat = "yyyy"
-        navigationItem.title = formatter.stringFromDate(beginYear)
+        navigationItem.title = DateFormatter.yyyy.stringFromDate(beginYear)
     }
     
     func getWeekText(beginWeek: NSDate, endWeek: NSDate) -> String {
-        formatter.dateFormat = "dd MMM"
-        return formatter.stringFromDate(beginWeek) + " - " + formatter.stringFromDate(endWeek)
-    }
-    
-    func getTodayString(dateFormat: String) -> String {
-        formatter.dateFormat = dateFormat
-        return formatter.stringFromDate(NSDate())
+        return DateFormatter.dd_MMMM.stringFromDate(beginWeek) + " - " + DateFormatter.dd_MMMM.stringFromDate(endWeek)
     }
 }
 

@@ -91,7 +91,7 @@ class AccountsViewController: UIViewController {
     }
     
     func onAddAccountButton(sender: UIButton!) {
-        print("on Add account", terminator: "\n")
+        print("on Add account")
         performSegueWithIdentifier("AddAccount", sender: self)
     }
     
@@ -274,7 +274,7 @@ extension AccountsViewController: UIGestureRecognizerDelegate {
             
             switch state {
             case UIGestureRecognizerState.Began:
-                print("began", terminator: "\n")
+                print("began")
                 
                 moneyIcon = UIImageView(image: UIImage(named: "MoneyBag"))
                 moneyIcon?.setNewTintColor(Color.strongColor)
@@ -288,7 +288,7 @@ extension AccountsViewController: UIGestureRecognizerDelegate {
                 break
                 
             case UIGestureRecognizerState.Changed:
-                print("change", terminator: "\n")
+                print("change")
                 
                 if !isPreparedDelete {
                     moneyIcon!.center.x = initialIconCenter!.x + translation.x
@@ -317,7 +317,7 @@ extension AccountsViewController: UIGestureRecognizerDelegate {
                 break
                 
             case UIGestureRecognizerState.Ended:
-                print("end", terminator: "\n")
+                print("end")
                 
                 moneyIcon?.removeFromSuperview()
                 selectedDragCell.backgroundColor = UIColor.clearColor()

@@ -84,11 +84,8 @@ class ReminderCell: UITableViewCell {
     func getTimeSlotsString(timeSlots: [ReminderItem]) -> String {
         var result = ""
         
-        let formatter = NSDateFormatter()
-        formatter.dateFormat = "h:mm a"
-        
         for item in timeSlots {
-            result += formatter.stringFromDate(item.reminderTime) + ", "
+            result += DateFormatter.h_mm_a.stringFromDate(item.reminderTime) + ", "
         }
         
         result = result[0..<result.characters.count - 2]

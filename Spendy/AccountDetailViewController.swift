@@ -155,14 +155,7 @@ extension AccountDetailViewController: UITableViewDataSource, UITableViewDelegat
         let monthLabel = UILabel(frame: CGRect(x: 8, y: 2, width: UIScreen.mainScreen().bounds.width - 16, height: 30))
         monthLabel.font = UIFont.systemFontOfSize(14)
 
-
         monthLabel.text = accountTransactions[section].first?.monthHeader()
-
-        // TODO: get date from transaction
-        //        let date = NSDate()
-        //        var formatter = NSDateFormatter()
-        //        formatter.dateFormat = "MMMM, yyyy"
-        //        monthLabel.text = formatter.stringFromDate(date)
 
         headerView.addSubview(monthLabel)
 
