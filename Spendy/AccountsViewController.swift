@@ -39,7 +39,8 @@ class AccountsViewController: UIViewController {
     
     @IBOutlet weak var transferButton: UIButton!
     
-    var isFromQuickAdd = false
+    var justAddTransactions = false
+    var addedAccount: Account?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -79,7 +80,7 @@ class AccountsViewController: UIViewController {
     
     override func viewWillAppear(animated: Bool) {
         
-        if isFromQuickAdd {
+        if justAddTransactions {
             performSegueWithIdentifier("GoToAccountDetail", sender: self)
         }
         
@@ -196,9 +197,9 @@ class AccountsViewController: UIViewController {
         if segue.identifier == "GoToAccountDetail" {
             let accountDetailVC = segue.destinationViewController as! AccountDetailViewController
             
-            if isFromQuickAdd {
-                isFromQuickAdd = false
-                accountDetailVC.currentAccount = Account.defaultAccount()
+            if justAddTransactions {
+                justAddTransactions = false
+                accountDetailVC.currentAccount = addedAccount
                 self.tabBarController?.tabBar.hidden = false
             } else {
                 let indexPath = tableView.indexPathForCell(sender as! UITableViewCell)!
