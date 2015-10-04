@@ -110,22 +110,6 @@ class QuickViewController: UIViewController {
     }
 
     func onAddButton(sender: UIButton!) {
-        print("on Add")
-
-        for (index, transaction) in quickTransactions.enumerate() {
-            let cell = tableView.cellForRowAtIndexPath( NSIndexPath(forRow: index, inSection: 0) ) as! QuickCell
-            let segment = cell.amoutSegment
-            let amountText = segment.titleForSegmentAtIndex(segment.selectedSegmentIndex)
-            transaction.amount = NSDecimalNumber(string: amountText)
-            Transaction.add(transaction)
-        }
-
-        dismissViewControllerAnimated(true, completion: nil)
-
-        let rootVC = parentViewController?.parentViewController as? RootTabBarController
-        // go to Accouns tab
-        rootVC?.selectedIndex = 1
-
         addQuickTransactions()
     }
 
@@ -140,17 +124,16 @@ class QuickViewController: UIViewController {
 
     func addQuickTransactions() {
         print("Add transactions")
-        // TODO: add transactions then transfer to default account's detail
+        for (index, transaction) in quickTransactions.enumerate() {
+            let cell = tableView.cellForRowAtIndexPath( NSIndexPath(forRow: index, inSection: 0) ) as! QuickCell
+            let segment = cell.amoutSegment
+            let amountText = segment.titleForSegmentAtIndex(segment.selectedSegmentIndex)
+            transaction.amount = NSDecimalNumber(string: amountText)
+            Transaction.add(transaction)
+        }
 
         delegate?.quickViewController!(self, didAddTransaction: true)
         dismissViewControllerAnimated(false, completion: nil)
-
-//        let vc = self.storyboard?.instantiateViewControllerWithIdentifier("RootTabBarController") as! RootTabBarController
-//        vc.selectedIndex = 1
-////        let nc = UINavigationController(rootViewController: vc)
-////
-////        vc.isFromQuickAdd = true
-//        self.presentViewController(vc, animated: false, completion: nil)
     }
 
 
