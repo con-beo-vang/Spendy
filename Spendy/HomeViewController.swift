@@ -211,7 +211,6 @@ class HomeViewController: UIViewController {
         showPopup(viewModePopup)
     }
     
-    
     func configPopup() {
         
         formatter.dateFormat = "MM-dd-yyyy"
@@ -619,6 +618,10 @@ extension HomeViewController: UIViewControllerTransitioningDelegate {
             toViewController.transitioningDelegate = self
             customPresentAnimationController.animationType = CustomSegueAnimation.SwipeDown
             customDismissAnimationController.animationType = CustomSegueAnimation.SwipeDown
+            
+            let quickVC = toViewController.topViewController as? QuickViewController
+            quickVC!.delegate = self
+            
         }
     }
     
@@ -753,3 +756,15 @@ extension HomeViewController {
     }
 }
 
+extension HomeViewController: QuickViewControllerDelegate {
+    
+    func quickViewController(quickViewController: QuickViewController, didAddTransaction status: Bool) {
+        if status {
+            print("delegate")
+            tabBarController?.selectedIndex = 1
+            let accountsNVC = tabBarController?.viewControllers?.at(1) as? UINavigationController
+            let accountsVC = accountsNVC?.topViewController as? AccountsViewController
+            accountsVC?.isFromQuickAdd = true
+        }
+    }
+}

@@ -730,7 +730,7 @@
         <!--Accounts-->
         <scene sceneID="yLz-YU-6FH">
             <objects>
-                <viewController id="scY-Mk-lNw" customClass="AccountsViewController" customModule="Spendy" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="AccountsVC" id="scY-Mk-lNw" customClass="AccountsViewController" customModule="Spendy" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="q1a-gd-MXd"/>
                         <viewControllerLayoutGuide type="bottom" id="CNQ-f9-G2l"/>

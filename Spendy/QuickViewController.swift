@@ -8,6 +8,10 @@
 
 import UIKit
 
+@objc protocol QuickViewControllerDelegate {
+    optional func quickViewController(quickViewController: QuickViewController, didAddTransaction status: Bool)
+}
+
 class QuickViewController: UIViewController {
 
 
@@ -33,6 +37,8 @@ class QuickViewController: UIViewController {
     var commonTracsations = [String]() // transaction object
     var selectedIndexPath: NSIndexPath?
     var oldSelectedSegmentIndex: Int?
+    
+    weak var delegate: QuickViewControllerDelegate?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -98,6 +104,7 @@ class QuickViewController: UIViewController {
     }
 
     func onCancelButton(sender: UIButton!) {
+        delegate?.quickViewController!(self, didAddTransaction: false)
         dismissViewControllerAnimated(true, completion: nil)
     }
     
@@ -108,6 +115,16 @@ class QuickViewController: UIViewController {
     func addQuickTransactions() {
         print("Add transactions")
         // TODO: add transactions then transfer to default account's detail
+        
+        delegate?.quickViewController!(self, didAddTransaction: true)
+        dismissViewControllerAnimated(false, completion: nil)
+        
+//        let vc = self.storyboard?.instantiateViewControllerWithIdentifier("RootTabBarController") as! RootTabBarController
+//        vc.selectedIndex = 1
+////        let nc = UINavigationController(rootViewController: vc)
+////        
+////        vc.isFromQuickAdd = true
+//        self.presentViewController(vc, animated: false, completion: nil)
     }
     
 

@@ -39,6 +39,8 @@ class AccountsViewController: UIViewController {
     
     @IBOutlet weak var transferButton: UIButton!
     
+    var isFromQuickAdd = false
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -74,6 +76,11 @@ class AccountsViewController: UIViewController {
     }
     
     override func viewWillAppear(animated: Bool) {
+        
+        if isFromQuickAdd {
+            performSegueWithIdentifier("GoToAccountDetail", sender: self)
+        }
+        
         tableView.reloadData()
         configPopup()
         setColor()
@@ -186,8 +193,15 @@ class AccountsViewController: UIViewController {
         // It is still possible to add navigation control to the view
         if segue.identifier == "GoToAccountDetail" {
             let accountDetailVC = segue.destinationViewController as! AccountDetailViewController
-            let indexPath = tableView.indexPathForCell(sender as! UITableViewCell)!
-            accountDetailVC.currentAccount = accounts![indexPath.row]
+            
+            if isFromQuickAdd {
+                isFromQuickAdd = false
+                accountDetailVC.currentAccount = Account.defaultAccount()
+                self.tabBarController?.tabBar.hidden = false
+            } else {
+                let indexPath = tableView.indexPathForCell(sender as! UITableViewCell)!
+                accountDetailVC.currentAccount = accounts![indexPath.row]
+            }
         }
     }
     
