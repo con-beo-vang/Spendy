@@ -235,6 +235,7 @@ extension Category {
 
             if category == nil {
                 let c = Category(name: name, icon: iconName)
+                c._object!.pinInBackground()
                 c._object!.saveInBackgroundWithBlock({ (succeeded, error) -> Void in
                     if succeeded {
                         print("Added \(type) category \(name) with image \(iconName)")

@@ -319,18 +319,20 @@ class Transaction: HTObject {
     class func findByAccountId(accountId: String) -> [Transaction] {
         let queryWithFrom = PFQuery(className: "Transaction")
         queryWithFrom.whereKey("fromAccountId", equalTo: accountId)
+//        queryWithFrom.fromLocalDatastore()
 
         let queryWithTo = PFQuery(className: "Transaction")
         queryWithTo.whereKey("toAccountId", equalTo: accountId)
+//        queryWithTo.fromLocalDatastore()
 
         let query = PFQuery.orQueryWithSubqueries([queryWithFrom, queryWithTo])
         query.orderByAscending("date")
-        query.fromLocalDatastore()
+//        query.fromLocalDatastore()
 
         do {
             return try query.findObjects().map{Transaction(object: $0)}
-        } catch {
-            print("Error loading transaction for account: \(accountId)")
+        } catch let error as NSError {
+            print("Error loading transaction for account: \(accountId). \(error)")
             return []
         }
     }

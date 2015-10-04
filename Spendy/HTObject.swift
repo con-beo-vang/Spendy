@@ -83,7 +83,7 @@ class HTObject {
                 print("saveInBackground: \(self). success: \(success), error: \(error)")
             }
         } else {
-            print("Cannot save: isValid is false. \(self)")
+            print("Will not save: isValid is false. \(self)")
         }
     }
 
