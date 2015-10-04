@@ -114,6 +114,19 @@ class HomeViewController: UIViewController {
     }
     
     override func viewWillAppear(animated: Bool) {
+        
+        // set top constraint again after presenting new view controller (Quick add)
+        let myConstraintTop =
+        NSLayoutConstraint(item: statusBarView,
+            attribute: NSLayoutAttribute.Top,
+            relatedBy: NSLayoutRelation.Equal,
+            toItem: self.view,
+            attribute: NSLayoutAttribute.Top,
+            multiplier: 1.0,
+            constant: 75)
+        view.addConstraint(myConstraintTop)
+
+        
         configPopup()
         setColor()
         let gotTutorial = NSUserDefaults.standardUserDefaults().boolForKey("GotTutorial") ?? false
@@ -202,7 +215,6 @@ class HomeViewController: UIViewController {
         print("tap title", terminator: "\n")
         showPopup(viewModePopup)
     }
-    
     
     func configPopup() {
         
@@ -606,6 +618,10 @@ extension HomeViewController: UIViewControllerTransitioningDelegate {
             toViewController.transitioningDelegate = self
             customPresentAnimationController.animationType = CustomSegueAnimation.SwipeDown
             customDismissAnimationController.animationType = CustomSegueAnimation.SwipeDown
+            
+            let quickVC = toViewController.topViewController as? QuickViewController
+            quickVC!.delegate = self
+            
         }
     }
     
@@ -731,3 +747,15 @@ extension HomeViewController {
     }
 }
 
+extension HomeViewController: QuickViewControllerDelegate {
+    
+    func quickViewController(quickViewController: QuickViewController, didAddTransaction status: Bool) {
+        if status {
+            print("delegate")
+            tabBarController?.selectedIndex = 1
+            let accountsNVC = tabBarController?.viewControllers?.at(1) as? UINavigationController
+            let accountsVC = accountsNVC?.topViewController as? AccountsViewController
+            accountsVC?.isFromQuickAdd = true
+        }
+    }
+}

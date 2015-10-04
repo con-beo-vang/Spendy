@@ -39,6 +39,8 @@ class AccountsViewController: UIViewController {
     
     @IBOutlet weak var transferButton: UIButton!
     
+    var isFromQuickAdd = false
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -76,6 +78,11 @@ class AccountsViewController: UIViewController {
     }
     
     override func viewWillAppear(animated: Bool) {
+        
+        if isFromQuickAdd {
+            performSegueWithIdentifier("GoToAccountDetail", sender: self)
+        }
+        
         tableView.reloadData()
         configPopup()
         setColor()
@@ -151,8 +158,32 @@ class AccountsViewController: UIViewController {
     
     @IBAction func onTransferButton(sender: UIButton) {
         // TODO: Handle transfer
-        let amountString = amountText.text
-        closePopup()
+        let amountString = (amountText.text)!
+        
+        if amountString.isEmpty {
+            let alertController = UIAlertController(title: "Please enter an amount.", message: nil, preferredStyle: .Alert)
+            let cancelAction = UIAlertAction(title: "Cancel", style: .Default) { (action) in
+                // ...
+            }
+            alertController.addAction(cancelAction)
+            presentViewController(alertController, animated: true) {}
+        } else {
+            let amountDecimal = NSDecimalNumber(string: amountString)
+            let fromAccount = selectedDragCell?.account
+            let toAccount = previousCell?.account
+            print("transfer from \(fromAccount?.name) to \(toAccount?.name)")
+            
+            let transaction = Transaction(kind: Transaction.transferKind, note: "", amount: amountDecimal, category: Category.defaultTransferCategory(), account: fromAccount, date: NSDate())
+            transaction.toAccount = toAccount
+            Transaction.add(transaction)
+            tableView.reloadData()
+            
+            closePopup()
+        }
+        
+        
+        
+        
     }
     
     // MARK: Transfer between 2 views
@@ -164,8 +195,15 @@ class AccountsViewController: UIViewController {
         // It is still possible to add navigation control to the view
         if segue.identifier == "GoToAccountDetail" {
             let accountDetailVC = segue.destinationViewController as! AccountDetailViewController
-            let indexPath = tableView.indexPathForCell(sender as! UITableViewCell)!
-            accountDetailVC.currentAccount = accounts![indexPath.row]
+            
+            if isFromQuickAdd {
+                isFromQuickAdd = false
+                accountDetailVC.currentAccount = Account.defaultAccount()
+                self.tabBarController?.tabBar.hidden = false
+            } else {
+                let indexPath = tableView.indexPathForCell(sender as! UITableViewCell)!
+                accountDetailVC.currentAccount = accounts![indexPath.row]
+            }
         }
     }
     
@@ -326,6 +364,7 @@ extension AccountsViewController: UIGestureRecognizerDelegate {
                 
                 if previousCell != selectedDragCell && !isPreparedDelete {
                     
+                    amountText.text = ""
                     let fromAcc = selectedDragCell.nameLabel.text ?? ""
                     let toAcc = previousCell?.nameLabel.text ?? ""
                     
