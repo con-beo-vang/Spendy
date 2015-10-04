@@ -109,6 +109,19 @@ class HomeViewController: UIViewController {
     }
     
     override func viewWillAppear(animated: Bool) {
+        
+        // set top constraint again after presenting new view controller (Quick add)
+        let myConstraintTop =
+        NSLayoutConstraint(item: statusBarView,
+            attribute: NSLayoutAttribute.Top,
+            relatedBy: NSLayoutRelation.Equal,
+            toItem: self.view,
+            attribute: NSLayoutAttribute.Top,
+            multiplier: 1.0,
+            constant: 75)
+        view.addConstraint(myConstraintTop)
+
+        
         configPopup()
         setColor()
         let gotTutorial = NSUserDefaults.standardUserDefaults().boolForKey("GotTutorial") ?? false

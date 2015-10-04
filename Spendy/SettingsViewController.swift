@@ -53,6 +53,20 @@ class SettingsViewController: UIViewController, ThemeCellDelegate, UITabBarContr
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    override func viewWillAppear(animated: Bool) {
+        // set top constraint again after presenting new view controller (Quick add)
+        let myConstraintTop =
+        NSLayoutConstraint(item: avatarView,
+            attribute: NSLayoutAttribute.Top,
+            relatedBy: NSLayoutRelation.Equal,
+            toItem: self.view,
+            attribute: NSLayoutAttribute.Top,
+            multiplier: 1.0,
+            constant: 75)
+        view.addConstraint(myConstraintTop)
+
+    }
 
     @IBAction func onResetData(sender: AnyObject) {
         resetDataButton.enabled = false
