@@ -30,6 +30,7 @@ class BalanceStat {
         // load expenses
         // initially load all
         let query = PFQuery(className: "Transaction")
+        query.whereKey("userId", equalTo: PFUser.currentUser()!.objectId!)
         query.whereKey("date", greaterThanOrEqualTo: from)
         query.whereKey("date", lessThanOrEqualTo: to)
         // query.fromLocalDatastore()

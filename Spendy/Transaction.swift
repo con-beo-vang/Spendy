@@ -114,7 +114,12 @@ class Transaction: HTObject {
         get { return self["categoryId"] as! String? }
         set { self["categoryId"] = newValue }
     }
-    
+
+    var userId: String {
+        get { return self["userId"] as! String }
+        set { self["userId"] = newValue }
+    }
+
     convenience init(kind: String?, note: String?, amount: NSDecimalNumber?, category: Category?, account: Account?, date: NSDate?) {
         self.init()
 
@@ -124,6 +129,7 @@ class Transaction: HTObject {
         self.categoryId = category?.objectId
         self.fromAccountId = account?.objectId
         self.date = date
+        self.userId = PFUser.currentUser()!.objectId!
     }
 
     // TODO: support validation errors
@@ -248,14 +254,20 @@ class Transaction: HTObject {
         return dateToString(dateFormat: "MMMM YYYY")
     }
 
-    // MARK: - unused
     static var transactions: [PFObject]?
+
+    // MARK: - unused
     static func findAll(completion: (transactions: [PFObject]?, error: NSError?) -> ()) {
+        let user = PFUser.currentUser()!
+
         let query = PFQuery(className: "Transaction")
+        query.whereKey("userId", equalTo: user.objectId!)
+
         query.fromLocalDatastore()
+
         query.findObjectsInBackgroundWithBlock { (results, error) -> Void in
             if error != nil {
-                print("Error loading transactions", terminator: "\n")
+                print("Error loading transactions")
                 completion(transactions: nil, error: error)
             } else {
                 self.transactions = results 
@@ -316,37 +328,14 @@ class Transaction: HTObject {
         return list
     }
 
-    class func findByAccountId(accountId: String) -> [Transaction] {
-        let queryWithFrom = PFQuery(className: "Transaction")
-        queryWithFrom.whereKey("fromAccountId", equalTo: accountId)
-//        queryWithFrom.fromLocalDatastore()
-
-        let queryWithTo = PFQuery(className: "Transaction")
-        queryWithTo.whereKey("toAccountId", equalTo: accountId)
-//        queryWithTo.fromLocalDatastore()
-
-        let query = PFQuery.orQueryWithSubqueries([queryWithFrom, queryWithTo])
-        query.orderByAscending("date")
-//        query.fromLocalDatastore()
-
-        do {
-            return try query.findObjects().map{Transaction(object: $0)}
-        } catch let error as NSError {
-            print("Error loading transaction for account: \(accountId). \(error)")
-            return []
-        }
-    }
-
     class func loadByAccount(account: Account) {
         let accountId = account.objectId!
 
         let queryWithFrom = PFQuery(className: "Transaction")
         queryWithFrom.whereKey("fromAccountId", equalTo: accountId)
-//        queryWithFrom.fromLocalDatastore()
 
         let queryWithTo = PFQuery(className: "Transaction")
         queryWithTo.whereKey("toAccountId", equalTo: accountId)
-//        queryWithTo.fromLocalDatastore()
 
         let query = PFQuery.orQueryWithSubqueries([queryWithFrom, queryWithTo])
         query.orderByAscending("date")
@@ -355,12 +344,10 @@ class Transaction: HTObject {
         query.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
             if let objects = objects {
                 account.transactions = objects.map {Transaction(object: $0)}
+
                 print("posting loadedAccountTransaction. objects: \(objects.count)")
                 NSNotificationCenter.defaultCenter().postNotificationName(SPNotification.transactionsLoadedForAccount, object: nil, userInfo: ["account": account])
 
-                // TODO: move to a callback handler
-                // recomputeBalance()
-//                print("computed balance for \(_transactions!.count) items. Balance \(balance)")
             } else {
                 print("Error loading transaction for account \(accountId): \(error)")
             }
