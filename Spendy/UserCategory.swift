@@ -55,7 +55,16 @@ class UserCategory: HTObject {
         }
     }
 
-    var predictedAmount = NSDecimalNumber(double: 20)
+    var predictedAmount: NSDecimalNumber {
+        get {
+            guard let pa = self["predictedAmount"] as! NSNumber? else { return 4.5 }
+            return NSDecimalNumber(decimal: pa.decimalValue)
+        }
+
+        set {
+            self["predictedAmount"] = newValue
+        }
+    }
 
     var timeSlots: [ReminderItem] {
         set {
@@ -107,7 +116,9 @@ class UserCategory: HTObject {
             if !forceLoadFromRemote {
                 query.fromLocalDatastore()
             }
+
             let objects = try! query.findObjects()
+
             _all = objects.map({ UserCategory(object: $0) })
         }
 
@@ -164,12 +175,16 @@ extension UserCategory {
 
         // Turn on switch automatically
         item.isActive = true
+        item.save()
 
         // Add new notification
         ReminderList.sharedInstance.addReminderNotification(item)
     }
 
     func updateReminder(reminderItem: ReminderItem, newValue: Bool) {
+        reminderItem.isActive = newValue
+        reminderItem.save()
+
         // attempt to remove reminderItem first
         ReminderList.sharedInstance.removeReminderNotification(reminderItem)
 
@@ -178,6 +193,13 @@ extension UserCategory {
         }
 
         checkReminderOnStatus()
+    }
+
+    func removeSelfAndAllReminders() {
+        for item in timeSlots {
+            removeReminder(item)
+        }
+        delete()
     }
 
     func turnOff() {

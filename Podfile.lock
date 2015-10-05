@@ -20,11 +20,11 @@ PODS:
   - AFNetworking/UIKit (2.6.0):
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
-  - Bolts/Tasks (1.2.2)
+  - Bolts/Tasks (1.3.0)
   - Cartography (0.6.0)
   - CBZSplashView (1.0.0)
   - Pages (0.6.2)
-  - Parse (1.8.3):
+  - Parse (1.8.5):
     - Bolts/Tasks (>= 1.2.2)
   - PhotoTweaks (1.0.2)
   - Presentation (2.0.0):
@@ -37,7 +37,7 @@ PODS:
 DEPENDENCIES:
   - AFNetworking (~> 2.5)
   - CBZSplashView (~> 1.0.0)
-  - Parse
+  - Parse (~> 1.8.5)
   - PhotoTweaks (~> 1.0.2)
   - Presentation
   - SevenSwitch
@@ -46,11 +46,11 @@ DEPENDENCIES:
 
 SPEC CHECKSUMS:
   AFNetworking: 79f7eb1a0fcfa7beb409332b2ca49afe9ce53b05
-  Bolts: 20a2bd788273360cb1e31530dc19b8544eef2544
+  Bolts: 805a4a87413e49d4a0c2b7d469084cbc46b09342
   Cartography: 70af183a248547694a8cfaa6b989cb7e04589985
   CBZSplashView: 9ce4cba22024476ff4a97d6433e7347da6376016
   Pages: 6c042132f8c63c34d242789b7763d4c64e9681a0
-  Parse: 4b251ac63b76d12b334a32579cc3b174446f0c39
+  Parse: 17ad8e0677ed682f7f00503860fcda0f4eb74168
   PhotoTweaks: e91ce097f9df435049e7c35d419f9a7749e252bc
   Presentation: 156bb732160bc092e3a288aa2c43a808a9a2d627
   SevenSwitch: 4ae92ffcad0ef93b38553b39a25e753c94eb7847

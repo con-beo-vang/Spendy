@@ -102,12 +102,33 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UITabBarItem.appearance().setTitleTextAttributes([NSForegroundColorAttributeName: Color.inactiveTabBarIconColor], forState:.Normal)
         
         // Uncomment this out to run if you have more categories to addd
-        Category.bootstrapCategories()
+        // Category.bootstrapCategories()
 
         print("<<<<<<<<<<\nNotifications: \(ReminderList.sharedInstance.notifications())\n>>>>>>>>>>")
         UIApplication.sharedApplication().cancelAllLocalNotifications()
 
+
+        PFUser.currentUser()?.fetchIfNeededInBackground()
+        print("=====================\nUser: \(User.current())\n=====================")
+
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "recomputeAccountBalance:", name: SPNotification.transactionsLoadedForAccount, object: nil)
+
+        // This may not be necessary due to the above
+        // NSNotificationCenter.defaultCenter().addObserver(self, selector: "recomputeAccountBalance:", name: SPNotification.allAccountsLoaded, object: nil)
         return true
+    }
+
+    func recomputeAccountBalance(notification: NSNotification) {
+        // First try to cast user info to expected type
+        guard let info = notification.userInfo as? Dictionary<String,AnyObject> else {
+            print("[transactionLoadedForAccountCallback] Cannot cast userInfo \(notification.userInfo)")
+            return
+        }
+
+        guard let account = info["account"] as! Account? else { return }
+
+        account.recomputeBalance()
+        print("[Notified] recomputed balance for \(account.transactions.count) transactions of account \(account.name)")
     }
     
     //--------------------------------------

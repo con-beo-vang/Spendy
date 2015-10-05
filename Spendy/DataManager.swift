@@ -10,24 +10,34 @@ import Foundation
 import Parse
 
 class DataManager {
+    static let version = "1.2"
+
     class func setupDefaultData(removeLocalData: Bool = false) {
         if removeLocalData {
             print("\n**Remove all local data**\n")
-            // There is a bug with Parse right now and this doesn't not run successfully in Swift 2 for now
+            // There is a bug with Parse right now and this doesn't not run successfully in Swift 2
+            // TODO: update to the latest Parse
             try! PFObject.unpinAllObjects()
-            // unused:
-//            PFObject.unpinAllObjectsInBackgroundWithName("MyAccounts")
-//            PFObject.unpinAllObjectsInBckgroundWithName("MyCategories")
         }
 
-        // Load all categories from local
-        // If categories are empty from local, load from server
-        Category.loadAll()
+        if removeLocalData || User.isDataVersionOutOfDate() {
+            print("Data not up to date. Loading from remote")
+            Category.loadAllFrom(local: false)
+            Account.loadAllFrom(local: false)
 
-        // Load user's accounts
-        // If accounts are empty,load from server
-        // If accounts are still empty, create new ones, save to server
-        Account.loadAll()
+            if User.isDataVersionOutOfDate() {
+                User.current()?.updateDataVersion(version)
+            }
+        } else {
+            // Load all categories from local
+            // If categories are empty from local, load from server
+            Category.loadAllFrom(local: true)
+
+            // Load user's accounts
+            // If accounts are empty,load from server
+            // If accounts are still empty, create new ones, save to server
+            Account.loadAllFrom(local: true)
+        }
 
         // TODO: load other settings
     }

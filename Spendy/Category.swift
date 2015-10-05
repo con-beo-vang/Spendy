@@ -1,5 +1,6 @@
 //
 //  Category.swift
+
 //  Spendy
 //
 //  Created by Harley Trung on 9/18/15.
@@ -97,12 +98,56 @@ class Category: HTObject {
         }
     }
 
-    class func loadAll() {
-        // load from local first
-        let query = PFQuery(className: "Category")
-        query.limit = 100
+//    class func loadAll() {
+//        // load from local first
+//        let query = PFQuery(className: "Category")
+//
+//        if !forceLoadFromRemote {
+//            query.fromLocalDatastore()
+//        }
+//
+//        query.findObjectsInBackgroundWithBlock {
+//            (objects, error) -> Void in
+//
+//            guard let objects = objects where error == nil else {
+//                print("Error loading categories from Local. error: \(error)")
+//                return
+//            }
+//
+//            _allCategories = objects.map({ Category(object: $0 ) })
+//            print("\n[local] loaded \(objects.count) categories")
+//
+//            if !forceLoadFromRemote && _allCategories!.isEmpty {
+//                print("No categories found locally. Loading from server")
+//
+//                let remoteQuery = PFQuery(className: "Category")
+//                remoteQuery.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
+//                    if let error = error {
+//                        print("Error loading categories from Server: \(error)")
+//                    } else {
+//                        print("[server] loaded \(objects!.count) categories")
+//                        _allCategories = objects?.map({ Category(object: $0 ) })
+//
+//                        // pin these newly downloaded objects to local store
+//                        PFObject.pinAllInBackground(objects!, withName: "MyCategories", block: { (success, error: NSError?) -> Void in
+//                            print("success: \(success); error: \(error)")
+//                        })
+//                    }
+//                }
+//            }
+//        }
+//    }
 
-        if !forceLoadFromRemote {
+    class func fromObjects(objects: [PFObject]) -> [Category] {
+        var cats = objects.map({ Category(object: $0) })
+        cats = cats.sort { $0.name < $1.name }
+        return cats
+    }
+
+    class func loadAllFrom(local local: Bool) {
+        let query = PFQuery(className: "Category")
+
+        if local {
             query.fromLocalDatastore()
         }
 
@@ -110,32 +155,18 @@ class Category: HTObject {
             (objects, error) -> Void in
 
             guard let objects = objects where error == nil else {
-                print("Error loading categories from Local. error: \(error)")
+                print("[Category:loadAllFrom(local: \(local))] Error: \(error)")
                 return
             }
 
-            _allCategories = objects.map({ Category(object: $0 ) })
-            print("\n[local] loaded \(objects.count) categories")
+            _allCategories = fromObjects(objects)
+            print("\n[local:\(local)] loaded \(objects.count) categories")
 
-            if _allCategories!.isEmpty {
-                print("No categories found locally. Loading from server")
-                // load from remote
-                let remoteQuery = PFQuery(className: "Category")
-                remoteQuery.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
-                    if let error = error {
-                        print("Error loading categories from Server: \(error)")
-                    } else {
-                        print("[server] loaded \(objects!.count) categories")
-                        _allCategories = objects?.map({ Category(object: $0 ) })
-
-                        // already in background
-                        PFObject.pinAllInBackground(objects!, withName: "MyCategories", block: { (success, error: NSError?) -> Void in
-                            print("success: \(success); error: \(error)")
-                        })
-                        // no need to save because we are not adding data
-                    }
-                }
+            if !local {
+                PFObject.pinAllInBackground(objects, withName: "MyCategories")
             }
+
+            NSNotificationCenter.defaultCenter().postNotificationName(SPNotification.allCategoriesLoaded, object: nil)
         }
     }
 
@@ -171,7 +202,7 @@ class Category: HTObject {
                 query.fromLocalDatastore()
             }
             let objects = (try? query.findObjects()) ?? (try! query.fromLocalDatastore().findObjects())
-            _allCategories = objects.map({ Category(object: $0) })
+            _allCategories = fromObjects(objects)
         }
 
         return _allCategories!
@@ -204,20 +235,27 @@ class Category: HTObject {
 // only have to do this once each time setting up a new Parse app
 // you will need to run this manually if you use your own Parse key
 // safe to run again as it doesn't create new categories if already set up
+
 extension Category {
     class func bootstrapCategories() {
         print("\n********BOOTSTRAPING CATEGORIES********")
         // remove all stale categories
-        // try! PFObject.unpinAllObjects()
+        // try? PFObject.unpinAllObjects()
 
         let query = PFQuery(className: "Category")
-        query.limit = 100
+
         let objects = (try? query.findObjects()) ?? (try! query.fromLocalDatastore().findObjects())
         print("Found: \(objects.count) existing categories")
 
-        loadType(CategoryType.Transfer, names: transferCats, objects: objects)
-        loadType(CategoryType.Expense, names: expenseCats, objects: objects)
-        loadType(CategoryType.Income, names: incomeCats, objects: objects)
+        query.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
+            if let objects = objects {
+                loadType(CategoryType.Transfer, names: transferCats, objects: objects)
+                loadType(CategoryType.Expense, names: expenseCats, objects: objects)
+                loadType(CategoryType.Income, names: incomeCats, objects: objects)
+            } else {
+                print("[bootstrapCategories:findObjectsInBackgroundWithBlock] \(error)")
+            }
+        }
     }
 
     class func loadType(type: CategoryType, names: [String], objects: [PFObject]) {
@@ -237,6 +275,7 @@ extension Category {
                 let c = Category(name: name, icon: iconName)
                 c._object!.saveInBackgroundWithBlock({ (succeeded, error) -> Void in
                     if succeeded {
+                        c._object!.pinInBackground()
                         print("Added \(type) category \(name) with image \(iconName)")
                     }
                 })

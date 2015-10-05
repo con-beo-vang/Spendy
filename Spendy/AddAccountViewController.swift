@@ -79,7 +79,7 @@ class AddAccountViewController: UIViewController {
 
             Account.create(account!)
 
-            NSNotificationCenter.defaultCenter().postNotificationName("AccountAddedOrUpdated", object: nil, userInfo: ["account": account!])
+            NSNotificationCenter.defaultCenter().postNotificationName(SPNotification.accountAddedOrUpdated, object: nil, userInfo: ["account": account!])
         } else {
             // TODO: editing an account?
         }
