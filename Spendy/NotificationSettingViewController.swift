@@ -160,20 +160,13 @@ extension NotificationSettingViewController: UIGestureRecognizerDelegate {
             
             if selectedCell is ReminderCell {
                 let reminderCell = selectedCell as! ReminderCell
-                let indexPath = tableView.indexPathForCell(reminderCell)
-                
-                for item in userCategories[indexPath!.row].timeSlots {
-                    // Remove all active time slots of this category from Notification
-                    if item.isActive {
-                        ReminderList.sharedInstance.removeReminderNotification(item)
-                    }
-                    // TODO: Delete reminder item
-                }
-                
-                if let indexPath = indexPath {
-                    userCategories.removeAtIndex(indexPath.row)
-                    tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: UITableViewRowAnimation.Automatic)
-                }
+                guard let indexPath = tableView.indexPathForCell(reminderCell) else { break }
+
+                let userCat = userCategories[indexPath.row]
+                userCat.removeSelfAndAllReminders()
+                userCategories.removeAtIndex(indexPath.row)
+
+                tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: UITableViewRowAnimation.Automatic)
             }
             break
             

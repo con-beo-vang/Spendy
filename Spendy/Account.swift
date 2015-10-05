@@ -104,6 +104,9 @@ class Account: HTObject {
         if bal != balance {
             self.balance = bal
         }
+
+        print("posting recomputedBalanceForOneAccount \(self). transactions: \(transactions.count)")
+        NSNotificationCenter.defaultCenter().postNotificationName(SPNotification.recomputedBalanceForOneAccount, object: nil)
     }
 
     func formattedBalance() -> String {
@@ -114,13 +117,16 @@ class Account: HTObject {
     var transactions: [Transaction] {
         get {
             guard _transactions != nil else {
+                _transactions = []
+
                 // load from DB
                 // TODO: optimize
                 print("loading transactions from local for account \(objectId!)")
-                _transactions = Transaction.findByAccountId(objectId!)
-
-                recomputeBalance()
-                print("computed balance for \(_transactions!.count) items. Balance \(balance)")
+                 // _transactions = Transaction.findByAccountId(objectId!)
+                // recomputeBalance()
+//                print("computed balance for \(_transactions!.count) items. Balance \(balance)")
+//                return _transactions!
+                Transaction.loadByAccount(self)
                 return _transactions!
             }
 
@@ -152,69 +158,98 @@ class Account: HTObject {
         recomputeBalance()
     }
 
-    static func loadAll() {
+//    static func loadAll() {
+//        let user = PFUser.currentUser()!
+//
+//        let localQuery = PFQuery(className: "Account").fromLocalDatastore()
+//
+//        localQuery.whereKey("userId", equalTo: user.objectId!)
+//        localQuery.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
+//            guard let objects = objects where error == nil else {
+//                print("Error loading accounts from Local. Error: \(error)")
+//                return
+//            }
+//
+//            _allAccounts = objects.map({ Account(object: $0 ) })
+//            print("\n[local] loaded \(objects.count) accounts")
+//
+//            if _allAccounts!.isEmpty {
+//                // load from server
+//                let remoteQuery = PFQuery(className: "Account")
+//                remoteQuery.whereKey("userId", equalTo: user.objectId!)
+//                remoteQuery.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
+//                    if let error = error {
+//                        print("Error loading accounts from Server: \(error)")
+//                        return
+//                    }
+//
+//                    print("\n[server] loaded \(objects!.count) accounts")
+//                    _allAccounts = objects?.map({ Account(object: $0 ) })
+//
+//                    if _allAccounts!.isEmpty {
+//                        print("No account found for \(user). Creating default accounts:")
+//
+//                        let defaultAccount = Account(name: "Primary Account")
+//                        let secondAccount  = Account(name: "Bank")
+//
+//                        defaultAccount.pinAndSaveEventuallyWithName("MyAccounts")
+//                        secondAccount.pinAndSaveEventuallyWithName("MyAccounts")
+//                        _allAccounts!.append(defaultAccount)
+//                        _allAccounts!.append(secondAccount)
+//
+//                        print("accounts: \(_allAccounts!)")
+//                    } else {
+//                        for account in _allAccounts! {
+//                            account.recomputeBalance()
+//                        }
+//                        Account.pinAllWithName(_allAccounts!, name: "MyAccounts")
+//                    }
+//                }
+//            } else {
+//                for account in _allAccounts! {
+//                    account.recomputeBalance()
+//                }
+//            }
+//        }
+//    }
+
+    class func loadAllFrom(local local: Bool) {
         let user = PFUser.currentUser()!
-        print("=====================\nUser: \(user)\n=====================")
 
-        let localQuery = PFQuery(className: "Account").fromLocalDatastore()
+        let query = PFQuery(className: "Account")
 
-        // TODO: move this out
-        if user.objectId == nil {
-            do {
-                try user.save()
-                print("Just saved user")
-            } catch {
-                print("An error occurred when saving user.")
-            }
+        if local {
+            query.fromLocalDatastore()
         }
 
-        localQuery.whereKey("userId", equalTo: user.objectId!)
-        localQuery.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
+        query.whereKey("userId", equalTo: user.objectId!)
+
+        query.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
             guard let objects = objects where error == nil else {
-                print("Error loading accounts from Local. Error: \(error)")
+                print("[Account:loadAllFrom(local: \(local))] Error: \(error)")
                 return
             }
 
-            _allAccounts = objects.map({ Account(object: $0 ) })
-            print("\n[local] loaded \(objects.count) accounts")
+            _allAccounts = fromObjects(objects)
+            print("\n[local:\(local)] loaded \(objects.count) accounts")
 
-            if _allAccounts!.isEmpty {
-                // load from server
-                let remoteQuery = PFQuery(className: "Account")
-                remoteQuery.whereKey("userId", equalTo: user.objectId!)
-                remoteQuery.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
-                    if let error = error {
-                        print("Error loading accounts from Server: \(error)")
-                        return
-                    }
 
-                    print("\n[server] loaded \(objects!.count) accounts")
-                    _allAccounts = objects?.map({ Account(object: $0 ) })
+            if !local && _allAccounts!.isEmpty {
+                print("No account found for \(user). Creating default accounts:")
 
-                    if _allAccounts!.isEmpty {
-                        print("No account found for \(user). Creating default accounts:")
+                let defaultAccount = Account(name: "Primary Account")
+                let secondAccount  = Account(name: "Bank")
 
-                        let defaultAccount = Account(name: "Primary Account")
-                        let secondAccount  = Account(name: "Bank")
+                defaultAccount.pinAndSaveEventuallyWithName("MyAccounts")
+                secondAccount.pinAndSaveEventuallyWithName("MyAccounts")
 
-                        defaultAccount.pinAndSaveEventuallyWithName("MyAccounts")
-                        secondAccount.pinAndSaveEventuallyWithName("MyAccounts")
-                        _allAccounts!.append(defaultAccount)
-                        _allAccounts!.append(secondAccount)
+                _allAccounts!.append(defaultAccount)
+                _allAccounts!.append(secondAccount)
 
-                        print("accounts: \(_allAccounts!)")
-                    } else {
-                        for account in _allAccounts! {
-                            account.recomputeBalance()
-                        }
-                        Account.pinAllWithName(_allAccounts!, name: "MyAccounts")
-                    }
-                }
-            } else {
-                for account in _allAccounts! {
-                    account.recomputeBalance()
-                }
+                print("accounts: \(_allAccounts!)")
             }
+
+            NSNotificationCenter.defaultCenter().postNotificationName(SPNotification.allAccountsLoaded, object: nil)
         }
     }
 
@@ -246,7 +281,7 @@ class Account: HTObject {
                 query.fromLocalDatastore()
             }
             let objects = try! query.findObjects()
-            _allAccounts = objects.map({ Account(object: $0) })
+            _allAccounts = fromObjects(objects)
         }
 
         return _allAccounts!
@@ -270,5 +305,11 @@ class Account: HTObject {
     class func delete(account: Account) {
         account._object?.deleteEventually()
         _allAccounts = _allAccounts?.filter({ $0.uuid != account.uuid })
+    }
+
+    class func fromObjects(objects: [PFObject]) -> [Account] {
+        var accounts = objects.map({ Account(object: $0) })
+        accounts = accounts.sort { $0.name < $1.name }
+        return accounts
     }
 }

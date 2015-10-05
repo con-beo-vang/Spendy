@@ -67,5 +67,26 @@ class ReminderItem: HTObject {
         return userCategory?.category
     }
 
-    var predictedAmount: NSNumber = 0
+    // TODO: may set a different predicted amount for reminder
+    // for now, pull from UserCategory
+    var predictedAmount: NSDecimalNumber {
+        get {
+            guard let pa = self["predictedAmount"] as! NSNumber? else {
+                return userCategory!.predictedAmount
+            }
+            return NSDecimalNumber(decimal: pa.decimalValue)
+        }
+        set {
+            self["predictedAmount"] = newValue
+        }
+        
+    }
+
+    func formattedPredictedAmount() -> String {
+        if let s = Transaction.currencyFormatter.stringFromNumber(predictedAmount) {
+            return s
+        } else {
+            return "Unknown"
+        }
+    }
 }

@@ -65,10 +65,13 @@ class AccountsViewController: UIViewController {
         
         addBarButton()
 
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "updateAccountList:", name:"AccountAddedOrUpdated", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "updateAccountList:", name: SPNotification.accountAddedOrUpdated, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "updateAccountList:", name: SPNotification.transactionsLoadedForAccount, object: nil)
+
     }
 
     func updateAccountList(notification: NSNotification) {
+        print("[Notified][AccountsViewController:updateAccountList")
         accounts = Account.all
         tableView.reloadData()
     }
