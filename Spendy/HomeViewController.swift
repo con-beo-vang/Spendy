@@ -108,6 +108,9 @@ class HomeViewController: UIViewController {
         let (begin, end) = getMonth(0)
         fromDate = begin
         toDate = end.dateByAddingTimeInterval(oneDay)
+        
+        print("from: \(DateFormatter.E_MMM_dd_yyyy.stringFromDate(fromDate!))")
+        print("to: \(DateFormatter.E_MMM_dd_yyyy.stringFromDate(toDate!))")
 
         // TODO: set data for table view based on fromDate and toDate
         reloadDateRange()
@@ -270,7 +273,6 @@ class HomeViewController: UIViewController {
     
     @IBAction func onDoneDatePopup(sender: UIButton) {
         
-
         let formatter1 = DateFormatter.MM_dd_yyyy
         let fromDate = formatter1.dateFromString((fromButton.titleLabel!.text)!)
         let toDate = formatter1.dateFromString((toButton.titleLabel!.text)!)
@@ -479,14 +481,28 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
                 if beginWeek != nil && endWeek != nil {
                     navigationItem.title = getWeekText(beginWeek!, endWeek: endWeek!)
                 }
+                
+                fromDate = beginWeek
+                toDate = endWeek?.dateByAddingTimeInterval(oneDay)
+                
                 break
             case 1:
                 viewMode = ViewMode.Monthly
                 navigationItem.title = DateFormatter.MMMM.stringFromDate(NSDate())
+                
+                let (beginMonth, endMonth) = getMonth(monthIndex)
+                fromDate = beginMonth
+                toDate = endMonth.dateByAddingTimeInterval(oneDay)
+                
                 break
             case 2:
                 viewMode = ViewMode.Yearly
                 navigationItem.title = DateFormatter.yyyy.stringFromDate(NSDate())
+                
+                let (beginYear, endYear) = getYear(yearIndex)
+                fromDate = beginYear
+                toDate = endYear.dateByAddingTimeInterval(oneDay)
+                
                 break
             case 3:
                 viewMode = ViewMode.Custom
@@ -495,7 +511,12 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
             default:
                 return
             }
+            reloadDateRange()
             viewModeTableView.reloadData()
+            
+            print("from: \(DateFormatter.E_MMM_dd_yyyy.stringFromDate(fromDate!))")
+            print("to: \(DateFormatter.E_MMM_dd_yyyy.stringFromDate(toDate!))")
+            
             closePopup(viewModePopup)
         }
     }
@@ -693,7 +714,7 @@ extension HomeViewController {
         let calendar = NSCalendar.currentCalendar()
         
         // Create an NSDate for the first and last day of the month
-        let components = calendar.components(NSCalendarUnit.Month, fromDate: NSDate())
+        let components = calendar.components([NSCalendarUnit.Month, NSCalendarUnit.Year], fromDate: NSDate())
         
         // Get suitable month
         components.month += monthIndex
