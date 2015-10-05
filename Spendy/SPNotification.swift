@@ -15,6 +15,6 @@ class SPNotification {
     static let allCategoriesLoaded          = "AllCategoriesLoaded"
     static let allAccountsLoaded            = "AllAccountsLoaded"
     static let recomputedBalanceForOneAccount = "RecomputedBalanceForOneAccount"
-    static let groupedStatsOnExpenseCategories = "GroupedStatsOnExpenseCategories"
+    static let balanceStatsUpdated          = "balanceStatsUpdated"
     static let finishedBootstrapingCategories  = "FinishedBootstrapCategories"
 }

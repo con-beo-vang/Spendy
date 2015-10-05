@@ -82,7 +82,7 @@ class HomeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "updateStatsOnExpenses", name: SPNotification.groupedStatsOnExpenseCategories, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "updateBalanceStats", name: SPNotification.balanceStatsUpdated, object: nil)
         
         // Set color for inactive icon in tab bar
         for item in (tabBarController?.tabBar.items as [UITabBarItem]?)! {
@@ -114,9 +114,6 @@ class HomeViewController: UIViewController {
         
         print("from: \(DateFormatter.E_MMM_dd_yyyy.stringFromDate(fromDate!))")
         print("to: \(DateFormatter.E_MMM_dd_yyyy.stringFromDate(toDate!))")
-
-        // TODO: set data for table view based on fromDate and toDate
-        reloadDateRange()
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -151,6 +148,8 @@ class HomeViewController: UIViewController {
         }
         
         viewModeTableView.reloadData()
+
+        reloadDateRange()
     }
     
     override func didReceiveMemoryWarning() {
@@ -164,9 +163,11 @@ class HomeViewController: UIViewController {
 
     func reloadDateRange() {
         if let fromDate = fromDate, toDate = toDate {
+            // tableView will be updated asynchronously via balanceStatUpdated notification
             balanceStat = BalanceStat(from: fromDate, to: toDate)
+        } else {
+            tableView.reloadData()
         }
-        tableView.reloadData()
     }
     
     func setColor() {
@@ -826,7 +827,7 @@ extension HomeViewController: QuickViewControllerDelegate {
 // MARK: - BalanceStat callbacks
 
 extension HomeViewController {
-    func updateStatsOnExpenses() {
+    func updateBalanceStats() {
         if let groupedExpenses = balanceStat.groupedExpenseCategories {
             expenses = Array(groupedExpenses.keys).sort { groupedExpenses[$0] > groupedExpenses[$1] }
         }

@@ -38,6 +38,7 @@ class BalanceStat {
         query.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
             if let objects = objects {
                 let transactions = objects.map { Transaction(object: $0) }
+                print("found \(transactions.count) objects: \(transactions)")
 
                 self.expenseTransactions      = transactions.filter { $0.kind == Transaction.expenseKind }
                 self.groupedExpenseCategories = self.groupTransactionsByCategory(self.expenseTransactions!)
@@ -47,7 +48,7 @@ class BalanceStat {
                 self.groupedIncomeCategories = self.groupTransactionsByCategory(self.incomeTransactions!)
                 self.incomeTotal              = Array(self.groupedIncomeCategories!.values).reduce(0, combine: +)
 
-                NSNotificationCenter.defaultCenter().postNotificationName(SPNotification.groupedStatsOnExpenseCategories, object: nil)
+                NSNotificationCenter.defaultCenter().postNotificationName(SPNotification.balanceStatsUpdated, object: nil)
             } else {
                 print("[BalanceStat] Error: \(error)")
             }

@@ -373,6 +373,6 @@ class Transaction: HTObject {
 
     override var description: String {
         let base = super.description
-        return "categoryId: \(categoryId), fromAccountId: \(fromAccountId), toAccountId: \(toAccountId), base: \(base)"
+        return "category: \(category?.name), fromAccount: \(fromAccount?.name), toAccountId: \(toAccount?.name), base: \(base)"
     }
 }
