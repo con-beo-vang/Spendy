@@ -17,6 +17,10 @@ class BalanceStat {
     var groupedExpenseCategories: [String: NSDecimalNumber]?
     var expenseTotal: NSDecimalNumber?
 
+    var incomeTransactions: [Transaction]?
+    var groupedIncomeCategories: [String: NSDecimalNumber]?
+    var incomeTotal: NSDecimalNumber?
+
     init(from: NSDate, to: NSDate) {
         self.from = from
         self.to   = to
@@ -26,13 +30,17 @@ class BalanceStat {
         let query = PFQuery(className: "Transaction")
         // query.fromLocalDatastore()
 
-        query.whereKey("kind", equalTo: Transaction.expenseKind)
         query.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
             if let objects = objects {
-                self.expenseTransactions = objects.map { Transaction(object: $0) }
+                let transactions = objects.map { Transaction(object: $0) }
+
+                self.expenseTransactions      = transactions.filter { $0.kind == Transaction.expenseKind }
                 self.groupedExpenseCategories = self.groupTransactionsByCategory(self.expenseTransactions!)
-                self.expenseTotal = Array(self.groupedExpenseCategories!.values).reduce(0, combine: +)
-                print("found \(objects)")
+                self.expenseTotal             = Array(self.groupedExpenseCategories!.values).reduce(0, combine: +)
+
+                self.incomeTransactions       = transactions.filter { $0.kind == Transaction.incomeKind }
+                self.groupedIncomeCategories = self.groupTransactionsByCategory(self.incomeTransactions!)
+                self.incomeTotal              = Array(self.groupedIncomeCategories!.values).reduce(0, combine: +)
 
                 NSNotificationCenter.defaultCenter().postNotificationName(SPNotification.groupedStatsOnExpenseCategories, object: nil)
             } else {

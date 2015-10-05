@@ -105,9 +105,6 @@ class HomeViewController: UIViewController {
         
         addGestures()
         
-        incomes = ["Salary", "Bonus", "Salary", "Bonus", "Salary", "Bonus"]
-        expenses = ["Meal", "Drink", "Transport",  "Meal", "Drink", "Transport"]
-        
         // set current month as default
         let (begin, end) = getMonth(0)
         fromDate = begin
@@ -392,6 +389,9 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
                     cell.menuLabel.textColor = Color.incomeColor
                     cell.amountLabel.textColor = Color.incomeColor
                     cell.menuLabel.text = "Income"
+                    if let total = balanceStat?.incomeTotal {
+                        cell.amountLabel.text = Transaction.currencyFormatter.stringFromNumber(total)
+                    }
                     
                     if isCollapedIncome {
                         cell.iconView.image = UIImage(named: "Expand")
@@ -405,8 +405,12 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
                     return cell
                 } else {
                     let cell = tableView.dequeueReusableCellWithIdentifier("SubMenuCell", forIndexPath: indexPath) as! SubMenuCell
-                    
-                    cell.categoryLabel.text = incomes[indexPath.row - 1]
+
+                    let name = incomes[indexPath.row - 1]
+                    cell.categoryLabel.text = name
+                    if let amount = balanceStat.groupedExpenseCategories![name] {
+                        cell.amountLabel.text   = Transaction.currencyFormatter.stringFromNumber(amount)
+                    }
                     
                     return cell
                 }
@@ -762,7 +766,7 @@ extension HomeViewController: QuickViewControllerDelegate {
     
     func quickViewController(quickViewController: QuickViewController, didAddTransaction status: Bool) {
         if status {
-            print("delegate")
+            print("quickView delegate")
             tabBarController?.selectedIndex = 1
             let accountsNVC = tabBarController?.viewControllers?.at(1) as? UINavigationController
             let accountsVC = accountsNVC?.topViewController as? AccountsViewController
@@ -777,10 +781,14 @@ extension HomeViewController: QuickViewControllerDelegate {
 
 extension HomeViewController {
     func updateStatsOnExpenses() {
-        if let grouped = balanceStat.groupedExpenseCategories {
-            expenses = Array(grouped.keys).sort { grouped[$0] > grouped[$1] }
-            print("RECEIVED NOTIFICATION!!! expenses: \(expenses)")
-            tableView.reloadData()
+        if let groupedExpenses = balanceStat.groupedExpenseCategories {
+            expenses = Array(groupedExpenses.keys).sort { groupedExpenses[$0] > groupedExpenses[$1] }
         }
+
+        if let groupedIncomes = balanceStat.groupedIncomeCategories {
+            incomes = Array(groupedIncomes.keys).sort { groupedIncomes[$0] > groupedIncomes[$1] }
+        }
+
+        tableView.reloadData()
     }
 }
