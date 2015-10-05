@@ -180,6 +180,13 @@ extension UserCategory {
         checkReminderOnStatus()
     }
 
+    func removeSelfAndAllReminders() {
+        for item in timeSlots {
+            removeReminder(item)
+        }
+        delete()
+    }
+
     func turnOff() {
         reminderOn = false
         for t in timeSlots {
