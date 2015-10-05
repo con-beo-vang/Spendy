@@ -98,45 +98,45 @@ class Category: HTObject {
         }
     }
 
-    class func loadAll() {
-        // load from local first
-        let query = PFQuery(className: "Category")
-
-        if !forceLoadFromRemote {
-            query.fromLocalDatastore()
-        }
-
-        query.findObjectsInBackgroundWithBlock {
-            (objects, error) -> Void in
-
-            guard let objects = objects where error == nil else {
-                print("Error loading categories from Local. error: \(error)")
-                return
-            }
-
-            _allCategories = objects.map({ Category(object: $0 ) })
-            print("\n[local] loaded \(objects.count) categories")
-
-            if !forceLoadFromRemote && _allCategories!.isEmpty {
-                print("No categories found locally. Loading from server")
-
-                let remoteQuery = PFQuery(className: "Category")
-                remoteQuery.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
-                    if let error = error {
-                        print("Error loading categories from Server: \(error)")
-                    } else {
-                        print("[server] loaded \(objects!.count) categories")
-                        _allCategories = objects?.map({ Category(object: $0 ) })
-
-                        // pin these newly downloaded objects to local store
-                        PFObject.pinAllInBackground(objects!, withName: "MyCategories", block: { (success, error: NSError?) -> Void in
-                            print("success: \(success); error: \(error)")
-                        })
-                    }
-                }
-            }
-        }
-    }
+//    class func loadAll() {
+//        // load from local first
+//        let query = PFQuery(className: "Category")
+//
+//        if !forceLoadFromRemote {
+//            query.fromLocalDatastore()
+//        }
+//
+//        query.findObjectsInBackgroundWithBlock {
+//            (objects, error) -> Void in
+//
+//            guard let objects = objects where error == nil else {
+//                print("Error loading categories from Local. error: \(error)")
+//                return
+//            }
+//
+//            _allCategories = objects.map({ Category(object: $0 ) })
+//            print("\n[local] loaded \(objects.count) categories")
+//
+//            if !forceLoadFromRemote && _allCategories!.isEmpty {
+//                print("No categories found locally. Loading from server")
+//
+//                let remoteQuery = PFQuery(className: "Category")
+//                remoteQuery.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
+//                    if let error = error {
+//                        print("Error loading categories from Server: \(error)")
+//                    } else {
+//                        print("[server] loaded \(objects!.count) categories")
+//                        _allCategories = objects?.map({ Category(object: $0 ) })
+//
+//                        // pin these newly downloaded objects to local store
+//                        PFObject.pinAllInBackground(objects!, withName: "MyCategories", block: { (success, error: NSError?) -> Void in
+//                            print("success: \(success); error: \(error)")
+//                        })
+//                    }
+//                }
+//            }
+//        }
+//    }
 
     class func loadAllFrom(local local: Bool) {
         let query = PFQuery(className: "Category")

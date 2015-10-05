@@ -158,60 +158,60 @@ class Account: HTObject {
         recomputeBalance()
     }
 
-    static func loadAll() {
-        let user = PFUser.currentUser()!
-
-        let localQuery = PFQuery(className: "Account").fromLocalDatastore()
-
-        localQuery.whereKey("userId", equalTo: user.objectId!)
-        localQuery.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
-            guard let objects = objects where error == nil else {
-                print("Error loading accounts from Local. Error: \(error)")
-                return
-            }
-
-            _allAccounts = objects.map({ Account(object: $0 ) })
-            print("\n[local] loaded \(objects.count) accounts")
-
-            if _allAccounts!.isEmpty {
-                // load from server
-                let remoteQuery = PFQuery(className: "Account")
-                remoteQuery.whereKey("userId", equalTo: user.objectId!)
-                remoteQuery.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
-                    if let error = error {
-                        print("Error loading accounts from Server: \(error)")
-                        return
-                    }
-
-                    print("\n[server] loaded \(objects!.count) accounts")
-                    _allAccounts = objects?.map({ Account(object: $0 ) })
-
-                    if _allAccounts!.isEmpty {
-                        print("No account found for \(user). Creating default accounts:")
-
-                        let defaultAccount = Account(name: "Primary Account")
-                        let secondAccount  = Account(name: "Bank")
-
-                        defaultAccount.pinAndSaveEventuallyWithName("MyAccounts")
-                        secondAccount.pinAndSaveEventuallyWithName("MyAccounts")
-                        _allAccounts!.append(defaultAccount)
-                        _allAccounts!.append(secondAccount)
-
-                        print("accounts: \(_allAccounts!)")
-                    } else {
-                        for account in _allAccounts! {
-                            account.recomputeBalance()
-                        }
-                        Account.pinAllWithName(_allAccounts!, name: "MyAccounts")
-                    }
-                }
-            } else {
-                for account in _allAccounts! {
-                    account.recomputeBalance()
-                }
-            }
-        }
-    }
+//    static func loadAll() {
+//        let user = PFUser.currentUser()!
+//
+//        let localQuery = PFQuery(className: "Account").fromLocalDatastore()
+//
+//        localQuery.whereKey("userId", equalTo: user.objectId!)
+//        localQuery.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
+//            guard let objects = objects where error == nil else {
+//                print("Error loading accounts from Local. Error: \(error)")
+//                return
+//            }
+//
+//            _allAccounts = objects.map({ Account(object: $0 ) })
+//            print("\n[local] loaded \(objects.count) accounts")
+//
+//            if _allAccounts!.isEmpty {
+//                // load from server
+//                let remoteQuery = PFQuery(className: "Account")
+//                remoteQuery.whereKey("userId", equalTo: user.objectId!)
+//                remoteQuery.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
+//                    if let error = error {
+//                        print("Error loading accounts from Server: \(error)")
+//                        return
+//                    }
+//
+//                    print("\n[server] loaded \(objects!.count) accounts")
+//                    _allAccounts = objects?.map({ Account(object: $0 ) })
+//
+//                    if _allAccounts!.isEmpty {
+//                        print("No account found for \(user). Creating default accounts:")
+//
+//                        let defaultAccount = Account(name: "Primary Account")
+//                        let secondAccount  = Account(name: "Bank")
+//
+//                        defaultAccount.pinAndSaveEventuallyWithName("MyAccounts")
+//                        secondAccount.pinAndSaveEventuallyWithName("MyAccounts")
+//                        _allAccounts!.append(defaultAccount)
+//                        _allAccounts!.append(secondAccount)
+//
+//                        print("accounts: \(_allAccounts!)")
+//                    } else {
+//                        for account in _allAccounts! {
+//                            account.recomputeBalance()
+//                        }
+//                        Account.pinAllWithName(_allAccounts!, name: "MyAccounts")
+//                    }
+//                }
+//            } else {
+//                for account in _allAccounts! {
+//                    account.recomputeBalance()
+//                }
+//            }
+//        }
+//    }
 
     class func loadAllFrom(local local: Bool) {
         let user = PFUser.currentUser()!
