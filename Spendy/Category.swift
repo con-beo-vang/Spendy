@@ -138,6 +138,12 @@ class Category: HTObject {
 //        }
 //    }
 
+    class func fromObjects(objects: [PFObject]) -> [Category] {
+        var cats = objects.map({ Category(object: $0) })
+        cats = cats.sort { $0.name < $1.name }
+        return cats
+    }
+
     class func loadAllFrom(local local: Bool) {
         let query = PFQuery(className: "Category")
 
@@ -153,7 +159,7 @@ class Category: HTObject {
                 return
             }
 
-            _allCategories = objects.map({ Category(object: $0 ) })
+            _allCategories = fromObjects(objects)
             print("\n[local:\(local)] loaded \(objects.count) categories")
 
             if !local {
@@ -196,7 +202,7 @@ class Category: HTObject {
                 query.fromLocalDatastore()
             }
             let objects = (try? query.findObjects()) ?? (try! query.fromLocalDatastore().findObjects())
-            _allCategories = objects.map({ Category(object: $0) })
+            _allCategories = fromObjects(objects)
         }
 
         return _allCategories!

@@ -230,7 +230,7 @@ class Account: HTObject {
                 return
             }
 
-            _allAccounts = objects.map({ Account(object: $0 ) })
+            _allAccounts = fromObjects(objects)
             print("\n[local:\(local)] loaded \(objects.count) accounts")
 
 
@@ -281,7 +281,7 @@ class Account: HTObject {
                 query.fromLocalDatastore()
             }
             let objects = try! query.findObjects()
-            _allAccounts = objects.map({ Account(object: $0) })
+            _allAccounts = fromObjects(objects)
         }
 
         return _allAccounts!
@@ -305,5 +305,11 @@ class Account: HTObject {
     class func delete(account: Account) {
         account._object?.deleteEventually()
         _allAccounts = _allAccounts?.filter({ $0.uuid != account.uuid })
+    }
+
+    class func fromObjects(objects: [PFObject]) -> [Account] {
+        var accounts = objects.map({ Account(object: $0) })
+        accounts = accounts.sort { $0.name < $1.name }
+        return accounts
     }
 }
