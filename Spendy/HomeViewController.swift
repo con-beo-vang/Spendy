@@ -49,6 +49,9 @@ class HomeViewController: UIViewController {
     
     @IBOutlet weak var doneButton: UIButton!
     
+    @IBOutlet weak var statusBarTopConstraint: NSLayoutConstraint!
+    
+    
     let dayCountInMonth = 30
     
     var incomes = [String]()
@@ -122,6 +125,9 @@ class HomeViewController: UIViewController {
         }
         
         // set top constraint again after presenting new view controller (Quick add)
+        if statusBarTopConstraint != nil {
+            view.removeConstraint(statusBarTopConstraint)
+        }
         let myConstraintTop =
         NSLayoutConstraint(item: statusBarView,
             attribute: NSLayoutAttribute.Top,

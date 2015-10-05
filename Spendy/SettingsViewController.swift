@@ -30,6 +30,9 @@ class SettingsViewController: UIViewController, ThemeCellDelegate, UITabBarContr
     @IBOutlet weak var accountStatusLabel: UILabel!
 
     @IBOutlet weak var resetDataButton: UIButton!
+    
+    @IBOutlet weak var avatarTopConstraint: NSLayoutConstraint!
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -56,6 +59,9 @@ class SettingsViewController: UIViewController, ThemeCellDelegate, UITabBarContr
     
     override func viewWillAppear(animated: Bool) {
         // set top constraint again after presenting new view controller (Quick add)
+        if avatarTopConstraint != nil {
+            view.removeConstraint(avatarTopConstraint)
+        }
         let myConstraintTop =
         NSLayoutConstraint(item: avatarView,
             attribute: NSLayoutAttribute.Top,

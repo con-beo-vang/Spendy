@@ -1537,6 +1537,7 @@
                         <outlet property="fromButton" destination="EDE-bf-FpT" id="JxT-l7-E4Q"/>
                         <outlet property="fromLabel" destination="MdP-7Z-d3u" id="iiu-RO-K5q"/>
                         <outlet property="popupSuperView" destination="uAo-Kx-wkV" id="dFU-UX-dQj"/>
+                        <outlet property="statusBarTopConstraint" destination="GR5-jL-FqI" id="R9b-uY-Gxb"/>
                         <outlet property="statusBarView" destination="dTs-FI-fpV" id="2IO-op-hAG"/>
                         <outlet property="tableView" destination="8QH-0L-xBf" id="uWU-vM-AQZ"/>
                         <outlet property="toButton" destination="5vW-iA-qyH" id="m2r-eV-cyG"/>
