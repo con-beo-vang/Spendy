@@ -102,7 +102,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        UITabBarItem.appearance().setTitleTextAttributes([NSForegroundColorAttributeName: Color.inactiveTabBarIconColor], forState:.Normal)
         
         // Uncomment this out to run if you have more categories to addd
-        // Category.bootstrapCategories()
+        // TODO: decide whether to run from Parse config
+        Category.bootstrapCategories()
 
         print("<<<<<<<<<<\nNotifications: \(ReminderList.sharedInstance.notifications())\n>>>>>>>>>>")
         UIApplication.sharedApplication().cancelAllLocalNotifications()

@@ -196,7 +196,7 @@ class Category: HTObject {
     }
 
     class var all:[Category] {
-        if _allCategories == nil {
+        if _allCategories == nil || _allCategories!.isEmpty {
             let query = PFQuery(className: "Category")
             if !forceLoadFromRemote {
                 query.fromLocalDatastore()
@@ -244,14 +244,15 @@ extension Category {
 
         let query = PFQuery(className: "Category")
 
-        let objects = (try? query.findObjects()) ?? (try! query.fromLocalDatastore().findObjects())
-        print("Found: \(objects.count) existing categories")
+//        let objects = (try? query.findObjects()) ?? (try! query.fromLocalDatastore().findObjects())
+//        print("Found: \(objects.count) existing categories")
 
         query.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
             if let objects = objects {
                 loadType(CategoryType.Transfer, names: transferCats, objects: objects)
                 loadType(CategoryType.Expense, names: expenseCats, objects: objects)
                 loadType(CategoryType.Income, names: incomeCats, objects: objects)
+                NSNotificationCenter.defaultCenter().postNotificationName(SPNotification.finishedBootstrapingCategories, object: nil)
             } else {
                 print("[bootstrapCategories:findObjectsInBackgroundWithBlock] \(error)")
             }

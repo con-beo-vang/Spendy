@@ -67,7 +67,6 @@ class AccountsViewController: UIViewController {
 
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "updateAccountList:", name: SPNotification.accountAddedOrUpdated, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "updateAccountList:", name: SPNotification.transactionsLoadedForAccount, object: nil)
-
     }
 
     func updateAccountList(notification: NSNotification) {
@@ -184,10 +183,6 @@ class AccountsViewController: UIViewController {
             
             closePopup()
         }
-        
-        
-        
-        
     }
     
     // MARK: Transfer between 2 views
