@@ -119,14 +119,11 @@ class Account: HTObject {
             guard _transactions != nil else {
                 _transactions = []
 
-                // load from DB
-                // TODO: optimize
-                print("loading transactions from local for account \(objectId!)")
-                 // _transactions = Transaction.findByAccountId(objectId!)
-                // recomputeBalance()
-//                print("computed balance for \(_transactions!.count) items. Balance \(balance)")
-//                return _transactions!
-                Transaction.loadByAccount(self)
+                if let _ = objectId {
+                    // load in background and will update
+                    Transaction.loadByAccount(self)
+
+                }
                 return _transactions!
             }
 
@@ -280,6 +277,7 @@ class Account: HTObject {
             if !forceLoadFromRemote {
                 query.fromLocalDatastore()
             }
+
             let objects = try! query.findObjects()
             _allAccounts = fromObjects(objects)
         }
@@ -299,6 +297,7 @@ class Account: HTObject {
 
     class func create(account: Account) {
         account.save()
+        account.recomputeBalance()
         _allAccounts!.append(account)
     }
 
