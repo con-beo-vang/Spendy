@@ -179,6 +179,12 @@ class QuickViewController: UIViewController {
 
         closePopup()
     }
+    
+    @IBAction func onAmountChanged(sender: UITextField) {
+        Helper.sharedInstance.preventInputManyDots(sender)
+    }
+    
+    
 
     func showPopup() {
 

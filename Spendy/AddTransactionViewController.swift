@@ -511,6 +511,11 @@ extension AddTransactionViewController: UITableViewDataSource, UITableViewDelega
         
         return dummyCell
     }
+    
+    
+    @IBAction func onAmountChanged(sender: UITextField) {
+        Helper.sharedInstance.preventInputManyDots(sender)
+    }
 }
 
 extension AddTransactionViewController {

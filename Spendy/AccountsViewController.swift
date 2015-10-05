@@ -185,6 +185,10 @@ class AccountsViewController: UIViewController {
         }
     }
     
+    @IBAction func onAmountChanged(sender: UITextField) {
+        Helper.sharedInstance.preventInputManyDots(sender)
+    }
+    
     // MARK: Transfer between 2 views
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
