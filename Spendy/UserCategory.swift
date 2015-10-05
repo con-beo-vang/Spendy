@@ -107,7 +107,9 @@ class UserCategory: HTObject {
             if !forceLoadFromRemote {
                 query.fromLocalDatastore()
             }
+
             let objects = try! query.findObjects()
+
             _all = objects.map({ UserCategory(object: $0) })
         }
 
@@ -164,12 +166,16 @@ extension UserCategory {
 
         // Turn on switch automatically
         item.isActive = true
+        item.save()
 
         // Add new notification
         ReminderList.sharedInstance.addReminderNotification(item)
     }
 
     func updateReminder(reminderItem: ReminderItem, newValue: Bool) {
+        reminderItem.isActive = newValue
+        reminderItem.save()
+
         // attempt to remove reminderItem first
         ReminderList.sharedInstance.removeReminderNotification(reminderItem)
 
