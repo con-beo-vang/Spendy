@@ -49,6 +49,9 @@ class HomeViewController: UIViewController {
     
     @IBOutlet weak var doneButton: UIButton!
     
+    @IBOutlet weak var statusBarTopConstraint: NSLayoutConstraint!
+    
+    
     let dayCountInMonth = 30
     
     var incomes = [String]()
@@ -115,7 +118,16 @@ class HomeViewController: UIViewController {
     
     override func viewWillAppear(animated: Bool) {
         
+        // If user taps Change on reminder notificaiton, go to Quick Add
+        if NSUserDefaults.standardUserDefaults().boolForKey("GoToQuickAdd") {
+            NSUserDefaults.standardUserDefaults().setBool(false, forKey: "GoToQuickAdd")
+            performSegueWithIdentifier("QuickMode", sender: self)
+        }
+        
         // set top constraint again after presenting new view controller (Quick add)
+        if statusBarTopConstraint != nil {
+            view.removeConstraint(statusBarTopConstraint)
+        }
         let myConstraintTop =
         NSLayoutConstraint(item: statusBarView,
             attribute: NSLayoutAttribute.Top,
@@ -615,6 +627,8 @@ extension HomeViewController: UIViewControllerTransitioningDelegate {
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "QuickMode" {
             let toViewController = segue.destinationViewController as! UINavigationController
+            
+            // Custom transaction's animation
             toViewController.transitioningDelegate = self
             customPresentAnimationController.animationType = CustomSegueAnimation.SwipeDown
             customDismissAnimationController.animationType = CustomSegueAnimation.SwipeDown
