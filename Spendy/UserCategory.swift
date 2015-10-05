@@ -154,6 +154,8 @@ extension UserCategory {
         timeSlots.append(item)
         save()
 
+        UserCategory.forceReloadQuickAddCategories()
+
         print("add notification for \(item) at \(time)")
         ReminderList.sharedInstance.addReminderNotification(item)
     }
@@ -164,6 +166,7 @@ extension UserCategory {
         timeSlots = timeSlots.filter {$0.UUID != item.UUID}
         item.delete()
         save()
+        UserCategory.forceReloadQuickAddCategories()
     }
 
     func updateReminder(index: Int, newTime: NSDate) {
@@ -249,16 +252,27 @@ var _allForQuickAdd: [UserCategory]?
 
 // MARK: - Quick Add
 extension UserCategory {
+    class func forceReloadQuickAddCategories() {
+        _allForQuickAdd = nil
+    }
+
     class func allForQuickAdd() -> [UserCategory] {
         guard _allForQuickAdd != nil else {
-            let defaultCategoryNames = ["Meal", "Drink", "Commute"]
-            let cats = Category.all.filter({ defaultCategoryNames.contains($0.name) })
-            _allForQuickAdd = fromCategories(cats)
+            _allForQuickAdd = UserCategory.allWithReminderSettings()
+
+            if _allForQuickAdd!.isEmpty {
+                let names = ["Meal", "Drink", "Commute"]
+                let cats = Category.all.filter({ names.contains($0.name) })
+
+                _allForQuickAdd = fromCategories(cats)
+            } else {
+                // limit to _allForQuickAdd to 3 categories here if desired
+            }
+
             return _allForQuickAdd!
         }
 
         return _allForQuickAdd!
-
     }
 
     func quickAddAmounts() -> [NSDecimalNumber] {
