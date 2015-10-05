@@ -12,4 +12,7 @@ class SPNotification {
     static let transactionsLoadedForAccount = "TransactionsLoadedForAccount"
     static let transactionAddedOrUpdated    = "TransactionAddedOrUpdated"
     static let accountAddedOrUpdated        = "AccountAddedOrUpdated"
+    static let allCategoriesLoaded          = "AllCategoriesLoaded"
+    static let allAccountsLoaded            = "AllAccountsLoaded"
+    static let recomputedBalanceForOneAccount = "RecomputedBalanceForOneAccount"
 }

@@ -104,6 +104,9 @@ class Account: HTObject {
         if bal != balance {
             self.balance = bal
         }
+
+        print("posting recomputedBalanceForOneAccount \(self). transactions: \(transactions.count)")
+        NSNotificationCenter.defaultCenter().postNotificationName(SPNotification.recomputedBalanceForOneAccount, object: nil)
     }
 
     func formattedBalance() -> String {
@@ -157,19 +160,8 @@ class Account: HTObject {
 
     static func loadAll() {
         let user = PFUser.currentUser()!
-        print("=====================\nUser: \(user)\n=====================")
 
         let localQuery = PFQuery(className: "Account").fromLocalDatastore()
-
-        // TODO: move this out
-        if user.objectId == nil {
-            do {
-                try user.save()
-                print("Just saved user")
-            } catch let error {
-                print("An error occurred when saving user: \(error)")
-            }
-        }
 
         localQuery.whereKey("userId", equalTo: user.objectId!)
         localQuery.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
@@ -218,6 +210,46 @@ class Account: HTObject {
                     account.recomputeBalance()
                 }
             }
+        }
+    }
+
+    class func loadAllFrom(local local: Bool) {
+        let user = PFUser.currentUser()!
+
+        let query = PFQuery(className: "Account")
+
+        if local {
+            query.fromLocalDatastore()
+        }
+
+        query.whereKey("userId", equalTo: user.objectId!)
+
+        query.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
+            guard let objects = objects where error == nil else {
+                print("[Account:loadAllFrom(local: \(local))] Error: \(error)")
+                return
+            }
+
+            _allAccounts = objects.map({ Account(object: $0 ) })
+            print("\n[local:\(local)] loaded \(objects.count) accounts")
+
+
+            if !local && _allAccounts!.isEmpty {
+                print("No account found for \(user). Creating default accounts:")
+
+                let defaultAccount = Account(name: "Primary Account")
+                let secondAccount  = Account(name: "Bank")
+
+                defaultAccount.pinAndSaveEventuallyWithName("MyAccounts")
+                secondAccount.pinAndSaveEventuallyWithName("MyAccounts")
+
+                _allAccounts!.append(defaultAccount)
+                _allAccounts!.append(secondAccount)
+
+                print("accounts: \(_allAccounts!)")
+            }
+
+            NSNotificationCenter.defaultCenter().postNotificationName(SPNotification.allAccountsLoaded, object: nil)
         }
     }
 

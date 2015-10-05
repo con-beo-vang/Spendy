@@ -102,12 +102,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UITabBarItem.appearance().setTitleTextAttributes([NSForegroundColorAttributeName: Color.inactiveTabBarIconColor], forState:.Normal)
         
         // Uncomment this out to run if you have more categories to addd
-        Category.bootstrapCategories()
+        // Category.bootstrapCategories()
 
         print("<<<<<<<<<<\nNotifications: \(ReminderList.sharedInstance.notifications())\n>>>>>>>>>>")
         UIApplication.sharedApplication().cancelAllLocalNotifications()
 
+
+        PFUser.currentUser()?.fetchIfNeededInBackground()
+        print("=====================\nUser: \(User.current())\n=====================")
+
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "recomputeAccountBalance:", name: SPNotification.transactionsLoadedForAccount, object: nil)
+
+        // This may not be necessary due to the above
+        // NSNotificationCenter.defaultCenter().addObserver(self, selector: "recomputeAccountBalance:", name: SPNotification.allAccountsLoaded, object: nil)
         return true
     }
 

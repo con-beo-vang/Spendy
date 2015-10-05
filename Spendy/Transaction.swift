@@ -31,7 +31,7 @@ var _allTransactions: [Transaction]?
 // newTransaction.delete()
 // account.addTransaction(newTransaction)
 // account.removeTransaction(newTransaction)
-class Transaction: HTObject, CustomStringConvertible {
+class Transaction: HTObject {
     class var kinds: [String] {
         return [incomeKind, expenseKind, transferKind]
     }
@@ -355,7 +355,7 @@ class Transaction: HTObject, CustomStringConvertible {
         query.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
             if let objects = objects {
                 account.transactions = objects.map {Transaction(object: $0)}
-                print("posting loadedAccountTransaction. objects: \(objects)")
+                print("posting loadedAccountTransaction. objects: \(objects.count)")
                 NSNotificationCenter.defaultCenter().postNotificationName(SPNotification.transactionsLoadedForAccount, object: nil, userInfo: ["account": account])
 
                 // TODO: move to a callback handler

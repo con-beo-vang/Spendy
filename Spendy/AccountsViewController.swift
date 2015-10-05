@@ -67,9 +67,11 @@ class AccountsViewController: UIViewController {
 
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "updateAccountList:", name: SPNotification.accountAddedOrUpdated, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "updateAccountList:", name: SPNotification.transactionsLoadedForAccount, object: nil)
+
     }
 
     func updateAccountList(notification: NSNotification) {
+        print("[Notified] Reloading account and updating table")
         accounts = Account.all
         tableView.reloadData()
     }

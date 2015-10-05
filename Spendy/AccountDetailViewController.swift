@@ -54,6 +54,13 @@ class AccountDetailViewController: UIViewController {
 
         // observe so we can switch account if necessary
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "updateCurrentAccount:", name: SPNotification.transactionAddedOrUpdated, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshTable:", name: SPNotification.recomputedBalanceForOneAccount, object: nil)
+    }
+
+    func refreshTable(notification: NSNotification) {
+        print("[Notified][AccountDetailViewController:refreshTable]")
+        reloadTransactions()
+        tableView.reloadData()
     }
 
     func updateCurrentAccount(notification: NSNotification) {

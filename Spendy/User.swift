@@ -11,7 +11,7 @@ import Parse
 
 class User: HTObject {
     static func current() -> User? {
-        guard let object = PFUser.currentUser() else { return nil}
+        guard let object = PFUser.currentUser() else { return nil }
         return User(object: object)
     }
 
@@ -35,11 +35,26 @@ class User: HTObject {
         set { self["email"] = newValue }
     }
 
+    var dataVersion: String? {
+        get { return self["version"] as! String? }
+        set { self["version"] = newValue }
+    }
+
     convenience init() {
         self.init(object: PFUser())
     }
 
     var object: PFUser? {
         return _object as! PFUser?
+    }
+
+    class func isDataVersionOutOfDate() -> Bool {
+        guard let user = User.current() else { return true }
+        return user.dataVersion != DataManager.version
+    }
+
+    func updateDataVersion(version: String) {
+        dataVersion = version
+        save()
     }
 }

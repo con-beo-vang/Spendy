@@ -16,7 +16,7 @@
 import Foundation
 import Parse
 
-class HTObject {
+class HTObject: CustomStringConvertible {
     // use an internal object to talk to Parse instead of inheriting from PFObject
     var _object: PFObject?
 

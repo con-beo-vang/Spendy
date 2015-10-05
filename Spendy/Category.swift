@@ -101,7 +101,6 @@ class Category: HTObject {
     class func loadAll() {
         // load from local first
         let query = PFQuery(className: "Category")
-        query.limit = 100
 
         if !forceLoadFromRemote {
             query.fromLocalDatastore()
@@ -118,9 +117,9 @@ class Category: HTObject {
             _allCategories = objects.map({ Category(object: $0 ) })
             print("\n[local] loaded \(objects.count) categories")
 
-            if _allCategories!.isEmpty {
+            if !forceLoadFromRemote && _allCategories!.isEmpty {
                 print("No categories found locally. Loading from server")
-                // load from remote
+
                 let remoteQuery = PFQuery(className: "Category")
                 remoteQuery.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
                     if let error = error {
@@ -129,14 +128,39 @@ class Category: HTObject {
                         print("[server] loaded \(objects!.count) categories")
                         _allCategories = objects?.map({ Category(object: $0 ) })
 
-                        // already in background
+                        // pin these newly downloaded objects to local store
                         PFObject.pinAllInBackground(objects!, withName: "MyCategories", block: { (success, error: NSError?) -> Void in
                             print("success: \(success); error: \(error)")
                         })
-                        // no need to save because we are not adding data
                     }
                 }
             }
+        }
+    }
+
+    class func loadAllFrom(local local: Bool) {
+        let query = PFQuery(className: "Category")
+
+        if local {
+            query.fromLocalDatastore()
+        }
+
+        query.findObjectsInBackgroundWithBlock {
+            (objects, error) -> Void in
+
+            guard let objects = objects where error == nil else {
+                print("[Category:loadAllFrom(local: \(local))] Error: \(error)")
+                return
+            }
+
+            _allCategories = objects.map({ Category(object: $0 ) })
+            print("\n[local:\(local)] loaded \(objects.count) categories")
+
+            if !local {
+                PFObject.pinAllInBackground(objects, withName: "MyCategories")
+            }
+
+            NSNotificationCenter.defaultCenter().postNotificationName(SPNotification.allCategoriesLoaded, object: nil)
         }
     }
 
@@ -205,6 +229,7 @@ class Category: HTObject {
 // only have to do this once each time setting up a new Parse app
 // you will need to run this manually if you use your own Parse key
 // safe to run again as it doesn't create new categories if already set up
+
 extension Category {
     class func bootstrapCategories() {
         print("\n********BOOTSTRAPING CATEGORIES********")
