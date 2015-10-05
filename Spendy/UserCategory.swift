@@ -55,7 +55,16 @@ class UserCategory: HTObject {
         }
     }
 
-    var predictedAmount = NSDecimalNumber(double: 20)
+    var predictedAmount: NSDecimalNumber {
+        get {
+            guard let pa = self["predictedAmount"] as! NSNumber? else { return 4.5 }
+            return NSDecimalNumber(decimal: pa.decimalValue)
+        }
+
+        set {
+            self["predictedAmount"] = newValue
+        }
+    }
 
     var timeSlots: [ReminderItem] {
         set {

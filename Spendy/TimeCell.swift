@@ -19,6 +19,8 @@ class TimeCell: UITableViewCell {
     
     @IBOutlet weak var switchView: UIView!
     
+    @IBOutlet weak var predictedAmountLabel: UILabel!
+
     var onSwitch: SevenSwitch!
     
     var delegate: TimeCellDelegate!
@@ -27,6 +29,8 @@ class TimeCell: UITableViewCell {
         didSet {
             timeLabel.text = DateFormatter.hh_mm_a.stringFromDate(reminderItem.reminderTime)
             onSwitch.on = reminderItem.isActive
+
+            predictedAmountLabel.text = "~ \(reminderItem.formattedPredictedAmount())"
         }
     }
 
