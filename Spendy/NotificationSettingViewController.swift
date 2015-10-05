@@ -37,6 +37,9 @@ class NotificationSettingViewController: UIViewController, ReminderCellDelegate 
         leftSwipe.direction = .Left
         leftSwipe.delegate = self
         tableView.addGestureRecognizer(leftSwipe)
+        
+        // When backing to app from Home of Lock screen
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("appDidBecomeActive:"), name:UIApplicationDidBecomeActiveNotification, object: nil)
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -56,6 +59,16 @@ class NotificationSettingViewController: UIViewController, ReminderCellDelegate 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    func appDidBecomeActive(notification: NSNotification) {
+        
+        // Back to app when user taps Change on reminder notification
+        // Go to Home view
+        if NSUserDefaults.standardUserDefaults().boolForKey("GoToQuickAdd") {
+            tabBarController?.selectedIndex = 0
+            tabBarController?.tabBar.hidden = false
+        }
     }
     
     // MARK: Button

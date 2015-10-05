@@ -222,9 +222,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         switch (identifier!) {
         case "CHANGE":
             print("CHANGE")
-            let vc = storyboard.instantiateViewControllerWithIdentifier("QuickVC") as! QuickViewController
-            let nc = UINavigationController(rootViewController: vc)
-            window?.rootViewController?.presentViewController(nc, animated: true, completion: nil)
+            NSUserDefaults.standardUserDefaults().setBool(true, forKey: "GoToQuickAdd")
+            let vc = storyboard.instantiateViewControllerWithIdentifier("SplashVC") as! SplashViewController
+            window?.rootViewController?.presentViewController(vc, animated: true, completion: nil)
         case "YES":
             print("YES")
             // TODO: Add new transaction
