@@ -53,7 +53,7 @@ class HomeViewController: UIViewController {
     
     var incomes = [String]()
     var expenses = [String]()
-    
+
     var isCollapedIncome = true
     var isCollapedExpense = true
     
@@ -73,9 +73,14 @@ class HomeViewController: UIViewController {
     
     let customPresentAnimationController = CustomPresentAnimationController()
     let customDismissAnimationController = CustomDismissAnimationController()
+
+    var balanceStat: BalanceStat!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        balanceStat = BalanceStat(from: NSDate(), to: NSDate())
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "updateStatsOnExpenses", name: SPNotification.groupedStatsOnExpenseCategories, object: nil)
         
         // Set color for inactive icon in tab bar
         for item in (tabBarController?.tabBar.items as [UITabBarItem]?)! {
@@ -110,7 +115,6 @@ class HomeViewController: UIViewController {
         
         // TODO: set data for table view based on fromDate and toDate
         tableView.reloadData()
-        
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -414,6 +418,9 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
                     cell.menuLabel.textColor = Color.expenseColor
                     cell.amountLabel.textColor = Color.expenseColor
                     cell.menuLabel.text = "Expense"
+                    if let total = balanceStat?.expenseTotal {
+                        cell.amountLabel.text = Transaction.currencyFormatter.stringFromNumber(total)
+                    }
                     
                     if isCollapedExpense {
                         cell.iconView.image = UIImage(named: "Expand")
@@ -427,8 +434,10 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
                     return cell
                 } else {
                     let cell = tableView.dequeueReusableCellWithIdentifier("SubMenuCell", forIndexPath: indexPath) as! SubMenuCell
-                    
-                    cell.categoryLabel.text = expenses[indexPath.row - 1]
+
+                    let name = expenses[indexPath.row - 1]
+                    cell.categoryLabel.text = name
+                    cell.amountLabel.text   = Transaction.currencyFormatter.stringFromNumber(balanceStat.groupedExpenseCategories![name]!)
                     
                     return cell
                 }
@@ -759,6 +768,19 @@ extension HomeViewController: QuickViewControllerDelegate {
             let accountsVC = accountsNVC?.topViewController as? AccountsViewController
             accountsVC?.justAddTransactions = true
             accountsVC?.addedAccount = Account.defaultAccount()
+        }
+    }
+}
+
+
+// MARK: - BalanceStat callbacks
+
+extension HomeViewController {
+    func updateStatsOnExpenses() {
+        if let grouped = balanceStat.groupedExpenseCategories {
+            expenses = Array(grouped.keys).sort { grouped[$0] > grouped[$1] }
+            print("RECEIVED NOTIFICATION!!! expenses: \(expenses)")
+            tableView.reloadData()
         }
     }
 }

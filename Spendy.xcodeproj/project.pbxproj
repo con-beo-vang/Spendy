@@ -72,6 +72,8 @@
 		9DFE8D9D1BAFA9E0001E6F9E /* DateUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DFE8D9C1BAFA9E0001E6F9E /* DateUtilities.swift */; };
 		A77E0D207AB770857E146536 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CFE2D5C782640C353708467 /* Pods.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		E20830B51BBE30ED006D7B3D /* UserCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = E20830B41BBE30ED006D7B3D /* UserCategory.swift */; settings = {ASSET_TAGS = (); }; };
+		E234A3D01BC2AAEE00C4C83D /* BalanceStat.swift in Sources */ = {isa = PBXBuildFile; fileRef = E234A3CF1BC2AAEE00C4C83D /* BalanceStat.swift */; settings = {ASSET_TAGS = (); }; };
+		E234A3D41BC2B3FA00C4C83D /* NSDecimalNumberExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E234A3D31BC2B3FA00C4C83D /* NSDecimalNumberExtension.swift */; settings = {ASSET_TAGS = (); }; };
 		E29F203B1BAEAF150076AEFB /* HTObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = E29F203A1BAEAF150076AEFB /* HTObject.swift */; };
 /* End PBXBuildFile section */
 
@@ -158,6 +160,8 @@
 		9DFD44731BC21AE3008C2ABC /* SPNotification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SPNotification.swift; sourceTree = "<group>"; };
 		9DFE8D9C1BAFA9E0001E6F9E /* DateUtilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateUtilities.swift; sourceTree = "<group>"; };
 		E20830B41BBE30ED006D7B3D /* UserCategory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserCategory.swift; sourceTree = "<group>"; };
+		E234A3CF1BC2AAEE00C4C83D /* BalanceStat.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BalanceStat.swift; sourceTree = "<group>"; };
+		E234A3D31BC2B3FA00C4C83D /* NSDecimalNumberExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSDecimalNumberExtension.swift; sourceTree = "<group>"; };
 		E29F203A1BAEAF150076AEFB /* HTObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HTObject.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -313,6 +317,8 @@
 				9D862C0C1BB99AB500332B24 /* User.swift */,
 				E20830B41BBE30ED006D7B3D /* UserCategory.swift */,
 				9DFD44731BC21AE3008C2ABC /* SPNotification.swift */,
+				E234A3CF1BC2AAEE00C4C83D /* BalanceStat.swift */,
+				E234A3D31BC2B3FA00C4C83D /* NSDecimalNumberExtension.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -619,6 +625,7 @@
 				186640ED1BB8CDAC00076B70 /* ReminderItem.swift in Sources */,
 				9D78C51D1BA5A47F00B00BC2 /* AppDelegate.swift in Sources */,
 				1892689E1BB52728006FA9C4 /* CustomNavigationAnimationController.swift in Sources */,
+				E234A3D41BC2B3FA00C4C83D /* NSDecimalNumberExtension.swift in Sources */,
 				1881FB521BB831DD00314FD1 /* ViewMoreCell.swift in Sources */,
 				18F39CD51BA9D2C00099B714 /* AmountCell.swift in Sources */,
 				1884A4DC1BAD62EB00D24257 /* AddReminderViewController.swift in Sources */,
@@ -626,6 +633,7 @@
 				1884A4E11BAD6EAA00D24257 /* TimeCell.swift in Sources */,
 				18F39CCD1BA9C8330099B714 /* AddTransactionViewController.swift in Sources */,
 				18F39CC31BA962D10099B714 /* HomeViewController.swift in Sources */,
+				E234A3D01BC2AAEE00C4C83D /* BalanceStat.swift in Sources */,
 				9D862C0D1BB99AB500332B24 /* User.swift in Sources */,
 				9D3EA5FA1BAB3BBD00EF4B47 /* Transaction.swift in Sources */,
 				18499E1D1BAB237D0066E6E5 /* AccountCell.swift in Sources */,
