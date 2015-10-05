@@ -74,6 +74,7 @@ class AccountDetailViewController: UIViewController {
 
         // switch to the updated account
         currentAccount = updatedAccount
+        currentAccount.recomputeBalance()
     }
 
 

@@ -66,8 +66,10 @@ class Account: HTObject {
     func recomputeBalance() {
         var bal = NSDecimalNumber(double: startingBalance.doubleValue)
 
-        // TODO: sort transactions
-        for (_, t) in transactions.enumerate() {
+        // resort transactions by date
+        transactions.sortInPlace {$0.date < $1.date}
+
+        for t in transactions {
             guard let kind = t.kind else { print("Unexpected nil kind in \(t)"); continue }
 
             switch kind {

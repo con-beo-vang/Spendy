@@ -154,6 +154,8 @@ class AddTransactionViewController: UIViewController {
         if transaction.isNew() {
             // add transaction and update both fromAccount and toAccount stats
             Transaction.add(transaction)
+        } else {
+            transaction.save()
         }
 
         print("posting notification TransactionAddedOrUpdated")
