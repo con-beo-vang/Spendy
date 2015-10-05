@@ -98,8 +98,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         UITabBar.appearance().tintColor = Color.strongColor
         
-        UITabBarItem.appearance().setTitleTextAttributes([NSForegroundColorAttributeName: Color.strongColor], forState:.Selected)
-        UITabBarItem.appearance().setTitleTextAttributes([NSForegroundColorAttributeName: Color.inactiveTabBarIconColor], forState:.Normal)
+//        UITabBarItem.appearance().setTitleTextAttributes([NSForegroundColorAttributeName: Color.strongColor], forState:.Selected)
+//        UITabBarItem.appearance().setTitleTextAttributes([NSForegroundColorAttributeName: Color.inactiveTabBarIconColor], forState:.Normal)
         
         // Uncomment this out to run if you have more categories to addd
         // Category.bootstrapCategories()
