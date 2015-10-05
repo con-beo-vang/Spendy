@@ -1,5 +1,6 @@
 //
 //  Category.swift
+
 //  Spendy
 //
 //  Created by Harley Trung on 9/18/15.
@@ -208,16 +209,22 @@ extension Category {
     class func bootstrapCategories() {
         print("\n********BOOTSTRAPING CATEGORIES********")
         // remove all stale categories
-        // try! PFObject.unpinAllObjects()
+        // try? PFObject.unpinAllObjects()
 
         let query = PFQuery(className: "Category")
-        query.limit = 100
+
         let objects = (try? query.findObjects()) ?? (try! query.fromLocalDatastore().findObjects())
         print("Found: \(objects.count) existing categories")
 
-        loadType(CategoryType.Transfer, names: transferCats, objects: objects)
-        loadType(CategoryType.Expense, names: expenseCats, objects: objects)
-        loadType(CategoryType.Income, names: incomeCats, objects: objects)
+        query.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
+            if let objects = objects {
+                loadType(CategoryType.Transfer, names: transferCats, objects: objects)
+                loadType(CategoryType.Expense, names: expenseCats, objects: objects)
+                loadType(CategoryType.Income, names: incomeCats, objects: objects)
+            } else {
+                print("[bootstrapCategories:findObjectsInBackgroundWithBlock] \(error)")
+            }
+        }
     }
 
     class func loadType(type: CategoryType, names: [String], objects: [PFObject]) {
@@ -235,9 +242,9 @@ extension Category {
 
             if category == nil {
                 let c = Category(name: name, icon: iconName)
-                c._object!.pinInBackground()
                 c._object!.saveInBackgroundWithBlock({ (succeeded, error) -> Void in
                     if succeeded {
+                        c._object!.pinInBackground()
                         print("Added \(type) category \(name) with image \(iconName)")
                     }
                 })

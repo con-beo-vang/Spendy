@@ -107,7 +107,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         print("<<<<<<<<<<\nNotifications: \(ReminderList.sharedInstance.notifications())\n>>>>>>>>>>")
         UIApplication.sharedApplication().cancelAllLocalNotifications()
 
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "recomputeAccountBalance:", name: SPNotification.transactionsLoadedForAccount, object: nil)
         return true
+    }
+
+    func recomputeAccountBalance(notification: NSNotification) {
+        // First try to cast user info to expected type
+        guard let info = notification.userInfo as? Dictionary<String,AnyObject> else {
+            print("[transactionLoadedForAccountCallback] Cannot cast userInfo \(notification.userInfo)")
+            return
+        }
+
+        guard let account = info["account"] as! Account? else { return }
+
+        account.recomputeBalance()
+        print("[Notified] recomputed balance for \(account.transactions.count) transactions of account \(account.name)")
     }
     
     //--------------------------------------

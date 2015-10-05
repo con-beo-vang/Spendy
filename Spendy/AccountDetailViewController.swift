@@ -52,7 +52,8 @@ class AccountDetailViewController: UIViewController {
         self.refreshControl!.addTarget(self, action: "openQuickMode", forControlEvents: UIControlEvents.ValueChanged)
         self.tableView.addSubview(refreshControl!)
 
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "updateCurrentAccount:", name:"TransactionAddedOrUpdated", object: nil)
+        // observe so we can switch account if necessary
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "updateCurrentAccount:", name: SPNotification.transactionAddedOrUpdated, object: nil)
     }
 
     func updateCurrentAccount(notification: NSNotification) {

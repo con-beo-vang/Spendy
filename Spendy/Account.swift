@@ -114,13 +114,16 @@ class Account: HTObject {
     var transactions: [Transaction] {
         get {
             guard _transactions != nil else {
+                _transactions = []
+
                 // load from DB
                 // TODO: optimize
                 print("loading transactions from local for account \(objectId!)")
-                _transactions = Transaction.findByAccountId(objectId!)
-
-                recomputeBalance()
-                print("computed balance for \(_transactions!.count) items. Balance \(balance)")
+                 // _transactions = Transaction.findByAccountId(objectId!)
+                // recomputeBalance()
+//                print("computed balance for \(_transactions!.count) items. Balance \(balance)")
+//                return _transactions!
+                Transaction.loadByAccount(self)
                 return _transactions!
             }
 
@@ -163,8 +166,8 @@ class Account: HTObject {
             do {
                 try user.save()
                 print("Just saved user")
-            } catch {
-                print("An error occurred when saving user.")
+            } catch let error {
+                print("An error occurred when saving user: \(error)")
             }
         }
 

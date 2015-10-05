@@ -31,7 +31,7 @@ var _allTransactions: [Transaction]?
 // newTransaction.delete()
 // account.addTransaction(newTransaction)
 // account.removeTransaction(newTransaction)
-class Transaction: HTObject {
+class Transaction: HTObject, CustomStringConvertible {
     class var kinds: [String] {
         return [incomeKind, expenseKind, transferKind]
     }
@@ -334,6 +334,36 @@ class Transaction: HTObject {
         } catch let error as NSError {
             print("Error loading transaction for account: \(accountId). \(error)")
             return []
+        }
+    }
+
+    class func loadByAccount(account: Account) {
+        let accountId = account.objectId!
+
+        let queryWithFrom = PFQuery(className: "Transaction")
+        queryWithFrom.whereKey("fromAccountId", equalTo: accountId)
+//        queryWithFrom.fromLocalDatastore()
+
+        let queryWithTo = PFQuery(className: "Transaction")
+        queryWithTo.whereKey("toAccountId", equalTo: accountId)
+//        queryWithTo.fromLocalDatastore()
+
+        let query = PFQuery.orQueryWithSubqueries([queryWithFrom, queryWithTo])
+        query.orderByAscending("date")
+        query.fromLocalDatastore()
+
+        query.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
+            if let objects = objects {
+                account.transactions = objects.map {Transaction(object: $0)}
+                print("posting loadedAccountTransaction. objects: \(objects)")
+                NSNotificationCenter.defaultCenter().postNotificationName(SPNotification.transactionsLoadedForAccount, object: nil, userInfo: ["account": account])
+
+                // TODO: move to a callback handler
+                // recomputeBalance()
+//                print("computed balance for \(_transactions!.count) items. Balance \(balance)")
+            } else {
+                print("Error loading transaction for account \(accountId): \(error)")
+            }
         }
     }
 
