@@ -78,10 +78,14 @@ class HTObject: CustomStringConvertible {
         if isValid() {
             _object!.pinInBackgroundWithBlock { (success, error) -> Void in
                 print("pinInBackground: \(self). success: \(success), error: \(error)")
+
+                self._object!.saveEventually({ (isSuccess, error) -> Void in
+                    print("saveEntually after pinning. success: \(isSuccess), error: \(error)")
+                })
             }
-            _object!.saveInBackgroundWithBlock { (success, error) -> Void in
-                print("saveInBackground: \(self). success: \(success), error: \(error)")
-            }
+//            _object!.saveInBackgroundWithBlock { (success, error) -> Void in
+//                print("saveInBackground: \(self). success: \(success), error: \(error)")
+//            }
         } else {
             print("Will not save: isValid is false. \(self)")
         }

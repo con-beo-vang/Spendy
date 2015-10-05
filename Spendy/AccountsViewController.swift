@@ -71,7 +71,7 @@ class AccountsViewController: UIViewController {
     }
 
     func updateAccountList(notification: NSNotification) {
-        print("[Notified] Reloading account and updating table")
+        print("[Notified][AccountsViewController:updateAccountList")
         accounts = Account.all
         tableView.reloadData()
     }

@@ -10,7 +10,7 @@ import Foundation
 import Parse
 
 class DataManager {
-    static let version = "1.1"
+    static let version = "1.2"
 
     class func setupDefaultData(removeLocalData: Bool = false) {
         if removeLocalData {
