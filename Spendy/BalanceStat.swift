@@ -25,9 +25,13 @@ class BalanceStat {
         self.from = from
         self.to   = to
 
+        print("Stats from \(from) to \(to)")
+
         // load expenses
         // initially load all
         let query = PFQuery(className: "Transaction")
+        query.whereKey("date", greaterThanOrEqualTo: from)
+        query.whereKey("date", lessThanOrEqualTo: to)
         // query.fromLocalDatastore()
 
         query.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
@@ -47,6 +51,15 @@ class BalanceStat {
                 print("[BalanceStat] Error: \(error)")
             }
         }
+    }
+
+    var balanceTotal:NSDecimalNumber? {
+        guard let expenseTotal = expenseTotal,
+            incomeTotal  = incomeTotal else {
+                return nil
+        }
+
+        return incomeTotal - expenseTotal
     }
 
     func groupTransactionsByCategory(transactions: [Transaction]) -> [String: NSDecimalNumber] {

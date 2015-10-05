@@ -79,7 +79,6 @@ class HomeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        balanceStat = BalanceStat(from: NSDate(), to: NSDate())
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "updateStatsOnExpenses", name: SPNotification.groupedStatsOnExpenseCategories, object: nil)
         
         // Set color for inactive icon in tab bar
@@ -109,9 +108,9 @@ class HomeViewController: UIViewController {
         let (begin, end) = getMonth(0)
         fromDate = begin
         toDate = end.dateByAddingTimeInterval(oneDay)
-        
+
         // TODO: set data for table view based on fromDate and toDate
-        tableView.reloadData()
+        reloadDateRange()
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -146,6 +145,13 @@ class HomeViewController: UIViewController {
     
     override func viewDidLayoutSubviews() {
         settingStatusBar()
+    }
+
+    func reloadDateRange() {
+        if let fromDate = fromDate, toDate = toDate {
+            balanceStat = BalanceStat(from: fromDate, to: toDate)
+        }
+        tableView.reloadData()
     }
     
     func setColor() {
@@ -450,6 +456,9 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
                 let cell = tableView.dequeueReusableCellWithIdentifier("BalanceCell", forIndexPath: indexPath) as! BalanceCell
                 cell.titleLabel.textColor = Color.balanceColor
                 cell.amountLabel.textColor = Color.balanceColor
+                if let balanceTotal = balanceStat.balanceTotal {
+                    cell.amountLabel.text = Transaction.currencyFormatter.stringFromNumber(balanceTotal)
+                }
                 return cell
                 
             default:
@@ -519,6 +528,7 @@ extension HomeViewController: UIGestureRecognizerDelegate {
             }
             
             // TODO: set data for table view based on fromDate and toDate
+            reloadDateRange()
             tableView.reloadSections(NSIndexSet(indexesInRange: NSMakeRange(0, 3)), withRowAnimation: UITableViewRowAnimation.Left)
             
             break
@@ -538,6 +548,7 @@ extension HomeViewController: UIGestureRecognizerDelegate {
             }
             
             // TODO: set data for table view based on fromDate and toDate
+            reloadDateRange()
             tableView.reloadSections(NSIndexSet(indexesInRange: NSMakeRange(0, 3)), withRowAnimation: UITableViewRowAnimation.Right)
             break
             
