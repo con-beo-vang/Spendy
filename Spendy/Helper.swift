@@ -138,6 +138,18 @@ class Helper: NSObject {
         iconView.layer.backgroundColor = Color.strongColor.CGColor
     }
     
+    func preventInputManyDots(textField: UITextField) {
+        if textField.text?.characters.last == "." {
+            if var sAmount : String = textField.text {
+                sAmount = sAmount[0..<sAmount.characters.count - 1]
+                
+                if sAmount.rangeOfString(".") != nil {
+                    textField.text = sAmount
+                }
+            }
+        }
+    }
+    
 }
 
 extension String {

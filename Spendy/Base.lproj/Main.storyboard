@@ -97,6 +97,9 @@
                                                 </constraints>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
+                                                <connections>
+                                                    <action selector="onAmountChanged:" destination="FZf-dF-VZb" eventType="editingChanged" id="Ovp-td-hRd"/>
+                                                </connections>
                                             </textField>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Amount" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ogG-o0-RXn">
                                                 <rect key="frame" x="0.0" y="0.0" width="180" height="38"/>
@@ -261,6 +264,9 @@
                                                     <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="24"/>
                                                     <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
+                                                    <connections>
+                                                        <action selector="onAmountChanged:" destination="hyr-9S-FBl" eventType="editingChanged" id="rq3-fy-pBh"/>
+                                                    </connections>
                                                 </textField>
                                             </subviews>
                                             <constraints>
@@ -826,6 +832,9 @@
                                                 <rect key="frame" x="16" y="134" width="208" height="30"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits"/>
+                                                <connections>
+                                                    <action selector="onAmountChanged:" destination="scY-Mk-lNw" eventType="editingChanged" id="14k-zR-zrk"/>
+                                                </connections>
                                             </textField>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Hxr-VO-k9C">
                                                 <rect key="frame" x="16" y="174" width="53" height="33"/>
@@ -1667,6 +1676,6 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="H9y-Z9-HAK"/>
-        <segue reference="9fp-4E-dIQ"/>
+        <segue reference="hG1-qS-arn"/>
     </inferredMetricsTieBreakers>
 </document>
