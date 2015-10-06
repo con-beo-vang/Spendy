@@ -160,6 +160,9 @@ class AddTransactionViewController: UIViewController {
 
         print("posting notification TransactionAddedOrUpdated")
         NSNotificationCenter.defaultCenter().postNotificationName("TransactionAddedOrUpdated", object: nil, userInfo: ["account": transaction.fromAccount!])
+        if let toAccount = transaction.toAccount {
+            NSNotificationCenter.defaultCenter().postNotificationName("TransactionAddedOrUpdated", object: nil, userInfo: ["account": toAccount])
+        }
 
         closeView()
     }
