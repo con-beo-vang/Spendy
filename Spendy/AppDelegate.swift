@@ -80,6 +80,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Local notification
         settingNotification(application)
         
+//        NSUserDefaults.standardUserDefaults().setBool(false, forKey: "GotTutorial")
+        
         
         // Uncommnet these lines if you want to remove all old notifications
 //        for notification in UIApplication.sharedApplication().scheduledLocalNotifications as [UILocalNotification]! {
@@ -102,7 +104,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        UITabBarItem.appearance().setTitleTextAttributes([NSForegroundColorAttributeName: Color.inactiveTabBarIconColor], forState:.Normal)
         
         // Uncomment this out to run if you have more categories to addd
-        // Category.bootstrapCategories()
+        // TODO: decide whether to run from Parse config
+        Category.bootstrapCategories()
 
         print("<<<<<<<<<<\nNotifications: \(ReminderList.sharedInstance.notifications())\n>>>>>>>>>>")
         UIApplication.sharedApplication().cancelAllLocalNotifications()
@@ -114,8 +117,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "recomputeAccountBalance:", name: SPNotification.transactionsLoadedForAccount, object: nil)
 
         // This may not be necessary due to the above
-        // NSNotificationCenter.defaultCenter().addObserver(self, selector: "recomputeAccountBalance:", name: SPNotification.allAccountsLoaded, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "syncRemoteAccountsIfNecessary:", name: SPNotification.allAccountsLoadedLocally, object: nil)
         return true
+    }
+
+    // We already have accounts loaded locally
+    // We still want to check with remote in case there are no local accounts or there are new ones saved from another device
+    func syncRemoteAccountsIfNecessary(notification: NSNotification) {
+        // TODO: only do this if necessary (e.g. we know there server has something different)
+        print("[Notified] sync remote accounts:")
+        Account.loadAllFrom(local: false)
     }
 
     func recomputeAccountBalance(notification: NSNotification) {
@@ -228,7 +239,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         case "YES":
             print("YES")
             // TODO: Add new transaction
-            item.category?.save()
+            let t = Transaction(kind: Transaction.expenseKind, note: nil, amount: item.predictedAmount, category: item.category, account: Account.defaultAccount(), date: NSDate())
+            t.save()
+
         default: // switch statements must be exhaustive - this condition should never be met
             print("Error: unexpected notification action identifier!")
         }

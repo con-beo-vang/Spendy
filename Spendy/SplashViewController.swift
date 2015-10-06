@@ -18,6 +18,8 @@ class SplashViewController: UIViewController {
         let count = 2
         let index = Int(arc4random_uniform(UInt32(count)))
         let icon = UIImage(named: "Cheetah-\(index)")
+//        let icon = UIImage(named: "Cheetah-1")
+        
         let splashView = CBZSplashView(icon: icon, backgroundColor: Color.strongColor)
 
         view.addSubview(splashView)

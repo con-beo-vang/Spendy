@@ -66,8 +66,10 @@ class Account: HTObject {
     func recomputeBalance() {
         var bal = NSDecimalNumber(double: startingBalance.doubleValue)
 
-        // TODO: sort transactions
-        for (_, t) in transactions.enumerate() {
+        // resort transactions by date
+        transactions.sortInPlace {$0.date < $1.date}
+
+        for t in transactions {
             guard let kind = t.kind else { print("Unexpected nil kind in \(t)"); continue }
 
             switch kind {
@@ -119,14 +121,14 @@ class Account: HTObject {
             guard _transactions != nil else {
                 _transactions = []
 
-                // load from DB
-                // TODO: optimize
-                print("loading transactions from local for account \(objectId!)")
-                 // _transactions = Transaction.findByAccountId(objectId!)
-                // recomputeBalance()
-//                print("computed balance for \(_transactions!.count) items. Balance \(balance)")
-//                return _transactions!
-                Transaction.loadByAccount(self)
+                if let _ = objectId {
+                    // load in background and will update
+                    Transaction.loadByAccount(self, local: true)
+
+                    // load remotely in the background
+                    // TODO: only do this if SYNC option is on or something
+                    Transaction.loadByAccount(self, local: false)
+                }
                 return _transactions!
             }
 
@@ -230,9 +232,13 @@ class Account: HTObject {
                 return
             }
 
+            // TODO: see if this is necessary
+            if !local {
+                PFObject.pinAllInBackground(objects, withName: "MyAccounts")
+            }
+
             _allAccounts = fromObjects(objects)
             print("\n[local:\(local)] loaded \(objects.count) accounts")
-
 
             if !local && _allAccounts!.isEmpty {
                 print("No account found for \(user). Creating default accounts:")
@@ -249,7 +255,11 @@ class Account: HTObject {
                 print("accounts: \(_allAccounts!)")
             }
 
-            NSNotificationCenter.defaultCenter().postNotificationName(SPNotification.allAccountsLoaded, object: nil)
+            if local {
+                NSNotificationCenter.defaultCenter().postNotificationName(SPNotification.allAccountsLoadedLocally, object: nil)
+            } else {
+                NSNotificationCenter.defaultCenter().postNotificationName(SPNotification.allAccountsLoadedRemotely, object: nil)
+            }
         }
     }
 
@@ -280,6 +290,7 @@ class Account: HTObject {
             if !forceLoadFromRemote {
                 query.fromLocalDatastore()
             }
+
             let objects = try! query.findObjects()
             _allAccounts = fromObjects(objects)
         }
@@ -299,6 +310,7 @@ class Account: HTObject {
 
     class func create(account: Account) {
         account.save()
+        account.recomputeBalance()
         _allAccounts!.append(account)
     }
 

@@ -88,8 +88,8 @@ class AddAccountViewController: UIViewController {
     }
 
     func onAddButton(sender: UIButton!) {
-        print("on Add", terminator: "\n")
-        // TODO: create new account
+        print("on Add")
+
         guard updateFieldsForAccount() else {
             let alertController = UIAlertController(title: "Please enter a name :)", message: nil, preferredStyle: .Alert)
             let OKAction = UIAlertAction(title: "OK", style: .Default) { (action) in

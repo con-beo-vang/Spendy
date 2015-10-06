@@ -129,7 +129,7 @@ class TutorialViewController: PresentationController {
 
         let screen5 = [
             "Check us out at",
-            "http://cheetah.com"
+            "http://www.heyspendy.com"
         ].joinWithSeparator("\n\n")
 
         let titles = [

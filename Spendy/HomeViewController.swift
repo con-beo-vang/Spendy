@@ -56,7 +56,7 @@ class HomeViewController: UIViewController {
     
     var incomes = [String]()
     var expenses = [String]()
-    
+
     var isCollapedIncome = true
     var isCollapedExpense = true
     
@@ -76,9 +76,13 @@ class HomeViewController: UIViewController {
     
     let customPresentAnimationController = CustomPresentAnimationController()
     let customDismissAnimationController = CustomDismissAnimationController()
+
+    var balanceStat: BalanceStat!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "updateBalanceStats", name: SPNotification.balanceStatsUpdated, object: nil)
         
         // Set color for inactive icon in tab bar
         for item in (tabBarController?.tabBar.items as [UITabBarItem]?)! {
@@ -103,17 +107,13 @@ class HomeViewController: UIViewController {
         
         addGestures()
         
-        incomes = ["Salary", "Bonus", "Salary", "Bonus", "Salary", "Bonus"]
-        expenses = ["Meal", "Drink", "Transport",  "Meal", "Drink", "Transport"]
-        
         // set current month as default
         let (begin, end) = getMonth(0)
         fromDate = begin
         toDate = end.dateByAddingTimeInterval(oneDay)
         
-        // TODO: set data for table view based on fromDate and toDate
-        tableView.reloadData()
-        
+        print("from: \(DateFormatter.E_MMM_dd_yyyy.stringFromDate(fromDate!))")
+        print("to: \(DateFormatter.E_MMM_dd_yyyy.stringFromDate(toDate!))")
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -148,6 +148,8 @@ class HomeViewController: UIViewController {
         }
         
         viewModeTableView.reloadData()
+
+        reloadDateRange()
     }
     
     override func didReceiveMemoryWarning() {
@@ -157,6 +159,15 @@ class HomeViewController: UIViewController {
     
     override func viewDidLayoutSubviews() {
         settingStatusBar()
+    }
+
+    func reloadDateRange() {
+        if let fromDate = fromDate, toDate = toDate {
+            // tableView will be updated asynchronously via balanceStatUpdated notification
+            balanceStat = BalanceStat(from: fromDate, to: toDate)
+        } else {
+            tableView.reloadData()
+        }
     }
     
     func setColor() {
@@ -275,10 +286,15 @@ class HomeViewController: UIViewController {
     
     @IBAction func onDoneDatePopup(sender: UIButton) {
         
-
         let formatter1 = DateFormatter.MM_dd_yyyy
-        let fromDate = formatter1.dateFromString((fromButton.titleLabel!.text)!)
-        let toDate = formatter1.dateFromString((toButton.titleLabel!.text)!)
+        fromDate = formatter1.dateFromString((fromButton.titleLabel!.text)!)
+        toDate = formatter1.dateFromString((toButton.titleLabel!.text)!)
+        
+        print("from: \(DateFormatter.E_MMM_dd_yyyy.stringFromDate(fromDate!))")
+        print("to: \(DateFormatter.E_MMM_dd_yyyy.stringFromDate(toDate!))")
+        
+        reloadDateRange()
+        tableView.reloadSections(NSIndexSet(indexesInRange: NSMakeRange(0, 3)), withRowAnimation: UITableViewRowAnimation.Automatic)
         
         let formater2 = DateFormatter.MMM_dd_yyyy
         navigationItem.title = formater2.stringFromDate(fromDate!) + " - " + formater2.stringFromDate(toDate!)
@@ -400,6 +416,9 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
                     cell.menuLabel.textColor = Color.incomeColor
                     cell.amountLabel.textColor = Color.incomeColor
                     cell.menuLabel.text = "Income"
+                    if let total = balanceStat?.incomeTotal {
+                        cell.amountLabel.text = Transaction.currencyFormatter.stringFromNumber(total)
+                    }
                     
                     if isCollapedIncome {
                         cell.iconView.image = UIImage(named: "Expand")
@@ -413,8 +432,12 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
                     return cell
                 } else {
                     let cell = tableView.dequeueReusableCellWithIdentifier("SubMenuCell", forIndexPath: indexPath) as! SubMenuCell
-                    
-                    cell.categoryLabel.text = incomes[indexPath.row - 1]
+
+                    let name = incomes[indexPath.row - 1]
+                    cell.categoryLabel.text = name
+                    if let amount = balanceStat.groupedIncomeCategories?[name] {
+                        cell.amountLabel.text   = Transaction.currencyFormatter.stringFromNumber(amount)
+                    }
                     
                     return cell
                 }
@@ -426,6 +449,9 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
                     cell.menuLabel.textColor = Color.expenseColor
                     cell.amountLabel.textColor = Color.expenseColor
                     cell.menuLabel.text = "Expense"
+                    if let total = balanceStat?.expenseTotal {
+                        cell.amountLabel.text = Transaction.currencyFormatter.stringFromNumber(total)
+                    }
                     
                     if isCollapedExpense {
                         cell.iconView.image = UIImage(named: "Expand")
@@ -439,8 +465,12 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
                     return cell
                 } else {
                     let cell = tableView.dequeueReusableCellWithIdentifier("SubMenuCell", forIndexPath: indexPath) as! SubMenuCell
-                    
-                    cell.categoryLabel.text = expenses[indexPath.row - 1]
+
+                    let name = expenses[indexPath.row - 1]
+                    cell.categoryLabel.text = name
+                    if let amount = balanceStat.groupedExpenseCategories?[name] {
+                        cell.amountLabel.text   = Transaction.currencyFormatter.stringFromNumber(amount)
+                    }
                     
                     return cell
                 }
@@ -449,6 +479,9 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
                 let cell = tableView.dequeueReusableCellWithIdentifier("BalanceCell", forIndexPath: indexPath) as! BalanceCell
                 cell.titleLabel.textColor = Color.balanceColor
                 cell.amountLabel.textColor = Color.balanceColor
+                if let balanceTotal = balanceStat.balanceTotal {
+                    cell.amountLabel.text = Transaction.currencyFormatter.stringFromNumber(balanceTotal)
+                }
                 return cell
                 
             default:
@@ -469,23 +502,43 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
                 if beginWeek != nil && endWeek != nil {
                     navigationItem.title = getWeekText(beginWeek!, endWeek: endWeek!)
                 }
+                
+                fromDate = beginWeek
+                toDate = endWeek?.dateByAddingTimeInterval(oneDay)
+                
                 break
             case 1:
                 viewMode = ViewMode.Monthly
-                navigationItem.title = DateFormatter.MMMM.stringFromDate(NSDate())
+                
+                let (beginMonth, endMonth) = getMonth(monthIndex)
+                fromDate = beginMonth
+                toDate = endMonth.dateByAddingTimeInterval(oneDay)
+                
+                navigationItem.title = DateFormatter.MMMM.stringFromDate(beginMonth)
                 break
             case 2:
                 viewMode = ViewMode.Yearly
-                navigationItem.title = DateFormatter.yyyy.stringFromDate(NSDate())
+                
+                let (beginYear, endYear) = getYear(yearIndex)
+                fromDate = beginYear
+                toDate = endYear.dateByAddingTimeInterval(oneDay)
+                
+                navigationItem.title = DateFormatter.yyyy.stringFromDate(beginYear)
                 break
             case 3:
                 viewMode = ViewMode.Custom
+                viewModeTableView.reloadData()
                 showPopup(datePopup)
                 return
             default:
                 return
             }
+            reloadDateRange()
             viewModeTableView.reloadData()
+            
+            print("from: \(DateFormatter.E_MMM_dd_yyyy.stringFromDate(fromDate!))")
+            print("to: \(DateFormatter.E_MMM_dd_yyyy.stringFromDate(toDate!))")
+            
             closePopup(viewModePopup)
         }
     }
@@ -518,6 +571,7 @@ extension HomeViewController: UIGestureRecognizerDelegate {
             }
             
             // TODO: set data for table view based on fromDate and toDate
+            reloadDateRange()
             tableView.reloadSections(NSIndexSet(indexesInRange: NSMakeRange(0, 3)), withRowAnimation: UITableViewRowAnimation.Left)
             
             break
@@ -537,13 +591,11 @@ extension HomeViewController: UIGestureRecognizerDelegate {
             }
             
             // TODO: set data for table view based on fromDate and toDate
+            reloadDateRange()
             tableView.reloadSections(NSIndexSet(indexesInRange: NSMakeRange(0, 3)), withRowAnimation: UITableViewRowAnimation.Right)
             break
             
         case UISwipeGestureRecognizerDirection.Down:
-            //            let dvc = self.storyboard?.instantiateViewControllerWithIdentifier("QuickVC") as! QuickViewController
-            //            let nc = UINavigationController(rootViewController: dvc)
-            //            self.presentViewController(nc, animated: true, completion: nil)
             performSegueWithIdentifier("QuickMode", sender: self)
             
         default:
@@ -683,7 +735,7 @@ extension HomeViewController {
         let calendar = NSCalendar.currentCalendar()
         
         // Create an NSDate for the first and last day of the month
-        let components = calendar.components(NSCalendarUnit.Month, fromDate: NSDate())
+        let components = calendar.components([NSCalendarUnit.Month, NSCalendarUnit.Year], fromDate: NSDate())
         
         // Get suitable month
         components.month += monthIndex
@@ -767,12 +819,29 @@ extension HomeViewController: QuickViewControllerDelegate {
     
     func quickViewController(quickViewController: QuickViewController, didAddTransaction status: Bool) {
         if status {
-            print("delegate")
+            print("quickView delegate")
             tabBarController?.selectedIndex = 1
             let accountsNVC = tabBarController?.viewControllers?.at(1) as? UINavigationController
             let accountsVC = accountsNVC?.topViewController as? AccountsViewController
             accountsVC?.justAddTransactions = true
             accountsVC?.addedAccount = Account.defaultAccount()
         }
+    }
+}
+
+
+// MARK: - BalanceStat callbacks
+
+extension HomeViewController {
+    func updateBalanceStats() {
+        if let groupedExpenses = balanceStat.groupedExpenseCategories {
+            expenses = Array(groupedExpenses.keys).sort { groupedExpenses[$0] > groupedExpenses[$1] }
+        }
+
+        if let groupedIncomes = balanceStat.groupedIncomeCategories {
+            incomes = Array(groupedIncomes.keys).sort { groupedIncomes[$0] > groupedIncomes[$1] }
+        }
+
+        tableView.reloadData()
     }
 }

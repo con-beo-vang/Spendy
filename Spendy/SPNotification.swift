@@ -13,6 +13,9 @@ class SPNotification {
     static let transactionAddedOrUpdated    = "TransactionAddedOrUpdated"
     static let accountAddedOrUpdated        = "AccountAddedOrUpdated"
     static let allCategoriesLoaded          = "AllCategoriesLoaded"
-    static let allAccountsLoaded            = "AllAccountsLoaded"
-    static let recomputedBalanceForOneAccount = "RecomputedBalanceForOneAccount"
+    static let allAccountsLoadedLocally     = "AllAccountsLoadedLocally"
+    static let allAccountsLoadedRemotely    = "AllAccountsLoadedRemotely"
+    static let recomputedBalanceForOneAccount  = "RecomputedBalanceForOneAccount"
+    static let balanceStatsUpdated             = "balanceStatsUpdated"
+    static let finishedBootstrapingCategories  = "FinishedBootstrapCategories"
 }
