@@ -435,7 +435,7 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
 
                     let name = incomes[indexPath.row - 1]
                     cell.categoryLabel.text = name
-                    if let amount = balanceStat.groupedExpenseCategories![name] {
+                    if let amount = balanceStat.groupedIncomeCategories?[name] {
                         cell.amountLabel.text   = Transaction.currencyFormatter.stringFromNumber(amount)
                     }
                     
@@ -468,7 +468,9 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
 
                     let name = expenses[indexPath.row - 1]
                     cell.categoryLabel.text = name
-                    cell.amountLabel.text   = Transaction.currencyFormatter.stringFromNumber(balanceStat.groupedExpenseCategories![name]!)
+                    if let amount = balanceStat.groupedExpenseCategories?[name] {
+                        cell.amountLabel.text   = Transaction.currencyFormatter.stringFromNumber(amount)
+                    }
                     
                     return cell
                 }
