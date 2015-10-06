@@ -115,8 +115,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "recomputeAccountBalance:", name: SPNotification.transactionsLoadedForAccount, object: nil)
 
         // This may not be necessary due to the above
-        // NSNotificationCenter.defaultCenter().addObserver(self, selector: "recomputeAccountBalance:", name: SPNotification.allAccountsLoaded, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "syncRemoteAccountsIfNecessary:", name: SPNotification.allAccountsLoadedLocally, object: nil)
         return true
+    }
+
+    // We already have accounts loaded locally
+    // We still want to check with remote in case there are no local accounts or there are new ones saved from another device
+    func syncRemoteAccountsIfNecessary(notification: NSNotification) {
+        // TODO: only do this if necessary (e.g. we know there server has something different)
+        print("[Notified] sync remote accounts:")
+        Account.loadAllFrom(local: false)
     }
 
     func recomputeAccountBalance(notification: NSNotification) {

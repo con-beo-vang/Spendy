@@ -67,6 +67,7 @@ class AccountsViewController: UIViewController {
 
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "updateAccountList:", name: SPNotification.accountAddedOrUpdated, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "updateAccountList:", name: SPNotification.transactionsLoadedForAccount, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "updateAccountList:", name: SPNotification.recomputedBalanceForOneAccount, object: nil)
     }
 
     func updateAccountList(notification: NSNotification) {

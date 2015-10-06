@@ -37,7 +37,23 @@ class BalanceStat {
 
         query.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
             if let objects = objects {
-                let transactions = objects.map { Transaction(object: $0) }
+                var transactions = objects.map { Transaction(object: $0) }
+
+                // start of hack
+                // remove any invalid transactions
+                // these transactions are caused by removing any old category or account
+                // TODO: remove related transactions when removing an account
+                var filtered = [Transaction]()
+                for t in transactions {
+                    if t.fromAccount == nil || t.category == nil {
+                        t.delete()
+                    } else {
+                        filtered.append(t)
+                    }
+                }
+                transactions = filtered
+                // end of hack
+
                 print("found \(transactions.count) objects: \(transactions)")
 
                 self.expenseTransactions      = transactions.filter { $0.kind == Transaction.expenseKind }

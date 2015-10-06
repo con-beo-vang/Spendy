@@ -229,9 +229,13 @@ class Account: HTObject {
                 return
             }
 
+            // TODO: see if this is necessary
+            if !local {
+                PFObject.pinAllInBackground(objects, withName: "MyAccounts")
+            }
+
             _allAccounts = fromObjects(objects)
             print("\n[local:\(local)] loaded \(objects.count) accounts")
-
 
             if !local && _allAccounts!.isEmpty {
                 print("No account found for \(user). Creating default accounts:")
@@ -248,7 +252,11 @@ class Account: HTObject {
                 print("accounts: \(_allAccounts!)")
             }
 
-            NSNotificationCenter.defaultCenter().postNotificationName(SPNotification.allAccountsLoaded, object: nil)
+            if local {
+                NSNotificationCenter.defaultCenter().postNotificationName(SPNotification.allAccountsLoadedLocally, object: nil)
+            } else {
+                NSNotificationCenter.defaultCenter().postNotificationName(SPNotification.allAccountsLoadedRemotely, object: nil)
+            }
         }
     }
 
