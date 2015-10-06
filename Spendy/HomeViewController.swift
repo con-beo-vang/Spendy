@@ -287,8 +287,14 @@ class HomeViewController: UIViewController {
     @IBAction func onDoneDatePopup(sender: UIButton) {
         
         let formatter1 = DateFormatter.MM_dd_yyyy
-        let fromDate = formatter1.dateFromString((fromButton.titleLabel!.text)!)
-        let toDate = formatter1.dateFromString((toButton.titleLabel!.text)!)
+        fromDate = formatter1.dateFromString((fromButton.titleLabel!.text)!)
+        toDate = formatter1.dateFromString((toButton.titleLabel!.text)!)
+        
+        print("from: \(DateFormatter.E_MMM_dd_yyyy.stringFromDate(fromDate!))")
+        print("to: \(DateFormatter.E_MMM_dd_yyyy.stringFromDate(toDate!))")
+        
+        reloadDateRange()
+        tableView.reloadSections(NSIndexSet(indexesInRange: NSMakeRange(0, 3)), withRowAnimation: UITableViewRowAnimation.Automatic)
         
         let formater2 = DateFormatter.MMM_dd_yyyy
         navigationItem.title = formater2.stringFromDate(fromDate!) + " - " + formater2.stringFromDate(toDate!)
@@ -501,24 +507,25 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
                 break
             case 1:
                 viewMode = ViewMode.Monthly
-                navigationItem.title = DateFormatter.MMMM.stringFromDate(NSDate())
                 
                 let (beginMonth, endMonth) = getMonth(monthIndex)
                 fromDate = beginMonth
                 toDate = endMonth.dateByAddingTimeInterval(oneDay)
                 
+                navigationItem.title = DateFormatter.MMMM.stringFromDate(beginMonth)
                 break
             case 2:
                 viewMode = ViewMode.Yearly
-                navigationItem.title = DateFormatter.yyyy.stringFromDate(NSDate())
                 
                 let (beginYear, endYear) = getYear(yearIndex)
                 fromDate = beginYear
                 toDate = endYear.dateByAddingTimeInterval(oneDay)
                 
+                navigationItem.title = DateFormatter.yyyy.stringFromDate(beginYear)
                 break
             case 3:
                 viewMode = ViewMode.Custom
+                viewModeTableView.reloadData()
                 showPopup(datePopup)
                 return
             default:
@@ -587,9 +594,6 @@ extension HomeViewController: UIGestureRecognizerDelegate {
             break
             
         case UISwipeGestureRecognizerDirection.Down:
-            //            let dvc = self.storyboard?.instantiateViewControllerWithIdentifier("QuickVC") as! QuickViewController
-            //            let nc = UINavigationController(rootViewController: dvc)
-            //            self.presentViewController(nc, animated: true, completion: nil)
             performSegueWithIdentifier("QuickMode", sender: self)
             
         default:
