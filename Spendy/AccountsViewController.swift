@@ -184,10 +184,10 @@ class AccountsViewController: UIViewController {
             
             closePopup()
         }
-        
-        
-        
-        
+    }
+    
+    @IBAction func onAmountChanged(sender: UITextField) {
+        Helper.sharedInstance.preventInputManyDots(sender)
     }
     
     // MARK: Transfer between 2 views
