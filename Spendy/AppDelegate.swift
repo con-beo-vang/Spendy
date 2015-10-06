@@ -80,6 +80,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Local notification
         settingNotification(application)
         
+//        NSUserDefaults.standardUserDefaults().setBool(false, forKey: "GotTutorial")
+        
         
         // Uncommnet these lines if you want to remove all old notifications
 //        for notification in UIApplication.sharedApplication().scheduledLocalNotifications as [UILocalNotification]! {
