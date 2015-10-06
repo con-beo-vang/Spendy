@@ -328,7 +328,7 @@ class Transaction: HTObject {
         return list
     }
 
-    class func loadByAccount(account: Account) {
+    class func loadByAccount(account: Account, local: Bool = true) {
         let accountId = account.objectId!
 
         let queryWithFrom = PFQuery(className: "Transaction")
@@ -339,10 +339,18 @@ class Transaction: HTObject {
 
         let query = PFQuery.orQueryWithSubqueries([queryWithFrom, queryWithTo])
         query.orderByAscending("date")
-        query.fromLocalDatastore()
+
+        if local {
+            query.fromLocalDatastore()
+        }
 
         query.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
             if let objects = objects {
+                if !local {
+                    // TODO: see if we only have to pin when necessary
+                    PFObject.pinAllInBackground(objects, withName: "MyTransactions")
+                }
+
                 account.transactions = objects.map {Transaction(object: $0)}
 
                 print("posting loadedAccountTransaction. objects: \(objects.count)")

@@ -123,8 +123,11 @@ class Account: HTObject {
 
                 if let _ = objectId {
                     // load in background and will update
-                    Transaction.loadByAccount(self)
+                    Transaction.loadByAccount(self, local: true)
 
+                    // load remotely in the background
+                    // TODO: only do this if SYNC option is on or something
+                    Transaction.loadByAccount(self, local: false)
                 }
                 return _transactions!
             }
