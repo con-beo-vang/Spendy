@@ -75,6 +75,7 @@
 		E234A3D01BC2AAEE00C4C83D /* BalanceStat.swift in Sources */ = {isa = PBXBuildFile; fileRef = E234A3CF1BC2AAEE00C4C83D /* BalanceStat.swift */; settings = {ASSET_TAGS = (); }; };
 		E234A3D41BC2B3FA00C4C83D /* NSDecimalNumberExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E234A3D31BC2B3FA00C4C83D /* NSDecimalNumberExtension.swift */; settings = {ASSET_TAGS = (); }; };
 		E29F203B1BAEAF150076AEFB /* HTObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = E29F203A1BAEAF150076AEFB /* HTObject.swift */; };
+		E4D81BD6FEBBE5C942210020 /* Pods_SpendyTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28A3FDAC9C04724F3C83A9E5 /* Pods_SpendyTests.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -88,6 +89,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0D69936BDD464877BF949D06 /* Pods-SpendyTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SpendyTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SpendyTests/Pods-SpendyTests.debug.xcconfig"; sourceTree = "<group>"; };
 		1806E9051BADE11C008047A6 /* DatePickerDialog.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatePickerDialog.swift; sourceTree = "<group>"; };
 		1842E95A1BB6969900A9DFD8 /* AddAccountViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddAccountViewController.swift; sourceTree = "<group>"; };
 		1842E95D1BB6A00700A9DFD8 /* TextCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextCell.swift; sourceTree = "<group>"; };
@@ -133,9 +135,11 @@
 		18F39CD61BA9D2E70099B714 /* SelectAccountOrCategoryCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectAccountOrCategoryCell.swift; sourceTree = "<group>"; };
 		18F39CD81BA9D2F80099B714 /* DateCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateCell.swift; sourceTree = "<group>"; };
 		18FEF7841BBEF05500E8B2A7 /* SplashViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SplashViewController.swift; sourceTree = "<group>"; };
+		28A3FDAC9C04724F3C83A9E5 /* Pods_SpendyTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SpendyTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		336AA2D8B3532AD262FC53AA /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		3CFE2D5C782640C353708467 /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6DE97D10C3A0C6C161C8B7C1 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
+		6E39D9BB144A29911F09ADE1 /* Pods-SpendyTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SpendyTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-SpendyTests/Pods-SpendyTests.release.xcconfig"; sourceTree = "<group>"; };
 		9D3153FB1BB0C75500F1F32B /* DataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
 		9D3EA5F91BAB3BBD00EF4B47 /* Transaction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Transaction.swift; sourceTree = "<group>"; };
 		9D3EA5FB1BABFB1300EF4B47 /* Account.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Account.swift; sourceTree = "<group>"; };
@@ -178,6 +182,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E4D81BD6FEBBE5C942210020 /* Pods_SpendyTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -349,6 +354,7 @@
 			isa = PBXGroup;
 			children = (
 				3CFE2D5C782640C353708467 /* Pods.framework */,
+				28A3FDAC9C04724F3C83A9E5 /* Pods_SpendyTests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -437,6 +443,8 @@
 			children = (
 				6DE97D10C3A0C6C161C8B7C1 /* Pods.debug.xcconfig */,
 				336AA2D8B3532AD262FC53AA /* Pods.release.xcconfig */,
+				0D69936BDD464877BF949D06 /* Pods-SpendyTests.debug.xcconfig */,
+				6E39D9BB144A29911F09ADE1 /* Pods-SpendyTests.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -468,9 +476,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 9D78C5391BA5A48000B00BC2 /* Build configuration list for PBXNativeTarget "SpendyTests" */;
 			buildPhases = (
+				2B2A558B7FD8A61E29426F45 /* Check Pods Manifest.lock */,
 				9D78C5281BA5A48000B00BC2 /* Sources */,
 				9D78C5291BA5A48000B00BC2 /* Frameworks */,
 				9D78C52A1BA5A48000B00BC2 /* Resources */,
+				13F376CB41C7A1E38BAC11D2 /* Embed Pods Frameworks */,
+				3185012C664914D5930A0F08 /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -546,6 +557,51 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		13F376CB41C7A1E38BAC11D2 /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-SpendyTests/Pods-SpendyTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		2B2A558B7FD8A61E29426F45 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		3185012C664914D5930A0F08 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-SpendyTests/Pods-SpendyTests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		80BF7CC90F9F4EC6B161D61D /* Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -818,6 +874,7 @@
 		};
 		9D78C53A1BA5A48000B00BC2 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0D69936BDD464877BF949D06 /* Pods-SpendyTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
@@ -837,6 +894,7 @@
 		};
 		9D78C53B1BA5A48000B00BC2 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6E39D9BB144A29911F09ADE1 /* Pods-SpendyTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_IDENTITY = "iPhone Developer";

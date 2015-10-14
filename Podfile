@@ -10,3 +10,8 @@ pod 'VIPhotoView', '~> 0.1'
 pod 'SwiftSpinner', '~> 0.8.0'
 pod 'Presentation'
 pod 'CBZSplashView', '~> 1.0.0'
+
+target 'SpendyTests', :exclusive => true do
+  pod 'Quick', '~> 0.6.0'
+  pod 'Nimble', '~> 2.0.0'
+end
