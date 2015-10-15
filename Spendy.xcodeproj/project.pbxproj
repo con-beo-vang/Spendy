@@ -52,6 +52,7 @@
 		18F39CD71BA9D2E70099B714 /* SelectAccountOrCategoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18F39CD61BA9D2E70099B714 /* SelectAccountOrCategoryCell.swift */; };
 		18F39CD91BA9D2F80099B714 /* DateCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18F39CD81BA9D2F80099B714 /* DateCell.swift */; };
 		18FEF7851BBEF05500E8B2A7 /* SplashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18FEF7841BBEF05500E8B2A7 /* SplashViewController.swift */; settings = {ASSET_TAGS = (); }; };
+		977551A81BCF68D5007C3737 /* SpendyUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 977551A71BCF68D5007C3737 /* SpendyUITests.swift */; };
 		9D3153FC1BB0C75500F1F32B /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3153FB1BB0C75500F1F32B /* DataManager.swift */; };
 		9D3EA5FA1BAB3BBD00EF4B47 /* Transaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3EA5F91BAB3BBD00EF4B47 /* Transaction.swift */; };
 		9D3EA5FC1BABFB1300EF4B47 /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3EA5FB1BABFB1300EF4B47 /* Account.swift */; };
@@ -76,9 +77,17 @@
 		E234A3D41BC2B3FA00C4C83D /* NSDecimalNumberExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E234A3D31BC2B3FA00C4C83D /* NSDecimalNumberExtension.swift */; settings = {ASSET_TAGS = (); }; };
 		E29F203B1BAEAF150076AEFB /* HTObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = E29F203A1BAEAF150076AEFB /* HTObject.swift */; };
 		E4D81BD6FEBBE5C942210020 /* Pods_SpendyTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28A3FDAC9C04724F3C83A9E5 /* Pods_SpendyTests.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		FC36D8DFC6E1FB9B67E48F7C /* Pods_SpendyUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DA58644D8449D860B2AE56D /* Pods_SpendyUITests.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		977551AA1BCF68D5007C3737 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9D78C50F1BA5A47F00B00BC2 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 9D78C5161BA5A47F00B00BC2;
+			remoteInfo = Spendy;
+		};
 		9D78C52D1BA5A48000B00BC2 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 9D78C50F1BA5A47F00B00BC2 /* Project object */;
@@ -138,8 +147,13 @@
 		28A3FDAC9C04724F3C83A9E5 /* Pods_SpendyTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SpendyTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		336AA2D8B3532AD262FC53AA /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		3CFE2D5C782640C353708467 /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		4DA58644D8449D860B2AE56D /* Pods_SpendyUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SpendyUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6DE97D10C3A0C6C161C8B7C1 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		6E39D9BB144A29911F09ADE1 /* Pods-SpendyTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SpendyTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-SpendyTests/Pods-SpendyTests.release.xcconfig"; sourceTree = "<group>"; };
+		903191E12BB4E2A8A1148F87 /* Pods-SpendyUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SpendyUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-SpendyUITests/Pods-SpendyUITests.release.xcconfig"; sourceTree = "<group>"; };
+		977551A51BCF68D5007C3737 /* SpendyUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SpendyUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		977551A71BCF68D5007C3737 /* SpendyUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpendyUITests.swift; sourceTree = "<group>"; };
+		977551A91BCF68D5007C3737 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9D3153FB1BB0C75500F1F32B /* DataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
 		9D3EA5F91BAB3BBD00EF4B47 /* Transaction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Transaction.swift; sourceTree = "<group>"; };
 		9D3EA5FB1BABFB1300EF4B47 /* Account.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Account.swift; sourceTree = "<group>"; };
@@ -163,6 +177,7 @@
 		9DB8A86D1BAA43B4000F03A1 /* SelectAccountOrCategoryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectAccountOrCategoryViewController.swift; sourceTree = "<group>"; };
 		9DFD44731BC21AE3008C2ABC /* SPNotification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SPNotification.swift; sourceTree = "<group>"; };
 		9DFE8D9C1BAFA9E0001E6F9E /* DateUtilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateUtilities.swift; sourceTree = "<group>"; };
+		BA14338EA6DE32CFE852644F /* Pods-SpendyUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SpendyUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SpendyUITests/Pods-SpendyUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		E20830B41BBE30ED006D7B3D /* UserCategory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserCategory.swift; sourceTree = "<group>"; };
 		E234A3CF1BC2AAEE00C4C83D /* BalanceStat.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BalanceStat.swift; sourceTree = "<group>"; };
 		E234A3D31BC2B3FA00C4C83D /* NSDecimalNumberExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSDecimalNumberExtension.swift; sourceTree = "<group>"; };
@@ -170,6 +185,14 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		977551A21BCF68D5007C3737 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FC36D8DFC6E1FB9B67E48F7C /* Pods_SpendyUITests.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		9D78C5141BA5A47F00B00BC2 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -355,8 +378,18 @@
 			children = (
 				3CFE2D5C782640C353708467 /* Pods.framework */,
 				28A3FDAC9C04724F3C83A9E5 /* Pods_SpendyTests.framework */,
+				4DA58644D8449D860B2AE56D /* Pods_SpendyUITests.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		977551A61BCF68D5007C3737 /* SpendyUITests */ = {
+			isa = PBXGroup;
+			children = (
+				977551A71BCF68D5007C3737 /* SpendyUITests.swift */,
+				977551A91BCF68D5007C3737 /* Info.plist */,
+			);
+			path = SpendyUITests;
 			sourceTree = "<group>";
 		};
 		9D78C50E1BA5A47F00B00BC2 = {
@@ -365,6 +398,7 @@
 				9D78C53D1BA5A5FC00B00BC2 /* README.md */,
 				9D78C5191BA5A47F00B00BC2 /* Spendy */,
 				9D78C52F1BA5A48000B00BC2 /* SpendyTests */,
+				977551A61BCF68D5007C3737 /* SpendyUITests */,
 				9D78C5181BA5A47F00B00BC2 /* Products */,
 				F3D0B671BD77741EE28235E3 /* Pods */,
 				7E5A4CE6364CE7730E7A6D65 /* Frameworks */,
@@ -376,6 +410,7 @@
 			children = (
 				9D78C5171BA5A47F00B00BC2 /* Spendy.app */,
 				9D78C52C1BA5A48000B00BC2 /* SpendyTests.xctest */,
+				977551A51BCF68D5007C3737 /* SpendyUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -445,6 +480,8 @@
 				336AA2D8B3532AD262FC53AA /* Pods.release.xcconfig */,
 				0D69936BDD464877BF949D06 /* Pods-SpendyTests.debug.xcconfig */,
 				6E39D9BB144A29911F09ADE1 /* Pods-SpendyTests.release.xcconfig */,
+				BA14338EA6DE32CFE852644F /* Pods-SpendyUITests.debug.xcconfig */,
+				903191E12BB4E2A8A1148F87 /* Pods-SpendyUITests.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -452,6 +489,26 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		977551A41BCF68D5007C3737 /* SpendyUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 977551AE1BCF68D5007C3737 /* Build configuration list for PBXNativeTarget "SpendyUITests" */;
+			buildPhases = (
+				2F83717E7253B9C5C154AD4C /* Check Pods Manifest.lock */,
+				977551A11BCF68D5007C3737 /* Sources */,
+				977551A21BCF68D5007C3737 /* Frameworks */,
+				977551A31BCF68D5007C3737 /* Resources */,
+				4B89CE4300EA7FDEE0BB14AB /* Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				977551AB1BCF68D5007C3737 /* PBXTargetDependency */,
+			);
+			name = SpendyUITests;
+			productName = SpendyUITests;
+			productReference = 977551A51BCF68D5007C3737 /* SpendyUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 		9D78C5161BA5A47F00B00BC2 /* Spendy */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 9D78C5361BA5A48000B00BC2 /* Build configuration list for PBXNativeTarget "Spendy" */;
@@ -504,6 +561,10 @@
 				LastUpgradeCheck = 0700;
 				ORGANIZATIONNAME = Cheetah;
 				TargetAttributes = {
+					977551A41BCF68D5007C3737 = {
+						CreatedOnToolsVersion = 7.0.1;
+						TestTargetID = 9D78C5161BA5A47F00B00BC2;
+					};
 					9D78C5161BA5A47F00B00BC2 = {
 						CreatedOnToolsVersion = 6.4;
 						DevelopmentTeam = QCBK6P7M2R;
@@ -530,11 +591,19 @@
 			targets = (
 				9D78C5161BA5A47F00B00BC2 /* Spendy */,
 				9D78C52B1BA5A48000B00BC2 /* SpendyTests */,
+				977551A41BCF68D5007C3737 /* SpendyUITests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		977551A31BCF68D5007C3737 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		9D78C5151BA5A47F00B00BC2 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -587,6 +656,21 @@
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
+		2F83717E7253B9C5C154AD4C /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
 		3185012C664914D5930A0F08 /* Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -600,6 +684,21 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-SpendyTests/Pods-SpendyTests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		4B89CE4300EA7FDEE0BB14AB /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-SpendyUITests/Pods-SpendyUITests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		80BF7CC90F9F4EC6B161D61D /* Embed Pods Frameworks */ = {
@@ -650,6 +749,14 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		977551A11BCF68D5007C3737 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				977551A81BCF68D5007C3737 /* SpendyUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		9D78C5131BA5A47F00B00BC2 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -729,6 +836,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		977551AB1BCF68D5007C3737 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 9D78C5161BA5A47F00B00BC2 /* Spendy */;
+			targetProxy = 977551AA1BCF68D5007C3737 /* PBXContainerItemProxy */;
+		};
 		9D78C52E1BA5A48000B00BC2 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 9D78C5161BA5A47F00B00BC2 /* Spendy */;
@@ -756,6 +868,35 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		977551AC1BCF68D5007C3737 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = BA14338EA6DE32CFE852644F /* Pods-SpendyUITests.debug.xcconfig */;
+			buildSettings = {
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				INFOPLIST_FILE = SpendyUITests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = cheetah.SpendyUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_TARGET_NAME = Spendy;
+				USES_XCTRUNNER = YES;
+			};
+			name = Debug;
+		};
+		977551AD1BCF68D5007C3737 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 903191E12BB4E2A8A1148F87 /* Pods-SpendyUITests.release.xcconfig */;
+			buildSettings = {
+				INFOPLIST_FILE = SpendyUITests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = cheetah.SpendyUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_TARGET_NAME = Spendy;
+				USES_XCTRUNNER = YES;
+			};
+			name = Release;
+		};
 		9D78C5341BA5A48000B00BC2 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -911,6 +1052,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		977551AE1BCF68D5007C3737 /* Build configuration list for PBXNativeTarget "SpendyUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				977551AC1BCF68D5007C3737 /* Debug */,
+				977551AD1BCF68D5007C3737 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		9D78C5121BA5A47F00B00BC2 /* Build configuration list for PBXProject "Spendy" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

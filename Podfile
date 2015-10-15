@@ -15,3 +15,7 @@ target 'SpendyTests', :exclusive => true do
   pod 'Quick', '~> 0.6.0'
   pod 'Nimble', '~> 2.0.0'
 end
+
+target 'SpendyUITests', :exclusive => true do
+  pod 'KIF'
+end
