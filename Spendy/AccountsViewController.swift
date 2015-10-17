@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import SCLAlertView
+import RealmSwift
 
 class AccountsViewController: UIViewController {
     
@@ -15,7 +15,8 @@ class AccountsViewController: UIViewController {
     
     var addAccountButton: UIButton?
     
-    var accounts: [Account]?
+//    var accounts: [Account]?
+    var rAccounts: [RAccount]?
     
     var isPreparedDelete = false
     var moneyIcon: UIImageView?
@@ -52,8 +53,12 @@ class AccountsViewController: UIViewController {
         tableView.dataSource = self
         tableView.delegate = self
         tableView.tableFooterView = UIView()
-        
-        accounts = Account.all
+
+        // TODO: remove
+//        accounts = [] // Account.all
+
+        rAccounts = Array(try! Realm().objects(RAccount))
+
         tableView.reloadData()
         
         if (tableView.contentSize.height <= tableView.frame.size.height) {
@@ -72,7 +77,8 @@ class AccountsViewController: UIViewController {
 
     func updateAccountList(notification: NSNotification) {
         print("[Notified][AccountsViewController:updateAccountList")
-        accounts = Account.all
+        // TODO Realm: reload accounts
+        rAccounts = RAccount.all
         tableView.reloadData()
     }
     
@@ -206,7 +212,8 @@ class AccountsViewController: UIViewController {
                 self.tabBarController?.tabBar.hidden = false
             } else {
                 let indexPath = tableView.indexPathForCell(sender as! UITableViewCell)!
-                accountDetailVC.currentAccount = accounts![indexPath.row]
+//                accountDetailVC.currentAccount = accounts![indexPath.row]
+                accountDetailVC.currentRAccount = rAccounts![indexPath.row]
             }
         }
     }
@@ -222,13 +229,14 @@ extension AccountsViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return accounts?.count ?? 0
+        return rAccounts?.count ?? 0
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("AccountCell", forIndexPath: indexPath) as! AccountCell
 
-        cell.account = accounts![indexPath.row]
+//        cell.account = accounts![indexPath.row]
+        cell.rAccount = rAccounts![indexPath.row]
 
         if !hasPanGesture(cell) {
             print("adding pan for cell \(indexPath.row)")
@@ -265,10 +273,17 @@ extension AccountsViewController: UITableViewDataSource, UITableViewDelegate {
             alertController.addAction(cancelAction)
             
             let deleteAction = UIAlertAction(title: "Delete", style: .Default) { (action) in
-                if let accountToDelete = self.accounts?[indexPath.row] {
-                    self.accounts?.removeAtIndex(indexPath.row)
-                    Account.delete(accountToDelete)
+//                if let accountToDelete = self.accounts?[indexPath.row] {
+//                    self.accounts?.removeAtIndex(indexPath.row)
+//                    Account.delete(accountToDelete)
+//                }
+
+                if let accountToDelete = self.rAccounts?[indexPath.row] {
+                    self.rAccounts!.removeAtIndex(indexPath.row)
+                    // TODO Realm: remove Account
+                    accountToDelete
                 }
+
 
                 // reload the entire table
                 // tableView.reloadData()
@@ -389,7 +404,10 @@ extension AccountsViewController: UIGestureRecognizerDelegate {
     func getContainAccountCell(point: CGPoint) -> AccountCell? {
         var indexPathSet = [NSIndexPath]()
         
-        for index in 0..<accounts!.count {
+//        for index in 0..<accounts!.count {
+//            indexPathSet.append(NSIndexPath(forRow: index, inSection: 0))
+//        }
+        for index in 0..<rAccounts!.count {
             indexPathSet.append(NSIndexPath(forRow: index, inSection: 0))
         }
         

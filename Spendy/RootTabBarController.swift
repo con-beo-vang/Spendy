@@ -16,19 +16,6 @@ class RootTabBarController: UITabBarController {
 
         // Do any additional setup after loading the view.
 
-        // Load Settings storyboard's initial controller
-        // Replace the Settings placeholder controller
-//        let storyboard = UIStoryboard(name: "Settings", bundle: nil)
-//        let settingsController = storyboard.instantiateInitialViewController() as UIViewController!
-//
-//        if var tabControllers = self.viewControllers {
-//            assert(tabControllers[2] is SettingsViewController, "Expecting the 3rd tab is SettingsController")
-//            tabControllers[2] = settingsController
-//            self.setViewControllers(tabControllers, animated: true)
-//        } else {
-//            print("Error hooking up Settings tab", terminator: "")
-//        }
-
         SwiftSpinner.hide()
 
         // print("RootTabBarController:viewDidLoad")
@@ -37,7 +24,8 @@ class RootTabBarController: UITabBarController {
             DataManager.setupDefaultData(false)
         }
 
-        // Edit
+        // Replace the Settings placeholder controller
+        // Load Settings storyboard's initial controller
         let storyboard = UIStoryboard(name: "Settings", bundle: nil)
         let settingsController = storyboard.instantiateInitialViewController() as! UINavigationController
         

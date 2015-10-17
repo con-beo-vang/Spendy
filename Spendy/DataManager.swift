@@ -8,6 +8,7 @@
 
 import Foundation
 import Parse
+import RealmSwift
 
 class DataManager {
     static let version = "1.3"
@@ -40,5 +41,7 @@ class DataManager {
         }
 
         // TODO: load other settings
+
+        RAccount.bootstrap()
     }
 }

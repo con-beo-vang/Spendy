@@ -20,8 +20,10 @@ class AccountDetailViewController: UIViewController {
     var cancelButton: UIButton?
     
     var accountTransactions: [[Transaction]]!
+    var accountRTransactions: [[RTransaction]]!
 
     var currentAccount: Account!
+    var currentRAccount: RAccount!
 
     var transaction: Transaction!
 
@@ -79,7 +81,9 @@ class AccountDetailViewController: UIViewController {
 
 
     func reloadTransactions() {
-        accountTransactions = Transaction.listGroupedByMonth(currentAccount.transactions)
+//        accountTransactions = Transaction.listGroupedByMonth(currentAccount.transactions)
+
+        accountRTransactions = RTransaction.listGroupedByMonth(Array(currentRAccount.transactions))
     }
 
     // reload data after we navigate back from pushed cell
@@ -160,11 +164,11 @@ class AccountDetailViewController: UIViewController {
 extension AccountDetailViewController: UITableViewDataSource, UITableViewDelegate {
 
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return accountTransactions.count
+        return accountRTransactions.count
     }
 
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return accountTransactions[section].count
+        return accountRTransactions[section].count
     }
 
     func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -174,7 +178,7 @@ extension AccountDetailViewController: UITableViewDataSource, UITableViewDelegat
         let monthLabel = UILabel(frame: CGRect(x: 8, y: 2, width: UIScreen.mainScreen().bounds.width - 16, height: 30))
         monthLabel.font = UIFont.systemFontOfSize(14)
 
-        monthLabel.text = accountTransactions[section].first?.monthHeader()
+        monthLabel.text = accountRTransactions[section].first?.monthHeader()
 
         headerView.addSubview(monthLabel)
 
@@ -194,16 +198,22 @@ extension AccountDetailViewController: UITableViewDataSource, UITableViewDelegat
         // must set current account before transaction
         // it could be a fromAccount or toAccount
         // this is the only way to find out
-        cell.currentAccount = currentAccount
-        cell.transaction = accountTransactions[indexPath.section][indexPath.row]
+//        cell.currentAccount = currentAccount
+//        cell.transaction = accountTransactions[indexPath.section][indexPath.row]
 
-        if accountTransactions[indexPath.section][indexPath.row].kind == Transaction.transferKind {
-            if currentAccount.objectId == accountTransactions[indexPath.section][indexPath.row].fromAccountId {
-                cell.amountLabel.textColor = Color.expenseColor
-            } else {
-                cell.amountLabel.textColor = Color.incomeColor
-            }
-        }
+
+        cell.currentRAccount = currentRAccount
+        cell.transaction = accountRTransactions[indexPath.section][indexPath.row]
+
+//        if accountTransactions[indexPath.section][indexPath.row].kind == Transaction.transferKind {
+//            if currentAccount.objectId == accountTransactions[indexPath.section][indexPath.row].fromAccountId {
+//                cell.amountLabel.textColor = Color.expenseColor
+//            } else {
+//                cell.amountLabel.textColor = Color.incomeColor
+//            }
+//        }
+
+        // TODO: set color as above
 
         let rightSwipe = UISwipeGestureRecognizer(target: self, action: Selector("handleSwipe:"))
         rightSwipe.direction = .Right
@@ -235,13 +245,18 @@ extension AccountDetailViewController: UIGestureRecognizerDelegate {
             return
         }
 
-        let swipedTransaction = accountTransactions[indexPath.section][indexPath.row]
+//        let swipedTransaction = accountTransactions[indexPath.section][indexPath.row]
+
+        let swipedRTransaction = accountRTransactions[indexPath.section][indexPath.row]
 
         switch sender.direction {
         case UISwipeGestureRecognizerDirection.Left:
             // Delete transaction
 
-            currentAccount.removeTransaction(swipedTransaction)
+//            currentAccount.removeTransaction(swipedTransaction)
+
+            currentRAccount.removeTransaction(swipedRTransaction)
+
             reloadTransactions()
 
             // OPTIMIZE: check if section still exists, if yes, load it
@@ -251,15 +266,18 @@ extension AccountDetailViewController: UIGestureRecognizerDelegate {
 
         case UISwipeGestureRecognizerDirection.Right:
             // duplicate to a new transaction today
-            let newTransaction = swipedTransaction.clone()
-            newTransaction.date = NSDate()
-            currentAccount.addTransaction(newTransaction)
+//            let newTransaction = swipedTransaction.clone()
+//            newTransaction.date = NSDate()
+//             currentAccount.addTransaction(newTransaction)
+
+            // Duplicate transaction to today
+            // TODO: set attributes
+            let newRTransaction = swipedRTransaction.clone()
+            newRTransaction.date = NSDate()
+            currentRAccount.addTransaction(newRTransaction)
+
             reloadTransactions()
             tableView.reloadData()
-            // Duplicate transaction to today
-            // Not reloading section only because the section may not even exist yet
-            // tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: UITableViewRowAnimation.Automatic)
-
             break
 
         default:

@@ -33,6 +33,22 @@ class AccountCell: UITableViewCell {
         }
     }
 
+    var rAccount: RAccount! {
+        didSet {
+            balanceLabel.text = rAccount.formattedBalance
+
+            if rAccount.balance < 0 {
+                balanceLabel.textColor = Color.expenseColor
+            } else {
+                balanceLabel.textColor = Color.incomeColor
+            }
+
+            nameLabel.text = rAccount.name
+            typeLabel.text = "Start: \(rAccount.startingBalance)"
+            iconView.setNewTintColor(Color.strongColor)
+        }
+    }
+
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
