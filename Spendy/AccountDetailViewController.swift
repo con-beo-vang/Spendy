@@ -132,7 +132,8 @@ class AccountDetailViewController: UIViewController {
     func onAddButton(sender: UIButton!) {
         print("on Add")
         let dvc = self.storyboard?.instantiateViewControllerWithIdentifier("AddVC") as! AddTransactionViewController
-        dvc.currentAccount = currentAccount
+//        dvc.currentAccount = currentAccount
+        dvc.currentAccount = currentRAccount
         let nc = UINavigationController(rootViewController: dvc)
         self.presentViewController(nc, animated: true, completion: nil)
     }
@@ -153,7 +154,8 @@ class AccountDetailViewController: UIViewController {
             var indexPath: AnyObject!
             indexPath = tableView.indexPathForCell(sender as! UITableViewCell)
 
-            addTransactionViewController.selectedTransaction = accountTransactions[indexPath.section][indexPath.row]
+//            addTransactionViewController.selectedTransaction = accountTransactions[indexPath.section][indexPath.row]
+            addTransactionViewController.selectedTransaction = accountRTransactions[indexPath.section][indexPath.row]
             print("pass selectedTransaction to AddTransactionView: \(addTransactionViewController.selectedTransaction))", terminator: "\n")
         }
     }

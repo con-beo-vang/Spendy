@@ -16,18 +16,18 @@ class SelectAccountOrCategoryCell: UITableViewCell {
     var itemClass: String!
     var itemTypeFilter: String?
 
-    var category: Category? {
+    var category: RCategory? {
         didSet {
             guard let category = category else { return }
             titleLabel.text = "Category"
             typeLabel.text = category.name
 
-            itemTypeFilter = category.type()
+//            itemTypeFilter = category.type()
             print("[SelectAccountOrCategoryCell] itemTypeFilter = \(itemTypeFilter)")
         }
     }
 
-    var account: Account? {
+    var account: RAccount? {
         didSet {
             titleLabel.text = "Account"
             typeLabel.text = account?.name ?? "None"
@@ -35,7 +35,7 @@ class SelectAccountOrCategoryCell: UITableViewCell {
         }
     }
 
-    var fromAccount: Account? {
+    var fromAccount: RAccount? {
         didSet {
             titleLabel.text = "From Account"
             typeLabel.text = fromAccount?.name ?? "None"
@@ -43,7 +43,7 @@ class SelectAccountOrCategoryCell: UITableViewCell {
         }
     }
     
-    var toAccount: Account? {
+    var toAccount: RAccount? {
         didSet {
             guard let account = toAccount else {
                 titleLabel.text = "To Account"

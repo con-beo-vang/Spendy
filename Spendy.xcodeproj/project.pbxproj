@@ -76,6 +76,8 @@
 		E234A3D41BC2B3FA00C4C83D /* NSDecimalNumberExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E234A3D31BC2B3FA00C4C83D /* NSDecimalNumberExtension.swift */; settings = {ASSET_TAGS = (); }; };
 		E296B64E1BD26D7300EBB367 /* RAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = E296B64D1BD26D7300EBB367 /* RAccount.swift */; settings = {ASSET_TAGS = (); }; };
 		E296B6501BD26DF900EBB367 /* RTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = E296B64F1BD26DF900EBB367 /* RTransaction.swift */; settings = {ASSET_TAGS = (); }; };
+		E296B6521BD29A3E00EBB367 /* RCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = E296B6511BD29A3E00EBB367 /* RCategory.swift */; settings = {ASSET_TAGS = (); }; };
+		E296B6541BD29EC800EBB367 /* HTRObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = E296B6531BD29EC800EBB367 /* HTRObject.swift */; settings = {ASSET_TAGS = (); }; };
 		E29F203B1BAEAF150076AEFB /* HTObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = E29F203A1BAEAF150076AEFB /* HTObject.swift */; };
 /* End PBXBuildFile section */
 
@@ -166,6 +168,8 @@
 		E234A3D31BC2B3FA00C4C83D /* NSDecimalNumberExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSDecimalNumberExtension.swift; sourceTree = "<group>"; };
 		E296B64D1BD26D7300EBB367 /* RAccount.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RAccount.swift; sourceTree = "<group>"; };
 		E296B64F1BD26DF900EBB367 /* RTransaction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RTransaction.swift; sourceTree = "<group>"; };
+		E296B6511BD29A3E00EBB367 /* RCategory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RCategory.swift; sourceTree = "<group>"; };
+		E296B6531BD29EC800EBB367 /* HTRObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HTRObject.swift; sourceTree = "<group>"; };
 		E29F203A1BAEAF150076AEFB /* HTObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HTObject.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -325,6 +329,8 @@
 				E234A3D31BC2B3FA00C4C83D /* NSDecimalNumberExtension.swift */,
 				E296B64D1BD26D7300EBB367 /* RAccount.swift */,
 				E296B64F1BD26DF900EBB367 /* RTransaction.swift */,
+				E296B6511BD29A3E00EBB367 /* RCategory.swift */,
+				E296B6531BD29EC800EBB367 /* HTRObject.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -630,6 +636,7 @@
 				184851F51BB011B700C1EA63 /* BalanceCell.swift in Sources */,
 				186640ED1BB8CDAC00076B70 /* ReminderItem.swift in Sources */,
 				9D78C51D1BA5A47F00B00BC2 /* AppDelegate.swift in Sources */,
+				E296B6541BD29EC800EBB367 /* HTRObject.swift in Sources */,
 				1892689E1BB52728006FA9C4 /* CustomNavigationAnimationController.swift in Sources */,
 				E234A3D41BC2B3FA00C4C83D /* NSDecimalNumberExtension.swift in Sources */,
 				1881FB521BB831DD00314FD1 /* ViewMoreCell.swift in Sources */,
@@ -662,6 +669,7 @@
 				E296B6501BD26DF900EBB367 /* RTransaction.swift in Sources */,
 				9D3153FC1BB0C75500F1F32B /* DataManager.swift in Sources */,
 				18AB69A91BACF6DB0061029F /* TransactionCell.swift in Sources */,
+				E296B6521BD29A3E00EBB367 /* RCategory.swift in Sources */,
 				189002411BBC3247003D0BAC /* SelectReminderCategoryViewController.swift in Sources */,
 				E296B64E1BD26D7300EBB367 /* RAccount.swift in Sources */,
 				18F39CD71BA9D2E70099B714 /* SelectAccountOrCategoryCell.swift in Sources */,

@@ -27,15 +27,17 @@ class AddTransactionViewController: UIViewController {
     var dateCell: DateCell?
     var photoCell: PhotoCell?
     
-    var selectedTransaction: Transaction?
+//    var selectedTransaction: Transaction?
+    var selectedTransaction: RTransaction?
 
     var imagePicker: UIImagePickerController!
 
-    var currentAccount: Account!
+//    var currentAccount: Account!
+    var currentAccount: RAccount!
 
     // remember the selected category under each transaction kind
-    var backupCategories = [String:Category?]()
-    var backupAccounts   = [String:Account?]()
+    var backupCategories = [String:RCategory?]()
+    var backupAccounts   = [String:RAccount?]()
 
     var validationErrors = [String]()
 
@@ -57,7 +59,7 @@ class AddTransactionViewController: UIViewController {
     
     override func viewWillAppear(animated: Bool) {
         if currentAccount == nil {
-            currentAccount = Account.defaultAccount()
+            currentAccount = RAccount.defaultAccount()
         }
         
         if let transaction = selectedTransaction {
@@ -67,10 +69,11 @@ class AddTransactionViewController: UIViewController {
                 navigationItem.title = "Add Transaction"
             }
         } else {
-            selectedTransaction = Transaction(kind: Transaction.expenseKind,
-                note: nil, amount: nil,
-                category: Category.defaultExpenseCategory(), account: currentAccount,
-                date: NSDate())
+            selectedTransaction = RTransaction()
+            selectedTransaction!.kind = Transaction.expenseKind
+            selectedTransaction!.category = RCategory.defaultCategory()
+            selectedTransaction!.fromAccount = currentAccount
+            selectedTransaction!.date = NSDate()
             isCollaped = true
         }
         
@@ -89,9 +92,10 @@ class AddTransactionViewController: UIViewController {
             transaction.note = noteCell?.noteText.text
             transaction.kind = Transaction.kinds[amountCell!.typeSegment.selectedSegmentIndex]
 
+            // TODO: handle decimal
             let amountDecimal = NSDecimalNumber(string: amountCell?.amountText.text)
             if amountDecimal != NSDecimalNumber.notANumber() {
-                transaction.amount = amountDecimal
+                transaction.amount = amountDecimal.integerValue
             } else {
                validationErrors.append("Please enter an amount")
             }
@@ -107,7 +111,7 @@ class AddTransactionViewController: UIViewController {
             if transaction.kind == Transaction.transferKind {
                 if transaction.toAccount == nil {
                     validationErrors.append("Please specifiy To Account:")
-                } else if transaction.toAccount?.objectId == transaction.fromAccount?.objectId {
+                } else if transaction.toAccount?.id == transaction.fromAccount?.id {
                     validationErrors.append("From and To accounts must be different")
                 }
             }
@@ -151,12 +155,8 @@ class AddTransactionViewController: UIViewController {
 
         print("[onAddButton] transaction: \(transaction)")
 
-        if transaction.isNew() {
-            // add transaction and update both fromAccount and toAccount stats
-            Transaction.add(transaction)
-        } else {
-            transaction.save()
-        }
+        // TODO: add transaction and update both fromAccount and toAccount stats
+        RTransaction.addOrUpdate(transaction)
 
         print("posting notification TransactionAddedOrUpdated")
         NSNotificationCenter.defaultCenter().postNotificationName("TransactionAddedOrUpdated", object: nil, userInfo: ["account": transaction.fromAccount!])
@@ -177,7 +177,7 @@ class AddTransactionViewController: UIViewController {
         let accountsNVC = rootVC?.viewControllers?.at(1) as? UINavigationController
         let accountsVC = accountsNVC?.topViewController as? AccountsViewController
         accountsVC?.justAddTransactions = true
-        accountsVC?.addedAccount = Account.findById((selectedTransaction?.fromAccountId)!)
+        accountsVC?.addedAccount = selectedTransaction?.fromAccount
         
         selectedTransaction = nil
     }
@@ -260,16 +260,16 @@ extension AddTransactionViewController: SelectAccountOrCategoryDelegate, PhotoVi
     }
     
     func selectAccountOrCategoryViewController(selectAccountOrCategoryController: SelectAccountOrCategoryViewController, selectedItem item: AnyObject, selectedType type: String?) {
-        if item is Account {
+        if item is RAccount {
             if let type = type where type == "ToAccount" {
-                selectedTransaction!.toAccount = (item as! Account)
+                selectedTransaction!.toAccount = (item as! RAccount)
             } else {
-                selectedTransaction!.fromAccount = (item as! Account)
+                selectedTransaction!.fromAccount = (item as! RAccount)
             }
 
             tableView.reloadData()
-        } else if item is Category {
-            selectedTransaction!.category = (item as! Category)
+        } else if item is RCategory {
+            selectedTransaction!.category = (item as! RCategory)
 
             tableView.reloadData()
         } else {
@@ -368,7 +368,7 @@ extension AddTransactionViewController: UITableViewDataSource, UITableViewDelega
             case 1:
                 let cell = tableView.dequeueReusableCellWithIdentifier("AmountCell", forIndexPath: indexPath) as! AmountCell
                 
-                cell.amountText.text = selectedTransaction?.amount?.stringValue
+                cell.amountText.text = String(selectedTransaction?.amount)
                 cell.amountText.keyboardType = UIKeyboardType.DecimalPad
 
                 Helper.sharedInstance.setSeparatorFullWidth(cell)
@@ -447,7 +447,7 @@ extension AddTransactionViewController: UITableViewDataSource, UITableViewDelega
 
             case 2:
                 // Only for Transfer category type
-                guard let category = selectedTransaction!.category where category.type() == "Transfer" else { break }
+                guard let category = selectedTransaction!.category where category.type == "Transfer" else { break }
 
                 let cell = tableView.dequeueReusableCellWithIdentifier("SelectAccountOrCategoryCell", forIndexPath: indexPath) as! SelectAccountOrCategoryCell
                 
@@ -568,15 +568,15 @@ extension AddTransactionViewController {
         let newType = ["Income", "Expense", "Transfer"][sender.selectedSegmentIndex]
 
         if let oldCategory = selectedTransaction!.category {
-            backupCategories[oldCategory.type()!] = oldCategory
+            backupCategories[oldCategory.type!] = oldCategory
         }
 
         // set new category
-        selectedTransaction!.category = backupCategories[newType] ?? Category.defaultCategoryFor(newType)
+        selectedTransaction!.category = backupCategories[newType] ?? RCategory.defaultCategoryFor(newType)
 
         if newType == "Transfer" {
             // reset cached value
-            selectedTransaction!.toAccount = backupAccounts["ToAccount"] ?? Account.nonDefaultAccount()
+            selectedTransaction!.toAccount = backupAccounts["ToAccount"] ?? RAccount.nonDefaultAccount()
         } else {
             // back up, then nullify
             if let toAccount = selectedTransaction!.toAccount {

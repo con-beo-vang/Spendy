@@ -8,8 +8,7 @@
 
 import RealmSwift
 
-class RAccount: Object {
-    dynamic var id = 0
+class RAccount: HTRObject {
     dynamic var name: String?
     dynamic var userId: String?
     dynamic var icon: String?
@@ -46,8 +45,15 @@ class RAccount: Object {
         return Array(try! Realm().objects(RAccount))
     }
 
-    override static func primaryKey() -> String? {
-        return "id"
+    static func defaultAccount() -> RAccount {
+        let account = try! Realm().objects(RAccount).first
+        return account!
+    }
+
+    // TODO: implement
+    static func nonDefaultAccount() -> RAccount {
+        let account = try! Realm().objects(RAccount).first
+        return account!
     }
 }
 

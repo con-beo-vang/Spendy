@@ -41,7 +41,7 @@ class AccountsViewController: UIViewController {
     @IBOutlet weak var transferButton: UIButton!
     
     var justAddTransactions = false
-    var addedAccount: Account?
+    var addedAccount: RAccount?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -208,7 +208,8 @@ class AccountsViewController: UIViewController {
             
             if justAddTransactions {
                 justAddTransactions = false
-                accountDetailVC.currentAccount = addedAccount
+//                accountDetailVC.currentAccount = addedAccount
+                accountDetailVC.currentRAccount = addedAccount
                 self.tabBarController?.tabBar.hidden = false
             } else {
                 let indexPath = tableView.indexPathForCell(sender as! UITableViewCell)!

@@ -9,33 +9,56 @@
 import RealmSwift
 
 class RTransaction: Object {
+    dynamic var id: Int = 0
     dynamic var kind: String? = nil
     dynamic var date: NSDate? = nil
     dynamic var note: String? = nil
     dynamic var amount: Int = 0
     dynamic var toAccount: RAccount? = nil
     dynamic var fromAccount: RAccount? = nil
+    dynamic var category: RCategory? = nil
 
     dynamic var balanceSnapshot: Int = 0
     dynamic var toBalanceSnapshot: Int = 0
 
     static var dateFormatter = NSDateFormatter()
+
+    override static func primaryKey() -> String? {
+        return "id"
+    }
 // Specify properties to ignore (Realm won't persist these)
     
 //  override static func ignoredProperties() -> [String] {
 //    return []
 //  }
-}
-
-extension RTransaction {
-    static func listGroupedByMonth(rTransactions: [RTransaction]) -> [[RTransaction]] {
-        return [rTransactions]
-    }
 
     func clone() -> RTransaction {
         let ret = RTransaction()
         // TODO: clone properties
         return ret
+    }
+
+    func isNew() -> Bool {
+        return id == 0
+    }
+
+    // TODO: create if id is 0, otherwise update
+    static func addOrUpdate(item: RTransaction) {
+        let realm = try! Realm()
+
+        try! realm.write {
+            if item.isNew() {
+                realm.add(item)
+            } else {
+                realm.add(item, update: true)
+            }
+        }
+    }
+}
+
+extension RTransaction {
+    static func listGroupedByMonth(rTransactions: [RTransaction]) -> [[RTransaction]] {
+        return [rTransactions]
     }
 }
 
