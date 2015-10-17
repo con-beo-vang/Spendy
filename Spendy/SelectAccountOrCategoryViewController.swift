@@ -51,25 +51,21 @@ class SelectAccountOrCategoryViewController: UIViewController {
 
     func loadItems() {
         print("loadItems: \(itemTypeFilter)")
-        if itemClass == "Category" {
+        if itemClass == "RCategory" {
             navigationItem.title = "Select Category"
 
             switch itemTypeFilter {
             case .Some("Income"):
-//                items = Category.allIncomeType as [Category]
-                items = []
+                items = RCategory.allIncomeType()
 
             case .Some("Expense"):
-//                items = Category.allExpenseType as [Category]
-                items = []
+                items = RCategory.allExpenseType()
 
             case .Some("Transfer"):
-//                items = Category.allTransferType as [Category]
-                items = []
+                items = RCategory.allTransferType()
 
             default:
                 print("WARNING: loadItems called on unrecognized type \(itemTypeFilter)")
-//                items = Category.all as [Category]
                 items = []
             }
 

@@ -78,6 +78,7 @@
 		E296B6501BD26DF900EBB367 /* RTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = E296B64F1BD26DF900EBB367 /* RTransaction.swift */; settings = {ASSET_TAGS = (); }; };
 		E296B6521BD29A3E00EBB367 /* RCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = E296B6511BD29A3E00EBB367 /* RCategory.swift */; settings = {ASSET_TAGS = (); }; };
 		E296B6541BD29EC800EBB367 /* HTRObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = E296B6531BD29EC800EBB367 /* HTRObject.swift */; settings = {ASSET_TAGS = (); }; };
+		E296B6561BD2C34600EBB367 /* CategoryType.swift in Sources */ = {isa = PBXBuildFile; fileRef = E296B6551BD2C34600EBB367 /* CategoryType.swift */; settings = {ASSET_TAGS = (); }; };
 		E29F203B1BAEAF150076AEFB /* HTObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = E29F203A1BAEAF150076AEFB /* HTObject.swift */; };
 /* End PBXBuildFile section */
 
@@ -170,6 +171,7 @@
 		E296B64F1BD26DF900EBB367 /* RTransaction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RTransaction.swift; sourceTree = "<group>"; };
 		E296B6511BD29A3E00EBB367 /* RCategory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RCategory.swift; sourceTree = "<group>"; };
 		E296B6531BD29EC800EBB367 /* HTRObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HTRObject.swift; sourceTree = "<group>"; };
+		E296B6551BD2C34600EBB367 /* CategoryType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CategoryType.swift; sourceTree = "<group>"; };
 		E29F203A1BAEAF150076AEFB /* HTObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HTObject.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -331,6 +333,7 @@
 				E296B64F1BD26DF900EBB367 /* RTransaction.swift */,
 				E296B6511BD29A3E00EBB367 /* RCategory.swift */,
 				E296B6531BD29EC800EBB367 /* HTRObject.swift */,
+				E296B6551BD2C34600EBB367 /* CategoryType.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -639,6 +642,7 @@
 				E296B6541BD29EC800EBB367 /* HTRObject.swift in Sources */,
 				1892689E1BB52728006FA9C4 /* CustomNavigationAnimationController.swift in Sources */,
 				E234A3D41BC2B3FA00C4C83D /* NSDecimalNumberExtension.swift in Sources */,
+				E296B6561BD2C34600EBB367 /* CategoryType.swift in Sources */,
 				1881FB521BB831DD00314FD1 /* ViewMoreCell.swift in Sources */,
 				18F39CD51BA9D2C00099B714 /* AmountCell.swift in Sources */,
 				1884A4DC1BAD62EB00D24257 /* AddReminderViewController.swift in Sources */,

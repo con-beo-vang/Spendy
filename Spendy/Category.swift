@@ -12,10 +12,6 @@ import Parse
 
 var _allCategories: [Category]?
 
-enum CategoryType: String {
-    case Income = "Income", Transfer = "Transfer", Expense = "Expense"
-}
-
 class Category: HTObject {
     static let transferCats = [
         "Transfer"

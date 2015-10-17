@@ -10,10 +10,32 @@ import RealmSwift
 
 class HTRObject: Object {
     dynamic var id: Int = 0
+
     override static func primaryKey() -> String? {
         return "id"
     }
 
+    func isNew() -> Bool {
+        return id == 0
+    }
+
+    // TODO: test this
+    func save() {
+        let realm = try! Realm()
+        if id == 0 {
+            if let last = realm.objects(self.dynamicType).last {
+                print("last: \(last)")
+                id = last.id + 1
+            } else {
+                print("SETTING ID = 1")
+                id = 1
+            }
+        }
+
+        try! realm.write {
+            realm.add(self, update: true)
+        }
+    }
 
 // Specify properties to ignore (Realm won't persist these)
     

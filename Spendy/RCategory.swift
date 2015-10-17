@@ -57,6 +57,12 @@ let expenseCats = [
 ]
 
 
+let stockCategories: [CategoryType: [String]] = [
+    .Income:   incomeCats,
+    .Expense:  expenseCats,
+    .Transfer: transferCats
+]
+
 class RCategory: HTRObject {
     dynamic var name: String? = nil
     dynamic var icon: String? = nil
@@ -78,8 +84,8 @@ class RCategory: HTRObject {
     }
 
     // TODO: implement
-    static func defaultCategoryFor(type: String) -> RCategory {
-        return defaultCategory()
+    static func defaultCategoryFor(type: CategoryType) -> RCategory {
+        return all.filter({$0.type! == type.rawValue}).first!
     }
 
     static func bootstrap() {
@@ -87,12 +93,18 @@ class RCategory: HTRObject {
 
         var objects = [RCategory]()
 
-        for (index, name) in expenseCats.enumerate() {
-            let c = RCategory()
-            c.id = index
-            c.name = name
-            c.icon = "Expense-\(name)"
-            objects.append(c)
+        var idSoFar = 1
+        for type in CategoryType.allValues {
+            for name in stockCategories[type]! {
+                let c = RCategory()
+                c.id = idSoFar++
+                c.name = name
+
+                let sanitizedName = name.stringByReplacingOccurrencesOfString(" ", withString: "")
+                c.icon = "\(type.rawValue)-\(sanitizedName)"
+
+                objects.append(c)
+            }
         }
 
         try! realm.write {
@@ -100,4 +112,28 @@ class RCategory: HTRObject {
         }
     }
 
+    func isTransfer() -> Bool {
+        return type != nil && type! == CategoryType.Transfer.rawValue
+    }
+
+    static var all: [RCategory] {
+        return Array(try! Realm().objects(RCategory))
+    }
+
+    static func allTyped(type: CategoryType) -> [RCategory] {
+        print("filtering \(type) from: \(all)")
+        return all.filter({$0.type! == type.rawValue})
+    }
+
+    static func allIncomeType() -> [RCategory] {
+        return allTyped(.Income)
+    }
+
+    static func allExpenseType() -> [RCategory] {
+        return allTyped(.Expense)
+    }
+
+    static func allTransferType() -> [RCategory] {
+        return allTyped(.Transfer)
+    }
 }

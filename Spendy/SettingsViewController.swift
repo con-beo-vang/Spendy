@@ -183,7 +183,7 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
             let selectCategoryVC = storyboard.instantiateViewControllerWithIdentifier("SelectAccountOrCategoryVC") as! SelectAccountOrCategoryViewController
             
-            selectCategoryVC.selectedItem = Account.defaultAccount()
+            selectCategoryVC.selectedItem = RAccount.defaultAccount()
             selectCategoryVC.itemClass = "Account"
             selectCategoryVC.delegate = self
             

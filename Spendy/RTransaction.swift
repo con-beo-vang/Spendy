@@ -8,8 +8,7 @@
 
 import RealmSwift
 
-class RTransaction: Object {
-    dynamic var id: Int = 0
+class RTransaction: HTRObject {
     dynamic var kind: String? = nil
     dynamic var date: NSDate? = nil
     dynamic var note: String? = nil
@@ -23,9 +22,6 @@ class RTransaction: Object {
 
     static var dateFormatter = NSDateFormatter()
 
-    override static func primaryKey() -> String? {
-        return "id"
-    }
 // Specify properties to ignore (Realm won't persist these)
     
 //  override static func ignoredProperties() -> [String] {
@@ -38,21 +34,24 @@ class RTransaction: Object {
         return ret
     }
 
-    func isNew() -> Bool {
-        return id == 0
+    func isTransfer() -> Bool {
+        guard let kind = kind else { return false }
+        return kind == CategoryType.Transfer.rawValue
     }
 
     // TODO: create if id is 0, otherwise update
     static func addOrUpdate(item: RTransaction) {
-        let realm = try! Realm()
+        item.save()
 
-        try! realm.write {
-            if item.isNew() {
-                realm.add(item)
-            } else {
-                realm.add(item, update: true)
-            }
-        }
+//        let realm = try! Realm()
+//
+//        try! realm.write {
+//            if item.isNew() {
+//                realm.add(item)
+//            } else {
+//                realm.add(item, update: true)
+//            }
+//        }
     }
 }
 

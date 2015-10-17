@@ -36,9 +36,6 @@ class RootTabBarController: UITabBarController {
         } else {
             print("Error hooking up Settings tab", terminator: "")
         }
-        
-        
-        
     }
 
     override func didReceiveMemoryWarning() {

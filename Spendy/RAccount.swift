@@ -23,17 +23,13 @@ class RAccount: HTRObject {
 //  }
 
     static func bootstrap() {
-        let realm = try! Realm()
-
         let rAccount = RAccount()
         // will always update record with id 1
         rAccount.id = 1
         rAccount.name = "Default"
         rAccount.balance = 100
 
-        try! realm.write() {
-            realm.add(rAccount, update: true)
-        }
+        rAccount.save()
     }
 
     var formattedBalance: String {

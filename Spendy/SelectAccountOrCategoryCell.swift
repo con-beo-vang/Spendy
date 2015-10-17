@@ -22,7 +22,7 @@ class SelectAccountOrCategoryCell: UITableViewCell {
             titleLabel.text = "Category"
             typeLabel.text = category.name
 
-//            itemTypeFilter = category.type()
+            itemTypeFilter = category.type
             print("[SelectAccountOrCategoryCell] itemTypeFilter = \(itemTypeFilter)")
         }
     }
