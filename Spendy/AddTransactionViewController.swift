@@ -91,11 +91,9 @@ class AddTransactionViewController: UIViewController {
             transaction.note = noteCell?.noteText.text
             transaction.kind = CategoryType.allValueStrings[amountCell!.typeSegment.selectedSegmentIndex]
 
-            let amountDecimal = NSDecimalNumber(string: amountCell?.amountText.text)
-            if amountDecimal != NSDecimalNumber.notANumber() {
-                // TODO: handle decimal more cleanly
-                transaction.amount = (amountDecimal * 100).integerValue
-            } else {
+            transaction.amountDecimal = NSDecimalNumber(string: amountCell?.amountText.text)
+
+            if transaction.amount == 0 {
                validationErrors.append("Please enter an amount")
             }
 
@@ -369,7 +367,7 @@ extension AddTransactionViewController: UITableViewDataSource, UITableViewDelega
                 let cell = tableView.dequeueReusableCellWithIdentifier("AmountCell", forIndexPath: indexPath) as! AmountCell
 
                 // TODO: convert?
-                cell.amountText.text = String(selectedTransaction!.amount)
+                cell.amountText.text = selectedTransaction!.amountDecimal?.stringValue
                 cell.amountText.keyboardType = UIKeyboardType.DecimalPad
 
                 Helper.sharedInstance.setSeparatorFullWidth(cell)

@@ -22,11 +22,23 @@ class RTransaction: HTRObject {
 
     static var dateFormatter = NSDateFormatter()
 
-// Specify properties to ignore (Realm won't persist these)
-    
-//  override static func ignoredProperties() -> [String] {
-//    return []
-//  }
+    var amountDecimal: NSDecimalNumber? {
+        get {
+            return NSDecimalNumber(integer: amount) * 0.01
+        }
+        set {
+            guard let val = newValue where val != NSDecimalNumber.notANumber() else {
+                amount = 0
+                return
+            }
+
+            amount = (val * 100).integerValue
+        }
+    }
+
+    override static func ignoredProperties() -> [String] {
+        return ["amountDecimal"]
+    }
 
     func clone() -> RTransaction {
         let ret = RTransaction()
@@ -42,16 +54,6 @@ class RTransaction: HTRObject {
     // TODO: create if id is 0, otherwise update
     static func addOrUpdate(item: RTransaction) {
         item.save()
-
-//        let realm = try! Realm()
-//
-//        try! realm.write {
-//            if item.isNew() {
-//                realm.add(item)
-//            } else {
-//                realm.add(item, update: true)
-//            }
-//        }
     }
 }
 
@@ -64,11 +66,11 @@ extension RTransaction {
 // MARK: - computed properties
 extension RTransaction {
     var categoryName: String? {
-        return "TODO: category name"
+        return category?.name
     }
 
     var categoryIcon: String? {
-        return "TODO: category icon"
+        return category?.icon
     }
 
     func formattedAmount() -> String? {
