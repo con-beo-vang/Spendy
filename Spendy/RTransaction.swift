@@ -40,14 +40,14 @@ class Transaction: HTRObject {
     dynamic var amount: Int = 0
     dynamic var toAccount: Account? = nil
     dynamic var fromAccount: Account? = nil
-    dynamic var category: RCategory? = nil
+    dynamic var category: Category? = nil
 
     dynamic var balanceSnapshot: Int = 0
     dynamic var toBalanceSnapshot: Int = 0
 
     static var dateFormatter = NSDateFormatter()
 
-    convenience init(kind: String, note: String?, amountDecimal: NSDecimalNumber, category: RCategory, account: Account, date: NSDate) {
+    convenience init(kind: String, note: String?, amountDecimal: NSDecimalNumber, category: Category, account: Account, date: NSDate) {
         self.init()
 
         self.kind = kind

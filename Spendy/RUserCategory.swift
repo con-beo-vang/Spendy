@@ -10,7 +10,7 @@ import RealmSwift
 
 class RUserCategory: HTRObject {
     dynamic var userId: String?
-    dynamic var category: RCategory?
+    dynamic var category: Category?
 
     dynamic var reminderOn = false
     dynamic var predictedAmount: Int = 400
@@ -152,12 +152,12 @@ extension RUserCategory {
         }
     }
 
-    class func fromCategories(categories: [RCategory]) -> [RUserCategory] {
+    class func fromCategories(categories: [Category]) -> [RUserCategory] {
         // TODO Realm filter
         return categories.map({ findByCategory($0)! })
     }
 
-    class func findByCategory(category: RCategory) -> RUserCategory? {
+    class func findByCategory(category: Category) -> RUserCategory? {
         let uc = all.filter({$0.category == category}).first
         if uc == nil {
             let a = RUserCategory()
@@ -171,7 +171,7 @@ extension RUserCategory {
 
     class func findByCategoryId(categoryId: Int) -> RUserCategory? {
         let realm = try! Realm()
-        let cat = realm.objectForPrimaryKey(RCategory.self, key: categoryId)
+        let cat = realm.objectForPrimaryKey(Category.self, key: categoryId)
         return findByCategory(cat!)
     }
 }
@@ -190,7 +190,7 @@ extension RUserCategory {
 
             if _allForQuickAdd!.isEmpty {
                 let names = ["Meal", "Drink", "Commute"]
-                let cats = RCategory.all.filter({ names.contains($0.name!) })
+                let cats = Category.all.filter({ names.contains($0.name!) })
 
                 _allForQuickAdd = fromCategories(cats)
             } else {

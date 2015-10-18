@@ -16,7 +16,7 @@ class SelectAccountOrCategoryCell: UITableViewCell {
     var itemClass: String!
     var itemTypeFilter: String?
 
-    var category: RCategory? {
+    var category: Category? {
         didSet {
             guard let category = category else { return }
             titleLabel.text = "Category"

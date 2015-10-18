@@ -33,7 +33,7 @@ class AddTransactionViewController: UIViewController {
     var imagePicker: UIImagePickerController!
 
     // remember the selected category under each transaction kind
-    var backupCategories = [String : RCategory?]()
+    var backupCategories = [String : Category?]()
     var backupAccounts   = [String : Account? ]()
 
     var validationErrors = [String]()
@@ -69,7 +69,7 @@ class AddTransactionViewController: UIViewController {
             // TODO: add a convenience contructor to Transaction
             selectedTransaction = Transaction()
             selectedTransaction!.kind = CategoryType.Expense.rawValue
-            selectedTransaction!.category = RCategory.defaultCategoryFor(.Expense)
+            selectedTransaction!.category = Category.defaultCategoryFor(.Expense)
             selectedTransaction!.fromAccount = currentAccount
             selectedTransaction!.date = NSDate()
             // TODO: replace with a good default amount
@@ -232,7 +232,7 @@ extension AddTransactionViewController: SelectAccountOrCategoryDelegate, PhotoVi
 
             vc.delegate = self
             
-            if cell.itemClass == "RCategory" {
+            if cell.itemClass == "Category" {
                 vc.selectedItem = selectedTransaction!.category
             } else {
                 if cell.itemTypeFilter == "ToAccount" {
@@ -267,8 +267,8 @@ extension AddTransactionViewController: SelectAccountOrCategoryDelegate, PhotoVi
             }
 
             tableView.reloadData()
-        } else if item is RCategory {
-            selectedTransaction!.category = (item as! RCategory)
+        } else if item is Category {
+            selectedTransaction!.category = (item as! Category)
 
             tableView.reloadData()
         } else {
@@ -416,7 +416,7 @@ extension AddTransactionViewController: UITableViewDataSource, UITableViewDelega
             case 0:
                 let cell = tableView.dequeueReusableCellWithIdentifier("SelectAccountOrCategoryCell", forIndexPath: indexPath) as! SelectAccountOrCategoryCell
 
-                cell.itemClass = "RCategory"
+                cell.itemClass = "Category"
                 cell.category = selectedTransaction!.category
 
                 Helper.sharedInstance.setSeparatorFullWidth(cell)
@@ -572,7 +572,7 @@ extension AddTransactionViewController {
         }
 
         // set new category
-        selectedTransaction!.category = backupCategories[newType.rawValue] ?? RCategory.defaultCategoryFor(newType)
+        selectedTransaction!.category = backupCategories[newType.rawValue] ?? Category.defaultCategoryFor(newType)
 
         if newType == .Transfer {
             // reset cached value

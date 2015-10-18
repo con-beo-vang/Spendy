@@ -182,7 +182,7 @@ class AccountsViewController: UIViewController {
             let toAccount = previousCell?.rAccount
             print("transfer from \(fromAccount?.name) to \(toAccount?.name)")
             
-            let transaction = Transaction(kind: CategoryType.Transfer.rawValue, note: nil, amountDecimal: amountDecimal, category: RCategory.defaultCategoryFor(.Transfer), account: fromAccount!, date: NSDate())
+            let transaction = Transaction(kind: CategoryType.Transfer.rawValue, note: nil, amountDecimal: amountDecimal, category: Category.defaultCategoryFor(.Transfer), account: fromAccount!, date: NSDate())
             transaction.toAccount = toAccount
             transaction.save()
             tableView.reloadData()

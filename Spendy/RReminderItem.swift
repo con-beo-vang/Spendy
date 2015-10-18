@@ -23,7 +23,7 @@ class RReminderItem: HTRObject {
         self.isActive = true
     }
 
-    var category: RCategory? {
+    var category: Category? {
         return userCategory?.category
     }
 

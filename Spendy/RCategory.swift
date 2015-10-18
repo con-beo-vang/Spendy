@@ -1,5 +1,5 @@
 //
-//  RCategory.swift
+//  Category.swift
 //  Spendy
 //
 //  Created by Harley Trung on 10/17/15.
@@ -63,7 +63,7 @@ let stockCategories: [CategoryType: [String]] = [
     .Transfer: transferCats
 ]
 
-class RCategory: HTRObject {
+class Category: HTRObject {
     dynamic var name: String? = nil
     dynamic var icon: String? = nil
 
@@ -78,25 +78,25 @@ class RCategory: HTRObject {
 //    return []
 //  }
 
-    static func defaultCategory() -> RCategory {
-        let category = try! Realm().objects(RCategory).first
+    static func defaultCategory() -> Category {
+        let category = try! Realm().objects(Category).first
         return category!
     }
 
     // TODO: implement
-    static func defaultCategoryFor(type: CategoryType) -> RCategory {
+    static func defaultCategoryFor(type: CategoryType) -> Category {
         return all.filter({$0.type! == type.rawValue}).first!
     }
 
     static func bootstrap() {
         let realm = try! Realm()
 
-        var objects = [RCategory]()
+        var objects = [Category]()
 
         var idSoFar = 1
         for type in CategoryType.allValues {
             for name in stockCategories[type]! {
-                let c = RCategory()
+                let c = Category()
                 c.id = idSoFar++
                 c.name = name
 
@@ -116,24 +116,24 @@ class RCategory: HTRObject {
         return type != nil && type! == CategoryType.Transfer.rawValue
     }
 
-    static var all: [RCategory] {
-        return Array(try! Realm().objects(RCategory))
+    static var all: [Category] {
+        return Array(try! Realm().objects(Category))
     }
 
-    static func allTyped(type: CategoryType) -> [RCategory] {
+    static func allTyped(type: CategoryType) -> [Category] {
 //        print("filtering \(type) from: \(all)")
         return all.filter({$0.type! == type.rawValue})
     }
 
-    static func allIncomeType() -> [RCategory] {
+    static func allIncomeType() -> [Category] {
         return allTyped(.Income)
     }
 
-    static func allExpenseType() -> [RCategory] {
+    static func allExpenseType() -> [Category] {
         return allTyped(.Expense)
     }
 
-    static func allTransferType() -> [RCategory] {
+    static func allTransferType() -> [Category] {
         return allTyped(.Transfer)
     }
 }

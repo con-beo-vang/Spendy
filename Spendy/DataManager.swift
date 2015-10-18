@@ -14,6 +14,6 @@ class DataManager {
 
     class func setupDefaultData(removeLocalData: Bool = false) {
         Account.bootstrap()
-        RCategory.bootstrap()
+        Category.bootstrap()
     }
 }
