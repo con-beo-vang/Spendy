@@ -42,6 +42,13 @@ class HTRObject: Object {
         print("saved id = \(self)")
     }
 
+    func delete() {
+        let realm = try! Realm()
+        try! realm.write {
+            realm.delete(self)
+        }
+    }
+
 // Specify properties to ignore (Realm won't persist these)
     
 //  override static func ignoredProperties() -> [String] {

@@ -121,7 +121,7 @@ class RCategory: HTRObject {
     }
 
     static func allTyped(type: CategoryType) -> [RCategory] {
-        print("filtering \(type) from: \(all)")
+//        print("filtering \(type) from: \(all)")
         return all.filter({$0.type! == type.rawValue})
     }
 

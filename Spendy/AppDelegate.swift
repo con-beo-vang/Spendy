@@ -222,9 +222,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(application: UIApplication, handleActionWithIdentifier identifier: String?, forLocalNotification notification: UILocalNotification, completionHandler: () -> Void) {
 
         let categoryId = notification.userInfo!["categoryId"] as! Int
-        let userCategory = UserCategory.findByCategoryId(categoryId)!
+        let userCategory = RUserCategory.findByCategoryId(categoryId)!
 
-        let item = ReminderItem(userCategory: userCategory, reminderTime: notification.fireDate!, UUID: notification.userInfo!["UUID"] as! String!)
+        let item = RReminderItem(userCategory: userCategory, reminderTime: notification.fireDate!, UUID: notification.userInfo!["UUID"] as! String!)
         
         switch (identifier!) {
         case "CHANGE":
@@ -235,7 +235,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         case "YES":
             print("YES")
             // TODO: Add new transaction
-            let t = RTransaction(kind: CategoryType.Expense.rawValue, note: nil, amountDecimal: item.predictedAmount, category: item.category!, account: RAccount.defaultAccount(), date: NSDate())
+            let t = RTransaction(kind: CategoryType.Expense.rawValue, note: nil, amountDecimal: item.predictedAmountDecimal, category: item.category!, account: RAccount.defaultAccount(), date: NSDate())
             t.save()
 
         default: // switch statements must be exhaustive - this condition should never be met

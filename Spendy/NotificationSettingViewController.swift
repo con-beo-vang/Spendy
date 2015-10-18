@@ -15,7 +15,7 @@ class NotificationSettingViewController: UIViewController, ReminderCellDelegate 
     var addButton: UIButton!
     var backButton: UIButton!
     
-    var userCategories = [UserCategory]()
+    var userCategories = [RUserCategory]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -52,7 +52,7 @@ class NotificationSettingViewController: UIViewController, ReminderCellDelegate 
         // If you don't like this, you can use delegate. It's up to you.
         
         // get list user categories with time slots
-        userCategories = UserCategory.allWithReminderSettings()
+        userCategories = RUserCategory.allWithReminderSettings()
         tableView.reloadData()
     }
     

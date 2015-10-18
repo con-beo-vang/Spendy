@@ -71,6 +71,9 @@
 		E20830B51BBE30ED006D7B3D /* UserCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = E20830B41BBE30ED006D7B3D /* UserCategory.swift */; settings = {ASSET_TAGS = (); }; };
 		E234A3D01BC2AAEE00C4C83D /* BalanceStat.swift in Sources */ = {isa = PBXBuildFile; fileRef = E234A3CF1BC2AAEE00C4C83D /* BalanceStat.swift */; settings = {ASSET_TAGS = (); }; };
 		E234A3D41BC2B3FA00C4C83D /* NSDecimalNumberExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E234A3D31BC2B3FA00C4C83D /* NSDecimalNumberExtension.swift */; settings = {ASSET_TAGS = (); }; };
+		E270FB8E1BD3AF9B00BA776C /* RUserCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = E270FB8D1BD3AF9B00BA776C /* RUserCategory.swift */; settings = {ASSET_TAGS = (); }; };
+		E270FB901BD3B05800BA776C /* RReminderItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = E270FB8F1BD3B05800BA776C /* RReminderItem.swift */; settings = {ASSET_TAGS = (); }; };
+		E270FB921BD3C7E700BA776C /* DecimalConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E270FB911BD3C7E700BA776C /* DecimalConverter.swift */; settings = {ASSET_TAGS = (); }; };
 		E296B64E1BD26D7300EBB367 /* RAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = E296B64D1BD26D7300EBB367 /* RAccount.swift */; settings = {ASSET_TAGS = (); }; };
 		E296B6501BD26DF900EBB367 /* RTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = E296B64F1BD26DF900EBB367 /* RTransaction.swift */; settings = {ASSET_TAGS = (); }; };
 		E296B6521BD29A3E00EBB367 /* RCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = E296B6511BD29A3E00EBB367 /* RCategory.swift */; settings = {ASSET_TAGS = (); }; };
@@ -164,6 +167,9 @@
 		E20830B41BBE30ED006D7B3D /* UserCategory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserCategory.swift; sourceTree = "<group>"; };
 		E234A3CF1BC2AAEE00C4C83D /* BalanceStat.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BalanceStat.swift; sourceTree = "<group>"; };
 		E234A3D31BC2B3FA00C4C83D /* NSDecimalNumberExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSDecimalNumberExtension.swift; sourceTree = "<group>"; };
+		E270FB8D1BD3AF9B00BA776C /* RUserCategory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RUserCategory.swift; sourceTree = "<group>"; };
+		E270FB8F1BD3B05800BA776C /* RReminderItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RReminderItem.swift; sourceTree = "<group>"; };
+		E270FB911BD3C7E700BA776C /* DecimalConverter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DecimalConverter.swift; sourceTree = "<group>"; };
 		E296B64D1BD26D7300EBB367 /* RAccount.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RAccount.swift; sourceTree = "<group>"; };
 		E296B64F1BD26DF900EBB367 /* RTransaction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RTransaction.swift; sourceTree = "<group>"; };
 		E296B6511BD29A3E00EBB367 /* RCategory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RCategory.swift; sourceTree = "<group>"; };
@@ -319,6 +325,8 @@
 				186640EE1BB8D37A00076B70 /* ReminderList.swift */,
 				9D862C0C1BB99AB500332B24 /* User.swift */,
 				E20830B41BBE30ED006D7B3D /* UserCategory.swift */,
+				E270FB8D1BD3AF9B00BA776C /* RUserCategory.swift */,
+				E270FB8F1BD3B05800BA776C /* RReminderItem.swift */,
 				E234A3CF1BC2AAEE00C4C83D /* BalanceStat.swift */,
 				E296B64D1BD26D7300EBB367 /* RAccount.swift */,
 				E296B64F1BD26DF900EBB367 /* RTransaction.swift */,
@@ -451,6 +459,7 @@
 				E296B6551BD2C34600EBB367 /* CategoryType.swift */,
 				E296B6571BD2D82800EBB367 /* Currency.swift */,
 				E234A3D31BC2B3FA00C4C83D /* NSDecimalNumberExtension.swift */,
+				E270FB911BD3C7E700BA776C /* DecimalConverter.swift */,
 			);
 			name = Helpers;
 			sourceTree = "<group>";
@@ -626,6 +635,7 @@
 				9DB8A8631BA9EAC0000F03A1 /* CategoryCell.swift in Sources */,
 				9DB8A86E1BAA43B4000F03A1 /* SelectAccountOrCategoryViewController.swift in Sources */,
 				1842E95E1BB6A00700A9DFD8 /* TextCell.swift in Sources */,
+				E270FB8E1BD3AF9B00BA776C /* RUserCategory.swift in Sources */,
 				E296B65C1BD3579300EBB367 /* BalanceComputing.swift in Sources */,
 				186640EF1BB8D37A00076B70 /* ReminderList.swift in Sources */,
 				9DB8A86C1BAA064E000F03A1 /* RootTabBarController.swift in Sources */,
@@ -649,11 +659,13 @@
 				184851F51BB011B700C1EA63 /* BalanceCell.swift in Sources */,
 				186640ED1BB8CDAC00076B70 /* ReminderItem.swift in Sources */,
 				9D78C51D1BA5A47F00B00BC2 /* AppDelegate.swift in Sources */,
+				E270FB901BD3B05800BA776C /* RReminderItem.swift in Sources */,
 				E296B6541BD29EC800EBB367 /* HTRObject.swift in Sources */,
 				1892689E1BB52728006FA9C4 /* CustomNavigationAnimationController.swift in Sources */,
 				E234A3D41BC2B3FA00C4C83D /* NSDecimalNumberExtension.swift in Sources */,
 				E296B6561BD2C34600EBB367 /* CategoryType.swift in Sources */,
 				1881FB521BB831DD00314FD1 /* ViewMoreCell.swift in Sources */,
+				E270FB921BD3C7E700BA776C /* DecimalConverter.swift in Sources */,
 				18F39CD51BA9D2C00099B714 /* AmountCell.swift in Sources */,
 				1884A4DC1BAD62EB00D24257 /* AddReminderViewController.swift in Sources */,
 				18FEF7851BBEF05500E8B2A7 /* SplashViewController.swift in Sources */,

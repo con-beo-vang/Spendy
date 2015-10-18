@@ -58,7 +58,7 @@ class SelectReminderCategoryViewController: UIViewController {
             let vc = toController as! AddReminderViewController
 
             let category:RCategory = items![indexPath!.row]
-            vc.selectedUserCategory = UserCategory.findByCategoryId(category.id)
+            vc.selectedUserCategory = RUserCategory.findByCategoryId(category.id)
 
             vc.isNewReminder = true
         }

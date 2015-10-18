@@ -15,7 +15,7 @@ class AddReminderViewController: UIViewController, TimeCellDelegate {
     var addButton: UIButton!
     var backButton: UIButton!
     
-    var selectedUserCategory: UserCategory!
+    var selectedUserCategory: RUserCategory!
     var isNewReminder = false
     
     override func viewDidLoad() {
@@ -63,15 +63,12 @@ class AddReminderViewController: UIViewController, TimeCellDelegate {
     
     func timeCellSwitchValueChanged(timeCell: TimeCell, didChangeValue value: Bool) {
         let indexPath = tableView.indexPathForCell(timeCell)!
-        print("switch time")
+        print("switch control \(value)")
         
-        selectedUserCategory.timeSlots[indexPath.row].isActive = value
-        // TODO: update in Parse
         timeCell.onSwitch.on = value
 
         let reminderItem = selectedUserCategory.timeSlots[indexPath.row]
-
-        reminderItem.userCategory!.updateReminder(reminderItem, newValue: value)
+        selectedUserCategory.updateReminder(reminderItem, newValue: value)
     }
 }
 
@@ -181,7 +178,9 @@ extension AddReminderViewController: UIGestureRecognizerDelegate {
                 print("remove old notification")
                 
                 if let indexPath = indexPath {
-                    selectedUserCategory.timeSlots.removeAtIndex(indexPath.row)
+                    let item = selectedUserCategory.timeSlots[indexPath.row]
+                    selectedUserCategory.removeReminder(item)
+
                     // TODO: remove this item in Parse
                     tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: UITableViewRowAnimation.Automatic)
                 }
@@ -194,18 +193,12 @@ extension AddReminderViewController: UIGestureRecognizerDelegate {
     }
     
     func addTime() {
-        
-        DatePickerDialog().show(title: "Choose Time", doneButtonTitle: "Done", cancelButtonTitle: "Cancel", minDate: nil, datePickerMode: .Time) { (time) -> Void in
-
+        DatePickerDialog().show(title: "Choose Time", doneButtonTitle: "Done", cancelButtonTitle: "Cancel", minDate: nil, datePickerMode: .Time) {
+            (time) -> Void in
             print("addTime: \(time)")
 
             // Add notification
             self.selectedUserCategory.addReminder(time)
-
-            // Turn category on if it's a new one
-            if self.selectedUserCategory.timeSlots.count == 1 {
-                self.selectedUserCategory.turnOn()
-            }
 
             self.tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: UITableViewRowAnimation.Automatic)
         }

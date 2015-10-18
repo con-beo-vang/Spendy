@@ -9,6 +9,7 @@
 import Foundation
 import RealmSwift
 
+// TODO: save to DB so that it's faster
 class BalanceStat {
     var from: NSDate
     var to:NSDate
