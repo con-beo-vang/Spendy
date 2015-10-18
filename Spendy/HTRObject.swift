@@ -39,7 +39,7 @@ class HTRObject: Object {
         try! realm.write {
             realm.add(self, update: true)
         }
-        print("saved id = \(self)")
+        print("saved \(self.dynamicType) id = \(id)")
     }
 
     func delete() {

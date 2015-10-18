@@ -13,13 +13,13 @@ class ReminderList: NSObject {
     static let sharedInstance = ReminderList()
     
     func addReminderNotification(item: ReminderItem) {
-        let categoryId = item.category!.id
+        let category = item.category!
         
         // create a corresponding local notification
         let notification = UILocalNotification()
 
         // text that will be displayed in the notification
-        notification.alertBody = "Good day! Did you spend $\(item.predictedAmount) on \(item.category!.name)?"
+        notification.alertBody = "Good day! Did you spend $\(item.predictedAmount) on \(category.name)?"
 
         // text that is displayed after "slide to..." on the lock screen - defaults to "slide to view"
         notification.alertAction = "open"
@@ -31,7 +31,7 @@ class ReminderList: NSObject {
         notification.soundName = UILocalNotificationDefaultSoundName
 
         // assign a unique identifier to the notification so that we can retrieve it later
-        notification.userInfo = ["categoryId": categoryId, "predictedAmount": item.predictedAmount, "UUID": item.UUID!]
+        notification.userInfo = ["categoryId": category.id, "predictedAmount": item.predictedAmount, "UUID": item.UUID!]
 
         notification.category = "REMINDER_CATEGORY"
 
@@ -39,6 +39,7 @@ class ReminderList: NSObject {
         notification.repeatInterval = NSCalendarUnit.Day
 
         UIApplication.sharedApplication().scheduleLocalNotification(notification)
+
         print("[Notification] Scheduled \(item.UUID). Total: #\(notifications().count)]")
     }
 
@@ -46,8 +47,10 @@ class ReminderList: NSObject {
         guard let itemUUID = item.UUID else { return }
 
         for notification in notifications() { // loop through notifications...
-            if (notification.userInfo!["UUID"] as! String == itemUUID) { // ...and cancel the notification that corresponds to this ReminderItem instance (matched by UUID)
-                UIApplication.sharedApplication().cancelLocalNotification(notification) // there should be a maximum of one match on UUID
+            // ...and cancel the notification that corresponds to this ReminderItem instance (matched by UUID)
+            if (notification.userInfo!["UUID"] as! String == itemUUID) {
+                // there should be a maximum of one match on UUID
+                UIApplication.sharedApplication().cancelLocalNotification(notification)
                 print("[Notification] Removed \(itemUUID). Total: #\(notifications().count)]")
                 break
             }
@@ -60,14 +63,14 @@ class ReminderList: NSObject {
 
     // Snooze
     func scheduleReminderforItem(item: ReminderItem) {
-        let categoryId = item.category!.id
+        let category = item.category!
         
         let notification = UILocalNotification() // create a new reminder notification
-        notification.alertBody = "Good day! Did you spend $\(item.predictedAmount) on \(item.category)?" // text that will be displayed in the notification
+        notification.alertBody = "Good day! Did you spend $\(item.predictedAmount) on \(category.name)?" // text that will be displayed in the notification
         notification.alertAction = "open" // text that is displayed after "slide to..." on the lock screen - defaults to "slide to view"
         notification.fireDate = NSDate().dateByAddingTimeInterval(30 * 60) // 30 minutes from current time
         notification.soundName = UILocalNotificationDefaultSoundName // play default sound
-        notification.userInfo = ["categoryId": categoryId, "predictiveAmount": item.predictedAmount, "UUID": item.UUID!] // assign a unique identifier to the notification that we can use to retrieve it later
+        notification.userInfo = ["categoryId": category.id, "predictiveAmount": item.predictedAmount, "UUID": item.UUID!] // assign a unique identifier to the notification that we can use to retrieve it later
         notification.category = "REMINDER_CATEGORY"
         
         UIApplication.sharedApplication().scheduleLocalNotification(notification)

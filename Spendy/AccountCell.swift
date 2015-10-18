@@ -33,18 +33,18 @@ class AccountCell: UITableViewCell {
 //        }
 //    }
 //
-    var rAccount: Account! {
+    var account: Account! {
         didSet {
-            balanceLabel.text = rAccount.formattedBalance
+            balanceLabel.text = account.formattedBalance
 
-            if rAccount.balance < 0 {
+            if account.balance < 0 {
                 balanceLabel.textColor = Color.expenseColor
             } else {
                 balanceLabel.textColor = Color.incomeColor
             }
 
-            nameLabel.text = rAccount.name
-            typeLabel.text = "Start: \(rAccount.startingBalance)"
+            nameLabel.text = account.name
+            typeLabel.text = "Start: \(account.startingBalance)"
             iconView.setNewTintColor(Color.strongColor)
         }
     }
