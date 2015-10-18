@@ -81,7 +81,7 @@ class ReminderCell: UITableViewCell {
         }
     }
     
-    func getTimeSlotsString(timeSlots: [RReminderItem]) -> String {
+    func getTimeSlotsString(timeSlots: [ReminderItem]) -> String {
         var result = ""
         
         for item in timeSlots {

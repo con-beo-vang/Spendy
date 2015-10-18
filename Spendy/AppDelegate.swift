@@ -224,7 +224,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let categoryId = notification.userInfo!["categoryId"] as! Int
         let userCategory = RUserCategory.findByCategoryId(categoryId)!
 
-        let item = RReminderItem(userCategory: userCategory, reminderTime: notification.fireDate!, UUID: notification.userInfo!["UUID"] as! String!)
+        let item = ReminderItem(userCategory: userCategory, reminderTime: notification.fireDate!, UUID: notification.userInfo!["UUID"] as! String!)
         
         switch (identifier!) {
         case "CHANGE":

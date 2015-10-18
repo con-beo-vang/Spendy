@@ -12,7 +12,7 @@ import UIKit
 class ReminderList: NSObject {
     static let sharedInstance = ReminderList()
     
-    func addReminderNotification(item: RReminderItem) {
+    func addReminderNotification(item: ReminderItem) {
         let categoryId = item.category!.id
         
         // create a corresponding local notification
@@ -42,7 +42,7 @@ class ReminderList: NSObject {
         print("[Notification] Scheduled \(item.UUID). Total: #\(notifications().count)]")
     }
 
-    func removeReminderNotification(item: RReminderItem) {
+    func removeReminderNotification(item: ReminderItem) {
         guard let itemUUID = item.UUID else { return }
 
         for notification in notifications() { // loop through notifications...
@@ -59,7 +59,7 @@ class ReminderList: NSObject {
     }
 
     // Snooze
-    func scheduleReminderforItem(item: RReminderItem) {
+    func scheduleReminderforItem(item: ReminderItem) {
         let categoryId = item.category!.id
         
         let notification = UILocalNotification() // create a new reminder notification

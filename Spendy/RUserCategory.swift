@@ -20,9 +20,9 @@ class RUserCategory: HTRObject {
         set { predictedAmount = DecimalConverter.decimalToInt(newValue) }
     }
 
-    let timeSlots = List<RReminderItem>()
+    let timeSlots = List<ReminderItem>()
 
-    var activeSlots: Results<RReminderItem> {
+    var activeSlots: Results<ReminderItem> {
         return timeSlots.filter("isActive == true")
     }
 
@@ -49,7 +49,7 @@ extension RUserCategory {
     }
 
     func addReminder(time: NSDate) {
-        let item = RReminderItem(userCategory: self, reminderTime: time, UUID: NSUUID().UUIDString)
+        let item = ReminderItem(userCategory: self, reminderTime: time, UUID: NSUUID().UUIDString)
         item.save()
 
         print("add notification for \(item) at \(time)")
@@ -58,7 +58,7 @@ extension RUserCategory {
         turnOn()
     }
 
-    func removeReminder(item: RReminderItem) {
+    func removeReminder(item: ReminderItem) {
         print("remove old notification for \(item)")
         ReminderList.sharedInstance.removeReminderNotification(item)
 
@@ -81,7 +81,7 @@ extension RUserCategory {
         ReminderList.sharedInstance.addReminderNotification(item)
     }
 
-    func updateReminder(reminderItem: RReminderItem, newValue: Bool) {
+    func updateReminder(reminderItem: ReminderItem, newValue: Bool) {
         guard let userCat = reminderItem.userCategory else { return }
 
         let realm = try! Realm()

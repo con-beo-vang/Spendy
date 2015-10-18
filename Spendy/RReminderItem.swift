@@ -1,5 +1,5 @@
 //
-//  RReminderItem.swift
+//  ReminderItem.swift
 //  Spendy
 //
 //  Created by Harley Trung on 10/18/15.
@@ -8,7 +8,7 @@
 
 import RealmSwift
 
-class RReminderItem: HTRObject {
+class ReminderItem: HTRObject {
     dynamic var userCategory: RUserCategory?
     dynamic var reminderTime: NSDate?
     dynamic var UUID: String?
