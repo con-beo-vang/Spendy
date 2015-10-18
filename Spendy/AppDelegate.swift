@@ -222,7 +222,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(application: UIApplication, handleActionWithIdentifier identifier: String?, forLocalNotification notification: UILocalNotification, completionHandler: () -> Void) {
 
         let categoryId = notification.userInfo!["categoryId"] as! Int
-        let userCategory = RUserCategory.findByCategoryId(categoryId)!
+        let userCategory = UserCategory.findByCategoryId(categoryId)!
 
         let item = ReminderItem(userCategory: userCategory, reminderTime: notification.fireDate!, UUID: notification.userInfo!["UUID"] as! String!)
         

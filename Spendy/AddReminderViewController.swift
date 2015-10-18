@@ -15,7 +15,7 @@ class AddReminderViewController: UIViewController, TimeCellDelegate {
     var addButton: UIButton!
     var backButton: UIButton!
     
-    var selectedUserCategory: RUserCategory!
+    var selectedUserCategory: UserCategory!
     var isNewReminder = false
     
     override func viewDidLoad() {

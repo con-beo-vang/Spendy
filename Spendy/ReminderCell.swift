@@ -27,7 +27,7 @@ class ReminderCell: UITableViewCell {
     
     var delegate: ReminderCellDelegate!
 
-    var userCategory: RUserCategory! {
+    var userCategory: UserCategory! {
         didSet {
             categoryLabel.text = userCategory.name
             timesLabel.text = getTimeSlotsString(Array(userCategory.timeSlots))

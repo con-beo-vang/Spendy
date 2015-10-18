@@ -9,12 +9,12 @@
 import RealmSwift
 
 class ReminderItem: HTRObject {
-    dynamic var userCategory: RUserCategory?
+    dynamic var userCategory: UserCategory?
     dynamic var reminderTime: NSDate?
     dynamic var UUID: String?
     dynamic var isActive = false
 
-    convenience init(userCategory: RUserCategory, reminderTime: NSDate, UUID: String) {
+    convenience init(userCategory: UserCategory, reminderTime: NSDate, UUID: String) {
         self.init()
 
         self.userCategory = userCategory

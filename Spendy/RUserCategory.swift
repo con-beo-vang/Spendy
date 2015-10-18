@@ -1,5 +1,5 @@
 //
-//  RUserCategory.swift
+//  UserCategory.swift
 //  Spendy
 //
 //  Created by Harley Trung on 10/18/15.
@@ -8,7 +8,7 @@
 
 import RealmSwift
 
-class RUserCategory: HTRObject {
+class UserCategory: HTRObject {
     dynamic var userId: String?
     dynamic var category: Category?
 
@@ -26,9 +26,9 @@ class RUserCategory: HTRObject {
         return timeSlots.filter("isActive == true")
     }
 
-    static var all: [RUserCategory] {
+    static var all: [UserCategory] {
         let realm = try! Realm()
-        let objects = realm.objects(RUserCategory)
+        let objects = realm.objects(UserCategory)
         return Array(objects)
     }
 
@@ -42,9 +42,9 @@ class RUserCategory: HTRObject {
 }
 
 
-extension RUserCategory {
+extension UserCategory {
     // returns categories that have at least one reminder item
-    class func allWithReminderSettings() -> [RUserCategory] {
+    class func allWithReminderSettings() -> [UserCategory] {
         return all.filter({ !$0.timeSlots.isEmpty })
     }
 
@@ -152,15 +152,15 @@ extension RUserCategory {
         }
     }
 
-    class func fromCategories(categories: [Category]) -> [RUserCategory] {
+    class func fromCategories(categories: [Category]) -> [UserCategory] {
         // TODO Realm filter
         return categories.map({ findByCategory($0)! })
     }
 
-    class func findByCategory(category: Category) -> RUserCategory? {
+    class func findByCategory(category: Category) -> UserCategory? {
         let uc = all.filter({$0.category == category}).first
         if uc == nil {
-            let a = RUserCategory()
+            let a = UserCategory()
             a.category = category
             a.save()
             return a
@@ -169,24 +169,24 @@ extension RUserCategory {
         }
     }
 
-    class func findByCategoryId(categoryId: Int) -> RUserCategory? {
+    class func findByCategoryId(categoryId: Int) -> UserCategory? {
         let realm = try! Realm()
         let cat = realm.objectForPrimaryKey(Category.self, key: categoryId)
         return findByCategory(cat!)
     }
 }
 
-var _allForQuickAdd: [RUserCategory]?
+var _allForQuickAdd: [UserCategory]?
 
 // MARK: - Quick Add
-extension RUserCategory {
+extension UserCategory {
     class func forceReloadQuickAddCategories() {
         _allForQuickAdd = nil
     }
 
-    class func allForQuickAdd() -> [RUserCategory] {
+    class func allForQuickAdd() -> [UserCategory] {
         guard _allForQuickAdd != nil else {
-            _allForQuickAdd = RUserCategory.allWithReminderSettings()
+            _allForQuickAdd = UserCategory.allWithReminderSettings()
 
             if _allForQuickAdd!.isEmpty {
                 let names = ["Meal", "Drink", "Commute"]

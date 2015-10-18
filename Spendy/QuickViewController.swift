@@ -41,14 +41,14 @@ class QuickViewController: UIViewController {
 
     weak var delegate: QuickViewControllerDelegate?
 
-    var userCategories: [RUserCategory]!
+    var userCategories: [UserCategory]!
     var quickTransactions: [Transaction]!
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Load top user categories
-        userCategories = RUserCategory.allForQuickAdd()
+        userCategories = UserCategory.allForQuickAdd()
 
         quickTransactions = userCategories.map({ (userCat) -> Transaction in
             let defaultAmount = userCat.quickAddAmounts().first
