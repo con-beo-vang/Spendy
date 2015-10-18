@@ -53,11 +53,7 @@ class AccountsViewController: UIViewController {
         tableView.delegate = self
         tableView.tableFooterView = UIView()
 
-        // TODO: remove
-//        accounts = [] // Account.all
-
-        accounts = Array(try! Realm().objects(Account))
-
+        accounts = Account.all
         tableView.reloadData()
         
         if (tableView.contentSize.height <= tableView.frame.size.height) {
@@ -76,7 +72,6 @@ class AccountsViewController: UIViewController {
 
     func updateAccountList(notification: NSNotification) {
         print("[Notified][AccountsViewController:updateAccountList")
-        // TODO Realm: reload accounts
         accounts = Account.all
         tableView.reloadData()
     }
@@ -207,12 +202,10 @@ class AccountsViewController: UIViewController {
             
             if justAddTransactions {
                 justAddTransactions = false
-//                accountDetailVC.currentAccount = addedAccount
                 accountDetailVC.currentAccount = addedAccount
                 self.tabBarController?.tabBar.hidden = false
             } else {
                 let indexPath = tableView.indexPathForCell(sender as! UITableViewCell)!
-//                accountDetailVC.currentAccount = accounts![indexPath.row]
                 accountDetailVC.currentAccount = accounts![indexPath.row]
             }
         }

@@ -190,22 +190,8 @@ extension AccountDetailViewController: UITableViewDataSource, UITableViewDelegat
         // must set current account before transaction
         // it could be a fromAccount or toAccount
         // this is the only way to find out
-//        cell.currentAccount = currentAccount
-//        cell.transaction = accountTransactions[indexPath.section][indexPath.row]
-
-
         cell.currentAccount = currentAccount
         cell.transaction = accountTransactions[indexPath.section][indexPath.row]
-
-//        if accountTransactions[indexPath.section][indexPath.row].kind == Transaction.transferKind {
-//            if currentAccount.objectId == accountTransactions[indexPath.section][indexPath.row].fromAccountId {
-//                cell.amountLabel.textColor = Color.expenseColor
-//            } else {
-//                cell.amountLabel.textColor = Color.incomeColor
-//            }
-//        }
-
-        // TODO: set color as above
 
         let rightSwipe = UISwipeGestureRecognizer(target: self, action: Selector("handleSwipe:"))
         rightSwipe.direction = .Right
