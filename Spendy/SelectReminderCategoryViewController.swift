@@ -12,7 +12,7 @@ class SelectReminderCategoryViewController: UIViewController {
     
     @IBOutlet weak var tableView: UITableView!
     
-    var items: [Category]?
+    var items: [RCategory]?
     
     var backButton: UIButton?
 
@@ -25,7 +25,7 @@ class SelectReminderCategoryViewController: UIViewController {
 
         addBarButton()
         
-        items = Category.allExpenseType as [Category]
+        items = RCategory.allExpenseType()
         tableView.reloadData()
     }
 
@@ -57,8 +57,8 @@ class SelectReminderCategoryViewController: UIViewController {
         if toController is AddReminderViewController {
             let vc = toController as! AddReminderViewController
 
-            let category:Category = items![indexPath!.row]
-            vc.selectedUserCategory = UserCategory.findByCategoryId(category.objectId!)
+            let category:RCategory = items![indexPath!.row]
+            vc.selectedUserCategory = UserCategory.findByCategoryId(category.id)
 
             vc.isNewReminder = true
         }

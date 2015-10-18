@@ -106,7 +106,7 @@ class UserCategory: HTObject {
 
 // MARK - Category stuff
 extension UserCategory {
-    class func findByCategoryId(catId:String) -> UserCategory? {
+    class func findByCategoryId(catId:Int) -> UserCategory? {
 //        let uc = all.filter({$0.categoryId == catId}).first
 //        if uc == nil {
 //            let a = UserCategory(categoryId: catId)
@@ -222,8 +222,8 @@ extension UserCategory {
         }
     }
 
-    class func fromCategories(categories: [Category]) -> [UserCategory] {
-        return categories.map({ findByCategoryId($0.objectId!)! })
+    class func fromCategories(categories: [RCategory]) -> [UserCategory] {
+        return categories.map({ findByCategoryId($0.id)! })
     }
 }
 
@@ -241,7 +241,7 @@ extension UserCategory {
 
             if _allForQuickAdd!.isEmpty {
                 let names = ["Meal", "Drink", "Commute"]
-                let cats = Category.all.filter({ names.contains($0.name) })
+                let cats = RCategory.all.filter({ names.contains($0.name!) })
 
                 _allForQuickAdd = fromCategories(cats)
             } else {

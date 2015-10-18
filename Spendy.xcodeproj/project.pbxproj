@@ -53,9 +53,6 @@
 		18F39CD91BA9D2F80099B714 /* DateCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18F39CD81BA9D2F80099B714 /* DateCell.swift */; };
 		18FEF7851BBEF05500E8B2A7 /* SplashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18FEF7841BBEF05500E8B2A7 /* SplashViewController.swift */; settings = {ASSET_TAGS = (); }; };
 		9D3153FC1BB0C75500F1F32B /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3153FB1BB0C75500F1F32B /* DataManager.swift */; };
-		9D3EA5FA1BAB3BBD00EF4B47 /* Transaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3EA5F91BAB3BBD00EF4B47 /* Transaction.swift */; };
-		9D3EA5FC1BABFB1300EF4B47 /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3EA5FB1BABFB1300EF4B47 /* Account.swift */; };
-		9D3EA6001BABFF0B00EF4B47 /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3EA5FF1BABFF0B00EF4B47 /* Category.swift */; };
 		9D78C51D1BA5A47F00B00BC2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D78C51C1BA5A47F00B00BC2 /* AppDelegate.swift */; };
 		9D78C5221BA5A47F00B00BC2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9D78C5201BA5A47F00B00BC2 /* Main.storyboard */; };
 		9D78C5241BA5A47F00B00BC2 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9D78C5231BA5A47F00B00BC2 /* Images.xcassets */; };
@@ -145,9 +142,6 @@
 		3CFE2D5C782640C353708467 /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6DE97D10C3A0C6C161C8B7C1 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		9D3153FB1BB0C75500F1F32B /* DataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
-		9D3EA5F91BAB3BBD00EF4B47 /* Transaction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Transaction.swift; sourceTree = "<group>"; };
-		9D3EA5FB1BABFB1300EF4B47 /* Account.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Account.swift; sourceTree = "<group>"; };
-		9D3EA5FF1BABFF0B00EF4B47 /* Category.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
 		9D78C5171BA5A47F00B00BC2 /* Spendy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Spendy.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9D78C51B1BA5A47F00B00BC2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9D78C51C1BA5A47F00B00BC2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -320,29 +314,16 @@
 		18F39CC11BA962AE0099B714 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				18F39CCE1BA9CB200099B714 /* Helper.swift */,
-				9D3EA5F91BAB3BBD00EF4B47 /* Transaction.swift */,
-				9D3EA5FB1BABFB1300EF4B47 /* Account.swift */,
-				9D3EA5FF1BABFF0B00EF4B47 /* Category.swift */,
 				E29F203A1BAEAF150076AEFB /* HTObject.swift */,
-				9DFE8D9C1BAFA9E0001E6F9E /* DateUtilities.swift */,
-				9D3153FB1BB0C75500F1F32B /* DataManager.swift */,
-				1881FB4B1BB7EC9F00314FD1 /* Color.swift */,
 				186640EC1BB8CDAC00076B70 /* ReminderItem.swift */,
 				186640EE1BB8D37A00076B70 /* ReminderList.swift */,
 				9D862C0C1BB99AB500332B24 /* User.swift */,
 				E20830B41BBE30ED006D7B3D /* UserCategory.swift */,
-				9DFD44731BC21AE3008C2ABC /* SPNotification.swift */,
 				E234A3CF1BC2AAEE00C4C83D /* BalanceStat.swift */,
-				E234A3D31BC2B3FA00C4C83D /* NSDecimalNumberExtension.swift */,
 				E296B64D1BD26D7300EBB367 /* RAccount.swift */,
 				E296B64F1BD26DF900EBB367 /* RTransaction.swift */,
 				E296B6511BD29A3E00EBB367 /* RCategory.swift */,
 				E296B6531BD29EC800EBB367 /* HTRObject.swift */,
-				E296B6551BD2C34600EBB367 /* CategoryType.swift */,
-				E296B6571BD2D82800EBB367 /* Currency.swift */,
-				E296B6591BD355E200EBB367 /* TransactionGrouping.swift */,
-				E296B65B1BD3579300EBB367 /* BalanceComputing.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -401,6 +382,7 @@
 		9D78C5191BA5A47F00B00BC2 /* Spendy */ = {
 			isa = PBXGroup;
 			children = (
+				E296B65D1BD3885E00EBB367 /* Helpers */,
 				18F39CC11BA962AE0099B714 /* Models */,
 				18F39CBF1BA9629B0099B714 /* Views */,
 				18F39CC01BA962A50099B714 /* View Controllers */,
@@ -454,6 +436,23 @@
 				1842E95D1BB6A00700A9DFD8 /* TextCell.swift */,
 			);
 			name = "New Account";
+			sourceTree = "<group>";
+		};
+		E296B65D1BD3885E00EBB367 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				18F39CCE1BA9CB200099B714 /* Helper.swift */,
+				9DFE8D9C1BAFA9E0001E6F9E /* DateUtilities.swift */,
+				9D3153FB1BB0C75500F1F32B /* DataManager.swift */,
+				1881FB4B1BB7EC9F00314FD1 /* Color.swift */,
+				9DFD44731BC21AE3008C2ABC /* SPNotification.swift */,
+				E296B6591BD355E200EBB367 /* TransactionGrouping.swift */,
+				E296B65B1BD3579300EBB367 /* BalanceComputing.swift */,
+				E296B6551BD2C34600EBB367 /* CategoryType.swift */,
+				E296B6571BD2D82800EBB367 /* Currency.swift */,
+				E234A3D31BC2B3FA00C4C83D /* NSDecimalNumberExtension.swift */,
+			);
+			name = Helpers;
 			sourceTree = "<group>";
 		};
 		F3D0B671BD77741EE28235E3 /* Pods */ = {
@@ -637,7 +636,6 @@
 				1892689D1BB52728006FA9C4 /* CustomInteractionController.swift in Sources */,
 				E296B6581BD2D82800EBB367 /* Currency.swift in Sources */,
 				1881FB541BB834BD00314FD1 /* ThemeCell.swift in Sources */,
-				9D3EA5FC1BABFB1300EF4B47 /* Account.swift in Sources */,
 				18A9897F1BB5C05A00CD6E28 /* DefaultAccountCell.swift in Sources */,
 				186640311BB39F52007B73C3 /* PhotoViewController.swift in Sources */,
 				E296B65A1BD355E200EBB367 /* TransactionGrouping.swift in Sources */,
@@ -664,7 +662,6 @@
 				18F39CC31BA962D10099B714 /* HomeViewController.swift in Sources */,
 				E234A3D01BC2AAEE00C4C83D /* BalanceStat.swift in Sources */,
 				9D862C0D1BB99AB500332B24 /* User.swift in Sources */,
-				9D3EA5FA1BAB3BBD00EF4B47 /* Transaction.swift in Sources */,
 				18499E1D1BAB237D0066E6E5 /* AccountCell.swift in Sources */,
 				9DFE8D9D1BAFA9E0001E6F9E /* DateUtilities.swift in Sources */,
 				1881FB4E1BB8097100314FD1 /* AddReminderCell.swift in Sources */,
@@ -690,7 +687,6 @@
 				E296B64E1BD26D7300EBB367 /* RAccount.swift in Sources */,
 				18F39CD71BA9D2E70099B714 /* SelectAccountOrCategoryCell.swift in Sources */,
 				1881FB501BB80CC800314FD1 /* LogOutCell.swift in Sources */,
-				9D3EA6001BABFF0B00EF4B47 /* Category.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
