@@ -76,7 +76,7 @@ class AccountDetailViewController: UIViewController {
 
 
     func reloadTransactions() {
-        accountRTransactions = RTransaction.listGroupedByMonth(Array(currentRAccount.transactions))
+        accountRTransactions = TransactionGrouping.listGroupedByMonth(Array(currentRAccount.transactions))
     }
 
     // reload data after we navigate back from pushed cell

@@ -8,6 +8,7 @@
 
 enum CategoryType: String {
     case Income = "Income", Expense = "Expense", Transfer = "Transfer"
+
     static let allValues = [Income, Expense, Transfer]
     static let allValueStrings = [Income.rawValue, Expense.rawValue, Transfer.rawValue]
 }

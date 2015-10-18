@@ -80,6 +80,7 @@
 		E296B6541BD29EC800EBB367 /* HTRObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = E296B6531BD29EC800EBB367 /* HTRObject.swift */; settings = {ASSET_TAGS = (); }; };
 		E296B6561BD2C34600EBB367 /* CategoryType.swift in Sources */ = {isa = PBXBuildFile; fileRef = E296B6551BD2C34600EBB367 /* CategoryType.swift */; settings = {ASSET_TAGS = (); }; };
 		E296B6581BD2D82800EBB367 /* Currency.swift in Sources */ = {isa = PBXBuildFile; fileRef = E296B6571BD2D82800EBB367 /* Currency.swift */; settings = {ASSET_TAGS = (); }; };
+		E296B65A1BD355E200EBB367 /* TransactionGrouping.swift in Sources */ = {isa = PBXBuildFile; fileRef = E296B6591BD355E200EBB367 /* TransactionGrouping.swift */; settings = {ASSET_TAGS = (); }; };
 		E29F203B1BAEAF150076AEFB /* HTObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = E29F203A1BAEAF150076AEFB /* HTObject.swift */; };
 /* End PBXBuildFile section */
 
@@ -174,6 +175,7 @@
 		E296B6531BD29EC800EBB367 /* HTRObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HTRObject.swift; sourceTree = "<group>"; };
 		E296B6551BD2C34600EBB367 /* CategoryType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CategoryType.swift; sourceTree = "<group>"; };
 		E296B6571BD2D82800EBB367 /* Currency.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Currency.swift; sourceTree = "<group>"; };
+		E296B6591BD355E200EBB367 /* TransactionGrouping.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransactionGrouping.swift; sourceTree = "<group>"; };
 		E29F203A1BAEAF150076AEFB /* HTObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HTObject.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -337,6 +339,7 @@
 				E296B6531BD29EC800EBB367 /* HTRObject.swift */,
 				E296B6551BD2C34600EBB367 /* CategoryType.swift */,
 				E296B6571BD2D82800EBB367 /* Currency.swift */,
+				E296B6591BD355E200EBB367 /* TransactionGrouping.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -633,6 +636,7 @@
 				9D3EA5FC1BABFB1300EF4B47 /* Account.swift in Sources */,
 				18A9897F1BB5C05A00CD6E28 /* DefaultAccountCell.swift in Sources */,
 				186640311BB39F52007B73C3 /* PhotoViewController.swift in Sources */,
+				E296B65A1BD355E200EBB367 /* TransactionGrouping.swift in Sources */,
 				1866C4D51BAC221C000200D2 /* AccountDetailViewController.swift in Sources */,
 				1806E9061BADE11C008047A6 /* DatePickerDialog.swift in Sources */,
 				18F39CD91BA9D2F80099B714 /* DateCell.swift in Sources */,

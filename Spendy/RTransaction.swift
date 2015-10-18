@@ -8,6 +8,19 @@
 
 import RealmSwift
 
+struct KindColor {
+    static func forKind(kind: String) -> UIColor {
+        switch kind {
+        case CategoryType.Expense.rawValue:
+            return Color.expenseColor
+        case CategoryType.Income.rawValue:
+            return Color.incomeColor
+        default:
+            return Color.balanceColor
+        }
+    }
+}
+
 class RTransaction: HTRObject {
     dynamic var kind: String? = nil
     dynamic var date: NSDate? = nil
@@ -80,13 +93,6 @@ class RTransaction: HTRObject {
                 fromAccount.transactions.append(self)
             }
         }
-    }
-}
-
-extension RTransaction {
-    static func listGroupedByMonth(rTransactions: [RTransaction]) -> [[RTransaction]] {
-        // TODO: don't be lazy
-        return [rTransactions]
     }
 }
 
