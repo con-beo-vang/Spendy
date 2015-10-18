@@ -50,7 +50,7 @@ class RAccount: HTRObject {
     }
 
     var formattedBalance: String {
-        let bal = abs(balance)
+        let bal = NSDecimalNumber(integer: abs(balance)) * 0.01
         return Currency.currencyFormatter.stringFromNumber(bal)!
     }
 

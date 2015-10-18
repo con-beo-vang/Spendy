@@ -22,10 +22,10 @@ class HTRObject: Object {
     func setIdIfNeeded(realm: Realm) {
         if id == 0 {
             if let last = realm.objects(self.dynamicType).last {
-                print("last: \(last)")
+                print("last id: \(last.id)")
                 id = last.id + 1
             } else {
-                print("SETTING ID = 1")
+                print("FIRST RECORD. SETTING ID = 1")
                 id = 1
             }
         }

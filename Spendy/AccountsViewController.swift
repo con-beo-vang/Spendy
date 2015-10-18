@@ -186,7 +186,6 @@ class AccountsViewController: UIViewController {
             let transaction = RTransaction(kind: CategoryType.Transfer.rawValue, note: nil, amountDecimal: amountDecimal, category: RCategory.defaultCategoryFor(.Transfer), account: fromAccount!, date: NSDate())
             transaction.toAccount = toAccount
             transaction.save()
-//            Transaction.add(transaction)
             tableView.reloadData()
             
             closePopup()

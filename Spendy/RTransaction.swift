@@ -30,22 +30,26 @@ class RTransaction: HTRObject {
         self.amountDecimal = amountDecimal
         self.category = category
         self.date = date
+        self.fromAccount = account
     }
 
     // store in the DB the amount in cent
     // interface via amountDecimal which is dollar
     var amountDecimal: NSDecimalNumber? {
-        get {
-            return NSDecimalNumber(integer: amount) * 0.01
-        }
-        set {
-            guard let val = newValue where val != NSDecimalNumber.notANumber() else {
-                amount = 0
-                return
-            }
+        get { return intToDecimal(amount) }
+        set { amount = decimalToInt(newValue) }
+    }
 
-            amount = (val * 100).integerValue
+    func intToDecimal(val: Int) -> NSDecimalNumber {
+        return NSDecimalNumber(integer: val) * 0.01
+    }
+
+    func decimalToInt(newValue: NSDecimalNumber?) -> Int {
+        guard let val = newValue where val != NSDecimalNumber.notANumber() else {
+            return 0
         }
+
+        return (val * 100).integerValue
     }
 
     override static func ignoredProperties() -> [String] {
@@ -97,15 +101,15 @@ extension RTransaction {
     }
 
     func formattedAmount() -> String? {
-        return Currency.currencyFormatter.stringFromNumber(amount)
+        return Currency.currencyFormatter.stringFromNumber(amountDecimal!)
     }
 
     func formattedToBalanceSnapshot() -> String? {
-        return Currency.currencyFormatter.stringFromNumber(toBalanceSnapshot)
+        return Currency.currencyFormatter.stringFromNumber(intToDecimal(toBalanceSnapshot))
     }
 
     func formattedBalanceSnapshot() -> String? {
-        return Currency.currencyFormatter.stringFromNumber(balanceSnapshot)
+        return Currency.currencyFormatter.stringFromNumber(intToDecimal(balanceSnapshot))
     }
 
         // Ex: September 21, 2015
