@@ -18,6 +18,10 @@ class RAccount: HTRObject {
 
     let transactions = List<RTransaction>()
 
+    var sortedTransactions: [RTransaction] {
+        return Array(transactions.sorted("date", ascending: false))
+    }
+
 // Specify properties to ignore (Realm won't persist these)
     
 //  override static func ignoredProperties() -> [String] {
@@ -29,6 +33,10 @@ class RAccount: HTRObject {
         
         self.name = name
         startingBalance = (startingBalanceDecimal * 100).integerValue
+    }
+
+    var startingBalanceDecimal: NSDecimalNumber {
+        return NSDecimalNumber(integer: startingBalance) * 0.01
     }
 
     static func bootstrap() {
@@ -67,10 +75,6 @@ class RAccount: HTRObject {
     // TODO: implement
     static func nonDefaultAccount() -> RAccount {
         return all.filter({$0.id != defaultAccount().id}).first!
-    }
-
-    func recomputeBalance() {
-        // TODO: implement
     }
 }
 

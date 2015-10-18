@@ -19,6 +19,18 @@ struct KindColor {
             return Color.balanceColor
         }
     }
+
+    static func forTransaction(transaction: RTransaction, account: RAccount) -> UIColor {
+        if transaction.isTransfer() {
+            if transaction.toAccount == account {
+                return Color.incomeColor
+            } else {
+                return Color.expenseColor
+            }
+        } else {
+            return forKind(transaction.kind!)
+        }
+    }
 }
 
 class RTransaction: HTRObject {

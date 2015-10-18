@@ -71,12 +71,12 @@ class AccountDetailViewController: UIViewController {
 
         // switch to the updated account
         currentRAccount = updatedAccount
-//        currentRAccount.recomputeBalance()
+        BalanceComputing.recompute(currentRAccount)
     }
 
 
     func reloadTransactions() {
-        accountRTransactions = TransactionGrouping.listGroupedByMonth(Array(currentRAccount.transactions))
+        accountRTransactions = TransactionGrouping.listGroupedByMonth(Array(currentRAccount.sortedTransactions))
     }
 
     // reload data after we navigate back from pushed cell

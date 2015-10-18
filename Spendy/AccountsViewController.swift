@@ -15,7 +15,6 @@ class AccountsViewController: UIViewController {
     
     var addAccountButton: UIButton?
     
-//    var accounts: [Account]?
     var rAccounts: [RAccount]?
     
     var isPreparedDelete = false
@@ -238,6 +237,7 @@ extension AccountsViewController: UITableViewDataSource, UITableViewDelegate {
 
 //        cell.account = accounts![indexPath.row]
         cell.rAccount = rAccounts![indexPath.row]
+        BalanceComputing.recompute(cell.rAccount)
 
         if !hasPanGesture(cell) {
             print("adding pan for cell \(indexPath.row)")
@@ -405,9 +405,6 @@ extension AccountsViewController: UIGestureRecognizerDelegate {
     func getContainAccountCell(point: CGPoint) -> AccountCell? {
         var indexPathSet = [NSIndexPath]()
         
-//        for index in 0..<accounts!.count {
-//            indexPathSet.append(NSIndexPath(forRow: index, inSection: 0))
-//        }
         for index in 0..<rAccounts!.count {
             indexPathSet.append(NSIndexPath(forRow: index, inSection: 0))
         }

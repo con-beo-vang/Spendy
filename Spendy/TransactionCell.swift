@@ -32,7 +32,7 @@ class TransactionCell: UITableViewCell {
             }
 
             amountLabel.text = transaction.formattedAmount()
-            amountLabel.textColor = KindColor.forKind(transaction.kind!)
+            amountLabel.textColor = KindColor.forTransaction(transaction, account: currentRAccount!)
             dateLabel.text = transaction.dateOnly()
 
             // TODO: which balance to display

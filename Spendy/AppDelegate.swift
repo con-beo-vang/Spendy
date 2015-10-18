@@ -134,7 +134,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         guard let account = info["account"] as! RAccount? else { return }
 
-        account.recomputeBalance()
+        BalanceComputing.recompute(account)
         print("[Notified] recomputed balance for \(account.transactions.count) transactions of account \(account.name)")
     }
     
