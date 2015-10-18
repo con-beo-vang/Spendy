@@ -27,7 +27,7 @@ class AddTransactionViewController: UIViewController {
     var dateCell: DateCell?
     var photoCell: PhotoCell?
     
-    var selectedTransaction: RTransaction?
+    var selectedTransaction: Transaction?
     var currentAccount: Account!
 
     var imagePicker: UIImagePickerController!
@@ -66,8 +66,8 @@ class AddTransactionViewController: UIViewController {
                 navigationItem.title = "Edit Transaction"
             }
         } else {
-            // TODO: add a convenience contructor to RTransaction
-            selectedTransaction = RTransaction()
+            // TODO: add a convenience contructor to Transaction
+            selectedTransaction = Transaction()
             selectedTransaction!.kind = CategoryType.Expense.rawValue
             selectedTransaction!.category = RCategory.defaultCategoryFor(.Expense)
             selectedTransaction!.fromAccount = currentAccount

@@ -21,7 +21,7 @@ class AccountDetailViewController: UIViewController {
 
     // Used to display transactions of the same month in the same section
     // Each section header is the first transaction's month
-    var accountRTransactions: [[RTransaction]]!
+    var accountTransactions: [[Transaction]]!
 
     var currentAccount: Account!
 
@@ -76,7 +76,7 @@ class AccountDetailViewController: UIViewController {
 
 
     func reloadTransactions() {
-        accountRTransactions = TransactionGrouping.listGroupedByMonth(Array(currentAccount.sortedTransactions))
+        accountTransactions = TransactionGrouping.listGroupedByMonth(Array(currentAccount.sortedTransactions))
     }
 
     // reload data after we navigate back from pushed cell
@@ -145,7 +145,7 @@ class AccountDetailViewController: UIViewController {
             indexPath = tableView.indexPathForCell(sender as! UITableViewCell)
 
 //            addTransactionViewController.selectedTransaction = accountTransactions[indexPath.section][indexPath.row]
-            addTransactionViewController.selectedTransaction = accountRTransactions[indexPath.section][indexPath.row]
+            addTransactionViewController.selectedTransaction = accountTransactions[indexPath.section][indexPath.row]
             print("pass selectedTransaction to AddTransactionView: \(addTransactionViewController.selectedTransaction))", terminator: "\n")
         }
     }
@@ -156,11 +156,11 @@ class AccountDetailViewController: UIViewController {
 extension AccountDetailViewController: UITableViewDataSource, UITableViewDelegate {
 
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return accountRTransactions.count
+        return accountTransactions.count
     }
 
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return accountRTransactions[section].count
+        return accountTransactions[section].count
     }
 
     func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -170,7 +170,7 @@ extension AccountDetailViewController: UITableViewDataSource, UITableViewDelegat
         let monthLabel = UILabel(frame: CGRect(x: 8, y: 2, width: UIScreen.mainScreen().bounds.width - 16, height: 30))
         monthLabel.font = UIFont.systemFontOfSize(14)
 
-        monthLabel.text = accountRTransactions[section].first?.monthHeader()
+        monthLabel.text = accountTransactions[section].first?.monthHeader()
 
         headerView.addSubview(monthLabel)
 
@@ -195,7 +195,7 @@ extension AccountDetailViewController: UITableViewDataSource, UITableViewDelegat
 
 
         cell.currentAccount = currentAccount
-        cell.transaction = accountRTransactions[indexPath.section][indexPath.row]
+        cell.transaction = accountTransactions[indexPath.section][indexPath.row]
 
 //        if accountTransactions[indexPath.section][indexPath.row].kind == Transaction.transferKind {
 //            if currentAccount.objectId == accountTransactions[indexPath.section][indexPath.row].fromAccountId {
@@ -237,12 +237,12 @@ extension AccountDetailViewController: UIGestureRecognizerDelegate {
             return
         }
 
-        let swipedRTransaction = accountRTransactions[indexPath.section][indexPath.row]
+        let swipedTransaction = accountTransactions[indexPath.section][indexPath.row]
 
         switch sender.direction {
         case UISwipeGestureRecognizerDirection.Left:
             // Delete transaction
-            swipedRTransaction.remove()
+            swipedTransaction.remove()
 
             reloadTransactions()
 
@@ -259,9 +259,9 @@ extension AccountDetailViewController: UIGestureRecognizerDelegate {
 
             // Duplicate transaction to today
             // TODO: set attributes
-            let newRTransaction = swipedRTransaction.clone()
-            newRTransaction.date = NSDate()
-            currentAccount.addTransaction(newRTransaction)
+            let newTransaction = swipedTransaction.clone()
+            newTransaction.date = NSDate()
+            currentAccount.addTransaction(newTransaction)
 
             reloadTransactions()
             tableView.reloadData()

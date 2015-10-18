@@ -235,7 +235,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         case "YES":
             print("YES")
             // TODO: Add new transaction
-            let t = RTransaction(kind: CategoryType.Expense.rawValue, note: nil, amountDecimal: item.predictedAmountDecimal, category: item.category!, account: Account.defaultAccount(), date: NSDate())
+            let t = Transaction(kind: CategoryType.Expense.rawValue, note: nil, amountDecimal: item.predictedAmountDecimal, category: item.category!, account: Account.defaultAccount(), date: NSDate())
             t.save()
 
         default: // switch statements must be exhaustive - this condition should never be met

@@ -14,11 +14,11 @@ class BalanceStat {
     var from: NSDate
     var to:NSDate
 
-    var expenseTransactions: [RTransaction]?
+    var expenseTransactions: [Transaction]?
     var groupedExpenseCategories: [String: NSDecimalNumber]?
     var expenseTotal: NSDecimalNumber?
 
-    var incomeTransactions: [RTransaction]?
+    var incomeTransactions: [Transaction]?
     var groupedIncomeCategories: [String: NSDecimalNumber]?
     var incomeTotal: NSDecimalNumber?
 
@@ -31,7 +31,7 @@ class BalanceStat {
         let realm = try! Realm()
 
         // TODO restrict to userId
-        let transactions = realm.objects(RTransaction).filter("date >= %@ AND date <= %@", from, to)
+        let transactions = realm.objects(Transaction).filter("date >= %@ AND date <= %@", from, to)
 
         print("found \(transactions.count) transactions from \(from) to \(to)")
 
@@ -55,7 +55,7 @@ class BalanceStat {
         return incomeTotal - expenseTotal
     }
 
-    func groupTransactionsByCategory(transactions: [RTransaction]) -> [String: NSDecimalNumber] {
+    func groupTransactionsByCategory(transactions: [Transaction]) -> [String: NSDecimalNumber] {
         var amountDict = [String: NSDecimalNumber]()
 
         for transaction in transactions {

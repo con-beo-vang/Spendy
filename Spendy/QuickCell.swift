@@ -25,7 +25,7 @@ class QuickCell: UITableViewCell {
         }
     }
 
-    var transaction: RTransaction! {
+    var transaction: Transaction! {
         didSet {
             let category = transaction.category!
             categoryLabel.text = category.name

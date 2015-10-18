@@ -42,7 +42,7 @@ class QuickViewController: UIViewController {
     weak var delegate: QuickViewControllerDelegate?
 
     var userCategories: [RUserCategory]!
-    var quickTransactions: [RTransaction]!
+    var quickTransactions: [Transaction]!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -50,10 +50,10 @@ class QuickViewController: UIViewController {
         // Load top user categories
         userCategories = RUserCategory.allForQuickAdd()
 
-        quickTransactions = userCategories.map({ (userCat) -> RTransaction in
+        quickTransactions = userCategories.map({ (userCat) -> Transaction in
             let defaultAmount = userCat.quickAddAmounts().first
 
-            return RTransaction(kind: CategoryType.Expense.rawValue, note: nil, amountDecimal: defaultAmount!, category: userCat.category!, account: Account.defaultAccount(), date: NSDate())
+            return Transaction(kind: CategoryType.Expense.rawValue, note: nil, amountDecimal: defaultAmount!, category: userCat.category!, account: Account.defaultAccount(), date: NSDate())
         })
 
         tableView.dataSource = self

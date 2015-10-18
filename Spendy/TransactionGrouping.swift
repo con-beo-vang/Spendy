@@ -9,13 +9,13 @@
 import Foundation
 
 struct TransactionGrouping {
-    static func listGroupedByMonth(trans: [RTransaction]) -> [[RTransaction]] {
+    static func listGroupedByMonth(trans: [Transaction]) -> [[Transaction]] {
         let grouped = dictGroupedByMonth(trans)
 
-        var list: [[RTransaction]] = []
+        var list: [[Transaction]] = []
 
         for (month, _) in grouped {
-            var g:[RTransaction] = grouped[month]!
+            var g:[Transaction] = grouped[month]!
 
             // sort values in each bucket, newest first
             g.sortInPlace({
@@ -31,8 +31,8 @@ struct TransactionGrouping {
         return list
     }
 
-    static func dictGroupedByMonth(trans: [RTransaction]) -> [String: [RTransaction]] {
-        var dict = [String: [RTransaction]]()
+    static func dictGroupedByMonth(trans: [Transaction]) -> [String: [Transaction]] {
+        var dict = [String: [Transaction]]()
 
         for el in trans {
             let key = el.monthHeader() ?? "Unknown"

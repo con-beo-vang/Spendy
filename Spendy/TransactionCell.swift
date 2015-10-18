@@ -19,7 +19,7 @@ class TransactionCell: UITableViewCell {
 //    var currentAccount: Account?
     var currentAccount: Account?
 
-    var transaction: RTransaction! {
+    var transaction: Transaction! {
         didSet {
             if let noteText = transaction.note {
                 if noteText.isEmpty {

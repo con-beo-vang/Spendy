@@ -16,9 +16,9 @@ class Account: HTRObject {
     dynamic var balance: Int = 0
     dynamic var createdAt = NSDate(timeIntervalSince1970: 1)
 
-    let transactions = List<RTransaction>()
+    let transactions = List<Transaction>()
 
-    var sortedTransactions: [RTransaction] {
+    var sortedTransactions: [Transaction] {
         return Array(transactions.sorted("date", ascending: false))
     }
 
@@ -79,7 +79,7 @@ class Account: HTRObject {
 }
 
 extension Account {
-    func addTransaction(rTransaction: RTransaction) {
+    func addTransaction(rTransaction: Transaction) {
         transactions.append(rTransaction)
     }
 }

@@ -1,5 +1,5 @@
 //
-//  RTransaction.swift
+//  Transaction.swift
 //  Spendy
 //
 //  Created by Harley Trung on 10/17/15.
@@ -20,7 +20,7 @@ struct KindColor {
         }
     }
 
-    static func forTransaction(transaction: RTransaction, account: Account) -> UIColor {
+    static func forTransaction(transaction: Transaction, account: Account) -> UIColor {
         if transaction.isTransfer() {
             if transaction.toAccount == account {
                 return Color.incomeColor
@@ -33,7 +33,7 @@ struct KindColor {
     }
 }
 
-class RTransaction: HTRObject {
+class Transaction: HTRObject {
     dynamic var kind: String? = nil
     dynamic var date: NSDate? = nil
     dynamic var note: String? = nil
@@ -81,8 +81,8 @@ class RTransaction: HTRObject {
         return ["amountDecimal"]
     }
 
-    func clone() -> RTransaction {
-        let ret = RTransaction()
+    func clone() -> Transaction {
+        let ret = Transaction()
         // TODO: clone properties
         return ret
     }
@@ -136,7 +136,7 @@ class RTransaction: HTRObject {
 }
 
 // MARK: - computed properties
-extension RTransaction {
+extension Transaction {
     var categoryName: String? {
         return category?.name
     }
@@ -175,14 +175,14 @@ extension RTransaction {
     func dateToString(dateStyle: NSDateFormatterStyle? = nil, dateFormat: String? = nil) -> String? {
         if let date = date {
             if dateStyle != nil {
-                RTransaction.dateFormatter.dateStyle = dateStyle!
+                Transaction.dateFormatter.dateStyle = dateStyle!
             }
 
             if dateFormat != nil {
-                RTransaction.dateFormatter.dateFormat = dateFormat!
+                Transaction.dateFormatter.dateFormat = dateFormat!
             }
 
-            return RTransaction.dateFormatter.stringFromDate(date)
+            return Transaction.dateFormatter.stringFromDate(date)
         } else {
             return nil
         }
