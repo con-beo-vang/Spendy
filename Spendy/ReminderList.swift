@@ -16,7 +16,7 @@ class ReminderList: NSObject {
         
 //        let item = ReminderItem(category: category, reminderTime: date, UUID: NSUUID().UUIDString)
         
-        let categoryId = item.category!.objectId
+        let categoryId = item.category!.id
         
         // create a corresponding local notification
         let notification = UILocalNotification()
@@ -34,7 +34,7 @@ class ReminderList: NSObject {
         notification.soundName = UILocalNotificationDefaultSoundName
 
         // assign a unique identifier to the notification so that we can retrieve it later
-        notification.userInfo = ["categoryId": categoryId!, "predictedAmount": item.predictedAmount, "UUID": item.UUID]
+        notification.userInfo = ["categoryId": categoryId, "predictedAmount": item.predictedAmount, "UUID": item.UUID]
 
         notification.category = "REMINDER_CATEGORY"
 
@@ -61,14 +61,14 @@ class ReminderList: NSObject {
 
     // Snooze
     func scheduleReminderforItem(item: ReminderItem) {
-        let categoryId = item.category!.objectId
+        let categoryId = item.category!.id
         
         let notification = UILocalNotification() // create a new reminder notification
         notification.alertBody = "Good day! Did you spend $\(item.predictedAmount) on \(item.category)?" // text that will be displayed in the notification
         notification.alertAction = "open" // text that is displayed after "slide to..." on the lock screen - defaults to "slide to view"
         notification.fireDate = NSDate().dateByAddingTimeInterval(30 * 60) // 30 minutes from current time
         notification.soundName = UILocalNotificationDefaultSoundName // play default sound
-        notification.userInfo = ["categoryId": categoryId!, "predictiveAmount": item.predictedAmount, "UUID": item.UUID] // assign a unique identifier to the notification that we can use to retrieve it later
+        notification.userInfo = ["categoryId": categoryId, "predictiveAmount": item.predictedAmount, "UUID": item.UUID] // assign a unique identifier to the notification that we can use to retrieve it later
         notification.category = "REMINDER_CATEGORY"
         
         UIApplication.sharedApplication().scheduleLocalNotification(notification)

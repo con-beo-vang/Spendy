@@ -42,6 +42,7 @@ class DateFormatter {
     static var MMM_dd_yyyy     = DateFormatter.formatFromString("MMM dd, yyyy")
     static var MM_dd_yyyy      = DateFormatter.formatFromString("MM-dd-yyyy")
     static var dd_MMMM         = DateFormatter.formatFromString("dd MMMM")
+    static var YYYY_MM_dd      = DateFormatter.formatFromString("YYYY-MM-dd")
 
     static var MMMM            = DateFormatter.formatFromString("MMMM")
     static var yyyy            = DateFormatter.formatFromString("yyyy")

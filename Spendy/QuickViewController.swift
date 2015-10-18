@@ -42,7 +42,7 @@ class QuickViewController: UIViewController {
     weak var delegate: QuickViewControllerDelegate?
 
     var userCategories: [UserCategory]!
-    var quickTransactions: [Transaction]!
+    var quickTransactions: [RTransaction]!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -50,10 +50,10 @@ class QuickViewController: UIViewController {
         // Load top user categories
         userCategories = UserCategory.allForQuickAdd()
 
-        quickTransactions = userCategories.map({ (userCat) -> Transaction in
+        quickTransactions = userCategories.map({ (userCat) -> RTransaction in
             let defaultAmount = userCat.quickAddAmounts().first
 
-            return Transaction(kind: Transaction.expenseKind, note: nil, amount: defaultAmount, category: userCat.category, account: Account.defaultAccount(), date: NSDate())
+            return RTransaction(kind: CategoryType.Expense.rawValue, note: nil, amountDecimal: defaultAmount!, category: userCat.category!, account: RAccount.defaultAccount(), date: NSDate())
         })
 
         tableView.dataSource = self
@@ -128,8 +128,9 @@ class QuickViewController: UIViewController {
             let cell = tableView.cellForRowAtIndexPath( NSIndexPath(forRow: index, inSection: 0) ) as! QuickCell
             let segment = cell.amoutSegment
             let amountText = segment.titleForSegmentAtIndex(segment.selectedSegmentIndex)
-            transaction.amount = NSDecimalNumber(string: amountText)
-            Transaction.add(transaction)
+            transaction.amountDecimal = NSDecimalNumber(string: amountText)
+            transaction.save()
+//            Transaction.add(transaction)
         }
 
         delegate?.quickViewController!(self, didAddTransaction: true)
@@ -239,7 +240,7 @@ extension QuickViewController: UITableViewDataSource, UITableViewDelegate, UIGes
             let accountLabel = UILabel(frame: CGRect(x: 8, y: 2, width: UIScreen.mainScreen().bounds.width - 16, height: 30))
             accountLabel.font = UIFont.systemFontOfSize(14)
 
-            accountLabel.text = "* Add transactions to \((Account.defaultAccount()?.name)!)"
+            accountLabel.text = "* Add transactions to \((RAccount.defaultAccount().name)!)"
 
             headerView.addSubview(accountLabel)
         }

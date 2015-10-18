@@ -14,6 +14,7 @@ class RAccount: HTRObject {
     dynamic var icon: String?
     dynamic var startingBalance: Int = 0
     dynamic var balance: Int = 0
+    dynamic var createdAt = NSDate(timeIntervalSince1970: 1)
 
     let transactions = List<RTransaction>()
 // Specify properties to ignore (Realm won't persist these)
@@ -21,6 +22,13 @@ class RAccount: HTRObject {
 //  override static func ignoredProperties() -> [String] {
 //    return []
 //  }
+
+    convenience init(name: String?, startingBalanceDecimal: NSDecimalNumber) {
+        self.init()
+        
+        self.name = name
+        startingBalance = (startingBalanceDecimal * 100).integerValue
+    }
 
     static func bootstrap() {
         let rAccount = RAccount()
@@ -34,7 +42,7 @@ class RAccount: HTRObject {
 
     var formattedBalance: String {
         let bal = abs(balance)
-        return Transaction.currencyFormatter.stringFromNumber(bal)!
+        return Currency.currencyFormatter.stringFromNumber(bal)!
     }
 
     static var all: [RAccount] {
@@ -50,6 +58,10 @@ class RAccount: HTRObject {
     static func nonDefaultAccount() -> RAccount {
         let account = try! Realm().objects(RAccount).first
         return account!
+    }
+
+    func recomputeBalance() {
+        // TODO: implement
     }
 }
 

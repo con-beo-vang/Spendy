@@ -10,32 +10,10 @@ import Foundation
 import Parse
 
 class UserCategory: HTObject {
+    dynamic var userId: String?
+    dynamic var category: RCategory?
+
     static var forceLoadFromRemote = false
-
-    var userId: String {
-        get { return self["userId"] as! String }
-        set { self["userId"] = newValue }
-    }
-
-    var categoryId: String {
-        get { return self["categoryId"] as! String }
-        set { self["categoryId"] = newValue }
-    }
-
-    var _category: Category?
-    var category: Category {
-        get {
-            if _category == nil {
-                _category = Category.findById(categoryId)
-            }
-
-            return _category!
-        }
-        set {
-            _category = newValue
-            self["categoryId"] = newValue.objectId
-        }
-    }
 
      // Add for reminder
     var reminderOn : Bool {
@@ -89,20 +67,20 @@ class UserCategory: HTObject {
         }
     }
 
-    convenience init(category: Category) {
+    convenience init(category: RCategory) {
         self.init()
         self.category = category
         self.userId = User.current()!.objectId!
     }
 
-    convenience init(categoryId: String) {
-        self.init()
-        self.categoryId = categoryId
-        self.userId = User.current()!.objectId!
-    }
+//    convenience init(categoryId: String) {
+//        self.init()
+//        self.categoryId = categoryId
+//        self.userId = User.current()!.objectId!
+//    }
 
-    var name: String { return category.name }
-    var icon: String { return category.icon }
+    var name: String { return category!.name! }
+    var icon: String { return category!.icon! }
 
     static var _all: [UserCategory]?
 
@@ -129,15 +107,16 @@ class UserCategory: HTObject {
 // MARK - Category stuff
 extension UserCategory {
     class func findByCategoryId(catId:String) -> UserCategory? {
-        let uc = all.filter({$0.categoryId == catId}).first
-        if uc == nil {
-            let a = UserCategory(categoryId: catId)
-            a.save()
-            _all!.append(a)
-            return a
-        } else {
-            return uc
-        }
+//        let uc = all.filter({$0.categoryId == catId}).first
+//        if uc == nil {
+//            let a = UserCategory(categoryId: catId)
+//            a.save()
+//            _all!.append(a)
+//            return a
+//        } else {
+//            return uc
+//        }
+        return nil
     }
 }
 

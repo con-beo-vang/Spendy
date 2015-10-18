@@ -48,11 +48,11 @@ class TransactionCell: UITableViewCell {
                 iconView.image = Helper.sharedInstance.createIcon(icon)
                 iconView.setNewTintColor(UIColor.whiteColor())
                 switch transaction.kind! {
-                case Transaction.expenseKind:
+                case CategoryType.Expense.rawValue:
                     iconView.layer.backgroundColor = Color.expenseColor.CGColor
-                case Transaction.incomeKind:
+                case CategoryType.Income.rawValue:
                     iconView.layer.backgroundColor = Color.incomeColor.CGColor
-                case Transaction.transferKind:
+                case CategoryType.Transfer.rawValue:
                     iconView.layer.backgroundColor = Color.transferIconColor.CGColor
                 default:
                     break

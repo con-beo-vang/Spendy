@@ -13,11 +13,11 @@ class BalanceStat {
     var from: NSDate
     var to:NSDate
 
-    var expenseTransactions: [Transaction]?
+    var expenseTransactions: [RTransaction]?
     var groupedExpenseCategories: [String: NSDecimalNumber]?
     var expenseTotal: NSDecimalNumber?
 
-    var incomeTransactions: [Transaction]?
+    var incomeTransactions: [RTransaction]?
     var groupedIncomeCategories: [String: NSDecimalNumber]?
     var incomeTotal: NSDecimalNumber?
 
@@ -37,30 +37,31 @@ class BalanceStat {
 
         query.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
             if let objects = objects {
-                var transactions = objects.map { Transaction(object: $0) }
+//                var transactions = objects.map { Transaction(object: $0) }
+                var transactions = [RTransaction]()
 
                 // start of hack
                 // remove any invalid transactions
                 // these transactions are caused by removing any old category or account
                 // TODO: remove related transactions when removing an account
-                var filtered = [Transaction]()
-                for t in transactions {
-                    if t.fromAccount == nil || t.category == nil {
-                        t.delete()
-                    } else {
-                        filtered.append(t)
-                    }
-                }
+                var filtered = [RTransaction]()
+//                for t in transactions {
+//                    if t.fromAccount == nil || t.category == nil {
+//                        t.delete()
+//                    } else {
+//                        filtered.append(t)
+//                    }
+//                }
                 transactions = filtered
                 // end of hack
 
                 print("found \(transactions.count) objects: \(transactions)")
 
-                self.expenseTransactions      = transactions.filter { $0.kind == Transaction.expenseKind }
+                self.expenseTransactions      = transactions.filter { $0.kind == CategoryType.Expense.rawValue }
                 self.groupedExpenseCategories = self.groupTransactionsByCategory(self.expenseTransactions!)
                 self.expenseTotal             = Array(self.groupedExpenseCategories!.values).reduce(0, combine: +)
 
-                self.incomeTransactions       = transactions.filter { $0.kind == Transaction.incomeKind }
+                self.incomeTransactions       = transactions.filter { $0.kind == CategoryType.Income.rawValue }
                 self.groupedIncomeCategories = self.groupTransactionsByCategory(self.incomeTransactions!)
                 self.incomeTotal              = Array(self.groupedIncomeCategories!.values).reduce(0, combine: +)
 
@@ -80,18 +81,18 @@ class BalanceStat {
         return incomeTotal - expenseTotal
     }
 
-    func groupTransactionsByCategory(transactions: [Transaction]) -> [String: NSDecimalNumber] {
+    func groupTransactionsByCategory(transactions: [RTransaction]) -> [String: NSDecimalNumber] {
         var amountDict = [String: NSDecimalNumber]()
 
         for transaction in transactions {
             if let name = transaction.category?.name {
-                if let amount = transaction.amount {
+                if let amountDecimal = transaction.amountDecimal {
                     guard let soFar = amountDict[name] else {
-                        amountDict[name] = amount
+                        amountDict[name] = amountDecimal
                         continue
                     }
 
-                    amountDict[name] = soFar + amount
+                    amountDict[name] = soFar + amountDecimal
                 }
             }
         }

@@ -179,13 +179,14 @@ class AccountsViewController: UIViewController {
             presentViewController(alertController, animated: true) {}
         } else {
             let amountDecimal = NSDecimalNumber(string: amountString)
-            let fromAccount = selectedDragCell?.account
-            let toAccount = previousCell?.account
+            let fromAccount = selectedDragCell?.rAccount
+            let toAccount = previousCell?.rAccount
             print("transfer from \(fromAccount?.name) to \(toAccount?.name)")
             
-            let transaction = Transaction(kind: Transaction.transferKind, note: "", amount: amountDecimal, category: Category.defaultTransferCategory(), account: fromAccount, date: NSDate())
+            let transaction = RTransaction(kind: CategoryType.Transfer.rawValue, note: nil, amountDecimal: amountDecimal, category: RCategory.defaultCategoryFor(.Transfer), account: fromAccount!, date: NSDate())
             transaction.toAccount = toAccount
-            Transaction.add(transaction)
+            transaction.save()
+//            Transaction.add(transaction)
             tableView.reloadData()
             
             closePopup()

@@ -12,7 +12,7 @@ class DefaultAccountCell: UITableViewCell {
     
     @IBOutlet weak var defaultAccountLabel: UILabel!
 
-    var account: Account! {
+    var account: RAccount! {
         didSet {
             defaultAccountLabel.text = account.name
         }

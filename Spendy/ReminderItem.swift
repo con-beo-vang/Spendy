@@ -63,7 +63,7 @@ class ReminderItem: HTObject {
         self.isActive = true
     }
 
-    var category: Category? {
+    var category: RCategory? {
         return userCategory?.category
     }
 
@@ -83,7 +83,7 @@ class ReminderItem: HTObject {
     }
 
     func formattedPredictedAmount() -> String {
-        if let s = Transaction.currencyFormatter.stringFromNumber(predictedAmount) {
+        if let s = Currency.currencyFormatter.stringFromNumber(predictedAmount) {
             return s
         } else {
             return "Unknown"

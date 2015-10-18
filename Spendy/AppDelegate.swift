@@ -132,7 +132,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             return
         }
 
-        guard let account = info["account"] as! Account? else { return }
+        guard let account = info["account"] as! RAccount? else { return }
 
         account.recomputeBalance()
         print("[Notified] recomputed balance for \(account.transactions.count) transactions of account \(account.name)")
@@ -235,7 +235,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         case "YES":
             print("YES")
             // TODO: Add new transaction
-            let t = Transaction(kind: Transaction.expenseKind, note: nil, amount: item.predictedAmount, category: item.category, account: Account.defaultAccount(), date: NSDate())
+            let t = RTransaction(kind: CategoryType.Expense.rawValue, note: nil, amountDecimal: item.predictedAmount, category: item.category!, account: RAccount.defaultAccount(), date: NSDate())
             t.save()
 
         default: // switch statements must be exhaustive - this condition should never be met

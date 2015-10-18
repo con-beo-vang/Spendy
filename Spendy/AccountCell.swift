@@ -19,20 +19,20 @@ class AccountCell: UITableViewCell {
     @IBOutlet weak var balanceLabel: UILabel!
 
 
-    var account: Account! {
-        didSet {
-            balanceLabel.text = account.formattedBalance()
-            if account.balance.doubleValue < 0 {
-                balanceLabel.textColor = Color.expenseColor
-            } else {
-                balanceLabel.textColor = Color.incomeColor
-            }
-            nameLabel.text = account.name
-            typeLabel.text = "Start: \(account.startingBalance)"
-            iconView.setNewTintColor(Color.strongColor)
-        }
-    }
-
+//    var account: Account! {
+//        didSet {
+//            balanceLabel.text = account.formattedBalance()
+//            if account.balance.doubleValue < 0 {
+//                balanceLabel.textColor = Color.expenseColor
+//            } else {
+//                balanceLabel.textColor = Color.incomeColor
+//            }
+//            nameLabel.text = account.name
+//            typeLabel.text = "Start: \(account.startingBalance)"
+//            iconView.setNewTintColor(Color.strongColor)
+//        }
+//    }
+//
     var rAccount: RAccount! {
         didSet {
             balanceLabel.text = rAccount.formattedBalance

@@ -25,11 +25,11 @@ class QuickCell: UITableViewCell {
         }
     }
 
-    var transaction: Transaction! {
+    var transaction: RTransaction! {
         didSet {
             let category = transaction.category!
             categoryLabel.text = category.name
-            iconView.image = Helper.sharedInstance.createIcon(category.icon)
+            iconView.image = Helper.sharedInstance.createIcon(category.icon!)
             iconView.setNewTintColor(UIColor.whiteColor())
             // it is possible to support a different category color here
             iconView.layer.backgroundColor = Color.expenseColor.CGColor

@@ -19,21 +19,18 @@ class AccountDetailViewController: UIViewController {
     var addButton: UIButton?
     var cancelButton: UIButton?
     
-    var accountTransactions: [[Transaction]]!
+//    var accountTransactions: [[Transaction]]!
     var accountRTransactions: [[RTransaction]]!
 
-    var currentAccount: Account!
+//    var currentAccount: Account!
     var currentRAccount: RAccount!
 
-    var transaction: Transaction!
+//    var transaction: Transaction!
 
     var refreshControl: UIRefreshControl?
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        let dateFormatter = Transaction.dateFormatter
-        dateFormatter.dateFormat = "YYYY-MM-dd"
 
         // create a few sample transactions
         reloadTransactions()
@@ -72,11 +69,11 @@ class AccountDetailViewController: UIViewController {
             return
         }
 
-        guard let updatedAccount = info["account"] as! Account? else { return }
+        guard let updatedAccount = info["account"] as! RAccount? else { return }
 
         // switch to the updated account
-        currentAccount = updatedAccount
-        currentAccount.recomputeBalance()
+        currentRAccount = updatedAccount
+//        currentRAccount.recomputeBalance()
     }
 
 
@@ -88,13 +85,10 @@ class AccountDetailViewController: UIViewController {
 
     // reload data after we navigate back from pushed cell
     override func viewWillAppear(animated: Bool) {
-        if let currentAccount = currentAccount {
+        if let currentAccount = currentRAccount {
             navigationItem.title = currentAccount.name
             
-            let formatter = NSDateFormatter()
-            formatter.dateFormat = "MM/dd/yyyy"
-            
-            createdDateLabel.text = "Created on: \(formatter.stringFromDate(currentAccount.createdAt()))"
+            createdDateLabel.text = "Created on: \(DateFormatter.MM_dd_yyyy.stringFromDate(currentAccount.createdAt))"
             startingBalanceLabel.text = "Starting balance: $\(currentAccount.startingBalance)"
         }
 

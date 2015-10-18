@@ -54,6 +54,7 @@ class AddTransactionViewController: UIViewController {
     }
     
     override func viewWillAppear(animated: Bool) {
+        print("view will appear")
         if currentAccount == nil {
             currentAccount = RAccount.defaultAccount()
         }
@@ -296,7 +297,7 @@ extension AddTransactionViewController: UITableViewDataSource, UITableViewDelega
         case 0:
             return 2
         case 1:
-            if selectedTransaction?.kind == Transaction.transferKind {
+            if selectedTransaction != nil && selectedTransaction!.isTransfer() {
                 // 3 rows:
                 // Category (fixed as Transfer)
                 // From Account
@@ -385,7 +386,7 @@ extension AddTransactionViewController: UITableViewDataSource, UITableViewDelega
 
                 // TODO refactor into AmountCell
                 guard let transaction = selectedTransaction,
-                          segmentIndex = Transaction.kinds.indexOf(transaction.kind!),
+                          segmentIndex = CategoryType.allValueStrings.indexOf(transaction.kind!),
                           segment = cell.typeSegment else {
                     return cell
                 }

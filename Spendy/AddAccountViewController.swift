@@ -17,7 +17,7 @@ class AddAccountViewController: UIViewController {
     
     var datePickerIsShown = false
 
-    var account: Account?
+    var account: RAccount?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -71,13 +71,14 @@ class AddAccountViewController: UIViewController {
                 return false
             }
 
-            var startingBalance = NSDecimalNumber(string: balanceString)
-            if startingBalance == NSDecimalNumber.notANumber() {
-                startingBalance = 0
+            var startingBalanceDecimal = NSDecimalNumber(string: balanceString)
+            if startingBalanceDecimal == NSDecimalNumber.notANumber() {
+                startingBalanceDecimal = 0
             }
-            account = Account(name: name, startingBalance: startingBalance)
+            account = RAccount(name: name, startingBalanceDecimal: startingBalanceDecimal)
+            account!.save()
 
-            Account.create(account!)
+//            Account.create(account!)
 
             NSNotificationCenter.defaultCenter().postNotificationName(SPNotification.accountAddedOrUpdated, object: nil, userInfo: ["account": account!])
         } else {
@@ -131,7 +132,7 @@ extension AddAccountViewController: SelectAccountOrCategoryDelegate {
     }
     
     func selectAccountOrCategoryViewController(selectAccountOrCategoryController: SelectAccountOrCategoryViewController, selectedItem item: AnyObject, selectedType type: String?) {
-        if item is Account {
+        if item is RAccount {
             // TODO: set selected acocunt for current account's type
             // selectedTransaction!.account = (item as! Account)
             tableView.reloadData()

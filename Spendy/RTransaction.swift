@@ -22,6 +22,18 @@ class RTransaction: HTRObject {
 
     static var dateFormatter = NSDateFormatter()
 
+    convenience init(kind: String, note: String?, amountDecimal: NSDecimalNumber, category: RCategory, account: RAccount, date: NSDate) {
+        self.init()
+
+        self.kind = kind
+        self.note = note
+        self.amountDecimal = amountDecimal
+        self.category = category
+        self.date = date
+    }
+
+    // store in the DB the amount in cent
+    // interface via amountDecimal which is dollar
     var amountDecimal: NSDecimalNumber? {
         get {
             return NSDecimalNumber(integer: amount) * 0.01
@@ -74,15 +86,15 @@ extension RTransaction {
     }
 
     func formattedAmount() -> String? {
-        return Transaction.currencyFormatter.stringFromNumber(amount)
+        return Currency.currencyFormatter.stringFromNumber(amount)
     }
 
     func formattedToBalanceSnapshot() -> String? {
-        return Transaction.currencyFormatter.stringFromNumber(toBalanceSnapshot)
+        return Currency.currencyFormatter.stringFromNumber(toBalanceSnapshot)
     }
 
     func formattedBalanceSnapshot() -> String? {
-        return Transaction.currencyFormatter.stringFromNumber(balanceSnapshot)
+        return Currency.currencyFormatter.stringFromNumber(balanceSnapshot)
     }
 
         // Ex: September 21, 2015
