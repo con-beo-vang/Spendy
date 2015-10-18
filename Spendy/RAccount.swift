@@ -17,6 +17,7 @@ class RAccount: HTRObject {
     dynamic var createdAt = NSDate(timeIntervalSince1970: 1)
 
     let transactions = List<RTransaction>()
+
 // Specify properties to ignore (Realm won't persist these)
     
 //  override static func ignoredProperties() -> [String] {

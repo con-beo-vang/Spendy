@@ -63,14 +63,25 @@ class RTransaction: HTRObject {
         return kind == CategoryType.Transfer.rawValue
     }
 
-    // TODO: create if id is 0, otherwise update
-    static func addOrUpdate(item: RTransaction) {
-        item.save()
+    override func save() {
+        let realm = try! Realm()
+
+        try! realm.write {
+            self.setIdIfNeeded(realm)
+            if let toAccount = self.toAccount {
+                toAccount.transactions.append(self)
+            }
+
+            if let fromAccount = self.fromAccount {
+                fromAccount.transactions.append(self)
+            }
+        }
     }
 }
 
 extension RTransaction {
     static func listGroupedByMonth(rTransactions: [RTransaction]) -> [[RTransaction]] {
+        // TODO: don't be lazy
         return [rTransactions]
     }
 }

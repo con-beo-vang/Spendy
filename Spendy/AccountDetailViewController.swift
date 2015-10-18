@@ -18,14 +18,12 @@ class AccountDetailViewController: UIViewController {
 
     var addButton: UIButton?
     var cancelButton: UIButton?
-    
-//    var accountTransactions: [[Transaction]]!
+
+    // Used to display transactions of the same month in the same section
+    // Each section header is the first transaction's month
     var accountRTransactions: [[RTransaction]]!
 
-//    var currentAccount: Account!
     var currentRAccount: RAccount!
-
-//    var transaction: Transaction!
 
     var refreshControl: UIRefreshControl?
 
@@ -78,8 +76,6 @@ class AccountDetailViewController: UIViewController {
 
 
     func reloadTransactions() {
-//        accountTransactions = Transaction.listGroupedByMonth(currentAccount.transactions)
-
         accountRTransactions = RTransaction.listGroupedByMonth(Array(currentRAccount.transactions))
     }
 

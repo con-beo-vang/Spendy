@@ -19,9 +19,7 @@ class HTRObject: Object {
         return id == 0
     }
 
-    // TODO: test this
-    func save() {
-        let realm = try! Realm()
+    func setIdIfNeeded(realm: Realm) {
         if id == 0 {
             if let last = realm.objects(self.dynamicType).last {
                 print("last: \(last)")
@@ -31,10 +29,17 @@ class HTRObject: Object {
                 id = 1
             }
         }
+    }
+
+    // TODO: test this
+    func save() {
+        let realm = try! Realm()
+        setIdIfNeeded(realm)
 
         try! realm.write {
             realm.add(self, update: true)
         }
+        print("saved id = \(self)")
     }
 
 // Specify properties to ignore (Realm won't persist these)

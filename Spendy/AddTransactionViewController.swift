@@ -91,15 +91,13 @@ class AddTransactionViewController: UIViewController {
         if let transaction = selectedTransaction {
             transaction.note = noteCell?.noteText.text
             transaction.kind = CategoryType.allValueStrings[amountCell!.typeSegment.selectedSegmentIndex]
-
             transaction.amountDecimal = NSDecimalNumber(string: amountCell?.amountText.text)
 
             if transaction.amount == 0 {
                validationErrors.append("Please enter an amount")
             }
 
-            // TODO: parse date
-            // validate date is in the past
+            // TODO: validate date is in the past
             if let date = dateCell?.datePicker.date {
                 transaction.date = date
                 print("setting date to transaction: \(date)")
@@ -154,7 +152,9 @@ class AddTransactionViewController: UIViewController {
         print("[onAddButton] transaction: \(transaction)")
 
         // TODO: add transaction and update both fromAccount and toAccount stats
-        RTransaction.addOrUpdate(transaction)
+        // - save transaction to database
+        // - view must know about the transaction in the parent account (fromAccount, and maybe toAccount if it's a transfer)
+        transaction.save()
 
         print("posting notification TransactionAddedOrUpdated")
         NSNotificationCenter.defaultCenter().postNotificationName("TransactionAddedOrUpdated", object: nil, userInfo: ["account": transaction.fromAccount!])
