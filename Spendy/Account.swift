@@ -77,9 +77,3 @@ class Account: HTRObject {
         return all.filter({$0.id != defaultAccount().id}).first!
     }
 }
-
-extension Account {
-    func addTransaction(rTransaction: Transaction) {
-        transactions.append(rTransaction)
-    }
-}

@@ -57,8 +57,14 @@ class Transaction: HTRObject {
     }
 
     func clone() -> Transaction {
-        let ret = Transaction()
-        // TODO: clone properties
+        let ret         = Transaction()
+        ret.kind        = kind
+        ret.note        = note
+        ret.amount      = amount
+        ret.date        = date
+        ret.fromAccount = fromAccount
+        ret.toAccount   = toAccount
+        ret.category    = category
         return ret
     }
 

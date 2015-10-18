@@ -239,15 +239,9 @@ extension AccountDetailViewController: UIGestureRecognizerDelegate {
 
         case UISwipeGestureRecognizerDirection.Right:
             // duplicate to a new transaction today
-//            let newTransaction = swipedTransaction.clone()
-//            newTransaction.date = NSDate()
-//             currentAccount.addTransaction(newTransaction)
-
-            // Duplicate transaction to today
-            // TODO: set attributes
             let newTransaction = swipedTransaction.clone()
             newTransaction.date = NSDate()
-            currentAccount.addTransaction(newTransaction)
+            newTransaction.save()
 
             reloadTransactions()
             tableView.reloadData()
