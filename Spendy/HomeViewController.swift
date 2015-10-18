@@ -77,7 +77,7 @@ class HomeViewController: UIViewController {
     let customPresentAnimationController = CustomPresentAnimationController()
     let customDismissAnimationController = CustomDismissAnimationController()
 
-    var balanceStat: BalanceStat!
+    var balanceStat: BalanceStat?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -435,7 +435,7 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
 
                     let name = incomes[indexPath.row - 1]
                     cell.categoryLabel.text = name
-                    if let amount = balanceStat.groupedIncomeCategories?[name] {
+                    if let amount = balanceStat?.groupedIncomeCategories?[name] {
                         cell.amountLabel.text   = Currency.currencyFormatter.stringFromNumber(amount)
                     }
                     
@@ -468,7 +468,7 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
 
                     let name = expenses[indexPath.row - 1]
                     cell.categoryLabel.text = name
-                    if let amount = balanceStat.groupedExpenseCategories?[name] {
+                    if let amount = balanceStat?.groupedExpenseCategories?[name] {
                         cell.amountLabel.text   = Currency.currencyFormatter.stringFromNumber(amount)
                     }
                     
@@ -479,7 +479,7 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
                 let cell = tableView.dequeueReusableCellWithIdentifier("BalanceCell", forIndexPath: indexPath) as! BalanceCell
                 cell.titleLabel.textColor = Color.balanceColor
                 cell.amountLabel.textColor = Color.balanceColor
-                if let balanceTotal = balanceStat.balanceTotal {
+                if let balanceTotal = balanceStat?.balanceTotal {
                     cell.amountLabel.text = Currency.currencyFormatter.stringFromNumber(balanceTotal)
                 }
                 return cell
@@ -834,6 +834,9 @@ extension HomeViewController: QuickViewControllerDelegate {
 
 extension HomeViewController {
     func updateBalanceStats() {
+        // balanceStat may not be ready yet
+        guard let balanceStat = balanceStat else { return }
+
         if let groupedExpenses = balanceStat.groupedExpenseCategories {
             expenses = Array(groupedExpenses.keys).sort { groupedExpenses[$0] > groupedExpenses[$1] }
         }

@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import Parse
+import RealmSwift
 
 class BalanceStat {
     var from: NSDate
@@ -27,49 +27,22 @@ class BalanceStat {
 
         print("Stats from \(from) to \(to)")
 
-        // load expenses
-        // initially load all
-        let query = PFQuery(className: "Transaction")
-        query.whereKey("userId", equalTo: PFUser.currentUser()!.objectId!)
-        query.whereKey("date", greaterThanOrEqualTo: from)
-        query.whereKey("date", lessThanOrEqualTo: to)
-        // query.fromLocalDatastore()
+        let realm = try! Realm()
 
-        query.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
-            if let objects = objects {
-//                var transactions = objects.map { Transaction(object: $0) }
-                var transactions = [RTransaction]()
+        // TODO restrict to userId
+        let transactions = realm.objects(RTransaction).filter("date >= %@ AND date <= %@", from, to)
 
-                // start of hack
-                // remove any invalid transactions
-                // these transactions are caused by removing any old category or account
-                // TODO: remove related transactions when removing an account
-                var filtered = [RTransaction]()
-//                for t in transactions {
-//                    if t.fromAccount == nil || t.category == nil {
-//                        t.delete()
-//                    } else {
-//                        filtered.append(t)
-//                    }
-//                }
-                transactions = filtered
-                // end of hack
+        print("found \(transactions.count) transactions from \(from) to \(to)")
 
-                print("found \(transactions.count) objects: \(transactions)")
+        self.expenseTransactions      = transactions.filter { $0.kind == CategoryType.Expense.rawValue }
+        self.groupedExpenseCategories = self.groupTransactionsByCategory(self.expenseTransactions!)
+        self.expenseTotal             = Array(self.groupedExpenseCategories!.values).reduce(0, combine: +)
 
-                self.expenseTransactions      = transactions.filter { $0.kind == CategoryType.Expense.rawValue }
-                self.groupedExpenseCategories = self.groupTransactionsByCategory(self.expenseTransactions!)
-                self.expenseTotal             = Array(self.groupedExpenseCategories!.values).reduce(0, combine: +)
+        self.incomeTransactions       = transactions.filter { $0.kind == CategoryType.Income.rawValue }
+        self.groupedIncomeCategories = self.groupTransactionsByCategory(self.incomeTransactions!)
+        self.incomeTotal              = Array(self.groupedIncomeCategories!.values).reduce(0, combine: +)
 
-                self.incomeTransactions       = transactions.filter { $0.kind == CategoryType.Income.rawValue }
-                self.groupedIncomeCategories = self.groupTransactionsByCategory(self.incomeTransactions!)
-                self.incomeTotal              = Array(self.groupedIncomeCategories!.values).reduce(0, combine: +)
-
-                NSNotificationCenter.defaultCenter().postNotificationName(SPNotification.balanceStatsUpdated, object: nil)
-            } else {
-                print("[BalanceStat] Error: \(error)")
-            }
-        }
+        NSNotificationCenter.defaultCenter().postNotificationName(SPNotification.balanceStatsUpdated, object: nil)
     }
 
     var balanceTotal:NSDecimalNumber? {
