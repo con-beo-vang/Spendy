@@ -20,7 +20,7 @@ struct KindColor {
         }
     }
 
-    static func forTransaction(transaction: RTransaction, account: RAccount) -> UIColor {
+    static func forTransaction(transaction: RTransaction, account: Account) -> UIColor {
         if transaction.isTransfer() {
             if transaction.toAccount == account {
                 return Color.incomeColor
@@ -38,8 +38,8 @@ class RTransaction: HTRObject {
     dynamic var date: NSDate? = nil
     dynamic var note: String? = nil
     dynamic var amount: Int = 0
-    dynamic var toAccount: RAccount? = nil
-    dynamic var fromAccount: RAccount? = nil
+    dynamic var toAccount: Account? = nil
+    dynamic var fromAccount: Account? = nil
     dynamic var category: RCategory? = nil
 
     dynamic var balanceSnapshot: Int = 0
@@ -47,7 +47,7 @@ class RTransaction: HTRObject {
 
     static var dateFormatter = NSDateFormatter()
 
-    convenience init(kind: String, note: String?, amountDecimal: NSDecimalNumber, category: RCategory, account: RAccount, date: NSDate) {
+    convenience init(kind: String, note: String?, amountDecimal: NSDecimalNumber, category: RCategory, account: Account, date: NSDate) {
         self.init()
 
         self.kind = kind

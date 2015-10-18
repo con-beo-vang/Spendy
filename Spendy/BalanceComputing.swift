@@ -13,7 +13,7 @@ struct BalanceComputing {
     // recompute balance for an account
     // update balance snapshot in each transaction
     // upate total balance in account
-    static func recompute(account: RAccount) {
+    static func recompute(account: Account) {
         print("BalanceCompute.recompute(_) for \(account.id)")
         var bal = account.startingBalance
 

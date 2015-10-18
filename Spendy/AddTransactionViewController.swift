@@ -28,13 +28,13 @@ class AddTransactionViewController: UIViewController {
     var photoCell: PhotoCell?
     
     var selectedTransaction: RTransaction?
-    var currentAccount: RAccount!
+    var currentAccount: Account!
 
     var imagePicker: UIImagePickerController!
 
     // remember the selected category under each transaction kind
     var backupCategories = [String : RCategory?]()
-    var backupAccounts   = [String : RAccount? ]()
+    var backupAccounts   = [String : Account? ]()
 
     var validationErrors = [String]()
 
@@ -56,7 +56,7 @@ class AddTransactionViewController: UIViewController {
     override func viewWillAppear(animated: Bool) {
         print("view will appear")
         if currentAccount == nil {
-            currentAccount = RAccount.defaultAccount()
+            currentAccount = Account.defaultAccount()
         }
         
         if let transaction = selectedTransaction {
@@ -259,11 +259,11 @@ extension AddTransactionViewController: SelectAccountOrCategoryDelegate, PhotoVi
     }
     
     func selectAccountOrCategoryViewController(selectAccountOrCategoryController: SelectAccountOrCategoryViewController, selectedItem item: AnyObject, selectedType type: String?) {
-        if item is RAccount {
+        if item is Account {
             if let type = type where type == "ToAccount" {
-                selectedTransaction!.toAccount = (item as! RAccount)
+                selectedTransaction!.toAccount = (item as! Account)
             } else {
-                selectedTransaction!.fromAccount = (item as! RAccount)
+                selectedTransaction!.fromAccount = (item as! Account)
             }
 
             tableView.reloadData()
@@ -429,7 +429,7 @@ extension AddTransactionViewController: UITableViewDataSource, UITableViewDelega
             case 1:
                 let cell = tableView.dequeueReusableCellWithIdentifier("SelectAccountOrCategoryCell", forIndexPath: indexPath) as! SelectAccountOrCategoryCell
                 
-                cell.itemClass = "RAccount"
+                cell.itemClass = "Account"
 
                 print("kind: \(selectedTransaction!.kind)")
                 if selectedTransaction!.isTransfer() {
@@ -451,7 +451,7 @@ extension AddTransactionViewController: UITableViewDataSource, UITableViewDelega
 
                 let cell = tableView.dequeueReusableCellWithIdentifier("SelectAccountOrCategoryCell", forIndexPath: indexPath) as! SelectAccountOrCategoryCell
                 
-                cell.itemClass = "RAccount"
+                cell.itemClass = "Account"
                 cell.toAccount = selectedTransaction!.toAccount
 
                 Helper.sharedInstance.setSeparatorFullWidth(cell)
@@ -576,7 +576,7 @@ extension AddTransactionViewController {
 
         if newType == .Transfer {
             // reset cached value
-            selectedTransaction!.toAccount = backupAccounts["ToAccount"] ?? RAccount.nonDefaultAccount()
+            selectedTransaction!.toAccount = backupAccounts["ToAccount"] ?? Account.nonDefaultAccount()
         } else {
             // back up, then nullify
             if let toAccount = selectedTransaction!.toAccount {

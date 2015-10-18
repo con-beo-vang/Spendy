@@ -27,7 +27,7 @@ class SelectAccountOrCategoryCell: UITableViewCell {
         }
     }
 
-    var account: RAccount? {
+    var account: Account? {
         didSet {
             titleLabel.text = "Account"
             typeLabel.text = account?.name ?? "None"
@@ -35,7 +35,7 @@ class SelectAccountOrCategoryCell: UITableViewCell {
         }
     }
 
-    var fromAccount: RAccount? {
+    var fromAccount: Account? {
         didSet {
             titleLabel.text = "From Account"
             typeLabel.text = fromAccount?.name ?? "None"
@@ -43,7 +43,7 @@ class SelectAccountOrCategoryCell: UITableViewCell {
         }
     }
     
-    var toAccount: RAccount? {
+    var toAccount: Account? {
         didSet {
             guard let account = toAccount else {
                 titleLabel.text = "To Account"

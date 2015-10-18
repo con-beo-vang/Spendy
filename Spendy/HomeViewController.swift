@@ -824,7 +824,7 @@ extension HomeViewController: QuickViewControllerDelegate {
             let accountsNVC = tabBarController?.viewControllers?.at(1) as? UINavigationController
             let accountsVC = accountsNVC?.topViewController as? AccountsViewController
             accountsVC?.justAddTransactions = true
-            accountsVC?.addedAccount = RAccount.defaultAccount()
+            accountsVC?.addedAccount = Account.defaultAccount()
         }
     }
 }

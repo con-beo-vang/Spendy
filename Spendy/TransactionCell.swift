@@ -17,7 +17,7 @@ class TransactionCell: UITableViewCell {
     @IBOutlet weak var balanceLabel: UILabel!
 
 //    var currentAccount: Account?
-    var currentRAccount: RAccount?
+    var currentAccount: Account?
 
     var transaction: RTransaction! {
         didSet {
@@ -32,11 +32,11 @@ class TransactionCell: UITableViewCell {
             }
 
             amountLabel.text = transaction.formattedAmount()
-            amountLabel.textColor = KindColor.forTransaction(transaction, account: currentRAccount!)
+            amountLabel.textColor = KindColor.forTransaction(transaction, account: currentAccount!)
             dateLabel.text = transaction.dateOnly()
 
             // TODO: which balance to display
-            if let account   = currentRAccount,
+            if let account   = currentAccount,
                    toAccount = transaction.toAccount
                 where account == toAccount {
                 balanceLabel.text = transaction.formattedToBalanceSnapshot()

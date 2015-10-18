@@ -53,7 +53,7 @@ class QuickViewController: UIViewController {
         quickTransactions = userCategories.map({ (userCat) -> RTransaction in
             let defaultAmount = userCat.quickAddAmounts().first
 
-            return RTransaction(kind: CategoryType.Expense.rawValue, note: nil, amountDecimal: defaultAmount!, category: userCat.category!, account: RAccount.defaultAccount(), date: NSDate())
+            return RTransaction(kind: CategoryType.Expense.rawValue, note: nil, amountDecimal: defaultAmount!, category: userCat.category!, account: Account.defaultAccount(), date: NSDate())
         })
 
         tableView.dataSource = self
@@ -240,7 +240,7 @@ extension QuickViewController: UITableViewDataSource, UITableViewDelegate, UIGes
             let accountLabel = UILabel(frame: CGRect(x: 8, y: 2, width: UIScreen.mainScreen().bounds.width - 16, height: 30))
             accountLabel.font = UIFont.systemFontOfSize(14)
 
-            accountLabel.text = "* Add transactions to \((RAccount.defaultAccount().name)!)"
+            accountLabel.text = "* Add transactions to \((Account.defaultAccount().name)!)"
 
             headerView.addSubview(accountLabel)
         }

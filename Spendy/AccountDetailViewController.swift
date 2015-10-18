@@ -23,7 +23,7 @@ class AccountDetailViewController: UIViewController {
     // Each section header is the first transaction's month
     var accountRTransactions: [[RTransaction]]!
 
-    var currentRAccount: RAccount!
+    var currentAccount: Account!
 
     var refreshControl: UIRefreshControl?
 
@@ -67,21 +67,21 @@ class AccountDetailViewController: UIViewController {
             return
         }
 
-        guard let updatedAccount = info["account"] as! RAccount? else { return }
+        guard let updatedAccount = info["account"] as! Account? else { return }
 
         // switch to the updated account
-        currentRAccount = updatedAccount
-        BalanceComputing.recompute(currentRAccount)
+        currentAccount = updatedAccount
+        BalanceComputing.recompute(currentAccount)
     }
 
 
     func reloadTransactions() {
-        accountRTransactions = TransactionGrouping.listGroupedByMonth(Array(currentRAccount.sortedTransactions))
+        accountRTransactions = TransactionGrouping.listGroupedByMonth(Array(currentAccount.sortedTransactions))
     }
 
     // reload data after we navigate back from pushed cell
     override func viewWillAppear(animated: Bool) {
-        if let currentAccount = currentRAccount {
+        if let currentAccount = currentAccount {
             navigationItem.title = currentAccount.name
             
             createdDateLabel.text = "Created on: \(DateFormatter.MM_dd_yyyy.stringFromDate(currentAccount.createdAt))"
@@ -123,7 +123,7 @@ class AccountDetailViewController: UIViewController {
         print("on Add")
         let dvc = self.storyboard?.instantiateViewControllerWithIdentifier("AddVC") as! AddTransactionViewController
 //        dvc.currentAccount = currentAccount
-        dvc.currentAccount = currentRAccount
+        dvc.currentAccount = currentAccount
         let nc = UINavigationController(rootViewController: dvc)
         self.presentViewController(nc, animated: true, completion: nil)
     }
@@ -194,7 +194,7 @@ extension AccountDetailViewController: UITableViewDataSource, UITableViewDelegat
 //        cell.transaction = accountTransactions[indexPath.section][indexPath.row]
 
 
-        cell.currentRAccount = currentRAccount
+        cell.currentAccount = currentAccount
         cell.transaction = accountRTransactions[indexPath.section][indexPath.row]
 
 //        if accountTransactions[indexPath.section][indexPath.row].kind == Transaction.transferKind {
@@ -261,7 +261,7 @@ extension AccountDetailViewController: UIGestureRecognizerDelegate {
             // TODO: set attributes
             let newRTransaction = swipedRTransaction.clone()
             newRTransaction.date = NSDate()
-            currentRAccount.addTransaction(newRTransaction)
+            currentAccount.addTransaction(newRTransaction)
 
             reloadTransactions()
             tableView.reloadData()

@@ -15,7 +15,7 @@ class AccountsViewController: UIViewController {
     
     var addAccountButton: UIButton?
     
-    var rAccounts: [RAccount]?
+    var rAccounts: [Account]?
     
     var isPreparedDelete = false
     var moneyIcon: UIImageView?
@@ -40,7 +40,7 @@ class AccountsViewController: UIViewController {
     @IBOutlet weak var transferButton: UIButton!
     
     var justAddTransactions = false
-    var addedAccount: RAccount?
+    var addedAccount: Account?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -56,7 +56,7 @@ class AccountsViewController: UIViewController {
         // TODO: remove
 //        accounts = [] // Account.all
 
-        rAccounts = Array(try! Realm().objects(RAccount))
+        rAccounts = Array(try! Realm().objects(Account))
 
         tableView.reloadData()
         
@@ -77,7 +77,7 @@ class AccountsViewController: UIViewController {
     func updateAccountList(notification: NSNotification) {
         print("[Notified][AccountsViewController:updateAccountList")
         // TODO Realm: reload accounts
-        rAccounts = RAccount.all
+        rAccounts = Account.all
         tableView.reloadData()
     }
     
@@ -208,12 +208,12 @@ class AccountsViewController: UIViewController {
             if justAddTransactions {
                 justAddTransactions = false
 //                accountDetailVC.currentAccount = addedAccount
-                accountDetailVC.currentRAccount = addedAccount
+                accountDetailVC.currentAccount = addedAccount
                 self.tabBarController?.tabBar.hidden = false
             } else {
                 let indexPath = tableView.indexPathForCell(sender as! UITableViewCell)!
 //                accountDetailVC.currentAccount = accounts![indexPath.row]
-                accountDetailVC.currentRAccount = rAccounts![indexPath.row]
+                accountDetailVC.currentAccount = rAccounts![indexPath.row]
             }
         }
     }

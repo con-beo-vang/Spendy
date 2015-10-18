@@ -17,7 +17,7 @@ class AddAccountViewController: UIViewController {
     
     var datePickerIsShown = false
 
-    var account: RAccount?
+    var account: Account?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -75,7 +75,7 @@ class AddAccountViewController: UIViewController {
             if startingBalanceDecimal == NSDecimalNumber.notANumber() {
                 startingBalanceDecimal = 0
             }
-            account = RAccount(name: name, startingBalanceDecimal: startingBalanceDecimal)
+            account = Account(name: name, startingBalanceDecimal: startingBalanceDecimal)
             account!.save()
 
 //            Account.create(account!)
@@ -132,7 +132,7 @@ extension AddAccountViewController: SelectAccountOrCategoryDelegate {
     }
     
     func selectAccountOrCategoryViewController(selectAccountOrCategoryController: SelectAccountOrCategoryViewController, selectedItem item: AnyObject, selectedType type: String?) {
-        if item is RAccount {
+        if item is Account {
             // TODO: set selected acocunt for current account's type
             // selectedTransaction!.account = (item as! Account)
             tableView.reloadData()

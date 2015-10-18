@@ -13,7 +13,7 @@ class DataManager {
     static let version = "1.3"
 
     class func setupDefaultData(removeLocalData: Bool = false) {
-        RAccount.bootstrap()
+        Account.bootstrap()
         RCategory.bootstrap()
     }
 }

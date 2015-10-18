@@ -70,9 +70,9 @@ class SelectAccountOrCategoryViewController: UIViewController {
             }
 
             tableView.reloadData()
-        } else if itemClass == "RAccount" {
+        } else if itemClass == "Account" {
             navigationItem.title = "Select Account"
-            items = RAccount.all as [RAccount]?
+            items = Account.all as [Account]?
 
             tableView.reloadData()
         }

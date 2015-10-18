@@ -33,7 +33,7 @@ class AccountCell: UITableViewCell {
 //        }
 //    }
 //
-    var rAccount: RAccount! {
+    var rAccount: Account! {
         didSet {
             balanceLabel.text = rAccount.formattedBalance
 

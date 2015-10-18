@@ -1,5 +1,5 @@
 //
-//  RAccount.swift
+//  Account.swift
 //  Spendy
 //
 //  Created by Harley Trung on 10/17/15.
@@ -8,7 +8,7 @@
 
 import RealmSwift
 
-class RAccount: HTRObject {
+class Account: HTRObject {
     dynamic var name: String?
     dynamic var userId: String?
     dynamic var icon: String?
@@ -43,15 +43,15 @@ class RAccount: HTRObject {
         // only bootstrap if we have 0 account
         let realm = try! Realm()
 
-        let accounts = realm.objects(RAccount)
+        let accounts = realm.objects(Account)
 
         if accounts.count == 0 {
-            let primary = RAccount(name: "Primary", startingBalanceDecimal: 0)
+            let primary = Account(name: "Primary", startingBalanceDecimal: 0)
             // will always update record with id 1
             primary.id = 1
             primary.save()
 
-            let secondary = RAccount(name: "Secondary", startingBalanceDecimal: 0)
+            let secondary = Account(name: "Secondary", startingBalanceDecimal: 0)
             secondary.id = 2
             secondary.save()
         }
@@ -62,23 +62,23 @@ class RAccount: HTRObject {
         return Currency.currencyFormatter.stringFromNumber(bal)!
     }
 
-    static var all: [RAccount] {
-        return Array(try! Realm().objects(RAccount))
+    static var all: [Account] {
+        return Array(try! Realm().objects(Account))
     }
 
-    static func defaultAccount() -> RAccount {
+    static func defaultAccount() -> Account {
         // TODO: use user's defaultAccount setting
-        let account = try! Realm().objects(RAccount).first
+        let account = try! Realm().objects(Account).first
         return account!
     }
 
     // TODO: implement
-    static func nonDefaultAccount() -> RAccount {
+    static func nonDefaultAccount() -> Account {
         return all.filter({$0.id != defaultAccount().id}).first!
     }
 }
 
-extension RAccount {
+extension Account {
     func addTransaction(rTransaction: RTransaction) {
         transactions.append(rTransaction)
     }
