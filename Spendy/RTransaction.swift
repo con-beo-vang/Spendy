@@ -105,6 +105,33 @@ class RTransaction: HTRObject {
                 fromAccount.transactions.append(self)
             }
         }
+
+        if let toAccount = self.toAccount {
+            BalanceComputing.recompute(toAccount)
+        }
+
+        if let fromAccount = self.fromAccount {
+            BalanceComputing.recompute(fromAccount)
+        }
+    }
+
+    func remove() {
+        // cache pointers before removal
+        let toAccount = self.toAccount
+        let fromAccount = self.fromAccount
+
+        let realm = try! Realm()
+        try! realm.write {
+            realm.delete(self)
+        }
+
+        if toAccount != nil {
+            BalanceComputing.recompute(toAccount!)
+        }
+
+        if fromAccount != nil {
+            BalanceComputing.recompute(fromAccount!)
+        }
     }
 }
 

@@ -82,11 +82,4 @@ extension RAccount {
     func addTransaction(rTransaction: RTransaction) {
         transactions.append(rTransaction)
     }
-
-    func removeTransaction(rTransaction: RTransaction) {
-        let realm = try! Realm()
-        try! realm.write {
-            realm.delete(rTransaction)
-        }
-    }
 }

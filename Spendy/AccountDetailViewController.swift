@@ -237,17 +237,12 @@ extension AccountDetailViewController: UIGestureRecognizerDelegate {
             return
         }
 
-//        let swipedTransaction = accountTransactions[indexPath.section][indexPath.row]
-
         let swipedRTransaction = accountRTransactions[indexPath.section][indexPath.row]
 
         switch sender.direction {
         case UISwipeGestureRecognizerDirection.Left:
             // Delete transaction
-
-//            currentAccount.removeTransaction(swipedTransaction)
-
-            currentRAccount.removeTransaction(swipedRTransaction)
+            swipedRTransaction.remove()
 
             reloadTransactions()
 
