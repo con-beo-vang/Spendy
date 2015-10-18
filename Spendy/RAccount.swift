@@ -32,13 +32,21 @@ class RAccount: HTRObject {
     }
 
     static func bootstrap() {
-        let rAccount = RAccount()
-        // will always update record with id 1
-        rAccount.id = 1
-        rAccount.name = "Default"
-        rAccount.balance = 100
+        // only bootstrap if we have 0 account
+        let realm = try! Realm()
 
-        rAccount.save()
+        let accounts = realm.objects(RAccount)
+
+        if accounts.count == 0 {
+            let primary = RAccount(name: "Primary", startingBalanceDecimal: 0)
+            // will always update record with id 1
+            primary.id = 1
+            primary.save()
+
+            let secondary = RAccount(name: "Secondary", startingBalanceDecimal: 0)
+            secondary.id = 2
+            secondary.save()
+        }
     }
 
     var formattedBalance: String {
@@ -51,14 +59,14 @@ class RAccount: HTRObject {
     }
 
     static func defaultAccount() -> RAccount {
+        // TODO: use user's defaultAccount setting
         let account = try! Realm().objects(RAccount).first
         return account!
     }
 
     // TODO: implement
     static func nonDefaultAccount() -> RAccount {
-        let account = try! Realm().objects(RAccount).first
-        return account!
+        return all.filter({$0.id != defaultAccount().id}).first!
     }
 
     func recomputeBalance() {

@@ -50,7 +50,7 @@ class SelectAccountOrCategoryViewController: UIViewController {
     }
 
     func loadItems() {
-        print("loadItems: \(itemTypeFilter)")
+        print("loadItems: itemTypeFilter \(itemTypeFilter), itemClass \(itemClass)")
         if itemClass == "RCategory" {
             navigationItem.title = "Select Category"
 
@@ -70,7 +70,7 @@ class SelectAccountOrCategoryViewController: UIViewController {
             }
 
             tableView.reloadData()
-        } else if itemClass == "Account" {
+        } else if itemClass == "RAccount" {
             navigationItem.title = "Select Account"
             items = RAccount.all as [RAccount]?
 
