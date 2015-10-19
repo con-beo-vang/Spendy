@@ -66,7 +66,7 @@
 		9DB8A86E1BAA43B4000F03A1 /* SelectAccountOrCategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DB8A86D1BAA43B4000F03A1 /* SelectAccountOrCategoryViewController.swift */; };
 		9DFD44741BC21AE3008C2ABC /* SPNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DFD44731BC21AE3008C2ABC /* SPNotification.swift */; settings = {ASSET_TAGS = (); }; };
 		9DFE8D9D1BAFA9E0001E6F9E /* DateUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DFE8D9C1BAFA9E0001E6F9E /* DateUtilities.swift */; };
-		A77E0D207AB770857E146536 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CFE2D5C782640C353708467 /* Pods.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		A77E0D207AB770857E146536 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CFE2D5C782640C353708467 /* Pods.framework */; };
 		E234A3D01BC2AAEE00C4C83D /* BalanceStat.swift in Sources */ = {isa = PBXBuildFile; fileRef = E234A3CF1BC2AAEE00C4C83D /* BalanceStat.swift */; settings = {ASSET_TAGS = (); }; };
 		E234A3D41BC2B3FA00C4C83D /* NSDecimalNumberExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E234A3D31BC2B3FA00C4C83D /* NSDecimalNumberExtension.swift */; settings = {ASSET_TAGS = (); }; };
 		E270FB8E1BD3AF9B00BA776C /* UserCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = E270FB8D1BD3AF9B00BA776C /* UserCategory.swift */; settings = {ASSET_TAGS = (); }; };
