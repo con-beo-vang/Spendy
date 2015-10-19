@@ -44,7 +44,7 @@ class AccountCell: UITableViewCell {
             }
 
             nameLabel.text = account.name
-            typeLabel.text = "Start: \(account.startingBalance)"
+            typeLabel.text = "Start: \(account.formattedStartingaBalance)"
             iconView.setNewTintColor(Color.strongColor)
         }
     }

@@ -61,6 +61,10 @@ class Account: HTRObject {
         let bal = NSDecimalNumber(integer: abs(balance)) * 0.01
         return Currency.currencyFormatter.stringFromNumber(bal)!
     }
+    
+    var formattedStartingaBalance: String {
+        return Currency.currencyFormatter.stringFromNumber(startingBalanceDecimal)!
+    }
 
     static var all: [Account] {
         return Array(try! Realm().objects(Account))
