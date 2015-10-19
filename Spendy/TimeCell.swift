@@ -27,7 +27,7 @@ class TimeCell: UITableViewCell {
     
     var reminderItem: ReminderItem! {
         didSet {
-            timeLabel.text = DateFormatter.hh_mm_a.stringFromDate(reminderItem.reminderTime)
+            timeLabel.text = DateFormatter.hh_mm_a.stringFromDate(reminderItem.reminderTime!)
             onSwitch.on = reminderItem.isActive
 
             predictedAmountLabel.text = "~ \(reminderItem.formattedPredictedAmount())"

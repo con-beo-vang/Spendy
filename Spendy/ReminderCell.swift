@@ -30,7 +30,7 @@ class ReminderCell: UITableViewCell {
     var userCategory: UserCategory! {
         didSet {
             categoryLabel.text = userCategory.name
-            timesLabel.text = getTimeSlotsString(userCategory.timeSlots)
+            timesLabel.text = getTimeSlotsString(Array(userCategory.timeSlots))
 //            timesLabel.sizeToFit()
             
             iconView.image = Helper.sharedInstance.createIcon(userCategory.icon)
@@ -85,7 +85,7 @@ class ReminderCell: UITableViewCell {
         var result = ""
         
         for item in timeSlots {
-            result += DateFormatter.h_mm_a.stringFromDate(item.reminderTime) + ", "
+            result += DateFormatter.h_mm_a.stringFromDate(item.reminderTime!) + ", "
         }
         
         result = result[0..<result.characters.count - 2]

@@ -206,9 +206,9 @@ extension SettingsViewController: SelectAccountOrCategoryDelegate {
         if item is Account {
             let account = item as! Account
             print(account)
-            let user = User.current()!
-            user.object!.setObject(account._object!, forKey: "defaultAccount")
-            user.save()
+//            let user = User.current()!
+//            user.object!.setObject(account._object!, forKey: "defaultAccount")
+//            user.save()
 
             tableView.reloadData()
         }

@@ -71,13 +71,14 @@ class AddAccountViewController: UIViewController {
                 return false
             }
 
-            var startingBalance = NSDecimalNumber(string: balanceString)
-            if startingBalance == NSDecimalNumber.notANumber() {
-                startingBalance = 0
+            var startingBalanceDecimal = NSDecimalNumber(string: balanceString)
+            if startingBalanceDecimal == NSDecimalNumber.notANumber() {
+                startingBalanceDecimal = 0
             }
-            account = Account(name: name, startingBalance: startingBalance)
+            account = Account(name: name, startingBalanceDecimal: startingBalanceDecimal)
+            account!.save()
 
-            Account.create(account!)
+//            Account.create(account!)
 
             NSNotificationCenter.defaultCenter().postNotificationName(SPNotification.accountAddedOrUpdated, object: nil, userInfo: ["account": account!])
         } else {

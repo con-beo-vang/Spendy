@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import SCLAlertView
+import RealmSwift
 
 class AccountsViewController: UIViewController {
     
@@ -52,7 +52,7 @@ class AccountsViewController: UIViewController {
         tableView.dataSource = self
         tableView.delegate = self
         tableView.tableFooterView = UIView()
-        
+
         accounts = Account.all
         tableView.reloadData()
         
@@ -177,9 +177,9 @@ class AccountsViewController: UIViewController {
             let toAccount = previousCell?.account
             print("transfer from \(fromAccount?.name) to \(toAccount?.name)")
             
-            let transaction = Transaction(kind: Transaction.transferKind, note: "", amount: amountDecimal, category: Category.defaultTransferCategory(), account: fromAccount, date: NSDate())
+            let transaction = Transaction(kind: CategoryType.Transfer.rawValue, note: nil, amountDecimal: amountDecimal, category: Category.defaultCategoryFor(.Transfer), account: fromAccount!, date: NSDate())
             transaction.toAccount = toAccount
-            Transaction.add(transaction)
+            transaction.save()
             tableView.reloadData()
             
             closePopup()
@@ -228,7 +228,9 @@ extension AccountsViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("AccountCell", forIndexPath: indexPath) as! AccountCell
 
+//        cell.account = accounts![indexPath.row]
         cell.account = accounts![indexPath.row]
+        BalanceComputing.recompute(cell.account)
 
         if !hasPanGesture(cell) {
             print("adding pan for cell \(indexPath.row)")
@@ -265,10 +267,17 @@ extension AccountsViewController: UITableViewDataSource, UITableViewDelegate {
             alertController.addAction(cancelAction)
             
             let deleteAction = UIAlertAction(title: "Delete", style: .Default) { (action) in
+//                if let accountToDelete = self.accounts?[indexPath.row] {
+//                    self.accounts?.removeAtIndex(indexPath.row)
+//                    Account.delete(accountToDelete)
+//                }
+
                 if let accountToDelete = self.accounts?[indexPath.row] {
-                    self.accounts?.removeAtIndex(indexPath.row)
-                    Account.delete(accountToDelete)
+                    self.accounts!.removeAtIndex(indexPath.row)
+                    // TODO Realm: remove Account
+                    accountToDelete
                 }
+
 
                 // reload the entire table
                 // tableView.reloadData()

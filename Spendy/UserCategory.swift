@@ -2,146 +2,46 @@
 //  UserCategory.swift
 //  Spendy
 //
-//  Created by Harley Trung on 10/2/15.
+//  Created by Harley Trung on 10/18/15.
 //  Copyright © 2015 Cheetah. All rights reserved.
 //
 
-import Foundation
-import Parse
+import RealmSwift
 
-class UserCategory: HTObject {
-    static var forceLoadFromRemote = false
+class UserCategory: HTRObject {
+    dynamic var userId: String?
+    dynamic var category: Category?
 
-    var userId: String {
-        get { return self["userId"] as! String }
-        set { self["userId"] = newValue }
+    dynamic var reminderOn = false
+    dynamic var predictedAmount: Int = 400
+
+    var predictedAmountDecimal: NSDecimalNumber? {
+        get { return DecimalConverter.intToDecimal(predictedAmount) }
+        set { predictedAmount = DecimalConverter.decimalToInt(newValue) }
     }
 
-    var categoryId: String {
-        get { return self["categoryId"] as! String }
-        set { self["categoryId"] = newValue }
+    let timeSlots = List<ReminderItem>()
+
+    var activeSlots: Results<ReminderItem> {
+        return timeSlots.filter("isActive == true")
     }
 
-    var _category: Category?
-    var category: Category {
-        get {
-            if _category == nil {
-                _category = Category.findById(categoryId)
-            }
-
-            return _category!
-        }
-        set {
-            _category = newValue
-            self["categoryId"] = newValue.objectId
-        }
+    static var all: [UserCategory] {
+        let realm = try! Realm()
+        let objects = realm.objects(UserCategory)
+        return Array(objects)
     }
 
-     // Add for reminder
-    var reminderOn : Bool {
-        get {
-            if let val = self["reminderOn"] as! Bool? {
-                return val
-            } else {
-                return false
-            }
-        }
-        set {
-            let oldValue = reminderOn
-            self["reminderOn"] = newValue
-            if oldValue != newValue {
-                save()
-            }
-        }
-    }
+    var name: String { return category!.name! }
+    var icon: String { return category!.icon! }
 
-    var predictedAmount: NSDecimalNumber {
-        get {
-            guard let pa = self["predictedAmount"] as! NSNumber? else { return 4.5 }
-            return NSDecimalNumber(decimal: pa.decimalValue)
-        }
-
-        set {
-            self["predictedAmount"] = newValue
-        }
-    }
-
-    var timeSlots: [ReminderItem] {
-        set {
-            self["timeSlots"] = newValue.map({$0._object!})
-        }
-        get {
-            if let objects = self["timeSlots"] as! [PFObject]? {
-                do {
-                    try PFObject.fetchAllIfNeeded(objects)
-                    return objects.map{ ReminderItem(object: $0) }
-                } catch {
-                    // remove invalid objects
-                    PFObject.unpinAllInBackground(objects)
-                    PFObject.deleteAllInBackground(objects)
-                    self["timeSlots"] = []
-                    return []
-                }
-            } else {
-                self["timeSlots"] = []
-                return []
-            }
-        }
-    }
-
-    convenience init(category: Category) {
-        self.init()
-        self.category = category
-        self.userId = User.current()!.objectId!
-    }
-
-    convenience init(categoryId: String) {
-        self.init()
-        self.categoryId = categoryId
-        self.userId = User.current()!.objectId!
-    }
-
-    var name: String { return category.name }
-    var icon: String { return category.icon }
-
-    static var _all: [UserCategory]?
-
-    class var all: [UserCategory] {
-        if _all == nil {
-            let user = PFUser.currentUser()!
-
-            let query = PFQuery(className: "UserCategory")
-            query.whereKey("userId", equalTo: user.objectId!)
-
-            if !forceLoadFromRemote {
-                query.fromLocalDatastore()
-            }
-
-            let objects = try! query.findObjects()
-
-            _all = objects.map({ UserCategory(object: $0) })
-        }
-
-        return _all!
+    // Specify properties to ignore (Realm won't persist these)
+    override static func ignoredProperties() -> [String] {
+        return ["predictedAmountDecimal"]
     }
 }
 
-// MARK - Category stuff
-extension UserCategory {
-    class func findByCategoryId(catId:String) -> UserCategory? {
-        let uc = all.filter({$0.categoryId == catId}).first
-        if uc == nil {
-            let a = UserCategory(categoryId: catId)
-            a.save()
-            _all!.append(a)
-            return a
-        } else {
-            return uc
-        }
-    }
-}
 
-// MARK - Reminder stuff
 extension UserCategory {
     // returns categories that have at least one reminder item
     class func allWithReminderSettings() -> [UserCategory] {
@@ -150,23 +50,19 @@ extension UserCategory {
 
     func addReminder(time: NSDate) {
         let item = ReminderItem(userCategory: self, reminderTime: time, UUID: NSUUID().UUIDString)
-
-        timeSlots.append(item)
-        save()
-
-        UserCategory.forceReloadQuickAddCategories()
+        item.save()
 
         print("add notification for \(item) at \(time)")
         ReminderList.sharedInstance.addReminderNotification(item)
+
+        turnOn()
     }
 
     func removeReminder(item: ReminderItem) {
         print("remove old notification for \(item)")
         ReminderList.sharedInstance.removeReminderNotification(item)
-        timeSlots = timeSlots.filter {$0.UUID != item.UUID}
+
         item.delete()
-        save()
-        UserCategory.forceReloadQuickAddCategories()
     }
 
     func updateReminder(index: Int, newTime: NSDate) {
@@ -174,25 +70,27 @@ extension UserCategory {
 
         ReminderList.sharedInstance.removeReminderNotification(item)
 
-        item.reminderTime = newTime
-
-        // Turn on switch automatically
-        item.isActive = true
-        item.save()
+        let realm = try! Realm()
+        try! realm.write {
+            item.reminderTime = newTime
+            // Turn on switch automatically
+            item.isActive = true
+        }
 
         // Add new notification
         ReminderList.sharedInstance.addReminderNotification(item)
     }
 
     func updateReminder(reminderItem: ReminderItem, newValue: Bool) {
-        reminderItem.isActive = newValue
-        reminderItem.save()
+        guard let userCat = reminderItem.userCategory else { return }
 
-        // attempt to remove reminderItem first
-        ReminderList.sharedInstance.removeReminderNotification(reminderItem)
+        let realm = try! Realm()
+        try! realm.write {
+            reminderItem.isActive = newValue
+        }
 
         if newValue {
-            ReminderList.sharedInstance.addReminderNotification(reminderItem)
+            userCat.turnOn()
         }
 
         checkReminderOnStatus()
@@ -202,49 +100,79 @@ extension UserCategory {
         for item in timeSlots {
             removeReminder(item)
         }
-        delete()
+//        delete()
     }
 
-    func turnOff() {
-        reminderOn = false
-        for t in timeSlots {
-            if t.isActive {
-                // turn off notification but keep values
-                // t.isActive = false
-                ReminderList.sharedInstance.removeReminderNotification(t)
+    func setReminderFlag(flag: Bool) {
+        print("setReminderFlag \(flag)")
+        if reminderOn != flag {
+            let realm = try! Realm()
+            try! realm.write {
+                self.reminderOn = flag
             }
         }
     }
 
-    func turnOn() -> Bool {
-        let activeSlots = timeSlots.filter {$0.isActive}
+    func turnOff() {
+        print("turnOff")
+        setReminderFlag(false)
 
-        guard !activeSlots.isEmpty else {
-            reminderOn = false
+        for t in activeSlots {
+            // turn off notification but keep values
+            ReminderList.sharedInstance.removeReminderNotification(t)
+        }
+    }
+
+    func turnOn() -> Bool {
+        print("turnOn")
+        let noActiveSlots = activeSlots.count == 0
+
+        guard noActiveSlots == false else {
+            setReminderFlag(false)
             return false
         }
 
-        reminderOn = true
+        setReminderFlag(true)
 
         for t in activeSlots {
             if t.isActive {
                 ReminderList.sharedInstance.addReminderNotification(t)
+            } else {
+                // attempt to remove reminderItem first
+                ReminderList.sharedInstance.removeReminderNotification(t)
             }
         }
         return true
     }
 
     func checkReminderOnStatus() {
-        let activeSlots = timeSlots.filter {$0.isActive}
-
         if activeSlots.isEmpty && reminderOn {
-            reminderOn = false
+            setReminderFlag(false)
             return
         }
     }
 
     class func fromCategories(categories: [Category]) -> [UserCategory] {
-        return categories.map({ findByCategoryId($0.objectId!)! })
+        // TODO Realm filter
+        return categories.map({ findByCategory($0)! })
+    }
+
+    class func findByCategory(category: Category) -> UserCategory? {
+        let uc = all.filter({$0.category == category}).first
+        if uc == nil {
+            let a = UserCategory()
+            a.category = category
+            a.save()
+            return a
+        } else {
+            return uc
+        }
+    }
+
+    class func findByCategoryId(categoryId: Int) -> UserCategory? {
+        let realm = try! Realm()
+        let cat = realm.objectForPrimaryKey(Category.self, key: categoryId)
+        return findByCategory(cat!)
     }
 }
 
@@ -262,7 +190,7 @@ extension UserCategory {
 
             if _allForQuickAdd!.isEmpty {
                 let names = ["Meal", "Drink", "Commute"]
-                let cats = Category.all.filter({ names.contains($0.name) })
+                let cats = Category.all.filter({ names.contains($0.name!) })
 
                 _allForQuickAdd = fromCategories(cats)
             } else {

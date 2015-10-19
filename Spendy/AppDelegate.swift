@@ -103,10 +103,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        UITabBarItem.appearance().setTitleTextAttributes([NSForegroundColorAttributeName: Color.strongColor], forState:.Selected)
 //        UITabBarItem.appearance().setTitleTextAttributes([NSForegroundColorAttributeName: Color.inactiveTabBarIconColor], forState:.Normal)
         
-        // Uncomment this out to run if you have more categories to addd
-        // TODO: decide whether to run from Parse config
-        Category.bootstrapCategories()
-
         print("<<<<<<<<<<\nNotifications: \(ReminderList.sharedInstance.notifications())\n>>>>>>>>>>")
         UIApplication.sharedApplication().cancelAllLocalNotifications()
 
@@ -117,17 +113,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "recomputeAccountBalance:", name: SPNotification.transactionsLoadedForAccount, object: nil)
 
         // This may not be necessary due to the above
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "syncRemoteAccountsIfNecessary:", name: SPNotification.allAccountsLoadedLocally, object: nil)
+//        NSNotificationCenter.defaultCenter().addObserver(self, selector: "syncRemoteAccountsIfNecessary:", name: SPNotification.allAccountsLoadedLocally, object: nil)
         return true
     }
 
     // We already have accounts loaded locally
     // We still want to check with remote in case there are no local accounts or there are new ones saved from another device
-    func syncRemoteAccountsIfNecessary(notification: NSNotification) {
-        // TODO: only do this if necessary (e.g. we know there server has something different)
-        print("[Notified] sync remote accounts:")
-        Account.loadAllFrom(local: false)
-    }
+//    func syncRemoteAccountsIfNecessary(notification: NSNotification) {
+//        // TODO: only do this if necessary (e.g. we know there server has something different)
+//        print("[Notified] sync remote accounts:")
+//        Account.loadAllFrom(local: false)
+//    }
 
     func recomputeAccountBalance(notification: NSNotification) {
         // First try to cast user info to expected type
@@ -138,7 +134,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         guard let account = info["account"] as! Account? else { return }
 
-        account.recomputeBalance()
+        BalanceComputing.recompute(account)
         print("[Notified] recomputed balance for \(account.transactions.count) transactions of account \(account.name)")
     }
     
@@ -225,7 +221,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(application: UIApplication, handleActionWithIdentifier identifier: String?, forLocalNotification notification: UILocalNotification, completionHandler: () -> Void) {
 
-        let categoryId = notification.userInfo!["categoryId"] as! String!
+        let categoryId = notification.userInfo!["categoryId"] as! Int
         let userCategory = UserCategory.findByCategoryId(categoryId)!
 
         let item = ReminderItem(userCategory: userCategory, reminderTime: notification.fireDate!, UUID: notification.userInfo!["UUID"] as! String!)
@@ -239,7 +235,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         case "YES":
             print("YES")
             // TODO: Add new transaction
-            let t = Transaction(kind: Transaction.expenseKind, note: nil, amount: item.predictedAmount, category: item.category, account: Account.defaultAccount(), date: NSDate())
+            let t = Transaction(kind: CategoryType.Expense.rawValue, note: nil, amountDecimal: item.predictedAmountDecimal, category: item.category!, account: Account.defaultAccount(), date: NSDate())
             t.save()
 
         default: // switch statements must be exhaustive - this condition should never be met

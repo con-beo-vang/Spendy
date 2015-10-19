@@ -8,6 +8,7 @@
 
 import UIKit
 import Parse
+import RealmSwift
 
 protocol SelectAccountOrCategoryDelegate {
     func selectAccountOrCategoryViewController(selectAccountOrCategoryController: SelectAccountOrCategoryViewController, selectedItem item: AnyObject, selectedType type: String?)
@@ -25,11 +26,12 @@ class SelectAccountOrCategoryViewController: UIViewController {
 
     @IBOutlet weak var tableView: UITableView!
 
-    var items: [HTObject]?
+    var items: [HTRObject]?
 
     var backButton: UIButton?
     
-    var selectedItem: HTObject?
+//    var selectedItem: HTObject?
+    var selectedItem: HTRObject?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -48,23 +50,23 @@ class SelectAccountOrCategoryViewController: UIViewController {
     }
 
     func loadItems() {
-        print("loadItems: \(itemTypeFilter)")
+        print("loadItems: itemTypeFilter \(itemTypeFilter), itemClass \(itemClass)")
         if itemClass == "Category" {
             navigationItem.title = "Select Category"
 
             switch itemTypeFilter {
             case .Some("Income"):
-                items = Category.allIncomeType as [Category]
+                items = Category.allIncomeType()
 
             case .Some("Expense"):
-                items = Category.allExpenseType as [Category]
+                items = Category.allExpenseType()
 
             case .Some("Transfer"):
-                items = Category.allTransferType as [Category]
+                items = Category.allTransferType()
 
             default:
                 print("WARNING: loadItems called on unrecognized type \(itemTypeFilter)")
-                items = Category.all as [Category]
+                items = []
             }
 
             tableView.reloadData()
@@ -109,7 +111,7 @@ extension SelectAccountOrCategoryViewController: UITableViewDataSource, UITableV
         if let item = items?[indexPath.row] {
             cell.nameLabel.text = item["name"] as! String?
             
-            if item.objectId == selectedItem?.objectId {
+            if item.id == selectedItem?.id {
                 cell.selectedIcon.hidden = false
             } else {
                 cell.selectedIcon.hidden = true
