@@ -73,7 +73,7 @@ class AddTransactionViewController: UIViewController {
             selectedTransaction!.fromAccount = currentAccount
             selectedTransaction!.date = NSDate()
             // TODO: replace with a good default amount
-            selectedTransaction!.amount = 10
+//            selectedTransaction!.amount = 10
             isCollaped = true
         }
         
@@ -368,7 +368,7 @@ extension AddTransactionViewController: UITableViewDataSource, UITableViewDelega
                 let cell = tableView.dequeueReusableCellWithIdentifier("AmountCell", forIndexPath: indexPath) as! AmountCell
 
                 // TODO: convert?
-                cell.amountText.text = selectedTransaction!.amountDecimal?.stringValue
+//                cell.amountText.text = selectedTransaction!.amountDecimal?.stringValue
                 cell.amountText.keyboardType = UIKeyboardType.DecimalPad
 
                 Helper.sharedInstance.setSeparatorFullWidth(cell)
