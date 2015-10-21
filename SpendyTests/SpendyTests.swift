@@ -18,7 +18,7 @@ class SpendyTest {
         return account
     }
     
-    static func deleteAcocunt(account: Account) {
+    static func deleteAccount(account: Account) {
         account.delete()
         print("delete account")
     }

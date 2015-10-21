@@ -424,8 +424,8 @@
 			children = (
 				9D78C5321BA5A48000B00BC2 /* SpendyTests.swift */,
 				18A3E4ED1BD7326100EF583F /* AccountSpec.swift */,
-				9D78C5301BA5A48000B00BC2 /* Supporting Files */,
 				18A3E4EF1BD732DC00EF583F /* TransactionSpec.swift */,
+				9D78C5301BA5A48000B00BC2 /* Supporting Files */,
 			);
 			path = SpendyTests;
 			sourceTree = "<group>";

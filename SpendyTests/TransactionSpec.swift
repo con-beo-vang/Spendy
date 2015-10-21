@@ -99,12 +99,12 @@ class TransactionSpec: QuickSpec {
                 
                 afterEach {
                     transaction.delete()
-                    SpendyTest.deleteAcocunt(toAccount)
+                    SpendyTest.deleteAccount(toAccount)
                 }
             }
             
             afterEach {
-                SpendyTest.deleteAcocunt(account)
+                SpendyTest.deleteAccount(account)
             }
         }
     }

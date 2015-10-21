@@ -43,8 +43,6 @@ class AccountSpec: QuickSpec {
             }
         }
         
-        
-        
         describe("#all") {
             it("number of accounts is 3") {
                 expect(Account.all.count).to(equal(3))
@@ -52,7 +50,7 @@ class AccountSpec: QuickSpec {
         }
         
         afterEach {
-            SpendyTest.deleteAcocunt(account)
+            SpendyTest.deleteAccount(account)
         }
     }
 }
