@@ -22,23 +22,23 @@ class AccountSpec: QuickSpec {
         }
         
         describe("starting balance") {
-            it("new account with starting balance 10000") {
+            it("creates a new account with starting balance 10000") {
                 expect(account.startingBalance).to(equal(10000))
             }
             
-            it("new account with starting balance decimal 100.00") {
+            it("creates a new account with starting balance decimal 100.00") {
                 expect(account.startingBalanceDecimal).to(equal(100.00))
             }
         }
         
         describe("#formattedBalance") {
-            it("formatted starting balance with region US") {
+            it("returns formatted starting balance with region US") {
                 expect(account.formattedStartingaBalance).to(equal("$100.00"))
             }
         }
         
         describe("#formattedBalance") {
-            it("formatted balance with region US") {
+            it("returns formatted balance with region US") {
                 expect(account.formattedBalance).to(equal("$100.00"))
             }
         }

@@ -38,7 +38,7 @@ class TransactionSpec: QuickSpec {
                 account = SpendyTest.createAccount()
             }
             
-            context("expense kind") {
+            context("transaction is an expense") {
                 var transaction: Transaction!
                 
                 beforeEach {
@@ -47,7 +47,7 @@ class TransactionSpec: QuickSpec {
                     transaction.save()
                 }
                 
-                it("add new transaction, decrease balance") {
+                it("adds new transaction, decrease balance") {
                     expect(account.balance).to(equal(8000))
                 }
                 
@@ -56,7 +56,7 @@ class TransactionSpec: QuickSpec {
                 }
             }
             
-            context("income kind") {
+            context("transaction is an income") {
                 var transaction: Transaction!
                 
                 beforeEach {
@@ -66,7 +66,7 @@ class TransactionSpec: QuickSpec {
                 }
                 
                 
-                it("add new transaction, increase balance") {
+                it("adds new transaction, increase balance") {
                     expect(account.balance).to(equal(15000))
                 }
                 
@@ -75,7 +75,7 @@ class TransactionSpec: QuickSpec {
                 }
             }
             
-            context("transfer kind") {
+            context("transaction is a transference") {
                 var transaction: Transaction!
                 var toAccount: Account!
                 
@@ -89,11 +89,11 @@ class TransactionSpec: QuickSpec {
                     transaction.save()
                 }
                 
-                it("add new transfer transaction, decrease balance in fromAccount") {
+                it("adds new transfer transaction, decrease balance in fromAccount") {
                     expect(account.balance).to(equal(5000))
                 }
                 
-                it("add new transfer transaction, increase balance in toAccount") {
+                it("adds new transfer transaction, increase balance in toAccount") {
                     expect(toAccount.balance).to(equal(15000))
                 }
                 
