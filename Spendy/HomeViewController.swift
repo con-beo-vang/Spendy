@@ -112,8 +112,7 @@ class HomeViewController: UIViewController {
         fromDate = begin
         toDate = end.dateByAddingTimeInterval(oneDay)
         
-        print("from: \(DateFormatter.E_MMM_dd_yyyy.stringFromDate(fromDate!))")
-        print("to: \(DateFormatter.E_MMM_dd_yyyy.stringFromDate(toDate!))")
+        reloadDateRange()
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -162,10 +161,17 @@ class HomeViewController: UIViewController {
     }
 
     func reloadDateRange() {
+        print("reloadDateFrange \(fromDate) --> \(toDate)")
         if let fromDate = fromDate, toDate = toDate {
-            // tableView will be updated asynchronously via balanceStatUpdated notification
             balanceStat = BalanceStat(from: fromDate, to: toDate)
-        } else {
+
+            // tableView will be updated asynchronously via balanceStatUpdated notification
+            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                self.balanceStat!.process()
+            })
+        }
+        else {
+            // this should render an empty Income: 0, Expense: 0 view
             tableView.reloadData()
         }
     }
@@ -570,7 +576,6 @@ extension HomeViewController: UIGestureRecognizerDelegate {
                 return
             }
             
-            // TODO: set data for table view based on fromDate and toDate
             reloadDateRange()
             tableView.reloadSections(NSIndexSet(indexesInRange: NSMakeRange(0, 3)), withRowAnimation: UITableViewRowAnimation.Left)
             
@@ -590,7 +595,6 @@ extension HomeViewController: UIGestureRecognizerDelegate {
                 return
             }
             
-            // TODO: set data for table view based on fromDate and toDate
             reloadDateRange()
             tableView.reloadSections(NSIndexSet(indexesInRange: NSMakeRange(0, 3)), withRowAnimation: UITableViewRowAnimation.Right)
             break

@@ -25,16 +25,17 @@ class BalanceStat {
     init(from: NSDate, to: NSDate) {
         self.from = from
         self.to   = to
-
         print("Stats from \(from) to \(to)")
+    }
 
+    // This should be run in the background (e.g. via dispatch_async
+    // in the caller
+    func process() {
         let realm = try! Realm()
 
-        // TODO restrict to userId
         let transactions = realm.objects(Transaction).filter("date >= %@ AND date <= %@", from, to)
 
         print("found \(transactions.count) transactions from \(from) to \(to)")
-
         self.expenseTransactions      = transactions.filter { $0.kind == CategoryType.Expense.rawValue }
         self.groupedExpenseCategories = self.groupTransactionsByCategory(self.expenseTransactions!)
         self.expenseTotal             = Array(self.groupedExpenseCategories!.values).reduce(0, combine: +)
