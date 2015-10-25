@@ -52,6 +52,17 @@ class Transaction: HTRObject {
         return (val * 100).integerValue
     }
 
+    func update(updateFunction: (transaction: Transaction) -> Void) {
+        if isNew() {
+            updateFunction(transaction: self)
+        } else {
+            let realm = try! Realm()
+            try! realm.write {
+                updateFunction(transaction: self)
+            }
+        }
+    }
+
     override static func ignoredProperties() -> [String] {
         return ["amountDecimal"]
     }
@@ -78,13 +89,22 @@ class Transaction: HTRObject {
 
         try! realm.write {
             self.setIdIfNeeded(realm)
-            if let toAccount = self.toAccount {
-                toAccount.transactions.append(self)
-            }
 
             if let fromAccount = self.fromAccount {
-                fromAccount.transactions.append(self)
+                let siblings = fromAccount.transactions
+                if nil == siblings.filter({$0.id == self.id}).first {
+                    fromAccount.transactions.append(self)
+                }
             }
+
+            if let toAccount = self.toAccount {
+                let siblings = toAccount.transactions
+                if nil == siblings.filter({$0.id == self.id}).first {
+                    toAccount.transactions.append(self)
+                }
+            }
+
+
         }
 
         if let toAccount = self.toAccount {
