@@ -88,21 +88,25 @@ class AddTransactionViewController: UIViewController {
     func updateFieldsToTransaction() -> Bool {
         validationErrors = []
 
+        if let transaction = self.selectedTransaction {
+            transaction.update { t in
+                t.note = self.noteCell?.noteText.text
+                t.kind = CategoryType.allValueStrings[self.amountCell!.typeSegment.selectedSegmentIndex]
+                t.amountDecimal = NSDecimalNumber(string: self.amountCell?.amountText.text)
+                
+                if t.amount == 0 {
+                    self.validationErrors.append("Please enter an amount")
+                }
+                
+                // TODO: validate date is in the past
+                if let date = self.dateCell?.datePicker.date {
+                    t.date = date
+                    print("setting date to transaction: \(date)")
+                }
+            }
+        }
+
         if let transaction = selectedTransaction {
-            transaction.note = noteCell?.noteText.text
-            transaction.kind = CategoryType.allValueStrings[amountCell!.typeSegment.selectedSegmentIndex]
-            transaction.amountDecimal = NSDecimalNumber(string: amountCell?.amountText.text)
-
-            if transaction.amount == 0 {
-               validationErrors.append("Please enter an amount")
-            }
-
-            // TODO: validate date is in the past
-            if let date = dateCell?.datePicker.date {
-                transaction.date = date
-                print("setting date to transaction: \(date)")
-            }
-
             if transaction.isTransfer() {
                 if transaction.toAccount == nil {
                     validationErrors.append("Please specifiy To Account:")
@@ -111,7 +115,6 @@ class AddTransactionViewController: UIViewController {
                 }
             }
         }
-
         return validationErrors.isEmpty
     }
 
@@ -261,14 +264,14 @@ extension AddTransactionViewController: SelectAccountOrCategoryDelegate, PhotoVi
     func selectAccountOrCategoryViewController(selectAccountOrCategoryController: SelectAccountOrCategoryViewController, selectedItem item: AnyObject, selectedType type: String?) {
         if item is Account {
             if let type = type where type == "ToAccount" {
-                selectedTransaction!.toAccount = (item as! Account)
+                selectedTransaction!.update { $0.toAccount = (item as! Account) }
             } else {
-                selectedTransaction!.fromAccount = (item as! Account)
+                selectedTransaction!.update { $0.fromAccount = (item as! Account) }
             }
 
             tableView.reloadData()
         } else if item is Category {
-            selectedTransaction!.category = (item as! Category)
+            selectedTransaction!.update {$0.category = (item as! Category) }
 
             tableView.reloadData()
         } else {
@@ -367,8 +370,9 @@ extension AddTransactionViewController: UITableViewDataSource, UITableViewDelega
             case 1:
                 let cell = tableView.dequeueReusableCellWithIdentifier("AmountCell", forIndexPath: indexPath) as! AmountCell
 
-                // TODO: convert?
-//                cell.amountText.text = selectedTransaction!.amountDecimal?.stringValue
+                if !selectedTransaction!.isNew() {
+                    cell.amountText.text = selectedTransaction!.amountDecimal?.stringValue
+                }
                 cell.amountText.keyboardType = UIKeyboardType.DecimalPad
 
                 Helper.sharedInstance.setSeparatorFullWidth(cell)
