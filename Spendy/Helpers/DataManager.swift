@@ -10,10 +10,10 @@ import Foundation
 import RealmSwift
 
 class DataManager {
-    static let version = "1.3"
-
-    class func setupDefaultData(removeLocalData: Bool = false) {
-        Account.bootstrap()
-        Category.bootstrap()
-    }
+  static let version = "1.3"
+  
+  class func setupDefaultData(removeLocalData: Bool = false) {
+    Account.bootstrap()
+    Category.bootstrap()
+  }
 }

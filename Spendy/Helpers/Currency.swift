@@ -9,9 +9,9 @@
 import Foundation
 
 struct Currency {
-    static var currencyFormatter: NSNumberFormatter = {
-        let formatter = NSNumberFormatter()
-        formatter.numberStyle = .CurrencyStyle
-        return formatter
+  static var currencyFormatter: NSNumberFormatter = {
+    let formatter = NSNumberFormatter()
+    formatter.numberStyle = .CurrencyStyle
+    return formatter
     }()
 }

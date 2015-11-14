@@ -9,20 +9,10 @@
 import UIKit
 
 class ViewMoreCell: UITableViewCell {
-    
-    @IBOutlet weak var titleLabel: UILabel!
-    
-
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
-        titleLabel.textColor = Color.moreDetailColor
-    }
-
-    override func setSelected(selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
-    }
-
+  @IBOutlet weak var titleLabel: UILabel!
+  
+  override func awakeFromNib() {
+    super.awakeFromNib()
+    titleLabel.textColor = Color.moreDetailColor
+  }
 }

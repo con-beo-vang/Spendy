@@ -16,7 +16,7 @@
 		1883260C1BE91FD90060B5CF /* DecimalConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 188326001BE91FD90060B5CF /* DecimalConverter.swift */; settings = {ASSET_TAGS = (); }; };
 		1883260D1BE91FD90060B5CF /* Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 188326011BE91FD90060B5CF /* Helper.swift */; settings = {ASSET_TAGS = (); }; };
 		1883260E1BE91FD90060B5CF /* KindColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 188326021BE91FD90060B5CF /* KindColor.swift */; settings = {ASSET_TAGS = (); }; };
-		1883260F1BE91FD90060B5CF /* NSDecimalNumberExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 188326031BE91FD90060B5CF /* NSDecimalNumberExtension.swift */; settings = {ASSET_TAGS = (); }; };
+		1883260F1BE91FD90060B5CF /* NSDecimalNumber+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 188326031BE91FD90060B5CF /* NSDecimalNumber+Extension.swift */; settings = {ASSET_TAGS = (); }; };
 		188326101BE91FD90060B5CF /* SPNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 188326041BE91FD90060B5CF /* SPNotification.swift */; settings = {ASSET_TAGS = (); }; };
 		188326111BE91FD90060B5CF /* TransactionGrouping.swift in Sources */ = {isa = PBXBuildFile; fileRef = 188326051BE91FD90060B5CF /* TransactionGrouping.swift */; settings = {ASSET_TAGS = (); }; };
 		1883261C1BE91FF50060B5CF /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 188326121BE91FF50060B5CF /* Account.swift */; settings = {ASSET_TAGS = (); }; };
@@ -74,6 +74,13 @@
 		188326831BE923210060B5CF /* ViewMoreCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1883267D1BE923210060B5CF /* ViewMoreCell.swift */; settings = {ASSET_TAGS = (); }; };
 		188326861BE9232E0060B5CF /* CustomSegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 188326841BE9232E0060B5CF /* CustomSegmentedControl.swift */; settings = {ASSET_TAGS = (); }; };
 		188326871BE9232E0060B5CF /* QuickCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 188326851BE9232E0060B5CF /* QuickCell.swift */; settings = {ASSET_TAGS = (); }; };
+		18EDDACD1BF76C280001D80F /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18EDDAC61BF76C280001D80F /* String+Extension.swift */; settings = {ASSET_TAGS = (); }; };
+		18EDDACE1BF76C280001D80F /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18EDDAC71BF76C280001D80F /* UIColor+Extension.swift */; settings = {ASSET_TAGS = (); }; };
+		18EDDACF1BF76C280001D80F /* UIImage+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18EDDAC81BF76C280001D80F /* UIImage+Extension.swift */; settings = {ASSET_TAGS = (); }; };
+		18EDDAD01BF76C280001D80F /* UIImageView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18EDDAC91BF76C280001D80F /* UIImageView+Extension.swift */; settings = {ASSET_TAGS = (); }; };
+		18EDDAD11BF76C280001D80F /* UITableView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18EDDACA1BF76C280001D80F /* UITableView+Extension.swift */; settings = {ASSET_TAGS = (); }; };
+		18EDDAD21BF76C280001D80F /* UITableViewCell+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18EDDACB1BF76C280001D80F /* UITableViewCell+Extension.swift */; settings = {ASSET_TAGS = (); }; };
+		18EDDAD31BF76C280001D80F /* UITextField+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18EDDACC1BF76C280001D80F /* UITextField+Extension.swift */; settings = {ASSET_TAGS = (); }; };
 		9D78C51D1BA5A47F00B00BC2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D78C51C1BA5A47F00B00BC2 /* AppDelegate.swift */; };
 		9D78C5221BA5A47F00B00BC2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9D78C5201BA5A47F00B00BC2 /* Main.storyboard */; };
 		9D78C5241BA5A47F00B00BC2 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9D78C5231BA5A47F00B00BC2 /* Images.xcassets */; };
@@ -104,7 +111,7 @@
 		188326001BE91FD90060B5CF /* DecimalConverter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DecimalConverter.swift; path = Helpers/DecimalConverter.swift; sourceTree = "<group>"; };
 		188326011BE91FD90060B5CF /* Helper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Helper.swift; path = Helpers/Helper.swift; sourceTree = "<group>"; };
 		188326021BE91FD90060B5CF /* KindColor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = KindColor.swift; path = Helpers/KindColor.swift; sourceTree = "<group>"; };
-		188326031BE91FD90060B5CF /* NSDecimalNumberExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NSDecimalNumberExtension.swift; path = Helpers/NSDecimalNumberExtension.swift; sourceTree = "<group>"; };
+		188326031BE91FD90060B5CF /* NSDecimalNumber+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "NSDecimalNumber+Extension.swift"; path = "Helpers/NSDecimalNumber+Extension.swift"; sourceTree = "<group>"; };
 		188326041BE91FD90060B5CF /* SPNotification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SPNotification.swift; path = Helpers/SPNotification.swift; sourceTree = "<group>"; };
 		188326051BE91FD90060B5CF /* TransactionGrouping.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TransactionGrouping.swift; path = Helpers/TransactionGrouping.swift; sourceTree = "<group>"; };
 		188326121BE91FF50060B5CF /* Account.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Account.swift; path = Models/Account.swift; sourceTree = "<group>"; };
@@ -162,6 +169,13 @@
 		1883267D1BE923210060B5CF /* ViewMoreCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ViewMoreCell.swift; path = "Views/Add Edit Transaction/ViewMoreCell.swift"; sourceTree = "<group>"; };
 		188326841BE9232E0060B5CF /* CustomSegmentedControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CustomSegmentedControl.swift; path = Views/Quick/CustomSegmentedControl.swift; sourceTree = "<group>"; };
 		188326851BE9232E0060B5CF /* QuickCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = QuickCell.swift; path = Views/Quick/QuickCell.swift; sourceTree = "<group>"; };
+		18EDDAC61BF76C280001D80F /* String+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "String+Extension.swift"; path = "Helpers/String+Extension.swift"; sourceTree = "<group>"; };
+		18EDDAC71BF76C280001D80F /* UIColor+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "UIColor+Extension.swift"; path = "Helpers/UIColor+Extension.swift"; sourceTree = "<group>"; };
+		18EDDAC81BF76C280001D80F /* UIImage+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "UIImage+Extension.swift"; path = "Helpers/UIImage+Extension.swift"; sourceTree = "<group>"; };
+		18EDDAC91BF76C280001D80F /* UIImageView+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "UIImageView+Extension.swift"; path = "Helpers/UIImageView+Extension.swift"; sourceTree = "<group>"; };
+		18EDDACA1BF76C280001D80F /* UITableView+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "UITableView+Extension.swift"; path = "Helpers/UITableView+Extension.swift"; sourceTree = "<group>"; };
+		18EDDACB1BF76C280001D80F /* UITableViewCell+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "UITableViewCell+Extension.swift"; path = "Helpers/UITableViewCell+Extension.swift"; sourceTree = "<group>"; };
+		18EDDACC1BF76C280001D80F /* UITextField+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "UITextField+Extension.swift"; path = "Helpers/UITextField+Extension.swift"; sourceTree = "<group>"; };
 		336AA2D8B3532AD262FC53AA /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		3CFE2D5C782640C353708467 /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6DE97D10C3A0C6C161C8B7C1 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
@@ -454,9 +468,16 @@
 				188326001BE91FD90060B5CF /* DecimalConverter.swift */,
 				188326011BE91FD90060B5CF /* Helper.swift */,
 				188326021BE91FD90060B5CF /* KindColor.swift */,
-				188326031BE91FD90060B5CF /* NSDecimalNumberExtension.swift */,
 				188326041BE91FD90060B5CF /* SPNotification.swift */,
 				188326051BE91FD90060B5CF /* TransactionGrouping.swift */,
+				18EDDAC61BF76C280001D80F /* String+Extension.swift */,
+				18EDDAC71BF76C280001D80F /* UIColor+Extension.swift */,
+				18EDDAC81BF76C280001D80F /* UIImage+Extension.swift */,
+				18EDDAC91BF76C280001D80F /* UIImageView+Extension.swift */,
+				18EDDACA1BF76C280001D80F /* UITableView+Extension.swift */,
+				18EDDACB1BF76C280001D80F /* UITableViewCell+Extension.swift */,
+				18EDDACC1BF76C280001D80F /* UITextField+Extension.swift */,
+				188326031BE91FD90060B5CF /* NSDecimalNumber+Extension.swift */,
 			);
 			name = Helpers;
 			sourceTree = "<group>";
@@ -652,12 +673,14 @@
 				1883264B1BE9203A0060B5CF /* SettingsViewController.swift in Sources */,
 				1883266D1BE922F30060B5CF /* TimeCell.swift in Sources */,
 				1883263A1BE9203A0060B5CF /* AccountDetailViewController.swift in Sources */,
+				18EDDAD21BF76C280001D80F /* UITableViewCell+Extension.swift in Sources */,
 				9D78C51D1BA5A47F00B00BC2 /* AppDelegate.swift in Sources */,
 				188326491BE9203A0060B5CF /* SelectAccountOrCategoryViewController.swift in Sources */,
 				188326201BE91FF50060B5CF /* HTRObject.swift in Sources */,
 				188326731BE923070060B5CF /* TransactionCell.swift in Sources */,
 				1883261F1BE91FF50060B5CF /* HTObject.swift in Sources */,
 				188326101BE91FD90060B5CF /* SPNotification.swift in Sources */,
+				18EDDACF1BF76C280001D80F /* UIImage+Extension.swift in Sources */,
 				1883261C1BE91FF50060B5CF /* Account.swift in Sources */,
 				1883265F1BE922D00060B5CF /* CustomPresentAnimationController.swift in Sources */,
 				1883263C1BE9203A0060B5CF /* AddAccountViewController.swift in Sources */,
@@ -665,7 +688,7 @@
 				188326671BE922EA0060B5CF /* ViewModeCell.swift in Sources */,
 				188326511BE9206E0060B5CF /* LoginCell.swift in Sources */,
 				188326221BE91FF50060B5CF /* ReminderList.swift in Sources */,
-				1883260F1BE91FD90060B5CF /* NSDecimalNumberExtension.swift in Sources */,
+				1883260F1BE91FD90060B5CF /* NSDecimalNumber+Extension.swift in Sources */,
 				1883266B1BE922F30060B5CF /* CategoryReminderCell.swift in Sources */,
 				188326431BE9203A0060B5CF /* HomeViewController.swift in Sources */,
 				188326551BE920AB0060B5CF /* DefaultAccountCell.swift in Sources */,
@@ -676,6 +699,7 @@
 				188326711BE922FD0060B5CF /* ReminderCell.swift in Sources */,
 				188326771BE923180060B5CF /* CategoryCell.swift in Sources */,
 				188326081BE91FD90060B5CF /* Color.swift in Sources */,
+				18EDDACE1BF76C280001D80F /* UIColor+Extension.swift in Sources */,
 				188326701BE922FD0060B5CF /* AddReminderCell.swift in Sources */,
 				188326091BE91FD90060B5CF /* Currency.swift in Sources */,
 				188326751BE9230F0060B5CF /* AccountCell.swift in Sources */,
@@ -684,12 +708,16 @@
 				1883265D1BE922D00060B5CF /* CustomInteractionController.swift in Sources */,
 				188326801BE923210060B5CF /* NoteCell.swift in Sources */,
 				188326241BE91FF50060B5CF /* User.swift in Sources */,
+				18EDDAD31BF76C280001D80F /* UITextField+Extension.swift in Sources */,
 				188326811BE923210060B5CF /* PhotoCell.swift in Sources */,
+				18EDDACD1BF76C280001D80F /* String+Extension.swift in Sources */,
 				188326481BE9203A0060B5CF /* RootTabBarController.swift in Sources */,
 				1883263D1BE9203A0060B5CF /* AddReminderViewController.swift in Sources */,
+				18EDDAD11BF76C280001D80F /* UITableView+Extension.swift in Sources */,
 				1883261E1BE91FF50060B5CF /* Category.swift in Sources */,
 				188326211BE91FF50060B5CF /* ReminderItem.swift in Sources */,
 				188326861BE9232E0060B5CF /* CustomSegmentedControl.swift in Sources */,
+				18EDDAD01BF76C280001D80F /* UIImageView+Extension.swift in Sources */,
 				1883264C1BE9203A0060B5CF /* SplashViewController.swift in Sources */,
 				1883260A1BE91FD90060B5CF /* DataManager.swift in Sources */,
 				1883263E1BE9203A0060B5CF /* AddTransactionViewController.swift in Sources */,
