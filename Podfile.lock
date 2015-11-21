@@ -23,7 +23,6 @@ PODS:
   - Bolts/Tasks (1.3.0)
   - Cartography (0.6.0)
   - CBZSplashView (1.0.0)
-  - Nimble (2.0.0)
   - Pages (0.6.2)
   - Parse (1.8.5):
     - Bolts/Tasks (>= 1.2.2)
@@ -31,7 +30,6 @@ PODS:
   - Presentation (2.0.0):
     - Cartography (~> 0.6.0)
     - Pages (~> 0.6.2)
-  - Quick (0.6.0)
   - Realm (0.96.0):
     - Realm/Headers (= 0.96.0)
   - Realm/Headers (0.96.0)
@@ -44,11 +42,9 @@ PODS:
 DEPENDENCIES:
   - AFNetworking (~> 2.5)
   - CBZSplashView (~> 1.0.0)
-  - Nimble (~> 2.0.0)
   - Parse (~> 1.8.5)
   - PhotoTweaks (~> 1.0.2)
   - Presentation
-  - Quick (~> 0.6.0)
   - RealmSwift
   - SevenSwitch
   - SwiftSpinner (~> 0.8.0)
@@ -59,12 +55,10 @@ SPEC CHECKSUMS:
   Bolts: 805a4a87413e49d4a0c2b7d469084cbc46b09342
   Cartography: 70af183a248547694a8cfaa6b989cb7e04589985
   CBZSplashView: 9ce4cba22024476ff4a97d6433e7347da6376016
-  Nimble: 472e75466819eb8c06299233e87c694a9b51328a
   Pages: 6c042132f8c63c34d242789b7763d4c64e9681a0
   Parse: 17ad8e0677ed682f7f00503860fcda0f4eb74168
   PhotoTweaks: e91ce097f9df435049e7c35d419f9a7749e252bc
   Presentation: 156bb732160bc092e3a288aa2c43a808a9a2d627
-  Quick: 563686dbcf0ae0f9f7401ac9cd2d786ee1b7f3d7
   Realm: d1b1eff5264cd6a3158b7a9b6c499d7f6ad3a860
   RealmSwift: 40246e6f57a4e863bfdfc1ca1d7b967f0df607e2
   SevenSwitch: 4ae92ffcad0ef93b38553b39a25e753c94eb7847
