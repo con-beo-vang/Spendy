@@ -47,7 +47,7 @@ class SettingsViewController: UIViewController, ThemeCellDelegate, UITabBarContr
     
     if let user = PFUser.currentUser() {
       print("user = \(user)")
-      usernameLabel.text = user.username ?? "(No name)"
+      usernameLabel.text = (user["name"] as? String) ?? "(No name)"
       emailLabel.text = user.email
     }
   }
