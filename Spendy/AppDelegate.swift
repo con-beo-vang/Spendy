@@ -28,7 +28,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
     // Enable storing and querying data from Local Datastore.
     // Remove this line if you don't want to use Local Datastore features or want to use cachePolicy.
-    Parse.enableLocalDatastore()
+    // Parse.enableLocalDatastore()
     
     // ****************************************************************************
     // Uncomment this line if you want to enable Crash Reporting
@@ -44,7 +44,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     configNotificationCenter()
     
     PFUser.currentUser()?.fetchIfNeededInBackground()
-    print("=====================\nUser: \(User.current())\n=====================")
+    print("=====================\nUser: \(PFUser.currentUser())\n=====================")
     
     return true
   }
@@ -86,8 +86,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     let defaultACL = PFACL();
     
     // If you would like all objects to be private by default, remove this line.
-    defaultACL.setPublicReadAccess(true)
-    
+//    defaultACL.setPublicReadAccess(true)
+
     PFACL.setDefaultACL(defaultACL, withAccessForCurrentUser:true)
     
     if application.applicationState != UIApplicationState.Background {

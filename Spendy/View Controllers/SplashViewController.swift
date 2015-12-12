@@ -8,6 +8,7 @@
 
 import UIKit
 import CBZSplashView
+import Parse
 
 class SplashViewController: UIViewController {
   
@@ -31,7 +32,7 @@ class SplashViewController: UIViewController {
     
     splashView.startAnimationWithCompletionHandler { () -> Void in
       
-      let user = User.current()
+      let user = PFUser.currentUser()
       
       // TODO: check login
       let isLoggedIn = user != nil

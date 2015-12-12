@@ -45,9 +45,9 @@ class SettingsViewController: UIViewController, ThemeCellDelegate, UITabBarContr
     
     avatarView.setNewTintColor(Color.strongColor)
     
-    if let user = User.current() {
+    if let user = PFUser.currentUser() {
       print("user = \(user)")
-      usernameLabel.text = user.name ?? "(No name)"
+      usernameLabel.text = user.username ?? "(No name)"
       emailLabel.text = user.email
     }
   }
