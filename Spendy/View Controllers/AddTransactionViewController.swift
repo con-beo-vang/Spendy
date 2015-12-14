@@ -212,9 +212,9 @@ extension AddTransactionViewController: SelectAccountOrCategoryDelegate, PhotoVi
     updateFieldsToTransaction()
     
     // Dismiss all keyboard and datepicker
-    noteCell?.noteText.resignFirstResponder()
-    amountCell?.amountText.resignFirstResponder()
-    dateCell?.datePicker.alpha = 0
+    view.endEditing(true)
+    isShowDatePicker = false
+    tableView.reloadSections(NSIndexSet(index: 2), withRowAnimation: UITableViewRowAnimation.Automatic)
     
     let toController = segue.destinationViewController
     
@@ -546,16 +546,10 @@ extension AddTransactionViewController {
   }
   
   func tapDateCell(sender: UITapGestureRecognizer) {
-    noteCell!.noteText.resignFirstResponder()
-    amountCell!.amountText.resignFirstResponder()
+    view.endEditing(true)
     
-    if isShowDatePicker {
-      isShowDatePicker = false
-      tableView.reloadSections(NSIndexSet(index: 2), withRowAnimation: UITableViewRowAnimation.Automatic)
-    } else {
-      isShowDatePicker = true
-      tableView.reloadSections(NSIndexSet(index: 2), withRowAnimation: UITableViewRowAnimation.Automatic)
-    }
+    isShowDatePicker = !isShowDatePicker
+    tableView.reloadSections(NSIndexSet(index: 2), withRowAnimation: UITableViewRowAnimation.Automatic)
   }
   
   func typeSegmentChanged(sender: UISegmentedControl) {
