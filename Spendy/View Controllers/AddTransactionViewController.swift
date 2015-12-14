@@ -13,6 +13,8 @@ class AddTransactionViewController: UIViewController {
   
   @IBOutlet weak var tableView: UITableView!
   
+  @IBOutlet weak var addImageView: UIImageView!
+  
   var addButton: UIButton?
   var cancelButton: UIButton?
   
@@ -48,6 +50,7 @@ class AddTransactionViewController: UIViewController {
     isCollaped = true
     
     addBarButton()
+    setupAddImageView()
     
     imagePicker = UIImagePickerController()
     imagePicker.delegate = self
@@ -77,6 +80,19 @@ class AddTransactionViewController: UIViewController {
     }
     
     tableView.reloadData()
+    
+    // Change button's color based on strong color
+    Helper.sharedInstance.setIconLayer(addImageView)
+  }
+  
+  func setupAddImageView() {
+    addImageView.image = Helper.sharedInstance.createIcon("Bar-Tick")
+    let tapGesture = UITapGestureRecognizer(target: self, action: "onAddImageTapped:")
+    addImageView.addGestureRecognizer(tapGesture)
+  }
+  
+  func onAddImageTapped(sender: UITapGestureRecognizer) {
+    handleAddTransaction()
   }
   
   func updateFieldsToTransaction() -> Bool {
@@ -125,6 +141,10 @@ class AddTransactionViewController: UIViewController {
   }
   
   func onAddButton(sender: UIButton!) {
+    handleAddTransaction()
+  }
+  
+  func handleAddTransaction() {
     // check if we can update fields
     // show errors if can't
     guard updateFieldsToTransaction() else {
