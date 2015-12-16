@@ -99,6 +99,8 @@ class HomeViewController: UIViewController {
   }
   
   override func viewWillAppear(animated: Bool) {
+    super.viewWillAppear(animated)
+    
     // If user taps Change on reminder notificaiton, go to Quick Add
     if NSUserDefaults.standardUserDefaults().boolForKey("GoToQuickAdd") {
       NSUserDefaults.standardUserDefaults().setBool(false, forKey: "GoToQuickAdd")
@@ -119,6 +121,7 @@ class HomeViewController: UIViewController {
   }
   
   override func viewDidLayoutSubviews() {
+    super.viewDidLayoutSubviews()
     settingStatusBar()
   }
   
@@ -215,7 +218,7 @@ class HomeViewController: UIViewController {
   func goToTutorial() {
     let presentationController: TutorialViewController = {
       return TutorialViewController(pages: [])
-      }()
+    }()
     
     presentViewController(presentationController, animated: true, completion: nil)
   }

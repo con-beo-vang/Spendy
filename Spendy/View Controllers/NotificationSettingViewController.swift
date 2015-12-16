@@ -30,6 +30,8 @@ class NotificationSettingViewController: UIViewController, ReminderCellDelegate 
   }
   
   override func viewWillAppear(animated: Bool) {
+    super.viewWillAppear(animated)
+    
     // Load data from Parse when this view will appear
     // (both cases from Settings view and from Add reminder view
     // The right way is creating a delegate for AddReminderViewController

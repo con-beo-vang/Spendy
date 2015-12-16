@@ -55,10 +55,8 @@ class QuickViewController: UIViewController {
   }
   
   override func viewWillAppear(animated: Bool) {
+    super.viewWillAppear(animated)
     setColor()
-    
-    // Change button's color based on strong color
-    Helper.sharedInstance.setIconLayer(addImageView)
   }
   
   func setupAddImageView() {
@@ -95,6 +93,8 @@ class QuickViewController: UIViewController {
   }
   
   func setColor() {
+    // Change color based on strong color
+    Helper.sharedInstance.setIconLayer(addImageView)
     popupView.backgroundColor = Color.popupBackgroundColor
     cancelPopupButton.setTitleColor(Color.popupButtonColor, forState: UIControlState.Normal)
     donePopupButton.setTitleColor(Color.popupButtonColor, forState: UIControlState.Normal)

@@ -53,6 +53,8 @@ class SettingsViewController: UIViewController, ThemeCellDelegate, UITabBarContr
   }
   
   override func viewWillAppear(animated: Bool) {
+    super.viewWillAppear(animated)
+    
     // set top constraint again after presenting new view controller (Quick add)
     if avatarTopConstraint != nil {
       view.removeConstraint(avatarTopConstraint)
@@ -177,7 +179,7 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
     case 3:
       let presentationController: TutorialViewController = {
         return TutorialViewController(pages: [])
-        }()
+      }()
       dispatch_async(dispatch_get_main_queue()) { () -> Void in
         self.presentViewController(presentationController, animated: true, completion: nil)
       }

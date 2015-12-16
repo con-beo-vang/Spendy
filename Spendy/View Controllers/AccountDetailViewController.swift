@@ -82,6 +82,8 @@ class AccountDetailViewController: UIViewController {
   
   // reload data after we navigate back from pushed cell
   override func viewWillAppear(animated: Bool) {
+    super.viewWillAppear(animated)
+    
     if let currentAccount = currentAccount {
       navigationItem.title = currentAccount.name
       

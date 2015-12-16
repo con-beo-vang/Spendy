@@ -57,6 +57,8 @@ class AddTransactionViewController: UIViewController {
   }
   
   override func viewWillAppear(animated: Bool) {
+    super.viewWillAppear(animated)
+    
     if currentAccount == nil {
       currentAccount = Account.defaultAccount()
     }
