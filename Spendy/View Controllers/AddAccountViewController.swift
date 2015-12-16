@@ -12,6 +12,8 @@ class AddAccountViewController: UIViewController {
   
   @IBOutlet weak var tableView: UITableView!
   
+  @IBOutlet weak var addImageView: UIImageView!
+  
   var addButton: UIButton?
   var backButton: UIButton?
   var datePickerIsShown = false
@@ -29,10 +31,14 @@ class AddAccountViewController: UIViewController {
     tableView.tableFooterView = UIView()
     
     addBarButton()
+    setupAddImageView()
   }
   
   override func viewWillAppear(animated: Bool) {
     super.viewWillAppear(animated)
+    
+    // Change color based on strong color
+    Helper.sharedInstance.setIconLayer(addImageView)
     
     // TODO: Why is this not working?
     if let nameCell = tableView.cellForRowAtIndexPath(NSIndexPath(forItem: 0, inSection: 0)) as! TextCell? {
@@ -41,6 +47,12 @@ class AddAccountViewController: UIViewController {
   }
   
   // MARK: Button
+  
+  func setupAddImageView() {
+    addImageView.image = Helper.sharedInstance.createIcon("Bar-Tick")
+    let tapGesture = UITapGestureRecognizer(target: self, action: "onAddImageTapped:")
+    addImageView.addGestureRecognizer(tapGesture)
+  }
   
   func addBarButton() {
     addButton = UIButton()
@@ -79,7 +91,7 @@ class AddAccountViewController: UIViewController {
     return true
   }
   
-  func onAddButton(sender: UIButton!) {
+  func handleAddAccount() {
     guard updateFieldsForAccount() else {
       let alertController = UIAlertController(title: "Please enter a name :)", message: nil, preferredStyle: .Alert)
       let OKAction = UIAlertAction(title: "OK", style: .Default) { (action) in
@@ -94,6 +106,14 @@ class AddAccountViewController: UIViewController {
     
     self.tabBarController?.tabBar.hidden = false
     navigationController?.popViewControllerAnimated(true)
+  }
+  
+  func onAddImageTapped(sender: UITapGestureRecognizer) {
+    handleAddAccount()
+  }
+  
+  func onAddButton(sender: UIButton!) {
+    handleAddAccount()
   }
   
   func onBackButton(sender: UIButton!) {

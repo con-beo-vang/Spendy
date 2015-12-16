@@ -963,7 +963,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="C1z-rX-mpV">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="519"/>
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="452"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="TextCell" id="Fn8-5c-nw2" customClass="TextCell" customModule="Spendy" customModuleProvider="target">
@@ -974,7 +974,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Start Balance" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MJg-WC-kAI">
-                                                    <rect key="frame" x="8" y="11" width="103" height="21"/>
+                                                    <rect key="frame" x="8" y="11" width="103" height="20.5"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -1007,13 +1007,13 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Cetegory" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="c9N-ux-ymn">
-                                                    <rect key="frame" x="8" y="11" width="71" height="21"/>
+                                                    <rect key="frame" x="8" y="11" width="71" height="20.5"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Meal" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZD5-iP-ZR1">
-                                                    <rect key="frame" x="246" y="12" width="37" height="21"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Meal" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZD5-iP-ZR1">
+                                                    <rect key="frame" x="246" y="12" width="37" height="20.5"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
@@ -1040,19 +1040,19 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Open Date" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MH5-iU-Lm4">
-                                                    <rect key="frame" x="8" y="11" width="82" height="21"/>
+                                                    <rect key="frame" x="8" y="11" width="82" height="20.5"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sep 27, 2015" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HW0-hL-gUs">
-                                                    <rect key="frame" x="213" y="11" width="99" height="21"/>
+                                                    <rect key="frame" x="213" y="11" width="98.5" height="20.5"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="date" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="OpM-wP-sq8">
-                                                    <rect key="frame" x="0.0" y="40" width="320" height="155"/>
+                                                    <rect key="frame" x="0.0" y="39" width="320" height="155"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="155" id="2kB-dB-5jI"/>
                                                     </constraints>
@@ -1087,19 +1087,28 @@
                                     <outlet property="delegate" destination="WgT-HM-3XT" id="qRj-b3-hpr"/>
                                 </connections>
                             </tableView>
+                            <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="RIP-Y9-eak">
+                                <rect key="frame" x="141" y="460" width="39" height="39"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="39" id="gRA-1M-ehn"/>
+                                    <constraint firstAttribute="height" constant="39" id="nds-OD-7mY"/>
+                                </constraints>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="D6e-lV-o3g" firstAttribute="top" secondItem="C1z-rX-mpV" secondAttribute="bottom" id="5zg-SR-aTa"/>
+                            <constraint firstItem="D6e-lV-o3g" firstAttribute="top" secondItem="RIP-Y9-eak" secondAttribute="bottom" constant="20" id="2MH-C5-hmR"/>
                             <constraint firstItem="C1z-rX-mpV" firstAttribute="top" secondItem="wRF-w3-8x2" secondAttribute="top" id="HpP-xM-GO5"/>
+                            <constraint firstItem="RIP-Y9-eak" firstAttribute="top" secondItem="C1z-rX-mpV" secondAttribute="bottom" constant="8" id="Sa7-Ks-7Oa"/>
                             <constraint firstAttribute="trailing" secondItem="C1z-rX-mpV" secondAttribute="trailing" id="U7r-om-dhK"/>
                             <constraint firstItem="C1z-rX-mpV" firstAttribute="leading" secondItem="wRF-w3-8x2" secondAttribute="leading" id="XrN-QS-JV4"/>
-                            <constraint firstItem="D6e-lV-o3g" firstAttribute="top" secondItem="C1z-rX-mpV" secondAttribute="bottom" id="mDp-rl-FHl"/>
                             <constraint firstItem="C1z-rX-mpV" firstAttribute="leading" secondItem="wRF-w3-8x2" secondAttribute="leading" id="n7a-Bz-VrG"/>
+                            <constraint firstItem="RIP-Y9-eak" firstAttribute="centerX" secondItem="wRF-w3-8x2" secondAttribute="centerX" id="td9-sW-cfV"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="New Account" id="cDo-bb-K7a"/>
                     <connections>
+                        <outlet property="addImageView" destination="RIP-Y9-eak" id="5f8-St-XPA"/>
                         <outlet property="tableView" destination="C1z-rX-mpV" id="42V-2z-GJh"/>
                     </connections>
                 </viewController>
@@ -1728,7 +1737,7 @@
         <image name="Transfer" width="32" height="32"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="hG1-qS-arn"/>
+        <segue reference="9fp-4E-dIQ"/>
         <segue reference="GZy-oB-vHb"/>
     </inferredMetricsTieBreakers>
 </document>
