@@ -18,6 +18,7 @@ class AddAccountViewController: UIViewController {
   var backButton: UIButton?
   var datePickerIsShown = false
   var account: Account?
+  var createdDate = NSDate()
   
   // MARK: - Main functions
   
@@ -195,10 +196,8 @@ extension AddAccountViewController: UITableViewDataSource, UITableViewDelegate {
       
     case 1:
       let cell = tableView.dequeueReusableCellWithIdentifier("DateCell", forIndexPath: indexPath) as! DateCell
-      
-      let today = NSDate()
-      cell.dateLabel.text = DateFormatter.EEE_MMM_dd_yyyy.stringFromDate(today)
-      
+      cell.dateLabel.text = DateFormatter.EEE_MMM_dd_yyyy.stringFromDate(createdDate)
+      cell.delegate = self
       cell.setSeparatorFullWidth()
       return cell
       
@@ -219,9 +218,25 @@ extension AddAccountViewController: UITableViewDataSource, UITableViewDelegate {
   
   func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
     if indexPath.section == 1 {
-      datePickerIsShown = !datePickerIsShown
-      tableView.reloadSections(NSIndexSet(index: 1), withRowAnimation: UITableViewRowAnimation.Automatic)
+      view.endEditing(true)
+      reloadDatePicker()
     }
+  }
+  
+}
+
+// MARK: - Handle date picker
+
+extension AddAccountViewController: DateCellDelegate {
+  
+  func dateCell(dateCell: DateCell, selectedDate: NSDate) {
+    createdDate = selectedDate
+    reloadDatePicker()
+  }
+  
+  func reloadDatePicker() {
+    datePickerIsShown = !datePickerIsShown
+    tableView.reloadSections(NSIndexSet(index: 1), withRowAnimation: UITableViewRowAnimation.Automatic)
   }
   
 }
