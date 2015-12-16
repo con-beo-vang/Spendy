@@ -132,10 +132,10 @@ class LoginViewController: UIViewController {
     SwiftSpinner.show("Registering...")
     
     // update user
-    guard User.current() == nil else { return false }
+    guard PFUser.currentUser() == nil else { return false }
     
-    let user = User()
-    user.name = name
+    let user = PFUser()
+    user["name"] = name
     user.username = email
     user.email = email
     user.password = password
@@ -143,7 +143,7 @@ class LoginViewController: UIViewController {
     // TODO: validate user info here and return false if invalid
     
     // TODO: refactor into User
-    user.object!.signUpInBackgroundWithBlock { (succeeded, error) -> Void in
+    user.signUpInBackgroundWithBlock { (succeeded, error) -> Void in
       if let error = error {
         self.handleUserInfoError(error)
         return
