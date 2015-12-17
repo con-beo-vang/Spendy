@@ -10,9 +10,4 @@ import UIKit
 
 class ViewMoreCell: UITableViewCell {
   @IBOutlet weak var titleLabel: UILabel!
-  
-  override func awakeFromNib() {
-    super.awakeFromNib()
-    titleLabel.textColor = Color.moreDetailColor
-  }
 }

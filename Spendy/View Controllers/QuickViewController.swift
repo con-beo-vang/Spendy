@@ -28,7 +28,7 @@ class QuickViewController: UIViewController {
   
   @IBOutlet weak var donePopupButton: UIButton!
   
-  @IBOutlet weak var primaryButton: UIButton!
+  @IBOutlet weak var addImageView: UIImageView!
   
   var addButton: UIButton?
   var cancelButton: UIButton?
@@ -51,10 +51,22 @@ class QuickViewController: UIViewController {
     addBarButton()
     addGesture()
     configPopup()
+    setupAddImageView()
   }
   
   override func viewWillAppear(animated: Bool) {
+    super.viewWillAppear(animated)
     setColor()
+  }
+  
+  func setupAddImageView() {
+    addImageView.image = Helper.sharedInstance.createIcon("Bar-Tick")
+    let tapGesture = UITapGestureRecognizer(target: self, action: "onAddImageTapped:")
+    addImageView.addGestureRecognizer(tapGesture)
+  }
+  
+  func onAddImageTapped(sender: UITapGestureRecognizer) {
+    addQuickTransactions()
   }
   
   func addGesture() {
@@ -81,11 +93,8 @@ class QuickViewController: UIViewController {
   }
   
   func setColor() {
-    primaryButton.backgroundColor = Color.strongColor
-    primaryButton.setTitleColor(UIColor.whiteColor(), forState: .Normal)
-    primaryButton.layer.cornerRadius = 5
-    primaryButton.layer.masksToBounds = true
-    
+    // Change color based on strong color
+    Helper.sharedInstance.setIconLayer(addImageView)
     popupView.backgroundColor = Color.popupBackgroundColor
     cancelPopupButton.setTitleColor(Color.popupButtonColor, forState: UIControlState.Normal)
     donePopupButton.setTitleColor(Color.popupButtonColor, forState: UIControlState.Normal)

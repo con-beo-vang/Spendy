@@ -13,11 +13,13 @@ class AddTransactionViewController: UIViewController {
   
   @IBOutlet weak var tableView: UITableView!
   
+  @IBOutlet weak var addImageView: UIImageView!
+  
   var addButton: UIButton?
   var cancelButton: UIButton?
   
   var isCollaped = true
-  var isShowDatePicker = false
+  var datePickerIsShown = false
   
   var noteCell: NoteCell?
   var amountCell: AmountCell?
@@ -48,12 +50,15 @@ class AddTransactionViewController: UIViewController {
     isCollaped = true
     
     addBarButton()
+    setupAddImageView()
     
     imagePicker = UIImagePickerController()
     imagePicker.delegate = self
   }
   
   override func viewWillAppear(animated: Bool) {
+    super.viewWillAppear(animated)
+    
     if currentAccount == nil {
       currentAccount = Account.defaultAccount()
     }
@@ -77,6 +82,19 @@ class AddTransactionViewController: UIViewController {
     }
     
     tableView.reloadData()
+    
+    // Change button's color based on strong color
+    Helper.sharedInstance.setIconLayer(addImageView)
+  }
+  
+  func setupAddImageView() {
+    addImageView.image = Helper.sharedInstance.createIcon("Bar-Tick")
+    let tapGesture = UITapGestureRecognizer(target: self, action: "onAddImageTapped:")
+    addImageView.addGestureRecognizer(tapGesture)
+  }
+  
+  func onAddImageTapped(sender: UITapGestureRecognizer) {
+    handleAddTransaction()
   }
   
   func updateFieldsToTransaction() -> Bool {
@@ -125,6 +143,10 @@ class AddTransactionViewController: UIViewController {
   }
   
   func onAddButton(sender: UIButton!) {
+    handleAddTransaction()
+  }
+  
+  func handleAddTransaction() {
     // check if we can update fields
     // show errors if can't
     guard updateFieldsToTransaction() else {
@@ -212,12 +234,10 @@ extension AddTransactionViewController: SelectAccountOrCategoryDelegate, PhotoVi
     updateFieldsToTransaction()
     
     // Dismiss all keyboard and datepicker
-    noteCell?.noteText.resignFirstResponder()
-    amountCell?.amountText.resignFirstResponder()
-    dateCell?.datePicker.alpha = 0
+    view.endEditing(true)
+    reloadDatePicker()
     
     let toController = segue.destinationViewController
-    
     if toController is SelectAccountOrCategoryViewController {
       let vc = toController as! SelectAccountOrCategoryViewController
       
@@ -316,7 +336,7 @@ extension AddTransactionViewController: UITableViewDataSource, UITableViewDelega
   }
   
   func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-    return ((indexPath.section == 2 && isShowDatePicker) ? 182 : 40)
+    return ((indexPath.section == 2 && datePickerIsShown) ? 182 : 40)
   }
   
   func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -466,7 +486,9 @@ extension AddTransactionViewController: UITableViewDataSource, UITableViewDelega
       
     case 2:
       if isCollaped {
-        let cell = tableView.dequeueReusableCellWithIdentifier("ViewMoreCell", forIndexPath: indexPath)
+        let cell = tableView.dequeueReusableCellWithIdentifier("ViewMoreCell", forIndexPath: indexPath) as! ViewMoreCell
+        
+        cell.titleLabel.textColor = Color.moreDetailColor
         
         let tapCell = UITapGestureRecognizer(target: self, action: "tapMoreCell:")
         cell.addGestureRecognizer(tapCell)
@@ -476,6 +498,8 @@ extension AddTransactionViewController: UITableViewDataSource, UITableViewDelega
       } else {
         let cell = tableView.dequeueReusableCellWithIdentifier("DateCell", forIndexPath: indexPath) as! DateCell
         cell.titleLabel.text = "Date"
+        cell.delegate = self
+        
         let date = selectedTransaction!.date ?? NSDate()
         cell.datePicker.date = date
         cell.dateLabel.text = DateFormatter.E_MMM_dd_yyyy.stringFromDate(date)
@@ -483,12 +507,7 @@ extension AddTransactionViewController: UITableViewDataSource, UITableViewDelega
         let tapCell = UITapGestureRecognizer(target: self, action: "tapDateCell:")
         cell.addGestureRecognizer(tapCell)
         
-        if isShowDatePicker {
-          cell.datePicker.alpha = 1
-        } else {
-          cell.datePicker.alpha = 0
-        }
-        
+        cell.datePicker.alpha = datePickerIsShown ? 1 : 0
         cell.setSeparatorFullWidth()
         
         // override previous datecell with this datecell with datepicker
@@ -546,16 +565,8 @@ extension AddTransactionViewController {
   }
   
   func tapDateCell(sender: UITapGestureRecognizer) {
-    noteCell!.noteText.resignFirstResponder()
-    amountCell!.amountText.resignFirstResponder()
-    
-    if isShowDatePicker {
-      isShowDatePicker = false
-      tableView.reloadSections(NSIndexSet(index: 2), withRowAnimation: UITableViewRowAnimation.Automatic)
-    } else {
-      isShowDatePicker = true
-      tableView.reloadSections(NSIndexSet(index: 2), withRowAnimation: UITableViewRowAnimation.Automatic)
-    }
+    view.endEditing(true)
+    reloadDatePicker()
   }
   
   func typeSegmentChanged(sender: UISegmentedControl) {
@@ -626,6 +637,22 @@ extension AddTransactionViewController: PhotoTweaksViewControllerDelegate {
   
   func photoTweaksControllerDidCancel(controller: PhotoTweaksViewController!) {
     controller.navigationController?.dismissViewControllerAnimated(true, completion: nil)
+  }
+  
+}
+
+// MARK: - Handle date picker
+
+extension AddTransactionViewController: DateCellDelegate {
+  
+  func dateCell(dateCell: DateCell, selectedDate: NSDate) {
+    selectedTransaction!.date = selectedDate
+    reloadDatePicker()
+  }
+  
+  func reloadDatePicker() {
+    datePickerIsShown = !datePickerIsShown
+    tableView.reloadSections(NSIndexSet(index: 2), withRowAnimation: UITableViewRowAnimation.Automatic)
   }
   
 }

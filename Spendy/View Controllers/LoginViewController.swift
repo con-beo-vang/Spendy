@@ -58,6 +58,7 @@ class LoginViewController: UIViewController {
   }
   
   override func viewWillAppear(animated: Bool) {
+    super.viewWillAppear(animated)
     setColor()
   }
   
@@ -280,6 +281,7 @@ class LoginViewController: UIViewController {
   }
   
   override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+    super.touchesBegan(touches, withEvent: event)
     view.endEditing(true)
   }
   

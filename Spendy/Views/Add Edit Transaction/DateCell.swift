@@ -8,10 +8,16 @@
 
 import UIKit
 
+@objc protocol DateCellDelegate {
+  func dateCell(dateCell: DateCell, selectedDate: NSDate)
+}
+
 class DateCell: UITableViewCell {
   @IBOutlet weak var titleLabel: UILabel!
   @IBOutlet weak var dateLabel: UILabel!
   @IBOutlet weak var datePicker: UIDatePicker!
+  
+  weak var delegate: DateCellDelegate!
   
   override func awakeFromNib() {
     super.awakeFromNib()
@@ -19,7 +25,9 @@ class DateCell: UITableViewCell {
   }
   
   @IBAction func onDatePicker(sender: AnyObject) {
-    let strDate = DateFormatter.E_MMM_dd_yyyy.stringFromDate(datePicker.date)
+    let selectedDate = datePicker.date
+    let strDate = DateFormatter.E_MMM_dd_yyyy.stringFromDate(selectedDate)
     dateLabel.text = strDate
+    delegate?.dateCell(self, selectedDate: selectedDate)
   }
 }

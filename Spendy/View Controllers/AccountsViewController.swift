@@ -81,6 +81,8 @@ class AccountsViewController: UIViewController {
   }
   
   override func viewWillAppear(animated: Bool) {
+    super.viewWillAppear(animated)
+    
     if justAddTransactions {
       performSegueWithIdentifier("GoToAccountDetail", sender: self)
     }
