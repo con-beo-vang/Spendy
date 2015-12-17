@@ -38,6 +38,9 @@ class SplashViewController: UIViewController {
       let isLoggedIn = user != nil
       
       if isLoggedIn {
+        // Set default Realm
+        Helper.setDefaultRealmForUser(user!.email!)
+        
         // Go to Home screen
         let vc = self.storyboard?.instantiateViewControllerWithIdentifier("RootTabBarController") as! RootTabBarController
         self.presentViewController(vc, animated: true, completion: nil)

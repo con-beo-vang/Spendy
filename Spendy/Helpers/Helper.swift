@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import RealmSwift
 
 var logoColor = UIColor.redColor()
 
@@ -120,6 +121,46 @@ class Helper: NSObject {
     iconView.layer.masksToBounds = true
     // TODO: remove this line after category has type
     iconView.layer.backgroundColor = Color.strongColor.CGColor
+  }
+  
+}
+
+// MARK: - Setup Realm
+
+extension Helper {
+  
+  static func setDefaultRealmForUser(email: String) {
+    createFolderWithEmail(email)
+    
+    var config = Realm.Configuration()
+    
+    // Use the default directory, but replace the filename with the username
+    config.path = NSURL.fileURLWithPath(config.path!)
+      .URLByDeletingLastPathComponent?
+      .URLByAppendingPathComponent("\(email)/\(email).realm")
+      .path
+    
+    // Set this as the configuration used for the default Realm
+    Realm.Configuration.defaultConfiguration = config
+    
+    print("\n=====================")
+    print(Realm.Configuration.defaultConfiguration)
+    print("=====================\n")
+  }
+  
+  // Get the documents Directory
+  private static func createFolderWithEmail(email: String) {
+    let documentsFolderPath = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.DocumentDirectory, NSSearchPathDomainMask.UserDomainMask, true)[0] as NSString
+    let newFolderPath = documentsFolderPath.stringByAppendingPathComponent(email)
+    
+    // Create new folder
+    if !NSFileManager.defaultManager().fileExistsAtPath(newFolderPath) {
+      do {
+        try NSFileManager.defaultManager().createDirectoryAtPath(newFolderPath, withIntermediateDirectories: false, attributes: nil)
+      } catch let createDirectoryError as NSError {
+        print("Error with creating directory at path: \(createDirectoryError.localizedDescription)")
+      }
+    }
   }
   
 }

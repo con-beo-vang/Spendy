@@ -122,6 +122,7 @@ class LoginViewController: UIViewController {
       
       if let user = user {
         print("Logging in as \(user)")
+        Helper.setDefaultRealmForUser(user.email!)
         dispatch_async(dispatch_get_main_queue()) { () -> Void in
           self.performSegueWithIdentifier("GoToHome", sender: self)
         }
@@ -150,6 +151,7 @@ class LoginViewController: UIViewController {
         return
       }
       
+      Helper.setDefaultRealmForUser(user.email!)
       dispatch_async(dispatch_get_main_queue()) { () -> Void in
         self.performSegueWithIdentifier("GoToHome", sender: self)
       }
