@@ -8,6 +8,7 @@
 
 import UIKit
 import PhotoTweaks
+import Parse
 
 class AddTransactionViewController: UIViewController {
   
@@ -28,6 +29,9 @@ class AddTransactionViewController: UIViewController {
   var toAccountCell: SelectAccountOrCategoryCell?
   var dateCell: DateCell?
   var photoCell: PhotoCell?
+  
+  var oldPhoto: UIImage?
+  var oldPhotoIsSet = false
   
   var selectedTransaction: Transaction?
   var currentAccount: Account!
@@ -68,6 +72,12 @@ class AddTransactionViewController: UIViewController {
         navigationItem.title = "Add Transaction"
       } else {
         navigationItem.title = "Edit Transaction"
+        // Get the old photo to set in PhotoCell
+        if !transaction.localPhotoPath.isEmpty {
+          if let photo = UIImage(contentsOfFile: transaction.localPhotoPath) {
+            oldPhoto = photo
+          }
+        }
       }
     } else {
       // TODO: add a convenience contructor to Transaction
@@ -114,6 +124,23 @@ class AddTransactionViewController: UIViewController {
         if let date = self.dateCell?.datePicker.date {
           t.date = date
           print("setting date to transaction: \(date)")
+        }
+        
+        // Save photo to document directory
+        if let photoCell = self.photoCell, photo = photoCell.photoView.image {
+          if photo != self.oldPhoto {
+            let oldPhotoPath = t.localPhotoPath
+            // Create photo name based on current date time
+            let filename = "\(DateFormatter.yyyyMMddhhmmss.stringFromDate(NSDate())).jpg"
+            let email = PFUser.currentUser()?.email
+            if Helper.savePhotoLocal(photo, email: email!, filename: filename) {
+              t.localPhotoName = filename
+              if !oldPhotoPath.isEmpty {
+                Helper.deleteOldPhoto(oldPhotoPath)
+              }
+              print("saved photo")
+            }
+          }
         }
       }
     }
@@ -518,6 +545,17 @@ extension AddTransactionViewController: UITableViewDataSource, UITableViewDelega
       
     case 3:
       let cell = tableView.dequeueReusableCellWithIdentifier("PhotoCell", forIndexPath: indexPath) as! PhotoCell
+      
+      // Set old photo in the first time loading this cell
+      if !oldPhotoIsSet {
+        if let oldPhoto = oldPhoto {
+          cell.photoView.image = oldPhoto
+        } else {
+          cell.photoView.image = nil
+        }
+        oldPhotoIsSet = true
+      }
+      
       cell.setSeparatorFullWidth()
       if photoCell == nil {
         photoCell = cell
@@ -609,6 +647,7 @@ extension AddTransactionViewController: UIImagePickerControllerDelegate, UINavig
     if let pickedImage = info[UIImagePickerControllerOriginalImage] as? UIImage {
       
       let photoTweaksViewController = PhotoTweaksViewController(image: pickedImage)
+      photoTweaksViewController.autoSaveToLibray = false
       photoTweaksViewController.delegate = self
       imagePicker.pushViewController(photoTweaksViewController, animated: true)
     }

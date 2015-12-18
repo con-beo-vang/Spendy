@@ -37,6 +37,7 @@ class DateFormatter {
   static var EEE_MMM_dd_yyyy = DateFormatter.formatFromString("EEE, MMM dd, yyyy")
   static var fullStyle       = DateFormatter.formatFromString(style: NSDateFormatterStyle.FullStyle)
   static var MM_dd_yyyy_hh_mm_ss = DateFormatter.formatFromString("MM-dd-yyyy hh:mm:ss")
+  static var yyyyMMddhhmmss = DateFormatter.formatFromString("yyyyMMddhhmmss")
   
   static var MMMM_dd_yyyy    = DateFormatter.formatFromString("MMMM dd, yyyy")
   static var MMM_dd_yyyy     = DateFormatter.formatFromString("MMM dd, yyyy")

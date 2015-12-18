@@ -7,11 +7,13 @@
 //
 
 import RealmSwift
+import Parse
 
 class Transaction: HTRObject {
   dynamic var kind: String? = nil
   dynamic var date: NSDate? = nil
   dynamic var note: String? = nil
+  dynamic var localPhotoName = ""
   dynamic var amount: Int = 0
   dynamic var toAccount: Account? = nil
   dynamic var fromAccount: Account? = nil
@@ -144,6 +146,15 @@ extension Transaction {
   
   var categoryIcon: String? {
     return category?.icon
+  }
+  
+  var localPhotoPath: String {
+    if !localPhotoName.isEmpty {
+      let folderPath = Helper.createFolderWithEmail(PFUser.currentUser()!.email!) as NSString
+      return folderPath.stringByAppendingPathComponent(localPhotoName)
+    } else {
+      return ""
+    }
   }
   
   func formattedAmount() -> String? {

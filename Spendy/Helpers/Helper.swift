@@ -149,7 +149,7 @@ extension Helper {
   }
   
   // Get the documents Directory
-  private static func createFolderWithEmail(email: String) {
+  static func createFolderWithEmail(email: String) -> String {
     let documentsFolderPath = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.DocumentDirectory, NSSearchPathDomainMask.UserDomainMask, true)[0] as NSString
     let newFolderPath = documentsFolderPath.stringByAppendingPathComponent(email)
     
@@ -160,6 +160,32 @@ extension Helper {
       } catch let createDirectoryError as NSError {
         print("Error with creating directory at path: \(createDirectoryError.localizedDescription)")
       }
+    }
+    
+    return newFolderPath
+  }
+  
+}
+
+// MARK: - Save poster to documents directory
+
+extension Helper {
+  
+  static func savePhotoLocal(image: UIImage, email: String, filename: String) -> Bool {
+    let userFolderPath = createFolderWithEmail(email) as NSString
+    let filePath = userFolderPath.stringByAppendingPathComponent(filename)
+    if let jpgImageData = UIImageJPEGRepresentation(image, 1.0) {
+      return jpgImageData.writeToFile(filePath, atomically: true)
+    }
+    return false
+  }
+  
+  static func deleteOldPhoto(photoPath: String) {
+    let fileManager = NSFileManager.defaultManager()
+    do {
+      try fileManager.removeItemAtPath(photoPath)
+    } catch {
+      print("Cannot delete old photo")
     }
   }
   

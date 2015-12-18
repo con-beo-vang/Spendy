@@ -89,6 +89,7 @@ class PhotoViewController: UIViewController {
   
   @IBAction func onEditButton(sender: UIButton) {
     let photoTweaksViewController = PhotoTweaksViewController(image: selectedImage)
+    photoTweaksViewController.autoSaveToLibray = false
     photoTweaksViewController.delegate = self
     self.presentViewController(photoTweaksViewController, animated: true, completion: nil)
   }
