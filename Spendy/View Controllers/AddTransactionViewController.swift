@@ -32,6 +32,7 @@ class AddTransactionViewController: UIViewController {
   
   var oldPhoto: UIImage?
   var oldPhotoIsSet = false
+  var oldAmountIsSet = false
   
   var selectedTransaction: Transaction?
   var currentAccount: Account!
@@ -70,6 +71,9 @@ class AddTransactionViewController: UIViewController {
     if let transaction = selectedTransaction {
       if transaction.isNew() {
         navigationItem.title = "Add Transaction"
+        oldPhotoIsSet = false
+        oldAmountIsSet = false
+        view.endEditing(true)
       } else {
         navigationItem.title = "Edit Transaction"
         // Get the old photo to set in PhotoCell
@@ -89,6 +93,8 @@ class AddTransactionViewController: UIViewController {
       // TODO: replace with a good default amount
       //            selectedTransaction!.amount = 10
       isCollaped = true
+      oldPhotoIsSet = false
+      oldAmountIsSet = false
     }
     
     tableView.reloadData()
@@ -410,17 +416,19 @@ extension AddTransactionViewController: UITableViewDataSource, UITableViewDelega
       case 1:
         let cell = tableView.dequeueReusableCellWithIdentifier("AmountCell", forIndexPath: indexPath) as! AmountCell
         
-        if !selectedTransaction!.isNew() {
-          cell.amountText.text = selectedTransaction!.amountDecimal?.stringValue
+        // Set old amount in the first time loading this cell
+        if !oldAmountIsSet {
+          cell.amountText.text = selectedTransaction!.isNew() ? "" : selectedTransaction!.amountDecimal?.stringValue
+          oldAmountIsSet = true
         }
-        cell.amountText.keyboardType = UIKeyboardType.DecimalPad
         
+        cell.amountText.keyboardType = UIKeyboardType.DecimalPad
         cell.setSeparatorFullWidth()
         
         if amountCell == nil {
           amountCell = cell
           
-          // Only add gesture recognizers once
+          // Only add gesture recognizer once
           cell.typeSegment.addTarget(self, action: "typeSegmentChanged:", forControlEvents: UIControlEvents.ValueChanged)
           print("Added typeSegmentChanged gesture. Should only do once")
           let tapCell = UITapGestureRecognizer(target: self, action: "tapAmoutCell:")
