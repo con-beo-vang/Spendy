@@ -268,7 +268,7 @@ extension AddTransactionViewController: SelectAccountOrCategoryDelegate, PhotoVi
     
     // Dismiss all keyboard and datepicker
     view.endEditing(true)
-    reloadDatePicker()
+    hideDatePicker(hidden: true)
     
     let toController = segue.destinationViewController
     if toController is SelectAccountOrCategoryViewController {
@@ -612,7 +612,7 @@ extension AddTransactionViewController {
   
   func tapDateCell(sender: UITapGestureRecognizer) {
     view.endEditing(true)
-    reloadDatePicker()
+    hideDatePicker(hidden: datePickerIsShown)
   }
   
   func typeSegmentChanged(sender: UISegmentedControl) {
@@ -694,11 +694,11 @@ extension AddTransactionViewController: DateCellDelegate {
   
   func dateCell(dateCell: DateCell, selectedDate: NSDate) {
     selectedTransaction!.date = selectedDate
-    reloadDatePicker()
+    hideDatePicker(hidden: true)
   }
   
-  func reloadDatePicker() {
-    datePickerIsShown = !datePickerIsShown
+  func hideDatePicker(hidden hidden: Bool) {
+    datePickerIsShown = !hidden
     tableView.reloadSections(NSIndexSet(index: 2), withRowAnimation: UITableViewRowAnimation.Automatic)
   }
   
