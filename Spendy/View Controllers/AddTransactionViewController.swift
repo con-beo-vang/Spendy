@@ -50,6 +50,7 @@ class AddTransactionViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     
+    tabBarController?.tabBar.hidden = true
     tableView.tableFooterView = UIView()
     
     isCollaped = true
