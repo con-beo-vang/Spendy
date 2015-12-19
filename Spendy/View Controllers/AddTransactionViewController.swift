@@ -770,7 +770,11 @@ extension AddTransactionViewController: PhotoTweaksViewControllerDelegate {
 extension AddTransactionViewController: DateCellDelegate {
   
   func dateCell(dateCell: DateCell, selectedDate: NSDate) {
-    selectedTransaction!.date = selectedDate
+    if let transaction = selectedTransaction {
+      transaction.update { t in
+        t.date = selectedDate
+      }
+    }
     hideDatePicker(hidden: true)
   }
   
