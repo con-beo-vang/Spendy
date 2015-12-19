@@ -1172,6 +1172,13 @@
                                                     <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Tag" translatesAutoresizingMaskIntoConstraints="NO" id="tPq-ee-N7V">
+                                                    <rect key="frame" x="157" y="31" width="25" height="25"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="25" id="0k9-Gz-RMW"/>
+                                                        <constraint firstAttribute="height" constant="25" id="V2r-rl-qCn"/>
+                                                    </constraints>
+                                                </imageView>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="8Cy-vx-BQv" firstAttribute="top" secondItem="0K7-5R-8IP" secondAttribute="top" constant="8" id="0ud-v5-nO6"/>
@@ -1183,7 +1190,9 @@
                                                 <constraint firstItem="F6t-n0-Z7u" firstAttribute="leading" secondItem="0K7-5R-8IP" secondAttribute="leading" constant="8" id="Sb9-HE-wzo"/>
                                                 <constraint firstItem="8Cy-vx-BQv" firstAttribute="baseline" secondItem="h09-gK-HHZ" secondAttribute="baseline" id="WU0-Nm-hKj"/>
                                                 <constraint firstItem="dix-Am-OYf" firstAttribute="trailing" secondItem="h09-gK-HHZ" secondAttribute="trailing" constant="0.5" id="bqk-lz-rgu"/>
+                                                <constraint firstItem="tPq-ee-N7V" firstAttribute="leading" secondItem="bRd-ea-w5M" secondAttribute="trailing" constant="8" id="ltr-aY-dJD"/>
                                                 <constraint firstItem="h09-gK-HHZ" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="8Cy-vx-BQv" secondAttribute="trailing" constant="8" id="nTo-bw-8HQ"/>
+                                                <constraint firstItem="tPq-ee-N7V" firstAttribute="centerY" secondItem="bRd-ea-w5M" secondAttribute="centerY" id="paW-ny-nrG"/>
                                                 <constraint firstAttribute="trailing" secondItem="h09-gK-HHZ" secondAttribute="trailing" constant="8" id="xKN-kR-qDM"/>
                                             </constraints>
                                         </tableViewCellContentView>
@@ -1191,8 +1200,9 @@
                                             <outlet property="amountLabel" destination="h09-gK-HHZ" id="v6q-tJ-nMg"/>
                                             <outlet property="balanceLabel" destination="dix-Am-OYf" id="TTP-AT-I51"/>
                                             <outlet property="dateLabel" destination="bRd-ea-w5M" id="yxl-qc-uop"/>
-                                            <outlet property="iconView" destination="F6t-n0-Z7u" id="txa-Cv-2Sd"/>
+                                            <outlet property="iconView" destination="F6t-n0-Z7u" id="Bz9-fF-5sv"/>
                                             <outlet property="noteLabel" destination="8Cy-vx-BQv" id="XRw-74-9s0"/>
+                                            <outlet property="photoIconView" destination="tPq-ee-N7V" id="LJB-ut-9Jd"/>
                                             <segue destination="hyr-9S-FBl" kind="push" identifier="EditTransaction" id="GZy-oB-vHb"/>
                                         </connections>
                                     </tableViewCell>
@@ -1737,6 +1747,7 @@
         <image name="InactiveSetting" width="25" height="25"/>
         <image name="Logo" width="512" height="512"/>
         <image name="Minus" width="32" height="32"/>
+        <image name="Tag" width="128" height="128"/>
         <image name="Transfer" width="32" height="32"/>
     </resources>
     <inferredMetricsTieBreakers>

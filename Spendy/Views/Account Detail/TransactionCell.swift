@@ -15,6 +15,7 @@ class TransactionCell: UITableViewCell {
   @IBOutlet weak var dateLabel: UILabel!
   @IBOutlet weak var amountLabel: UILabel!
   @IBOutlet weak var balanceLabel: UILabel!
+  @IBOutlet weak var photoIconView: UIImageView!
   
   var currentAccount: Account?
   
@@ -33,6 +34,9 @@ class TransactionCell: UITableViewCell {
       amountLabel.text = transaction.formattedAmount()
       amountLabel.textColor = KindColor.forTransaction(transaction, account: currentAccount!)
       dateLabel.text = transaction.dateOnly()
+      
+      photoIconView.image = UIImage(named: Color.isGreen ? "TagGreen" : "TagYellow")
+      photoIconView.hidden = transaction.localPhotoName.isEmpty
       
       // TODO: which balance to display
       if let account   = currentAccount,
