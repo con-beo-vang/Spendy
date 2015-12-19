@@ -405,8 +405,10 @@ extension AddTransactionViewController: UITableViewDataSource, UITableViewDelega
         
         cell.noteText.text = selectedTransaction?.note
         
-        let tapCell = UITapGestureRecognizer(target: self, action: "tapNoteCell:")
-        cell.addGestureRecognizer(tapCell)
+        if !cell.hasTapGesture() {
+          let tapCell = UITapGestureRecognizer(target: self, action: "tapNoteCell:")
+          cell.addGestureRecognizer(tapCell)
+        }
         
         cell.setSeparatorFullWidth()
         if noteCell == nil {
@@ -432,9 +434,12 @@ extension AddTransactionViewController: UITableViewDataSource, UITableViewDelega
           // Only add gesture recognizer once
           cell.typeSegment.addTarget(self, action: "typeSegmentChanged:", forControlEvents: UIControlEvents.ValueChanged)
           print("Added typeSegmentChanged gesture. Should only do once")
-          let tapCell = UITapGestureRecognizer(target: self, action: "tapAmoutCell:")
-          cell.addGestureRecognizer(tapCell)
-          print("Added tapAmountCell gesture")
+          
+          if !cell.hasTapGesture() {
+            let tapCell = UITapGestureRecognizer(target: self, action: "tapAmoutCell:")
+            cell.addGestureRecognizer(tapCell)
+            print("Added tapAmountCell gesture")
+          }
         }
         
         // TODO refactor into AmountCell
@@ -526,8 +531,10 @@ extension AddTransactionViewController: UITableViewDataSource, UITableViewDelega
         
         cell.titleLabel.textColor = Color.moreDetailColor
         
-        let tapCell = UITapGestureRecognizer(target: self, action: "tapMoreCell:")
-        cell.addGestureRecognizer(tapCell)
+        if !cell.hasTapGesture() {
+          let tapCell = UITapGestureRecognizer(target: self, action: "tapMoreCell:")
+          cell.addGestureRecognizer(tapCell)
+        }
         
         cell.setSeparatorFullWidth()
         return cell
@@ -540,8 +547,10 @@ extension AddTransactionViewController: UITableViewDataSource, UITableViewDelega
         cell.datePicker.date = date
         cell.dateLabel.text = DateFormatter.E_MMM_dd_yyyy.stringFromDate(date)
         
-        let tapCell = UITapGestureRecognizer(target: self, action: "tapDateCell:")
-        cell.addGestureRecognizer(tapCell)
+        if !cell.hasTapGesture() {
+          let tapCell = UITapGestureRecognizer(target: self, action: "tapDateCell:")
+          cell.addGestureRecognizer(tapCell)
+        }
         
         cell.datePicker.alpha = datePickerIsShown ? 1 : 0
         cell.setSeparatorFullWidth()

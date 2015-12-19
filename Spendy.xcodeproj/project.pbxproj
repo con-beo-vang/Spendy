@@ -86,6 +86,7 @@
 		9D78C5331BA5A48000B00BC2 /* SpendyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D78C5321BA5A48000B00BC2 /* SpendyTests.swift */; };
 		9DB8A85F1BA9E5E6000F03A1 /* Config.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9DB8A85E1BA9E5E6000F03A1 /* Config.plist */; };
 		9DB8A8681BA9FAA6000F03A1 /* Settings.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9DB8A8671BA9FAA6000F03A1 /* Settings.storyboard */; };
+		A59968981C254F6500E108A3 /* UIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A59968971C254F6500E108A3 /* UIView+Extension.swift */; };
 		A77E0D207AB770857E146536 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CFE2D5C782640C353708467 /* Pods.framework */; };
 /* End PBXBuildFile section */
 
@@ -187,6 +188,7 @@
 		9D78C53D1BA5A5FC00B00BC2 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		9DB8A85E1BA9E5E6000F03A1 /* Config.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Config.plist; sourceTree = "<group>"; };
 		9DB8A8671BA9FAA6000F03A1 /* Settings.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Settings.storyboard; sourceTree = "<group>"; };
+		A59968971C254F6500E108A3 /* UIView+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "UIView+Extension.swift"; path = "Helpers/UIView+Extension.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -472,6 +474,7 @@
 				18EDDACB1BF76C280001D80F /* UITableViewCell+Extension.swift */,
 				18EDDACC1BF76C280001D80F /* UITextField+Extension.swift */,
 				188326031BE91FD90060B5CF /* NSDecimalNumber+Extension.swift */,
+				A59968971C254F6500E108A3 /* UIView+Extension.swift */,
 			);
 			name = Helpers;
 			sourceTree = "<group>";
@@ -672,6 +675,7 @@
 				188326491BE9203A0060B5CF /* SelectAccountOrCategoryViewController.swift in Sources */,
 				188326201BE91FF50060B5CF /* HTRObject.swift in Sources */,
 				188326731BE923070060B5CF /* TransactionCell.swift in Sources */,
+				A59968981C254F6500E108A3 /* UIView+Extension.swift in Sources */,
 				188326101BE91FD90060B5CF /* SPNotification.swift in Sources */,
 				18EDDACF1BF76C280001D80F /* UIImage+Extension.swift in Sources */,
 				1883261C1BE91FF50060B5CF /* Account.swift in Sources */,

@@ -410,8 +410,10 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
             cell.iconView.image = UIImage(named: "Collapse")
           }
           
-          let tapGesture = UITapGestureRecognizer(target: self, action: Selector("tapIncome:"))
-          cell.addGestureRecognizer(tapGesture)
+          if !cell.hasTapGesture() {
+            let tapGesture = UITapGestureRecognizer(target: self, action: Selector("tapIncome:"))
+            cell.addGestureRecognizer(tapGesture)
+          }
           
           return cell
         } else {
@@ -443,8 +445,10 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
             cell.iconView.image = UIImage(named: "Collapse")
           }
           
-          let tapGesture = UITapGestureRecognizer(target: self, action: Selector("tapExpense:"))
-          cell.addGestureRecognizer(tapGesture)
+          if !cell.hasTapGesture() {
+            let tapGesture = UITapGestureRecognizer(target: self, action: Selector("tapExpense:"))
+            cell.addGestureRecognizer(tapGesture)
+          }
           
           return cell
         } else {
