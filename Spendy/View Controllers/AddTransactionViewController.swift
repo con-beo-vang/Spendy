@@ -72,8 +72,6 @@ class AddTransactionViewController: UIViewController {
     if let transaction = selectedTransaction {
       if transaction.isNew() {
         navigationItem.title = "Add Transaction"
-        oldPhotoIsSet = false
-        oldAmountIsSet = false
         view.endEditing(true)
       } else {
         navigationItem.title = "Edit Transaction"
@@ -134,18 +132,26 @@ class AddTransactionViewController: UIViewController {
         }
         
         // Save photo to document directory
-        if let photoCell = self.photoCell, photo = photoCell.photoView.image {
-          if photo != self.oldPhoto {
-            let oldPhotoPath = t.localPhotoPath
-            // Create photo name based on current date time
-            let filename = "\(DateFormatter.yyyyMMddhhmmss.stringFromDate(NSDate())).jpg"
-            let email = PFUser.currentUser()?.email
-            if Helper.savePhotoLocal(photo, email: email!, filename: filename) {
-              t.localPhotoName = filename
-              if !oldPhotoPath.isEmpty {
-                Helper.deleteOldPhoto(oldPhotoPath)
+        if let photoCell = self.photoCell  {
+          let oldPhotoPath = t.localPhotoPath
+          if let photo = photoCell.photoView.image {
+            if photo != self.oldPhoto {
+              // Create photo name based on current date time
+              let filename = "\(DateFormatter.yyyyMMddhhmmss.stringFromDate(NSDate())).jpg"
+              let email = PFUser.currentUser()?.email
+              if Helper.savePhotoLocal(photo, email: email!, filename: filename) {
+                t.localPhotoName = filename
+                if !oldPhotoPath.isEmpty {
+                  Helper.deleteOldPhoto(oldPhotoPath)
+                }
+                print("saved photo")
               }
-              print("saved photo")
+            }
+          } else {
+            // In case removing old photo
+            if !oldPhotoPath.isEmpty {
+              Helper.deleteOldPhoto(oldPhotoPath)
+              t.localPhotoName = ""
             }
           }
         }
@@ -370,6 +376,10 @@ extension AddTransactionViewController: UITableViewDataSource, UITableViewDelega
   }
   
   func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    // If PhotoCell
+    if indexPath.section == 3 {
+      return 120
+    }
     return ((indexPath.section == 2 && datePickerIsShown) ? 182 : 40)
   }
   
@@ -564,20 +574,34 @@ extension AddTransactionViewController: UITableViewDataSource, UITableViewDelega
     case 3:
       let cell = tableView.dequeueReusableCellWithIdentifier("PhotoCell", forIndexPath: indexPath) as! PhotoCell
       
+      if photoCell == nil {
+        photoCell = cell
+      }
+      
       // Set old photo in the first time loading this cell
       if !oldPhotoIsSet {
         if let oldPhoto = oldPhoto {
           cell.photoView.image = oldPhoto
+          setPositonForCameraIcon()
         } else {
           cell.photoView.image = nil
         }
         oldPhotoIsSet = true
       }
       
-      cell.setSeparatorFullWidth()
-      if photoCell == nil {
-        photoCell = cell
+      // Add tap gesture to delete icon for delete image
+      let icon = cell.cameraIcon
+      if !icon.hasTapGesture() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: "onDeleteIconTapped:")
+        icon.addGestureRecognizer(tapGesture)
       }
+      
+      // Set position for camera icon
+      setPositonForCameraIcon()
+      
+      // Hide the separator
+      cell.separatorInset = UIEdgeInsetsMake(0, cell.bounds.size.width, 0, 0)
+      
       return cell
       
     default:
@@ -589,6 +613,24 @@ extension AddTransactionViewController: UITableViewDataSource, UITableViewDelega
   
   @IBAction func onAmountChanged(sender: UITextField) {
     sender.preventInputManyDots()
+  }
+  
+  func setPositonForCameraIcon() {
+    if let cell = photoCell {
+      cell.photoView.transform = CGAffineTransformIdentity
+      let icon = cell.cameraIcon
+      if cell.photoView.image == nil {
+        icon.image = UIImage(named: "Camera")
+      } else {
+        icon.image = UIImage(named: "Delete")
+        
+        let width = view.frame.size.width
+        let newX = (width / 2 - 8 - 15) * 10 / 3
+        let newY = -CGFloat(120 / 2 - 8 - 15) * 10 / 3
+        let scale = CGAffineTransformMakeScale(0.3, 0.3)
+        icon.transform = CGAffineTransformTranslate(scale, newX, newY)
+      }
+    }
   }
   
 }
@@ -655,6 +697,30 @@ extension AddTransactionViewController {
     tableView.reloadData()
   }
   
+  func onDeleteIconTapped(sender: UITapGestureRecognizer) {
+    if let photoCell = photoCell {
+      let icon = photoCell.cameraIcon
+      let photo = photoCell.photoView
+      
+      if icon.image == UIImage(named: "Camera") {
+        performSegueWithIdentifier("ViewPhoto", sender: self)
+      } else {
+        icon.image = UIImage(named: "Camera")
+        let width = view.frame.size.width
+        
+        UIView.animateWithDuration(2, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 10, options: [], animations: { () -> Void in
+          icon.transform = CGAffineTransformMakeTranslation(0, 0)
+          
+          let rotate = CGAffineTransformMakeRotation(-1)
+          let translate = CGAffineTransformTranslate(rotate, -width * 0.7, -CGFloat(50))
+          photo.transform = CGAffineTransformScale(translate, 0.001, 0.001)
+          }, completion: { (finished) -> Void in
+            photoCell.photoView.image = nil
+        })
+      }
+    }
+  }
+  
 }
 
 // MARK: - UIImagePickerController
@@ -687,6 +753,7 @@ extension AddTransactionViewController: PhotoTweaksViewControllerDelegate {
     if let photoCell = photoCell {
       photoCell.photoView.contentMode = .ScaleToFill
       photoCell.photoView.image = croppedImage
+      setPositonForCameraIcon()
     }
     
     controller.navigationController?.dismissViewControllerAnimated(true, completion: nil)

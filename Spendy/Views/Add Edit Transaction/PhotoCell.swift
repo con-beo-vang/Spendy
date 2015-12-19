@@ -10,4 +10,12 @@ import UIKit
 
 class PhotoCell: UITableViewCell {
   @IBOutlet weak var photoView: UIImageView!
+  
+  @IBOutlet weak var cameraIcon: UIImageView!
+  
+  override func awakeFromNib() {
+    super.awakeFromNib()
+    photoView.layer.cornerRadius = 5
+    photoView.layer.masksToBounds = true
+  }
 }
