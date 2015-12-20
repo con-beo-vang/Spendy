@@ -319,6 +319,7 @@ extension LoginViewController: UITableViewDataSource, UITableViewDelegate {
       cell.textField.text = email
       cell.textField.secureTextEntry = false
       cell.textField.keyboardType = .EmailAddress
+      cell.textField.autocorrectionType = .No
       
     case 2:
       cell.textField.placeholder = "Password"
