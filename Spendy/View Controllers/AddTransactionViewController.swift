@@ -191,15 +191,7 @@ class AddTransactionViewController: UIViewController {
     // show errors if can't
     guard updateFieldsToTransaction() else {
       let nextError = validationErrors.first!
-      
-      let alertController = UIAlertController(title: nextError, message: nil, preferredStyle: .Alert)
-      let OKAction = UIAlertAction(title: "OK", style: .Default) { (action) in
-        // ...
-      }
-      alertController.addAction(OKAction)
-      
-      presentViewController(alertController, animated: true) {}
-      
+      showAlert(title: nextError, message: nil, actionTitle: "OK")
       return
     }
     

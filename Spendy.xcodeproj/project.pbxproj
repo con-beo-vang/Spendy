@@ -86,6 +86,7 @@
 		9D78C5331BA5A48000B00BC2 /* SpendyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D78C5321BA5A48000B00BC2 /* SpendyTests.swift */; };
 		9DB8A85F1BA9E5E6000F03A1 /* Config.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9DB8A85E1BA9E5E6000F03A1 /* Config.plist */; };
 		9DB8A8681BA9FAA6000F03A1 /* Settings.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9DB8A8671BA9FAA6000F03A1 /* Settings.storyboard */; };
+		A5514DDE1C26F378003F8CAA /* UIViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5514DDD1C26F378003F8CAA /* UIViewController+Extension.swift */; };
 		A59968981C254F6500E108A3 /* UIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A59968971C254F6500E108A3 /* UIView+Extension.swift */; };
 		A77E0D207AB770857E146536 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CFE2D5C782640C353708467 /* Pods.framework */; };
 /* End PBXBuildFile section */
@@ -188,6 +189,7 @@
 		9D78C53D1BA5A5FC00B00BC2 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		9DB8A85E1BA9E5E6000F03A1 /* Config.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Config.plist; sourceTree = "<group>"; };
 		9DB8A8671BA9FAA6000F03A1 /* Settings.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Settings.storyboard; sourceTree = "<group>"; };
+		A5514DDD1C26F378003F8CAA /* UIViewController+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extension.swift"; sourceTree = "<group>"; };
 		A59968971C254F6500E108A3 /* UIView+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "UIView+Extension.swift"; path = "Helpers/UIView+Extension.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -475,6 +477,7 @@
 				18EDDACC1BF76C280001D80F /* UITextField+Extension.swift */,
 				188326031BE91FD90060B5CF /* NSDecimalNumber+Extension.swift */,
 				A59968971C254F6500E108A3 /* UIView+Extension.swift */,
+				A5514DDD1C26F378003F8CAA /* UIViewController+Extension.swift */,
 			);
 			name = Helpers;
 			sourceTree = "<group>";
@@ -708,6 +711,7 @@
 				188326811BE923210060B5CF /* PhotoCell.swift in Sources */,
 				18EDDACD1BF76C280001D80F /* String+Extension.swift in Sources */,
 				188326481BE9203A0060B5CF /* RootTabBarController.swift in Sources */,
+				A5514DDE1C26F378003F8CAA /* UIViewController+Extension.swift in Sources */,
 				1883263D1BE9203A0060B5CF /* AddReminderViewController.swift in Sources */,
 				18EDDAD11BF76C280001D80F /* UITableView+Extension.swift in Sources */,
 				1883261E1BE91FF50060B5CF /* Category.swift in Sources */,

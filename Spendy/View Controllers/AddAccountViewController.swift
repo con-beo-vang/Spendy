@@ -94,14 +94,7 @@ class AddAccountViewController: UIViewController {
   
   func handleAddAccount() {
     guard updateFieldsForAccount() else {
-      let alertController = UIAlertController(title: "Please enter a name :)", message: nil, preferredStyle: .Alert)
-      let OKAction = UIAlertAction(title: "OK", style: .Default) { (action) in
-        // ...
-      }
-      alertController.addAction(OKAction)
-      
-      presentViewController(alertController, animated: true) {}
-      
+      showAlert(title: "Please enter a name :)", message: nil, actionTitle: "OK")
       return
     }
     

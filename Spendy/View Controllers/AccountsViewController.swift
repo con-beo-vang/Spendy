@@ -161,12 +161,7 @@ class AccountsViewController: UIViewController {
     let amountString = (amountText.text)!
     
     if amountString.isEmpty {
-      let alertController = UIAlertController(title: "Please enter an amount.", message: nil, preferredStyle: .Alert)
-      let cancelAction = UIAlertAction(title: "Cancel", style: .Default) { (action) in
-        // ...
-      }
-      alertController.addAction(cancelAction)
-      presentViewController(alertController, animated: true) {}
+      showAlert(title: "Please enter an amount.", message: nil, actionTitle: "Cancel")
     } else {
       let amountDecimal = NSDecimalNumber(string: amountString)
       let fromAccount = selectedDragCell?.account
