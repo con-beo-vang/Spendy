@@ -568,6 +568,10 @@ extension AddTransactionViewController: UITableViewDataSource, UITableViewDelega
       
       if photoCell == nil {
         photoCell = cell
+        
+        // Add long press gesture to save photo
+        let longPressGesture = UILongPressGestureRecognizer(target: self, action: "onPhotoLongPressed:")
+        cell.photoView.addGestureRecognizer(longPressGesture)
       }
       
       // Set old photo in the first time loading this cell
@@ -710,6 +714,35 @@ extension AddTransactionViewController {
             photoCell.photoView.image = nil
         })
       }
+    }
+  }
+  
+  func onPhotoLongPressed(sender: UILongPressGestureRecognizer) {
+    if let photoCell = photoCell, photo = photoCell.photoView.image {
+      let actionSheet = UIAlertController(title: "Save Photo", message: "Would you want to save this photo to your Library?", preferredStyle: .ActionSheet)
+      
+      let savePhoto = { (action: UIAlertAction!) in
+        UIImageWriteToSavedPhotosAlbum(photo, self, "image:didFinishSavingWithError:contextInfo:", nil)
+      }
+      
+      actionSheet.addAction(UIAlertAction(title: "Yes", style: .Default, handler: savePhoto))
+      actionSheet.addAction(UIAlertAction(title: "No", style: .Cancel, handler: nil))
+      
+      // Display popover if this devide is iPad
+      if let presentationController = actionSheet.popoverPresentationController {
+        presentationController.sourceView = self.view
+        presentationController.sourceRect = CGRect(x: sender.locationInView(self.view).x, y: sender.locationInView(self.view).y, width: 300, height: 100)
+      }
+      
+      presentViewController(actionSheet, animated: true, completion: nil)
+    }
+  }
+  
+  func image(image: UIImage, didFinishSavingWithError error: NSError?, contextInfo:UnsafePointer<Void>) {
+    if error == nil {
+      showAlert(title: "Successfully", message: "This photo has been saved to your Library.", actionTitle: "OK")
+    } else {
+      showAlert(title: "Error", message: error?.localizedDescription, actionTitle: "OK")
     }
   }
   
